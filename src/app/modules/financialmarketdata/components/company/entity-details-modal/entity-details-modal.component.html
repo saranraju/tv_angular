@@ -1,0 +1,139 @@
+<div class="modal p-3">
+  <div class="close cursor-pointer" (click)="entityDetailsModalClick()">
+    <i class="fa fa-times"></i>
+  </div>
+  <!-- Modal Content -->
+  <div class="modal-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 my-3 d-flex align-items-center">
+          <span class="modal-title">{{
+            fundingRoundHeaderData?.entityProperName
+          }}</span>
+          <span class="modal-desc">{{
+            fundingRoundHeaderData?.categoryNameDesc
+          }}</span>
+          <img
+            class="cursor-pointer img-fluid excel-icon ms-5"
+            src="/assets/img/excelDownload.png"
+            alt="excelDownload"
+            (click)="handleDetPEVCModal($event)"
+          />
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-12">
+          <div class="row">
+            <div class="col-4 px-0">
+              <span class="field-title"
+                >Entity Name:
+                <span class="field-value">{{
+                  fundingRoundHeaderData?.entityProperName
+                    ? fundingRoundHeaderData?.entityProperName
+                    : "-"
+                }}</span></span
+              >
+            </div>
+            <div class="col-4 px-0">
+              <span class="field-title"
+                >Country:
+                <span class="field-value">{{
+                  fundingRoundHeaderData?.countryName
+                    ? fundingRoundHeaderData?.countryName
+                    : "-"
+                }}</span></span
+              >
+            </div>
+            <div class="col-4 px-0">
+              <span class="field-title"
+                >Industry:
+                <span class="field-value">{{
+                  fundingRoundHeaderData?.ticsIndustryName
+                    ? fundingRoundHeaderData?.ticsIndustryName
+                    : "-"
+                }}</span></span
+              >
+            </div>
+          </div>
+          <div class="row my-4">
+            <div class="col-4 px-0">
+              <span class="field-title"
+                >Round:
+                <span class="field-value">{{
+                  fundingRoundHeaderData?.categoryNameDesc
+                    ? fundingRoundHeaderData?.categoryNameDesc
+                    : "-"
+                }}</span></span
+              >
+            </div>
+            <div class="col-4 px-0">
+              <span class="field-title"
+                >Issue Type:
+                <span class="field-value">{{
+                  fundingRoundHeaderData?.issueType
+                    ? fundingRoundHeaderData?.issueType
+                    : "-"
+                }}</span></span
+              >
+            </div>
+            <div class="col-4 px-0">
+              <span class="field-title"
+                >Financing Type:
+                <span class="field-value">{{
+                  fundingRoundHeaderData?.portcoFinType
+                    ? fundingRoundHeaderData?.portcoFinType
+                    : "-"
+                }}</span></span
+              >
+            </div>
+          </div>
+          <div class="row">
+            <div class="col-4 px-0">
+              <span class="field-title"
+                >Round Date:
+                <span class="field-value">{{
+                  fundingRoundHeaderData?.inceptionDate
+                    ? fundingRoundHeaderData?.inceptionDate
+                    : "-"
+                }}</span></span
+              >
+            </div>
+            <div class="col-4 px-0">
+              <span class="field-title"
+                >Investment Currency:
+                <span class="field-value">{{
+                  fundingRoundHeaderData?.investmentCurrency
+                    ? fundingRoundHeaderData?.investmentCurrency
+                    : "-"
+                }}</span></span
+              >
+            </div>
+            <div class="col-4 px-0">
+              <span class="field-title"
+                >Total Raised Amount (USD Million):
+                <span class="field-value">{{
+                  fundingRoundHeaderData?.valuationCal
+                    ? util?.standardFormat(
+                        fundingRoundHeaderData?.valuationCal,
+                        2,
+                        ""
+                      )
+                    : "-"
+                }}</span></span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-4 mb-2">
+        <div class="col-12 px-0">
+          <app-funds-investment-table
+            [table_data]="entityDetailsTableData"
+            (investorNameSelected)="handleinvestorNameSelected($event)"
+            (fundNameSelected)="handlefundNameSelected($event)"
+          ></app-funds-investment-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,87 @@
+<div class="modal p-2">
+  <div class="modal-dialog-style">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        (click)="tableDialogClose()"
+        autocomplete="new-search"
+      >
+        ×
+      </button>
+      <div class="commodityTable">
+        <table class="w-100 scroll">
+          <thead class="head_styling">
+            <tr>
+              <ng-container *ngFor="let header of header_data; let i = index">
+                <th>
+                  {{ header }}
+                </th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody [ngStyle]="{ 'min-height': mh }">
+            <ng-container *ngIf="column == 1">
+              <ng-container *ngIf="table_data.length > 0">
+                <tr *ngFor="let content of table_data; let i = index">
+                  <!-- <ng-container *ngIf="i < 5"> -->
+                  <td>{{ content.companyId }}</td>
+                  <!-- <td>{{ this.util.standardFormat(content.total, 2, "") }}%</td> -->
+                  <td *ngIf="content.total % 1 == 0; else floatValue">
+                    {{ content.total }} %
+                  </td>
+                  <ng-template #floatValue>
+                    <td>
+                      {{ this.util.standardFormat(content.total, 2, "") }} %
+                    </td>
+                  </ng-template>
+                </tr>
+              </ng-container>
+              <ng-container *ngIf="table_data.length == 0">
+                <tr style="height: 120px">
+                  <td colspan="2" class="text-center" style="color: #fff">
+                    No Data Available
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+            <ng-container *ngIf="column == 2 || column == 3">
+              <ng-container *ngIf="table_data.length > 0">
+                <tr *ngFor="let content of table_data; let i = index">
+                  <td>{{ content.companyName }}</td>
+                  <!-- <td>
+                    {{ this.util.standardFormat(content.percent, 2, "") }}%
+                  </td> -->
+                  <td *ngIf="content.percent % 1 == 0; else floatValue">
+                    {{ content.percent }} %
+                  </td>
+                  <ng-template #floatValue>
+                    <td>
+                      {{
+                        content.percent > 0 && content.percent < 1
+                          ? this.util.standardFormat(content.percent, 3, "")
+                          : this.util.standardFormat(content.percent, 2, "")
+                      }}
+                      %
+                    </td>
+                  </ng-template>
+                </tr>
+              </ng-container>
+              <ng-container *ngIf="table_data.length == 0">
+                <tr style="height: 120px">
+                  <td colspan="2" class="text-center" style="color: #fff">
+                    No Data Available
+                  </td>
+                </tr>
+              </ng-container>
+            </ng-container>
+          </tbody>
+        </table>
+      </div>
+
+      <br />
+    </div>
+  </div>
+</div>

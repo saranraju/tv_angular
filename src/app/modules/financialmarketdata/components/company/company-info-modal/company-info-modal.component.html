@@ -1,0 +1,41 @@
+<div class="modal p-2">
+  <div class="modal-dialog-style">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        (click)="tableDialogClose()"
+        autocomplete="new-search"
+      >
+        ×
+      </button>
+      <!-- <div class="commodityTable"> -->
+      <div class="commodityTable">
+        <table class="w-100 scroll">
+          <thead>
+            <tr>
+              <th [ngClass]="isModal ? 'remove-border-top' : ''" class="">
+                {{ header_data?.replaceAll("%23", "#") }}
+              </th>
+            </tr>
+          </thead>
+          <tbody [ngClass]="isModal ? 'remove-border-bottom' : ''">
+            <tr>
+              <td [innerHTML]="table_data"></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <!-- <div class="">
+        {{header_data}}
+      </div>
+      <br />
+      <div class="">
+        {{table_data}}
+        </div> -->
+      <!-- </div> -->
+    </div>
+  </div>
+</div>

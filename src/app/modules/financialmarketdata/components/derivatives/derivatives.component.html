@@ -1,0 +1,508 @@
+<div class="container-fluid">
+  <div class="row mt-3">
+    <!-- Dropdowns -->
+    <div class="col-md-3 ps-0">
+      <ng-select2
+        [data]="selectNameData"
+        [value]="selectedName"
+        id="nameDropdown"
+        (click)="handleNameClick()"
+        (valueChanged)="valueChangedHandler('Name', $event)"
+        class="cusSelect2 cusSelect2Normal"
+        [placeholder]="'Select Name'"
+      ></ng-select2>
+    </div>
+    <div class="col-md-3">
+      <ng-select2
+        [data]="selectSettlementDate"
+        [value]="selectedSettlementDate"
+        (valueChanged)="valueChangedHandler('Settlement Date', $event)"
+        class="cusSelect2 cusSelect2Normal"
+        [placeholder]="'Select Settlement Date'"
+      ></ng-select2>
+    </div>
+    <div class="col-md-3">
+      <ng-select2
+        [data]="selectOptions"
+        [value]="selectedOptions"
+        id="optionDropdown"
+        (valueChanged)="valueChangedHandler('Options', $event)"
+        class="cusSelect2 cusSelect2Normal"
+        [placeholder]="'Select Option Type'"
+      ></ng-select2>
+    </div>
+    <div class="col-md-3 pe-0">
+      <ng-select2
+        [data]="selectType"
+        [value]="selectedType"
+        id="priceDropdown"
+        (valueChanged)="valueChangedHandler('Strike Price', $event)"
+        class="cusSelect2 cusSelect2Normal"
+        [placeholder]="'Select Strike Price'"
+      ></ng-select2>
+    </div>
+    <!-- Heading -->
+    <div class="mt-2 col-12 px-0">
+      <p *ngIf="!showFuturesTable" class="mb-2 text-primary fw600 fs17">
+        {{
+          derivativesLatestData?.underlying_name
+            ? derivativesLatestData?.underlying_name
+            : "-"
+        }}
+        |
+        {{
+          derivativesLatestData?.asset_type
+            ? derivativesLatestData?.asset_type
+            : "-"
+        }}
+        |
+        {{
+          derivativesLatestData?.exchange_name
+            ? derivativesLatestData?.exchange_name
+            : "-"
+        }}
+        |
+        {{
+          derivativesLatestData?.strike ? derivativesLatestData?.strike : "-"
+        }}
+        {{
+          derivativesLatestData?.call_put
+            ? derivativesLatestData?.call_put
+            : "- "
+        }}
+        |
+        {{
+          derivativesLatestData?.option_ex_type_new
+            ? derivativesLatestData?.option_ex_type_new
+            : "-"
+        }}
+        |
+        {{
+          derivativesLatestData?.expiry_date
+            ? derivativesLatestData?.expiry_date
+            : "-"
+        }}
+      </p>
+      <p *ngIf="showFuturesTable" class="mb-2 text-primary fw600 fs17">
+        {{
+          derivativesLatestData?.underlying_name
+            ? derivativesLatestData?.underlying_name
+            : "-"
+        }}
+        |
+        {{
+          derivativesLatestData?.asset_type
+            ? derivativesLatestData?.asset_type
+            : "-"
+        }}
+        |
+        {{
+          derivativesLatestData?.exchange_name
+            ? derivativesLatestData?.exchange_name
+            : "-"
+        }}
+        |
+        {{
+          derivativesLatestData?.expiry_date
+            ? derivativesLatestData?.expiry_date
+            : "-"
+        }}
+      </p>
+    </div>
+    <!-- Dropdown -->
+    <!-- Filter -->
+    <div class="col-6 px-0">
+      <div class="col-12 px-0">
+        <div class="d-flex mb-2 justify-content-between align-items-center">
+          <div>
+            <input
+              class="last_tade_price"
+              [placeholder]="'Last Traded Price'"
+              [disabled]="true"
+            />
+            <!-- 
+            <ng-select2 class="cusSelect2 cusSelect2_20rem" [placeholder]="'Last Traded Price'" [disabled]="true">
+            </ng-select2> -->
+          </div>
+        </div>
+      </div>
+      <div
+        class="align-items-center d-flex graphFilterSection mt-2 mb-4"
+        [ngClass]="{ 'disable-filter': derivativesHistoricalData.length === 0 }"
+      >
+        <ul class="mb-0 p-0">
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '1W' }"
+            (click)="dateChange('1W')"
+            class="filter-hover-effect"
+          >
+            1W
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '1M' }"
+            (click)="dateChange('1M')"
+            class="filter-hover-effect"
+          >
+            1M
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '3M' }"
+            (click)="dateChange('3M')"
+            class="filter-hover-effect"
+          >
+            3M
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '6M' }"
+            (click)="dateChange('6M')"
+            class="filter-hover-effect"
+          >
+            6M
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '1Y' }"
+            (click)="dateChange('1Y')"
+            class="filter-hover-effect"
+          >
+            1Y
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === 'MAX' }"
+            (click)="dateChange('MAX')"
+            class="filter-hover-effect"
+          >
+            MAX
+          </li>
+        </ul>
+      </div>
+      <!-- Chart -->
+      <div id="chartdiv" class="derivativesChart"></div>
+    </div>
+    <!-- Table -->
+    <div class="col-6 position-relative table-container">
+      <div>
+        <p class="text-primary fs16">
+          <b>{{ !showFuturesTable ? "Option Chain" : "Comparable Futures" }}</b>
+          <span *ngIf="!showFuturesTable" class="title-date">
+            ({{
+              derivativesLatestData?.expiry_date
+                ? derivativesLatestData?.expiry_date
+                : "-"
+            }})</span
+          >
+        </p>
+        <div *ngIf="!showFuturesTable" class="tableCol6Border">
+          <app-derivatives-table
+            [tableData]="derivatives_table_data"
+            [showSettlementPrice]="showSettlementPrice"
+            [derivativesCurrency]="derivativesCurrency"
+          ></app-derivatives-table>
+        </div>
+        <div *ngIf="showFuturesTable">
+          <app-table
+            [table_data]="comparable_future_data"
+            highLowColor="true"
+            (selectedRow)="handleSelectedRow($event)"
+          ></app-table>
+        </div>
+      </div>
+    </div>
+    <!-- Summary Info -->
+    <div class="col-12 mt-2 px-0">
+      <h4 class="text-primary">
+        <span class="fs16 fw600">Summary Information</span
+        ><span class="fs14 fw400 title-date">
+          (as on
+          {{
+            derivativesLatestData?.as_on_date
+              ? derivativesLatestData?.as_on_date
+              : "-"
+          }})</span
+        >
+      </h4>
+      <div *ngIf="!showFuturesTable" class="bond-summer-info summer-info mt-3">
+        <div>
+          <div>
+            <p class="text-primary mb-0"><b>Settlement Price :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.latest_settlement
+                  ? util?.standardFormat(
+                      derivativesLatestData?.latest_settlement,
+                      2,
+                      ""
+                    )
+                  : "-"
+              }}
+              <span *ngIf="derivativesCurrency !== 'USD'">{{
+                derivativesCurrency
+              }}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Exchange :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.exchange_name
+                  ? derivativesLatestData?.exchange_name
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Settlement Date :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.expiry_date
+                  ? derivativesLatestData?.expiry_date
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+        <div>
+          <div>
+            <p class="text-primary mb-0"><b>Strike Price :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.strike
+                  ? util?.standardFormat(derivativesLatestData?.strike, 2, "")
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Volume :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.total_volume
+                  ? util?.standardFormat(
+                      derivativesLatestData?.total_volume,
+                      2,
+                      ""
+                    )
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Settlement Type :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.settlement_type
+                  ? derivativesLatestData?.settlement_type
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+        <div>
+          <div>
+            <p class="text-primary mb-0"><b>Option Category :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.call_put
+                  ? derivativesLatestData?.call_put
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Open Interest :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.open_interest
+                  ? util?.standardFormat(
+                      derivativesLatestData?.open_interest,
+                      2,
+                      ""
+                    )
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Bid Price :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.bid_latest
+                  ? util?.standardFormat(
+                      derivativesLatestData?.bid_latest,
+                      2,
+                      ""
+                    )
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+        <div>
+          <div>
+            <p class="text-primary mb-0"><b>Option Type :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.option_ex_type_new
+                  ? derivativesLatestData?.option_ex_type_new
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Currency :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.currency
+                  ? derivativesLatestData?.currency
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Ask Price :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.ask_latest
+                  ? util?.standardFormat(
+                      derivativesLatestData?.ask_latest,
+                      2,
+                      ""
+                    )
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+        <div>
+          <div>
+            <p class="text-primary mb-0"><b>Underlying Type :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.underlying_type
+                  ? derivativesLatestData?.underlying_type
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Contract Size :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.contract_size
+                  ? util?.standardFormat(
+                      derivativesLatestData?.contract_size,
+                      2,
+                      ""
+                    )
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="showFuturesTable" class="bond-summer-info summer-info mt-3">
+        <div>
+          <div>
+            <p class="text-primary mb-0"><b>Underlying Type :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.underlying_type
+                  ? derivativesLatestData?.underlying_type
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Volume :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.total_volume
+                  ? util?.standardFormat(
+                      derivativesLatestData?.total_volume,
+                      2,
+                      ""
+                    )
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+        <div>
+          <div>
+            <p class="text-primary mb-0"><b>Exchange :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.exchange_name
+                  ? derivativesLatestData?.exchange_name
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Currency :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.currency
+                  ? derivativesLatestData?.currency
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+        <div>
+          <div>
+            <p class="text-primary mb-0"><b>Expiry Date :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.expiry_date
+                  ? derivativesLatestData?.expiry_date
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Contract Size :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.contract_size
+                  ? util?.standardFormat(
+                      derivativesLatestData?.contract_size,
+                      2,
+                      ""
+                    )
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+        <div>
+          <div>
+            <p class="text-primary mb-0"><b>Open Interest :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.open_interest
+                  ? util?.standardFormat(
+                      derivativesLatestData?.open_interest,
+                      2,
+                      ""
+                    )
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Settlement Type :</b></p>
+            <p>
+              {{
+                derivativesLatestData?.settlement_type
+                  ? derivativesLatestData?.settlement_type
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<br />
+<br />

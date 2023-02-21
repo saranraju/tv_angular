@@ -1,0 +1,205 @@
+.header-section {
+  position: absolute;
+  width: 100%;
+  z-index: 20;
+
+  .responsive-menu {
+    display: none;
+  }
+}
+
+.user-dropdown-menu li {
+  display: inline-block;
+  color: #000;
+  font-size: 17px !important;
+  list-style: none;
+  padding: 3px 31px;
+  cursor: pointer;
+  position: relative;
+}
+.dropdown {
+  background-color: #fff;
+  position: absolute;
+  top: 21px;
+  right: -48px;
+  height: 275px;
+  width: 570px;
+  // z-index: 100;
+  padding: 5px 5px;
+  span {
+    height: 100%;
+    width: 100%;
+    display: flex;
+    b {
+      border: solid 0.5px #e0d3d3;
+    }
+    span {
+      flex: 1;
+      margin: 0px 5px;
+
+      display: flex;
+      flex-direction: column;
+      .diff {
+        background-color: #437193;
+      }
+      h4 {
+        font-size: 22px;
+        padding-bottom: 7px;
+        color: #444;
+        margin: 0px;
+        font-weight: normal;
+      }
+      b {
+        border: solid 0.3px #e0d3d3;
+      }
+      h3 {
+        color: #444;
+        font-size: 14px;
+        margin: 0px;
+        margin: 10px 0px;
+      }
+      a {
+        background-color: #465560;
+        margin: 0px 5px;
+        margin-top: 7px;
+        padding: 3px 20px;
+        border-radius: 20px;
+        cursor: pointer;
+      }
+    }
+  }
+}
+.active {
+  border-bottom: 2px solid #2dc997;
+  color: #000;
+}
+.close-icon {
+  display: none;
+}
+.user-dropdown-menu li a {
+  text-decoration: none;
+  color: #000;
+}
+
+@media only screen and (max-device-width: 1330px) {
+  .header-section {
+    z-index: 37;
+    .responsive-menu {
+      display: block;
+      color: #000;
+      font-size: 30px;
+      padding-right: 30px;
+    }
+
+    .user-dropdown-menu {
+      position: absolute;
+      width: 400px;
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-start;
+      color: black;
+      height: 100vh;
+      top: 0;
+      padding-top: 18px;
+      background: rgba(52, 59, 64, 0.9);
+      overflow-y: auto;
+      transition-property: width;
+      transition-duration: 2s;
+      display: none;
+
+      li {
+        width: 100%;
+        padding: 10px 0px;
+        // font-size: 20px;
+      }
+      a {
+        margin: 0px;
+        color: #fff;
+        font-size: 25px;
+      }
+      .active {
+        border-bottom: none;
+      }
+      .close-icon {
+        color: white;
+        display: block;
+        position: absolute;
+        top: 10px;
+        right: 10px;
+        z-index: 35;
+        font-size: 30px;
+      }
+    }
+  }
+  .mobile-body-overlay {
+    z-index: 27;
+    position: fixed;
+    height: 700vh;
+    width: 100%;
+    background: rgba(52, 59, 64, 0.9);
+    transition: all 0.5s;
+    -webkit-transition: all 0.5s;
+  }
+  .dropdown {
+    background-color: #4f565a !important;
+    position: relative;
+    left: 325px;
+    // z-index: 999;
+    // top: 21px;
+    // right: -48px;
+    height: 45vh;
+    width: 100%;
+    overflow-y: auto;
+    width: 100%; // width: 100%;
+    padding-bottom: 40px;
+    // padding: 5px 5px;
+    // background-color: #fff;
+    span {
+      height: 100%;
+      width: 100%;
+      display: flex;
+      flex-direction: column;
+      background-color: #4f565a !important;
+
+      b {
+        border: solid 0.5px #e0d3d3;
+      }
+      span {
+        flex: 1;
+        margin: 0px 5px;
+        display: flex;
+        flex-direction: column;
+        padding: 10px;
+        width: 400px;
+        .diff {
+          background-color: #444;
+        }
+        h4 {
+          font-size: 22px;
+          padding-bottom: 7px;
+          color: #fff;
+          margin: 0px;
+          font-weight: normal;
+        }
+        b {
+          border: solid 0.3px #e0d3d3;
+        }
+        h3 {
+          color: #fff;
+          font-size: 14px;
+          margin: 0px;
+          margin: 10px 0px;
+        }
+        a {
+          background-color: #444;
+          margin: 0px 5px;
+          margin-top: 7px;
+          padding: 3px 20px;
+          border-radius: 20px;
+          cursor: pointer;
+        }
+      }
+    }
+  }
+}

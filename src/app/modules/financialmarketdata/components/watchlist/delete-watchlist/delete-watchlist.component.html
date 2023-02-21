@@ -1,0 +1,18 @@
+<div id="myModal" [ngStyle]="{ display: displayStyle }" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header"></div>
+    <div class="modal-body">
+      <p>Kindly confirm the deletion of {{ watchlist }}</p>
+      <br />
+    </div>
+    <div class="modal-footer">
+      <div class="row">
+        <div class="col">
+          <button class="delete_btn" (click)="closePopup()">Cancel</button>
+        </div>
+        <div class="col"><button class="delete_btn">Confirm</button></div>
+      </div>
+    </div>
+  </div>
+</div>

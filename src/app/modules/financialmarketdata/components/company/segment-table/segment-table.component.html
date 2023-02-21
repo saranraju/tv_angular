@@ -1,0 +1,129 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th>Operating Segments ({{ currency }} Million)</th>
+        <ng-container *ngFor="let header of header_data; let i = index">
+          <ng-container *ngIf="i < 6">
+            <th class="text-end">
+              {{ header | date: "MMM - y" }}
+            </th>
+          </ng-container>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody style="max-height: 300px">
+      <tr class="syle_tr">
+        Sales
+      </tr>
+      <tr *ngFor="let content of table_data; let i = index">
+        <td>{{ content.label }}</td>
+        <ng-container *ngFor="let header of header_data; let j = index">
+          <td class="text-end" *ngIf="j < 6">
+            <ng-container *ngIf="content['sales' + header] != undefined">
+              {{ this.util.standardFormat(content["sales" + header], 2, "") }}
+            </ng-container>
+            <ng-container
+              *ngIf="
+                content['sales' + header] == undefined &&
+                content['sales' + header] == null
+              "
+            >
+              -
+            </ng-container>
+          </td>
+        </ng-container>
+      </tr>
+
+      <tr class="syle_tr">
+        Operating Income
+      </tr>
+      <tr *ngFor="let content of table_data; let i = index">
+        <td>{{ content.label }}</td>
+        <ng-container *ngFor="let header of header_data; let j = index">
+          <td class="text-end" *ngIf="j < 6">
+            <ng-container *ngIf="content['opinc' + header] != undefined">
+              {{ this.util.standardFormat(content["opinc" + header], 2, "") }}
+            </ng-container>
+            <ng-container
+              *ngIf="
+                content['opinc' + header] == undefined &&
+                content['opinc' + header] == null
+              "
+            >
+              -
+            </ng-container>
+          </td>
+        </ng-container>
+      </tr>
+
+      <tr class="syle_tr">
+        Assets
+      </tr>
+      <tr *ngFor="let content of table_data; let i = index">
+        <td>{{ content.label }}</td>
+        <ng-container *ngFor="let header of header_data; let j = index">
+          <td class="text-end" *ngIf="j < 6">
+            <ng-container *ngIf="content['assets' + header] != undefined">
+              {{ this.util.standardFormat(content["assets" + header], 2, "") }}
+            </ng-container>
+            <ng-container
+              *ngIf="
+                content['assets' + header] == undefined &&
+                content['assets' + header] == null
+              "
+            >
+              -
+            </ng-container>
+          </td>
+        </ng-container>
+      </tr>
+
+      <tr class="syle_tr">
+        Capital Expenditure
+      </tr>
+      <tr *ngFor="let content of table_data; let i = index">
+        <td>{{ content.label }}</td>
+        <ng-container *ngFor="let header of header_data; let j = index">
+          <td class="text-end" *ngIf="j < 6">
+            <ng-container *ngIf="content['capex' + header] != undefined">
+              {{ this.util.standardFormat(content["capex" + header], 2, "") }}
+            </ng-container>
+            <ng-container
+              *ngIf="
+                content['capex' + header] == undefined &&
+                content['capex' + header] == null
+              "
+            >
+              -
+            </ng-container>
+          </td>
+        </ng-container>
+      </tr>
+
+      <tr class="syle_tr">
+        Depreciation Expense
+      </tr>
+      <tr *ngFor="let content of table_data; let i = index">
+        <td>{{ content.label }}</td>
+        <ng-container *ngFor="let header of header_data; let j = index">
+          <td class="text-end" *ngIf="j < 6">
+            <ng-container *ngIf="content['dep' + header] != undefined">
+              {{ this.util.standardFormat(content["dep" + header], 2, "") }}
+            </ng-container>
+            <ng-container
+              *ngIf="
+                content['dep' + header] == undefined &&
+                content['dep' + header] == null
+              "
+            >
+              -
+            </ng-container>
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br />

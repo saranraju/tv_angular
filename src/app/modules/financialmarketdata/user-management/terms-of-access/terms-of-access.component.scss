@@ -1,0 +1,263 @@
+.user-dropdown-menu li {
+  display: inline-block;
+  color: #000;
+  font-size: 17px !important;
+  list-style: none;
+  padding: 3px 31px;
+  cursor: pointer;
+}
+
+.active {
+  border-bottom: 2px solid #2dc997;
+  color: #000;
+}
+.user-dropdown-menu li a {
+  text-decoration: none;
+  color: #000;
+}
+.section {
+  overflow-y: scroll;
+  height: calc(100% - 55px);
+  background-color: #002060;
+}
+.section-bg {
+  background-color: #002060;
+}
+.title {
+  font-size: 40px;
+  color: #fff;
+  margin: 25px 0 0;
+  letter-spacing: 1px;
+  text-align: center;
+  font-family: "Impact", "sans-serif";
+}
+.sub-title {
+  font-weight: 900;
+  text-align: center;
+  color: #fff;
+  font-family: "Impact";
+  font-size: 35px;
+}
+
+.video-min-height {
+  min-height: 300px !important;
+}
+.explorebtnwhole {
+  text-align: center;
+  position: relative;
+}
+.explorebtnwhole a {
+  background: #158d71;
+  border-radius: 4px;
+  padding: 6px 20px;
+  font-size: 16px !important;
+  width: auto;
+  display: inline-block !important;
+  color: #fff;
+}
+
+.btn-get-started {
+  cursor: pointer;
+  position: relative;
+  text-transform: none;
+}
+.form-container {
+  border: 7px solid #fff;
+  padding: 7px;
+  width: 100%;
+
+  .header-container {
+    display: flex;
+    justify-content: space-between;
+    font-weight: 600;
+    align-items: center;
+    margin-bottom: 5px;
+
+    .req-btn {
+      background-color: #158d71;
+      outline: none;
+      border-radius: 5px;
+      color: white;
+      padding: 1px 15px;
+      font-weight: 400;
+      border: none;
+    }
+  }
+  input {
+    height: 1.5rem;
+    margin-bottom: 7px;
+    font-size: 12px;
+  }
+  small {
+    font-size: 11px;
+    text-align: start;
+    b {
+      color: #158d71;
+    }
+  }
+  .btn-container {
+    margin-top: 10px;
+    button {
+      background-color: #158d71;
+      outline: none;
+      border-radius: 5px;
+      color: white;
+      padding: 1px 15px;
+      font-weight: 400;
+      border: none;
+      height: 29px;
+      width: fit-content;
+    }
+  }
+  b {
+    text-align: start;
+    font-size: 12px;
+    font-weight: normal;
+    span {
+      color: #158d71;
+
+      &:hover {
+        text-decoration: underline;
+        cursor: pointer;
+      }
+    }
+  }
+}
+.title {
+  color: #fff;
+  font-family: "Impact";
+  font-size: 35px;
+  font-weight: normal;
+}
+.termsTitle {
+  font-size: 20px;
+}
+.btn-get-started {
+  font-weight: 500;
+  font-size: 16px;
+  letter-spacing: 1px;
+  display: inline-block;
+  padding: 8px 28px;
+  border-radius: 5px;
+  transition: 0.5s;
+  margin: 10px;
+  border: 2px solid #158d71;
+  -webkit-appearance: none;
+  color: #fff;
+  box-shadow: none;
+  background: #158d71;
+}
+.interactive {
+  font-style: italic;
+  line-height: 28px;
+  font-weight: bold;
+}
+.inform-container {
+  height: 200px;
+  margin-top: 120px;
+  text-align: start;
+  p {
+    margin: 0px;
+    margin-bottom: 5px;
+    font-style: italic;
+  }
+}
+.finM-data {
+  height: 100px;
+  text-align: end;
+  font-size: 14px;
+}
+
+.interacive-points-container {
+  margin-left: 2px;
+  .li {
+    background-color: #158d71 !important;
+  }
+}
+.interacive-points {
+  margin-bottom: 10px;
+}
+
+footer.telFooter {
+  background-color: #002060;
+  border-top: 1px solid #204184;
+  clear: both;
+  color: #fff !important;
+  padding: 10px 0 5px;
+  margin-left: 0;
+  margin-right: 0;
+  height: 40px;
+  font-size: 14px;
+
+  ul {
+    list-style: none;
+    float: right;
+    text-align: center;
+
+    li {
+      display: inline-block;
+
+      a {
+        text-decoration: none;
+        color: #fff;
+        padding: 0 10px;
+      }
+    }
+
+    li:after {
+      content: "|";
+      font-weight: 600;
+      color: #fff;
+    }
+
+    li:last-child::after {
+      visibility: hidden;
+    }
+  }
+}
+.responsive {
+  display: flex;
+}
+.right-container {
+  flex: 0.5;
+  padding-right: 15px;
+}
+.left-container {
+  flex: 0.5;
+  padding-left: 15px;
+}
+
+@media only screen and (max-device-width: 480px) {
+  .responsive {
+    display: flex;
+    flex-direction: column;
+  }
+  .inform-container {
+    text-align: center;
+  }
+}
+
+// -------------------------- For live CSS
+.televisory-publicpages-titles h3 {
+  color: #fff;
+  font-family: "Impact";
+  font-size: 35px;
+  font-weight: normal;
+}
+
+.termsTitle {
+  display: flex;
+  font-weight: 900;
+  h4 {
+    font-weight: 900;
+  }
+}
+
+.text-success {
+  color: #158d71 !important;
+  text-decoration: none !important;
+  &:hover {
+    color: #158d71 !important;
+    text-decoration: underline !important;
+  }
+}

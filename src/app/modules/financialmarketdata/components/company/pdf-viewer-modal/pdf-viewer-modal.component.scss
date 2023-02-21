@@ -1,0 +1,59 @@
+.modal {
+  display: block;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.8);
+  transition: opacity 500ms;
+}
+
+.modal-dialog-style {
+  width: 95%;
+  margin: 1.75rem auto;
+}
+
+/* Modal Content */
+.modal-content {
+  background: white !important;
+  padding: 0px 10px !important;
+  width: 100% !important;
+}
+
+.modal-title-container {
+  position: relative;
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+
+  .modal_title {
+    color: #ffc000;
+    font-size: 18px;
+    text-transform: uppercase;
+  }
+}
+.modal-horizontal-line {
+  border-bottom: 1px solid gray;
+}
+.pdf-container {
+  height: fit-content;
+  padding: 10px 5px;
+  overflow-x: scroll;
+}
+
+.Iframe-Master-CC-and-Rs {
+  height: 500px;
+  width: 100%;
+}
+.close {
+  position: absolute;
+  top: -33px;
+  right: 0;
+  color: white;
+  opacity: 1;
+  background: 0;
+  border: 0;
+  font-size: 20px;
+}
+
+.pdf-o {
+  color: #ffc000;
+  font-size: 18px;
+}

@@ -1,0 +1,54 @@
+<div class="backdrop">
+  <div
+    id="alertbox"
+    class="modal sevendayfreetrialpopup-rtda sevendayfreetrialpopup-cm in"
+    tabindex="-1"
+    role="dialog"
+    style="
+      display: block;
+      padding-left: 4px;
+      background-color: rgba(0, 0, 0, 0.5);
+    "
+  >
+    <div class="modal-dialog modal-lg" style="top: 25%">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+          <button
+            type="button"
+            (click)="navigateFreeTrial()"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!--end of modal header-->
+        <div class="modal-body text-center">
+          <h3 class="content-body">
+            Thank You for your interest in Televisory!<br /><br />
+            Your 30 minutes have expired, want to explore more?
+          </h3>
+          <div class="text-center">
+            <h4 class="content-body">
+              Get
+              <a
+                [routerLink]="['/free-trail']"
+                class="trail-equibase-pop text-primary text-decoration-none"
+                >14-Days Free Trial</a
+              >
+              or
+              <a
+                [routerLink]="['/subscribe']"
+                class="trail-equibase-pop text-primary text-decoration-none"
+                >Subscribe</a
+              >
+            </h4>
+          </div>
+        </div>
+        <!--end of modal body-->
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,125 @@
+<div class="row">
+  <!-- //Watchlist_button -->
+  <div class="col-8 portfolio_toggle" *ngIf="showbutton">
+    <button class="Portfolio_btn_class" (click)="portfolio_btn()">
+      Portfolio Analysis
+    </button>
+  </div>
+  <!-- //reported Currency -->
+  <div
+    *ngIf="showportfolio && showbutton"
+    class="col-2 reported_currency_class"
+  >
+    <span>Current Price</span>
+    <label class="switch">
+      <input type="checkbox" />
+      <span class="slider round"></span>
+    </label>
+    <span>Close Price</span>
+  </div>
+
+  <!-- dropdown -->
+  <div *ngIf="showportfolio && showbutton" class="col-2 excel_and_close">
+    <img class="excel_icon" src="/assets/img/excelDownload.png" />
+    <i class="fa fa-close" (click)="closeportfolio()"></i>
+  </div>
+</div>
+<!-- </div> -->
+<div *ngIf="showportfolio && showbutton" class="row">
+  <div class="col-12 table-row-class">
+    <div class="watchlist-table">
+      <table class="w-100 scroll">
+        <thead>
+          <tr cdkDropList cdkDropListOrientation="horizontal">
+            <th
+              cdkDrag
+              cdkDragHandle
+              *ngFor="let header of table_data.title; let i = index"
+              [ngStyle]="{
+                width: header?.width,
+                'text-align': header.headerAlign
+                  ? header?.headerAlign
+                  : header?.align,
+                cursor: header?.pointer && 'pointer',
+                display: 'header?.header_none'
+              }"
+              (click)="sortByKey(header.key, i, header.shorting)"
+            >
+              {{ header.label }}
+              <i
+                *ngIf="i != iconIndex && header?.shorting"
+                class="ms-1 fa fa-sort"
+              ></i>
+              <i
+                *ngIf="i == iconIndex && shortDown && header?.shorting"
+                class="ms-1 fa fa-solid fa-long-arrow-down"
+              ></i>
+              <i
+                *ngIf="i == iconIndex && !shortDown && header?.shorting"
+                class="ms-1 fa fa-solid fa-long-arrow-up"
+              ></i>
+            </th>
+          </tr>
+        </thead>
+        <tbody
+          [ngStyle]="{ 'max-height': mh }"
+          [ngClass]="
+            fixedHeight === 'ipo'
+              ? 'fixedheight'
+              : !display_none
+              ? 'border-btm'
+              : ''
+          "
+        >
+          <tr
+            *ngFor="
+              let content of table_data.value
+                | paginate
+                  : {
+                      itemsPerPage: itemsPerPage,
+                      currentPage: currentPageSelected
+                    }
+            "
+          >
+            <td
+              *ngFor="
+                let header of table_data.title;
+                let i = index;
+                let last = last
+              "
+              [title]="titlevalue"
+              [ngStyle]="{ width: header?.width }"
+            >
+              {{
+                header.formattedNum
+                  ? util?.standardFormat(content[header.key], 2, "")
+                  : content[header.key]
+              }}
+              <span *ngIf="header?.input">
+                <input
+                  type="text"
+                  style="width: 65%"
+                  #inputId
+                  (change)="OninputChange($event, i)"
+                  [readonly]="isreadonly[i]"
+                />
+                <i
+                  class="fa fa-pencil ml-1"
+                  (click)="isreadonlyfunction(i)"
+                ></i>
+              </span>
+            </td>
+          </tr>
+          <tr *ngIf="!table_data.value?.length">
+            <p class="text-center my-2">No Data Available</p>
+          </tr>
+        </tbody>
+        <tfoot>
+          <!-- <div class="container-fluid px-0 text-center mt-1">
+                  <pagination-controls> </pagination-controls>
+                </div> -->
+        </tfoot>
+      </table>
+    </div>
+  </div>
+</div>

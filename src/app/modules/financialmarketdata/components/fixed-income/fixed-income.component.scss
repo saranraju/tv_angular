@@ -1,0 +1,175 @@
+.header {
+  .fixed-income {
+    color: #ffc000;
+    .fixed-income-title {
+      font-size: 20px;
+    }
+    .fixed-income-template {
+      margin-right: 5px;
+    }
+    .newcompny-tabs {
+      margin-top: 2px;
+      text-align: center;
+      padding: 5px;
+
+      .btn {
+        border-top-right-radius: 4px;
+        border-bottom-right-radius: 4px;
+        background: 0;
+        border: 1px solid #ffc000;
+        color: #ffc000;
+        font-size: 13px;
+        padding: 6px 10px 3px;
+        flex: none;
+      }
+
+      .active {
+        color: #333 !important;
+        background: #ffc000;
+      }
+    }
+    .btn {
+      border-top-right-radius: 4px;
+      border-bottom-right-radius: 4px;
+      background: 0;
+      border: 1px solid #ffc000;
+      color: #ffc000;
+      font-size: 13px;
+      padding: 6px 10px 3px;
+      flex: none;
+    }
+
+    .container-end {
+      display: flex;
+      justify-content: flex-end;
+    }
+    .pageActive {
+      color: white;
+    }
+  }
+
+  .pointer:hover {
+    cursor: pointer;
+  }
+}
+
+.background-with-border {
+  background: #161d34;
+  border: 1px solid #507ac4;
+}
+
+.title-text {
+  background: #fec134;
+  font-size: 12px;
+  padding: 5px 10px;
+  color: black;
+  font-weight: 600;
+}
+
+.color-yellow {
+  color: #fec134 !important;
+}
+
+.price-input {
+  background: #fbe5c6;
+  border: none;
+}
+
+.progress {
+  margin-top: 0.3rem;
+  height: 0.5rem;
+}
+
+.flex-direction-column {
+  flex-direction: column;
+}
+
+.fa:hover {
+  cursor: pointer;
+}
+
+.font-12 {
+  font-size: 12px;
+}
+
+.fa.fa-arrow-circle-left {
+  color: white;
+  font-size: 1.5rem;
+  margin-right: 1rem;
+}
+
+.fa.fa-pencil,
+.fa.fa-trash,
+.fa.fa-refresh,
+.fa.fa-plus {
+  font-size: 1.5rem;
+}
+
+.templateClass {
+  background: #fbe5c6;
+  border-radius: 5px;
+  width: 12rem;
+}
+
+.edit-btn {
+  padding: 3px 20px 2px !important;
+  background: #fbe5c6 !important;
+  color: black !important;
+}
+
+table {
+  tr:nth-child(odd) {
+    background-color: #122543;
+  }
+
+  tr:nth-child(even) {
+    background-color: #00071e;
+  }
+
+  td {
+    padding: 7px 5px;
+    font-size: 13px !important;
+  }
+}
+
+.chart {
+  ::ng-deep iframe {
+    min-height: 15rem !important;
+  }
+}
+.fa-check {
+  color: #eeaf30;
+}
+
+.table-result {
+  .cursor-pointer:last-child {
+    span {
+      display: none;
+    }
+  }
+}
+
+.newcompny-tabs.ui {
+  max-width: 85%;
+  .custom-align-start {
+    text-align: start;
+  }
+}
+
+.yield-data,
+.spread-data {
+  .row {
+    padding: 0.4rem;
+  }
+}
+
+.yield-data,
+.spread-data {
+  .col-4:first-child {
+    padding-left: 0 !important;
+  }
+}
+
+.bg-odd {
+  background-color: #122543;
+}

@@ -1,0 +1,121 @@
+<app-user-management-header></app-user-management-header>
+<div class="row login-box container-fluid">
+  <div class="col-12">
+    <h3 class="login-header text-center mb-5">Financial Market Data Login</h3>
+  </div>
+  <div class="col-12 mb-5">
+    <div class="card login-card">
+      <form
+        [formGroup]="loginForm"
+        (ngSubmit)="loginAccess(loginForm.valid, loginForm.value)"
+      >
+        <div class="row px-3 py-4">
+          <div class="col-12">
+            <p *ngIf="showFailureMsg" class="failure-msg">
+              {{ this.errorMessage }}
+            </p>
+            <p *ngIf="showsucessMsg" class="sucess-msg">
+              {{ this.sucessMessage }}
+            </p>
+          </div>
+          <div class="col-12 mb-3">
+            <label class="form-label">Email</label>
+            <input class="form-control" formControlName="email" type="email" />
+            <p
+              *ngIf="
+                loginForm.controls['email'].errors?.pattern &&
+                loginForm.controls['email']?.touched
+              "
+              class="fw600 text-danger mt-2 mb-2"
+            >
+              Please enter the valid email address.
+            </p>
+          </div>
+          <div class="col-12 mb-3">
+            <label class="form-label">Password</label>
+            <div class="position-relative">
+              <input
+                class="form-control"
+                type="password"
+                formControlName="password"
+              />
+              <span
+                *ngIf="
+                  loginForm.controls['password']?.touched &&
+                  loginForm.value.password
+                "
+                (click)="passwordReset()"
+                class="text-black password-close cursor-pointer pe-0"
+                ><i class="fa fa-times"></i
+              ></span>
+            </div>
+            <p
+              *ngIf="
+                loginForm.controls['password'].errors?.pattern &&
+                loginForm.controls['password']?.touched
+              "
+              class="fw600 text-danger mt-2 mb-2"
+            >
+              Please enter only alphanumeric characters.
+            </p>
+          </div>
+          <div class="col-12">
+            <p class="mt-4 cursor-pointer">
+              <span>
+                <input
+                  class="form-check-input"
+                  type="checkbox"
+                  value=""
+                  id="flexCheckDefault"
+              /></span>
+              <span class="text-secondary"> Remember Me</span>
+              <span
+                [routerLink]="['/forgot-password']"
+                class="float-end forgot-custom"
+              >
+                <a>Forgot Password?</a></span
+              >
+            </p>
+          </div>
+          <div class="col-12">
+            <div class="mt-3 mb-4">
+              <button
+                [disabled]="disabledBtn"
+                type="submit"
+                class="btn blue-btn"
+              >
+                Login
+              </button>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>
+  <footer class="container-fluid telFooter">
+    <div class="row">
+      <div class="col-sm-4">
+        <p class="mb-0 px-3">
+          Copyright © 2022 Televisory <span class="px-1">|</span> All Rights
+          Reserved
+        </p>
+      </div>
+      <div class="col-sm-8">
+        <ul class="mb-0 text-white">
+          <li class="">
+            <a href="https://televisory.com/terms-of-use">Terms of Use</a>
+          </li>
+          <li class="">
+            <a href="https://televisory.com/terms-of-access">Terms of Access</a>
+          </li>
+          <li class="">
+            <a href="https://televisory.com/policy">Privacy Policy</a>
+          </li>
+          <li class="">
+            <a href="https://televisory.com/sitemap">Site map </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</div>

@@ -1,0 +1,163 @@
+.modal {
+  z-index: 999 !important;
+}
+
+.modal-dialog {
+  background: #00071e;
+  transform: translate(0, 0);
+  width: 800px;
+  height: 160px;
+}
+
+.modal-content {
+  background: #00071e;
+}
+
+.padding-header {
+  padding: 13px 26px;
+}
+
+.padding-header-one {
+  padding: 6px 22px;
+}
+
+.modal-header {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.text-primary {
+  color: #ffc000 !important;
+}
+.lable-container {
+  width: 100%;
+  text-align: start;
+}
+.modal-body {
+  position: relative;
+  padding: 15px;
+  color: #ffc000;
+}
+
+.modal-footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+
+.close {
+  color: white;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 1;
+  text-shadow: 0 1px 0 white;
+}
+
+button.close {
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  -webkit-appearance: none;
+}
+
+// .backdrop {
+//   position: fixed;
+//   top: 0;
+//   right: 0;
+//   bottom: 0;
+//   left: 0;
+//   z-index: 1040;
+//   background-color: #02132c;
+//   opacity: 0.7;
+// }
+.mat-form-field-flex {
+  background: white !important;
+}
+
+.btn-color {
+  color: #333 !important;
+}
+
+.bluebtn-dd,
+a.bluebtn-dd {
+  background: #ffc000;
+  border: 2px solid #ffc000;
+  padding: 8px 30px;
+  border-radius: 5px;
+  display: inline-block;
+  color: white;
+  vertical-align: top;
+}
+
+//date picker
+
+.cus-calender {
+  right: -11px;
+  top: 5px;
+  margin-right: 5px !important;
+  color: black !important;
+  padding-inline-start: 10px;
+  border-left: 1px solid #eeeeee;
+  line-height: 28px;
+  margin-top: -4px;
+  background-color: #eeeeee;
+  padding: 3px 13px;
+  cursor: pointer;
+}
+
+::ng-deep .datepicker-container.datepicker-default {
+  input {
+    border: 1px solid #aaa !important;
+    width: 23rem !important;
+    border-radius: 5px !important;
+    background: #f8f9fa !important;
+    font-size: 13px !important;
+    padding: 8px !important;
+  }
+}
+
+::ng-deep .datepicker-default .calendar-container {
+  background: #fbe5c6 !important;
+  top: -20px !important;
+  transform: scale(0.7) !important;
+  left: -46px !important;
+}
+
+::ng-deep .mat-form-field {
+  width: 100% !important;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-infix {
+  input {
+    padding-inline-start: 10px;
+    color: black;
+    font-size: 13px;
+  }
+  padding: 0;
+  top: -4px;
+}
+
+::ng-deep .mat-form-field-outline {
+  background: white;
+  border-radius: 4px;
+}
+
+::ng-deep .mat-form-field-wrapper {
+  padding-bottom: 0;
+}
+
+::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+  padding: 0 !important;
+}
+
+::ng-deep .mat-datepicker-content .mat-calendar {
+  width: 100% !important;
+  height: 100% !important;
+  background: #fbe5c6 !important;
+}
+
+::ng-deep
+  .mat-form-field-appearance-outline.mat-form-field-invalid.mat-form-field-invalid
+  .mat-form-field-outline-thick {
+  color: #000 !important;
+}

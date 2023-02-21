@@ -1,0 +1,2391 @@
+<div
+  *ngIf="!auth.hidePublicCompany"
+  class="container-fluid stocktitle-whole"
+  id="topcc"
+>
+  <div id="companyStep2" class="row">
+    <div
+      class="btn-group newcompny-tabs"
+      role="group"
+      id="list-example"
+      aria-label="Basic example"
+      (scroll)="onWindowScroll()"
+    >
+      <button
+        type="button"
+        fragment="summary_tab"
+        class="btn summary-btn"
+        (click)="navigateToSection('summary_tab')"
+        [ngClass]="{
+          active: selectedParentSet == 'summary_tab'
+        }"
+      >
+        Summary
+      </button>
+      <button
+        *ngIf="auth.showPEVCTabs"
+        type="button"
+        fragment="firm_profile_tab"
+        class="btn"
+        (click)="navigateToSection('firm_profile_tab')"
+        [ngClass]="{
+          active: selectedParentSet == 'firm_profile_tab'
+        }"
+      >
+        PE/VC Firm Profile
+      </button>
+      <!-- *ngIf="!privateCompany_tab" -->
+      <button
+        *ngIf="showFinancialsPvt"
+        type="button"
+        fragment="financials_tab"
+        (click)="navigateToSection('financials_tab')"
+        class="btn"
+        [ngClass]="{
+          active: selectedParentSet == 'financials_tab'
+        }"
+      >
+        Financials
+      </button>
+      <button
+        type="button"
+        class="btn"
+        *ngIf="!show_advance && !auth.showPEVCTabs"
+        fragment="segment_tab"
+        [ngClass]="{
+          active: selectedParentSet == 'segment_tab'
+        }"
+        (click)="navigateToSection('segment_tab')"
+      >
+        Segment Information
+      </button>
+      <button
+        *ngIf="showDebtProfilePvt"
+        fragment="debt_tab"
+        [ngClass]="{
+          active: selectedParentSet == 'debt_tab'
+        }"
+        (click)="navigateToSection('debt_tab')"
+        type="button"
+        class="btn"
+      >
+        Debt Profile
+      </button>
+      <button
+        *ngIf="auth.showPEVCTabs"
+        type="button"
+        fragment="investments_tab"
+        class="btn investments-btn"
+        (click)="navigateToSection('investments_tab')"
+        [ngClass]="{
+          active: selectedParentSet == 'investments_tab'
+        }"
+      >
+        Investments
+      </button>
+      <button
+        *ngIf="showMngPvt"
+        fragment="management_tab"
+        [ngClass]="{
+          active: selectedParentSet == 'management_tab'
+        }"
+        (click)="navigateToSection('management_tab')"
+        type="button"
+        class="btn"
+      >
+        Management
+      </button>
+      <button
+        *ngIf="!show_advance && insiderData.value.length != 0"
+        fragment="insiderTransaction_tab"
+        (click)="navigateToSection('insiderTransaction_tab')"
+        type="button"
+        class="btn"
+        [ngClass]="{
+          active: selectedParentSet == 'insiderTransaction_tab'
+        }"
+      >
+        Insider Transactions
+      </button>
+      <button
+        *ngIf="!show_advance"
+        fragment="ownership_tab"
+        (click)="navigateToSection('ownership_tab')"
+        type="button"
+        class="btn"
+        [ngClass]="{
+          active: selectedParentSet == 'ownership_tab'
+        }"
+      >
+        Ownership
+      </button>
+      <button
+        *ngIf="auth.showPEVCTabs"
+        fragment="firm_structure_tab"
+        (click)="navigateToSection('firm_structure_tab')"
+        type="button"
+        class="btn"
+        [ngClass]="{
+          active: selectedParentSet == 'firm_structure_tab'
+        }"
+      >
+        Firm Structure
+      </button>
+      <button
+        *ngIf="!show_advance"
+        fragment="analyst_tab"
+        [ngClass]="{
+          active: selectedParentSet == 'analyst_tab'
+        }"
+        (click)="navigateToSection('analyst_tab')"
+        type="button"
+        class="btn"
+      >
+        Analyst Coverage
+      </button>
+      <button
+        *ngIf="!show_advance"
+        fragment="event_tab"
+        [ngClass]="{
+          active: selectedParentSet == 'event_tab'
+        }"
+        (click)="navigateToSection('event_tab')"
+        type="button"
+        class="btn"
+      >
+        Events
+      </button>
+      <button
+        *ngIf="!show_advance"
+        fragment="filings_tab"
+        [ngClass]="{
+          active: selectedParentSet == 'filings_tab'
+        }"
+        (click)="navigateToSection('filings_tab')"
+        type="button"
+        class="btn"
+      >
+        Filings
+      </button>
+    </div>
+  </div>
+  <!-- <div class="row"> -->
+  <div
+    *ngIf="
+      company_info &&
+      company_info?.properName &&
+      company_info?.exchangeCode &&
+      company_info?.ticsIndustryName &&
+      company_info?.countryName &&
+      !privateCompany_tab
+    "
+  >
+    <h3 class="fixed_header m-0">
+      <b
+        >{{ company_info.properName ? company_info.properName : "-" }}
+        <span *ngIf="!auth.showPEVCTabs"
+          >({{ company_info.exchangeCode ? company_info.exchangeCode : "-" }}:
+          {{
+            company_info.companyTicker ? company_info.companyTicker : "-"
+          }})</span
+        >
+        <span id="companyStep3" class="cursor-pointer">
+          <a
+            target="_blank"
+            class="text-decoration-none text-white"
+            (click)="redirectToIndustryPage()"
+          >
+            |
+            {{
+              company_info.ticsIndustryName
+                ? company_info.ticsIndustryName
+                : "-"
+            }}
+            |
+          </a>
+          <a
+            target="_blank"
+            class="text-decoration-none text-white"
+            (click)="redirectToEconomy()"
+          >
+            {{ company_info.countryName ? company_info.countryName : "-" }}
+          </a>
+        </span>
+      </b>
+    </h3>
+  </div>
+  <div *ngIf="company_info && company_info?.name && privateCompany_tab">
+    <h3 class="fixed_header m-0">
+      <b
+        >{{ company_info.name ? company_info.name : "-" }}
+
+        <span id="companyStep3">
+          <a
+            target="_blank"
+            class="text-decoration-none text-white"
+            *ngIf="company_info.industryName"
+          >
+            |
+            {{ company_info.industryName ? company_info.industryName : "-" }}
+          </a>
+          <a
+            target="_blank"
+            class="text-decoration-none text-white cursor-pointer"
+            (click)="redirectToEconomy()"
+          >
+            |
+            {{
+              company_info.domicileCountryName
+                ? company_info.domicileCountryName
+                : "-"
+            }}
+          </a>
+        </span>
+      </b>
+    </h3>
+  </div>
+  <!-- </div> -->
+</div>
+<div class="container-fluid style_container">
+  <!-- <div
+    class="mt-3 company_content"
+    appSectionScroll
+    (sectionChange)="onSectionChange($event)"
+  > -->
+  <div *ngIf="!auth.hidePublicCompany" class="company_content">
+    <div
+      id="summary_tab"
+      class="pt-2 row"
+      #summary
+      (mouseenter)="highlightTab('summary_tab')"
+    >
+      <div *ngIf="!privateCompany_tab" class="col-6 company_desc">
+        <span *ngIf="company_info && company_info.companyDetailedDescription"
+          >{{
+            company_info?.companyDetailedDescription.substring(0, 197)
+          }}...</span
+        >
+        <i
+          *ngIf="company_info && company_info.companyDetailedDescription"
+          class="fa fa-angle-double-right comdescinfo cursor-pointer"
+          (click)="auth.expandopenPopupcompinfo = true"
+        ></i>
+        <ng-container *ngIf="auth.expandopenPopupcompinfo">
+          <app-company-info-modal
+            [header_data]="company_info.properName"
+            [table_data]="company_info.companyDetailedDescription"
+            [isModal]="isTrue"
+          ></app-company-info-modal>
+        </ng-container>
+      </div>
+      <div *ngIf="privateCompany_tab" class="col-6 company_desc">
+        <span *ngIf="company_info && company_info.detailedDescription"
+          >{{ company_info?.detailedDescription.substring(0, 197) }}...</span
+        >
+        <i
+          *ngIf="company_info && company_info.detailedDescription"
+          class="fa fa-angle-double-right comdescinfo cursor-pointer"
+          (click)="auth.expandopenPopupcompinfo = true"
+        ></i>
+        <ng-container *ngIf="auth.expandopenPopupcompinfo">
+          <app-company-info-modal
+            [header_data]="company_info.name"
+            [table_data]="company_info.detailedDescription"
+            [isModal]="isTrue"
+          ></app-company-info-modal>
+        </ng-container>
+      </div>
+      <div
+        class="col-2 curSel align-self-end d-flex flex-row justify-content-end align-items-center"
+      >
+        <b>Currency : &nbsp;</b>
+        <span class="">
+          <ng-select2
+            id="companyStep5"
+            [data]="currency_data"
+            [value]="selectedcurrecny"
+            (valueChanged)="oncurrencyChanged($event)"
+            class="cusSelect2 sSelect2Normal"
+          >
+          </ng-select2>
+        </span>
+      </div>
+
+      <div class="col-4">
+        <div class="publicprivt-onlyradiobtn">
+          <div class="checkbox_class">
+            <input
+              class="d-none"
+              type="radio"
+              name="EntityType"
+              value="pevc"
+              id="entitySelect1"
+              data-id="teleAdminDIT"
+              (click)="handlePEVCClick()"
+              [checked]="!auth.openPopupModalcompanySearch && auth.checkPEVC"
+            />
+            <label class="customradiobtn d-none">PE/VC</label>
+            <input
+              type="radio"
+              name="EntityType"
+              value="public"
+              id="entitySelect1"
+              data-id="teleAdminDIT"
+              [checked]="
+                !auth.openPopupModalcompanySearch &&
+                !auth.checkPEVC &&
+                !isPrivateCompanyActive
+              "
+              (click)="handlePublicCLick()"
+            />
+            <label
+              (click)="auth.openPopupModalcompanySearchPublic = true"
+              class="customradiobtn"
+              >Public Company</label
+            >
+            <input
+              type="radio"
+              name="EntityType"
+              value="private"
+              id="entitySelect2"
+              data-id="teleAdminDIT"
+              class=""
+              [checked]="isPrivateCompanyActive"
+              (click)="auth.openPopupModalcompanySearch = true"
+            />
+            <label
+              class="customradiobtn"
+              (click)="auth.openPopupModalcompanySearch = true"
+              >Private Company</label
+            >
+          </div>
+          <div *ngIf="auth.openPopupModalcompanySearch">
+            <app-advance-search-company
+              [currency]="currency"
+              [country]="country_val"
+            ></app-advance-search-company>
+          </div>
+          <div *ngIf="auth.openPopupModalcompanySearchPublic">
+            <app-advance-search-company
+              [currency]="currency"
+              [country]="country_val"
+            ></app-advance-search-company>
+          </div>
+          <div id="companyStep1">
+            <ng-select2
+              *ngIf="!auth.showPEVCTabs"
+              [data]="company_list"
+              [value]="selectedCompany"
+              id="companyDropdownMNA"
+              (click)="handleMNACompanyClick()"
+              (valueChanged)="oncompanyChanged($event)"
+              class="cusSelect2 cusSelect2Normal"
+              [placeholder]="'Search Company'"
+            ></ng-select2>
+            <ng-select2
+              *ngIf="auth.showPEVCTabs"
+              [data]="pevcCompanyData"
+              [value]="selectedPEVCCompany"
+              id="companyDropdownListed"
+              (valueChanged)="oncompanyChangedPEVC($event)"
+              class="cusSelect2 cusSelect2Normal"
+              [placeholder]="'Search Company'"
+            ></ng-select2>
+
+            <!-- <ng-select2 [data]="company_list" [value]="selectedCompany" (valueChanged)="oncompanyChanged($event)"
+              class="cusSelect2 cusSelect2Normal" [placeholder]="'Select Company'"></ng-select2> -->
+          </div>
+          <!-- </b>
+                  </b> -->
+        </div>
+      </div>
+
+      <div class="col-6" *ngIf="!show_advance">
+        <div class="row gy-1" style="border-bottom: 1px solid #528dc3">
+          <div class="col-4 bottom">
+            <ng-select2
+              id="companyStep4"
+              [data]="stock_data"
+              [value]="selectedStock"
+              (valueChanged)="onstcokChanged($event)"
+              class="cusSelect2 sSelect2Normal"
+              [placeholder]="'Select Exchange'"
+            ></ng-select2>
+            <span class="fs12 bottom">
+              as on {{ company_info?.sharePriceDate ?? "-" }}</span
+            >
+          </div>
+
+          <div class="col-4 bottom">
+            <span
+              class="fs12 text-primary cursor-pointer"
+              (click)="redirectToInteractive('stock', company_info)"
+              >Close Price :
+            </span>
+            <span
+              *ngIf="company_info?.sharePrice; else sharePriceNull"
+              class="fs12"
+            >
+              {{ this.util.standardFormat(company_info?.sharePrice, 2, "") }} (
+              <span
+                class="fs12"
+                [ngStyle]="{
+                  color:
+                    company_info?.sharePricePercentChange > 0
+                      ? '#00ff00'
+                      : company_info?.sharePricePercentChange < 0
+                      ? '#ff0000'
+                      : null
+                }"
+                ><i
+                  *ngIf="company_info?.sharePricePercentChange > 0"
+                  class="fa fa-arrow-up"
+                ></i>
+                <i
+                  *ngIf="company_info?.sharePricePercentChange < 0"
+                  class="fa fa fa-arrow-down"
+                ></i>
+                {{
+                  this.util.standardFormat(
+                    company_info?.sharePricePercentChange,
+                    2,
+                    ""
+                  )
+                }}%</span
+              >) {{ company_info?.sharePriceCurrency }}
+            </span>
+            <ng-template #sharePriceNull>
+              <span class="fs12"> - </span>
+            </ng-template>
+          </div>
+          <div class="col-4 bottom">
+            <span class="fs12 text-primary">52 Week H/L : </span>
+            <span
+              *ngIf="company_info?.highStockPrice; else highStockPriceNull"
+              class="fs12"
+            >
+              {{
+                this.util.standardFormat(company_info?.highStockPrice, 2, "")
+              }}/{{
+                this.util.standardFormat(company_info?.lowStockPrice, 2, "")
+              }}
+              {{ company_info?.sharePriceCurrency }}
+            </span>
+            <ng-template #highStockPriceNull>
+              <span class="fs12"> - </span>
+            </ng-template>
+          </div>
+
+          <div class="col-4">
+            <span
+              class="fs12 text-primary cursor-pointer"
+              (click)="redirectToInteractive('volume', company_info)"
+              >Daily Volume :
+            </span>
+            <span
+              *ngIf="company_info?.dailyVolume; else dailyVolumeNull"
+              class="fs12"
+            >
+              {{
+                company_info.dailyVolume
+                  ? util.standardFormat(company_info.dailyVolume, 2, "")
+                  : "0.00"
+              }}
+            </span>
+          </div>
+          <ng-template #dailyVolumeNull>
+            <span class="fs12"> - </span>
+          </ng-template>
+
+          <div class="col-4">
+            <span
+              class="fs12 text-primary cursor-pointer"
+              (click)="redirectToInteractive('t_price_earnings', company_info)"
+              >Stock P/E :
+            </span>
+            <span
+              *ngIf="company_info?.priceEarnings; else priceEarningsNull"
+              class="fs12"
+            >
+              {{ this.util.standardFormat(company_info?.priceEarnings, 2, "") }}
+            </span>
+            <ng-template #priceEarningsNull>
+              <span class="fs12"> - </span>
+            </ng-template>
+          </div>
+
+          <div class="col-4">
+            <span
+              class="fs12 text-primary cursor-pointer"
+              (click)="
+                redirectToInteractive('t_price_to_book_value', company_info)
+              "
+              >Price/Book Value :
+            </span>
+            <span
+              *ngIf="company_info?.priceBookValue; else priceBookValueNull"
+              class="fs12"
+            >
+              {{
+                this.util.standardFormat(company_info?.priceBookValue, 2, "")
+              }}
+              x
+            </span>
+            <ng-template #priceBookValueNull>
+              <span class="fs12"> - </span>
+            </ng-template>
+          </div>
+
+          <div class="col-4">
+            <span
+              class="fs12 text-primary cursor-pointer"
+              (click)="redirectToInteractive('t_mcap', company_info)"
+              >Market Cap :
+            </span>
+            <span
+              *ngIf="company_info?.marketCap; else marketCapNull"
+              class="fs12"
+            >
+              {{ util.standardFormat(company_info.marketCap, 2, "") }}
+              {{ company_info?.marketCapCurrency }}
+            </span>
+            <ng-template #marketCapNull>
+              <span class="fs12"> - </span>
+            </ng-template>
+          </div>
+
+          <div class="col-4">
+            <span class="fs12 text-primary">Free Float : </span>
+            <span
+              *ngIf="company_info?.shareFreeFloat; else freeFloatNull"
+              class="fs12"
+            >
+              {{
+                util.standardFormat(company_info?.shareFreeFloat, 2, "")
+              }}%</span
+            >
+            <ng-template #freeFloatNull>
+              <span class="fs12"> - </span>
+            </ng-template>
+          </div>
+
+          <div
+            class="col-4"
+            *ngIf="
+              company_info?.ticsIndustryName == 'Banking Services' ||
+              company_info?.ticsIndustryName == 'Insurance Services'
+            "
+          >
+            <span
+              class="fs12 text-primary cursor-pointer"
+              (click)="redirectToInteractive('t_price_income', company_info)"
+              >Price/Income :
+            </span>
+            <span
+              *ngIf="company_info?.priceIncome; else priceIncomeUnit"
+              class="fs12"
+            >
+              {{ this.util.standardFormat(company_info?.priceIncome, 2, "") }}
+              {{ company_info?.priceIncomeUnit }}
+            </span>
+            <ng-template #priceIncomeUnit>
+              <span class="fs12"> - </span>
+            </ng-template>
+          </div>
+
+          <div class="col-4" *ngIf="company_info?.cashMcap; else cashMcapNull">
+            <span
+              class="fs12 text-primary cursor-pointer"
+              (click)="redirectToInteractive('t_cash_mcap', company_info)"
+              >Cash/Market Cap :
+            </span>
+            <span class="fs12">
+              {{ this.util.standardFormat(company_info?.cashMcap, 2, "") }}
+              {{ company_info?.cashMcapUnit }}</span
+            >
+          </div>
+          <ng-template #cashMcapNull>
+            <ng-container
+              *ngIf="
+                company_info?.ticsIndustryName !== 'Banking Services' &&
+                company_info?.ticsIndustryName !== 'Insurance Services'
+              "
+            >
+              <div class="col-4">
+                <span
+                  class="fs12 text-primary cursor-pointer"
+                  (click)="redirectToInteractive('t_cash_mcap', company_info)"
+                  >Cash/Market Cap :
+                </span>
+                <span class="fs12"> - </span>
+              </div>
+            </ng-container>
+          </ng-template>
+
+          <div class="col-4" *ngIf="company_info?.evEbitda; else ebitdaNull">
+            <span
+              class="fs12 text-primary cursor-pointer"
+              (click)="redirectToInteractive('t_ev_ebitda', company_info)"
+              >EV/EBITDA :
+            </span>
+            <span class="fs12">
+              {{ this.util.standardFormat(company_info?.evEbitda, 2, "") }}
+              {{ company_info?.evEbitdaUnit }}
+            </span>
+          </div>
+          <ng-template #ebitdaNull>
+            <ng-container
+              *ngIf="
+                company_info?.ticsIndustryName !== 'Banking Services' &&
+                company_info?.ticsIndustryName !== 'Insurance Services'
+              "
+            >
+              <div class="col-4">
+                <span
+                  class="fs12 text-primary cursor-pointer"
+                  (click)="redirectToInteractive('t_ev_ebitda', company_info)"
+                  >EV/EBITDA :
+                </span>
+                <span class="fs12"> - </span>
+              </div>
+            </ng-container>
+          </ng-template>
+
+          <div
+            class="col-4"
+            *ngIf="
+              company_info?.ticsIndustryName !== 'Banking Services' &&
+              company_info?.ticsIndustryName !== 'Insurance Services'
+            "
+          >
+            <span
+              class="fs12 text-primary cursor-pointer"
+              (click)="redirectToInteractive('t_fin_viability', company_info)"
+              >Financial Viability Period :
+            </span>
+            <span
+              *ngIf="company_info?.finViability; else finViabilityNull"
+              class="fs12"
+            >
+              {{ this.util.standardFormat(company_info?.finViability, 2, "") }}
+              {{ company_info?.finViabilityUnit }}
+            </span>
+            <ng-template #finViabilityNull>
+              <span class="fs12"> - </span>
+            </ng-template>
+          </div>
+
+          <div
+            class="col-4"
+            *ngIf="
+              company_info?.ticsIndustryName == 'Banking Services' ||
+              company_info?.ticsIndustryName == 'Insurance Services' ||
+              company_info?.ticsIndustryName ==
+                'Miscellaneous Financial Services'
+            "
+          >
+            <span
+              class="fs12 text-primary cursor-pointer"
+              (click)="redirectToInteractive('t_roa', company_info)"
+              >ROA :
+            </span>
+            <span class="fs12">
+              {{ this.util.standardFormat(company_info?.roa, 2, "")
+              }}{{ company_info?.roaUnit }}
+            </span>
+          </div>
+
+          <div
+            class="col-4"
+            *ngIf="
+              company_info?.ticsIndustryName == 'Banking Services' ||
+              company_info?.ticsIndustryName == 'Insurance Services'
+            "
+          >
+            <span
+              class="fs12 text-primary cursor-pointer"
+              (click)="redirectToInteractive('t_dividend_yield', company_info)"
+              >Dividend Yield :
+            </span>
+            <span class="fs12">
+              {{ this.util.standardFormat(company_info?.dividendYield, 2, "")
+              }}{{ company_info?.dividendYieldUnit ?? "-" }}
+            </span>
+          </div>
+
+          <div
+            class="w-100 d-flex mt-3 removePaddingRight justify-content-between"
+          >
+            <div
+              id="companyStep6"
+              class="d-flex removePaddingRight align-items-baseline"
+            >
+              <p class="">
+                <span class="fs12 text-primary">Beta : </span>
+                <span class="fs12" *ngIf="beta_value; else betaNull"
+                  >{{ this.util.standardFormat(beta_value, 2, "") }}
+                </span>
+                <ng-template #betaNull>
+                  <span class="fs12"> - </span>
+                </ng-template>
+              </p>
+
+              <p class="beta_styling">
+                <span class="fs12 text-primary">Years : </span>
+                <ng-select2
+                  [data]="selectYearData"
+                  [value]="selectedYearly"
+                  (valueChanged)="valueChangedyearly($event)"
+                  class="cusSelect2 sSelect2Normal"
+                ></ng-select2>
+              </p>
+              <p class="beta_styling">
+                <span class="fs12 text-primary">Periodicity : </span>
+                <ng-select2
+                  [data]="selectYearperiod"
+                  [value]="selectedperiod"
+                  (valueChanged)="valueChangedperiod($event)"
+                  class="cusSelect2 sSelect2Normal"
+                ></ng-select2>
+              </p>
+              <p class="beta_styling">
+                <span class="fs12 text-primary">Index : </span>
+                <ng-select2
+                  [data]="selectYearindex"
+                  [value]="selectedindex"
+                  (valueChanged)="valueChangedindex($event)"
+                  class="cusSelect2 sSelect2Normal01"
+                ></ng-select2>
+              </p>
+            </div>
+
+            <p
+              id="companyStep7"
+              class="ms-1 mt-2 fs12 cursor-pointer textUnderline align-self-center"
+              (click)="
+                auth.exploreUser
+                  ? (auth.openUnavailableExploreModal = true)
+                  : downloadProfile()
+              "
+            >
+              Company Profile
+              <i class="fa fa-download" aria-hidden="true"></i>
+            </p>
+            <ng-container *ngIf="auth.expandopenPopupPdfViewer">
+              <app-pdf-viewer-modal
+                [pdf_data]="pdfDataOutput"
+                [companyName]="comapny_name"
+              ></app-pdf-viewer-modal>
+            </ng-container>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 px-0">
+            <div
+              class="align-items-center d-flex graphFilterSection mt-2 mb-3 justify-content-between"
+            >
+              <ul id="companyStep8" class="mb-0 p-0">
+                <li
+                  [ngClass]="{
+                    activeDateFilter: util.selectedDatetype === '1W'
+                  }"
+                  (click)="dateChange('1W')"
+                >
+                  1W
+                </li>
+
+                <li
+                  [ngClass]="{
+                    activeDateFilter: util.selectedDatetype === '3M'
+                  }"
+                  (click)="dateChange('3M')"
+                >
+                  3M
+                </li>
+                <li
+                  [ngClass]="{
+                    activeDateFilter: util.selectedDatetype === '6M'
+                  }"
+                  (click)="dateChange('6M')"
+                >
+                  6M
+                </li>
+                <li
+                  [ngClass]="{
+                    activeDateFilter: util.selectedDatetype === '1Y'
+                  }"
+                  (click)="dateChange('1Y')"
+                >
+                  1Y
+                </li>
+                <li
+                  [ngClass]="{
+                    activeDateFilter: util.selectedDatetype === '5Y'
+                  }"
+                  (click)="dateChange('5Y')"
+                >
+                  5Y
+                </li>
+                <li
+                  [ngClass]="{
+                    activeDateFilter: util.selectedDatetype === '10Y'
+                  }"
+                  (click)="dateChange('10Y')"
+                >
+                  10Y
+                </li>
+                <li
+                  [ngClass]="{
+                    activeDateFilter: util.selectedDatetype === 'MAX'
+                  }"
+                  (click)="dateChange('MAX')"
+                >
+                  MAX
+                </li>
+              </ul>
+              <span class="text-primary fs15 d-block stock-price"
+                >Stock Price History ({{ selectedcurrecny }})</span
+              >
+              <img
+                id="companyStep9"
+                src="/assets/img/excelDownload.png"
+                class="cursor-pointer img-fluid"
+                (click)="
+                  auth.exploreUser
+                    ? (auth.openUnavailableExploreModal = true)
+                    : StockPrice()
+                "
+                [ngClass]="{
+                  disableExcelIcon: !stock_chartData.length
+                }"
+              />
+            </div>
+
+            <!-- Chart -->
+            <div id="chartdiv5" class="commodityChart"></div>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="show_advance" class="col-6 margin-advance text-primary">
+        Basic Information
+
+        <div class="col-12 ps-0 mt-2 position-relative">
+          <div class="tableCol6Border">
+            <app-benchmark-table
+              [table_data]="privateCompanyDataArray"
+              [showadvance]="true"
+            >
+            </app-benchmark-table>
+          </div>
+        </div>
+      </div>
+      <!-- <div *ngIf="privateCompany_tab" class="col-6 margin-advance text-primary">
+        Revenue Comps
+
+        <div class="col-12 ps-0 mt-2 position-relative">
+          <div class="tableCol6Border">
+            <app-benchmark-table
+              [table_data]="privateCompanyTableData"
+              [header_data]="privateCompanyTableData"
+              [privateCompany_tab]="privateCompany_tab"
+            >
+            </app-benchmark-table>
+          </div>
+        </div>
+      </div> -->
+      <div class="col-6 removePaddingRight">
+        <div class="row pt-5">
+          <div class="col-12 text-primary fs14 fw-bolder removePaddingRight">
+            <div class="row">
+              <div class="col-6 position-relative" *ngIf="enable_edit">
+                <span>
+                  <ng-select2
+                    [data]="company_list1"
+                    [value]="selectedCompany1"
+                    id="companyDropdownMNAbenchmark"
+                    (click)="handleMNACompanyBenchmarkClick()"
+                    (valueChanged)="
+                      !isPrivateCompanyActive
+                        ? oncompanyChanged1($event)
+                        : onBenchmarkPrivateCompanyChange($event)
+                    "
+                    class="cusSelect2 cusSelect2Normal01 position-absolute"
+                    [placeholder]="'Select Company'"
+                  ></ng-select2>
+                  <i
+                    (click)="clickOnReset('icon')"
+                    class="editClose fa fa-close close-icon-position"
+                    aria-hidden="true"
+                  ></i>
+                </span>
+              </div>
+              <div class="d-flex justify-content-between">
+                <div
+                  *ngIf="
+                    isPrivateCompanyActive && company_country !== 'IND';
+                    else showbenchMarkName
+                  "
+                >
+                  <span class="fs17 cursor-pointer"> Revenue Comps</span>
+                </div>
+                <ng-template #showbenchMarkName>
+                  <div style="height: 1.8rem">
+                    <span
+                      id="companyStep10"
+                      class="fs17"
+                      [ngClass]="
+                        !isPrivateCompanyActive ? 'cursor-pointer' : ''
+                      "
+                      (click)="
+                        !isPrivateCompanyActive
+                          ? benchMarkToInteractiveAnalysis()
+                          : ''
+                      "
+                      >Benchmark-Interactive Analysis</span
+                    >
+                    <span
+                      *ngIf="!auth.showPEVCTabs"
+                      class="fs12 edit_benchmark"
+                      (click)="enableEdit()"
+                    >
+                      Edit
+                      <i class="fa fa-pencil"></i>
+                    </span>
+
+                    <span
+                      class="fs12 edit_benchmark"
+                      (click)="clickOnReset()"
+                      *ngIf="showReset"
+                    >
+                      Reset
+                      <i class="fa fa-refresh"></i>
+                    </span>
+                  </div>
+                </ng-template>
+                <div
+                  *ngIf="!auth.showPEVCTabs"
+                  class="btn-group d-flex justify-content-end pb-2"
+                >
+                  <button
+                    *ngFor="
+                      let button of benchmarkPeriodcirty_list;
+                      let i = index
+                    "
+                    class="btn_link1 fs13 btn_2"
+                    [ngClass]="{ active1: period_data == button.id }"
+                    (click)="getSet1(button.id)"
+                  >
+                    {{ button.title }}
+                  </button>
+                </div>
+
+                <!-- <button
+                  [ngClass]="{ active1: period_data == 'YEARLY' }"
+                  class="btn_link1 fs13 btn_2"
+                  (click)="getSet1('YEARLY')"
+                >
+                  Yearly
+                </button>
+                <button
+                  [ngClass]="{ active1: period_data == 'quarterly' }"
+                  class="btn_link1 fs13 btn_1"
+                  (click)="getSet1('quarterly')"
+                >
+                  Quarterly
+                </button> -->
+              </div>
+              <!-- *ngIf="!privateCompany_tab" -->
+              <div class="col-12 position-relative ps-0">
+                <div *ngIf="!auth.showPEVCTabs" class="tableCol6Border">
+                  <ng-container *ngIf="formateSectorData5">
+                    <app-benchmark-table
+                      [table_data]="formateSectorData5"
+                      [header_data]="bechmark_header"
+                      [enable_edit]="enable_edit"
+                      [date]="company_info.sharePriceDate"
+                      [globalEntityId]="company_info.entityId"
+                      [currency]="currency"
+                      [tempResDisplay]="tempResDisplay"
+                      company_country
+                      [isPrivateCompanyActive]="isPrivateCompanyActive"
+                      [company_country]="company_country"
+                      [companyId]="company_id"
+                      (companyCode)="
+                        this.isPrivateCompanyActive
+                          ? handlePrivatecompanyCode($event)
+                          : handlecompanyCode($event)
+                      "
+                      [isLoding]="isbenchmarkLoading"
+                      (redirectToCompany)="redirectToCompany($event)"
+                      [benchMarkPrivateCompanyError]="
+                        benchMarkPrivateCompanyError
+                      "
+                    >
+                    </app-benchmark-table>
+                  </ng-container>
+                </div>
+                <div class="mt-3 mb-5" *ngIf="auth.showPEVCTabs">
+                  <app-funds-investment-table
+                    [table_data]="pevcFirmTableData"
+                    [tableType]="'listedBenchmark'"
+                    [paginateId]="'listedBenchmark'"
+                    (firmSelected)="handlefirmSelectedBenchmarkRedirect($event)"
+                  ></app-funds-investment-table>
+                </div>
+              </div>
+            </div>
+
+            <div class="row" *ngIf="!show_advance">
+              <div class="col-12 text-primary mt-3 fs14 fw-bolder">
+                <span class="fs17">Relative Price Performance </span>
+                <span class="relative_styling">({{ relative_data_name }})</span>
+              </div>
+              <div class="col-12 position-relative ps-0">
+                <div class="">
+                  <app-relative-price-table
+                    [header_data]="relative_title"
+                    [table_data]="final_relativeData"
+                  >
+                  </app-relative-price-table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firm Profile Tab -->
+    <div
+      *ngIf="auth.showPEVCTabs"
+      id="firm_profile_tab"
+      class="pt-2 row"
+      #firm_profile_tab
+      (mouseenter)="highlightTab('firm_profile_tab')"
+    >
+      <div class="container-fluid px-0">
+        <div class="row">
+          <div class="col-12">
+            <h1 class="firm-profile-title text-center">PE/VC Firm Profile</h1>
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-3">
+            <span class="firm-field-title"
+              >Founded:
+              <span class="firm-field-value">{{
+                yearFounded ? yearFounded : "-"
+              }}</span></span
+            >
+          </div>
+          <div class="col-3">
+            <span class="firm-field-title"
+              >Assets Under Management ({{ pevcCurrency }} M):
+              <span class="firm-field-value">{{
+                pevcNoAssetsUnderMng
+                  ? util.standardFormat(pevcNoAssetsUnderMng, 2, "")
+                  : "-"
+              }}</span></span
+            >
+          </div>
+          <div class="col-3">
+            <span class="firm-field-title"
+              >Total Number of Investments:
+              <span class="firm-field-value">{{
+                pevcTotalInvestments ? pevcTotalInvestments : "-"
+              }}</span></span
+            >
+          </div>
+          <div class="col-3">
+            <span class="firm-field-title"
+              >Average Fund Size ({{ pevcCurrency }} M):
+              <span class="firm-field-value">{{
+                pevcAvgFundSize
+                  ? util.standardFormat(pevcAvgFundSize, 2, "")
+                  : "-"
+              }}</span></span
+            >
+          </div>
+        </div>
+        <div class="row my-3">
+          <div class="col-3">
+            <span class="firm-field-title"
+              >Number of Funds Under Management:
+              <span class="firm-field-value">
+                {{ pevcNoFundsUnderMng ? pevcNoFundsUnderMng : "-" }}</span
+              ></span
+            >
+          </div>
+          <div class="col-3">
+            <span class="firm-field-title">
+              Number of Active Funds:
+              <span class="firm-field-value">{{
+                pevcNoActiveFunds ? pevcNoActiveFunds : "-"
+              }}</span></span
+            >
+          </div>
+          <div class="col-3">
+            <span class="firm-field-title"
+              >Phone Number:
+              <span class="firm-field-value">{{
+                phonePEVC ? phonePEVC : "-"
+              }}</span></span
+            >
+          </div>
+          <div class="col-3">
+            <span class="firm-field-title"
+              >Email:
+              <span class="firm-field-value">{{
+                contactPEVC ? contactPEVC : "-"
+              }}</span></span
+            >
+          </div>
+        </div>
+        <div class="row my-3">
+          <div class="col-3">
+            <span class="firm-field-title"
+              >Website:
+              <span class="firm-field-value">{{
+                websitePEVC ? websitePEVC : "-"
+              }}</span></span
+            >
+          </div>
+          <div class="col-3">
+            <span class="firm-field-title"
+              >Address:
+              <span class="firm-field-value">{{
+                addressPEVC ? addressPEVC : "-"
+              }}</span></span
+            >
+          </div>
+        </div>
+      </div>
+    </div>
+    <!--    *ngIf="!privateCompany_tab" -->
+    <div
+      *ngIf="showFinancialsPvt"
+      id="financials_tab"
+      #financial
+      (mouseenter)="highlightTab('financials_tab')"
+    >
+      <div class="row pr13px">
+        <div class="col-12 mb-0 pt-4 px-0">
+          <div class="row">
+            <div class="col-4 p-0">
+              <img
+                id="companyStep13"
+                src="/assets/img/excelDownload.png"
+                class="cursor-pointer img-fluid"
+                (click)="
+                  auth.exploreUser
+                    ? (auth.openUnavailableExploreModal = true)
+                    : financialExcell()
+                "
+              />
+              <div id="companyStep11" class="companyStep12 btn-group btn-ml">
+                <button
+                  *ngFor="
+                    let button of isPrivateCompanyActive
+                      ? privateCompanyPeriodicity
+                      : periodicity_list;
+                    let i = index
+                  "
+                  class="btn_link1 fs13 btn_2"
+                  [ngClass]="{ active1: period_finance == button.id }"
+                  (click)="isPrivateCompanyActive ? '' : getSet2(button.id)"
+                >
+                  {{ button.title }}
+                </button>
+                <!-- <button
+                  [ngClass]="{ active1: period_finance == 'yearly' }"
+                  class="btn_link fs13 btn_2"
+                  (click)="getSet2('yearly')"
+                >
+                  Yearly
+                </button>
+                <button
+                  [ngClass]="{ active1: period_finance == 'quarterly' }"
+                  class="btn_link fs13 btn_1"
+                  (click)="getSet2('quarterly')"
+                >
+                  Quarterly
+                </button> -->
+              </div>
+            </div>
+            <div class="col-4">
+              <h4 class="text-primary text-center">
+                <span class="fs20 fw600">Financials</span>
+              </h4>
+            </div>
+            <div class="col-4"></div>
+          </div>
+          <!-- <h4 class="text-primary">
+          <span class="fs20 fw600">Financials</span>
+        </h4> -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-6 ps-0 position-relative">
+          <div class="maximize-financials">
+            <button
+              id="companyStep12"
+              class="disabled companyStep13"
+              (click)="auth.expandopenPopupfinance1 = true"
+              [disabled]="formateSectorData1.length > 0 ? null : true"
+            >
+              <!-- <img src="../../../../../assets/img/resize-icon.png" class="px-1 img-fluid" /> -->
+            </button>
+          </div>
+
+          <div *ngIf="auth.expandopenPopupfinance1">
+            <app-financial-table-expand
+              [table_data]="formateSectorData1"
+              [header_data]="periods1"
+              type="is_data"
+              [currency]="currency"
+              [company_id]="company_id"
+              [period]="period_finance"
+              [comapny_name]="comapny_name"
+            >
+            </app-financial-table-expand>
+          </div>
+          <ng-container *ngIf="defaultIncomeStatement">
+            <div class="tableCol6Border">
+              <app-financial-table
+                id="companyStep14"
+                [table_data]="defaultIncomeStatement"
+                [header_data]="periods1"
+                type="is_data"
+                [currency]="currency"
+                [company_id]="company_id"
+                [period]="period_finance"
+                [comapny_name]="comapny_name"
+                [isPrivateCompanyActive]="isPrivateCompanyActive"
+                [industry]="company_info.ff_industry"
+              >
+              </app-financial-table>
+            </div>
+          </ng-container>
+        </div>
+        <div class="col-6 ps-0 position-relative">
+          <div class="maximize-financials">
+            <button
+              class="disabled"
+              (click)="
+                privateCompany_tab
+                  ? handleOpenNewWindowPrivateComp($event)
+                  : handleOpenNewWindow($event)
+              "
+            >
+              <img
+                src="../../../../../assets/img/resize-icon.png"
+                class="px-1 img-fluid"
+              />
+            </button>
+          </div>
+
+          <div *ngIf="auth.expandopenPopupfinance2">
+            <app-financial-table-expand
+              [table_data]="formateSectorData2"
+              [company_id]="company_id"
+              [period]="period_finance"
+              [comapny_name]="comapny_name"
+              [header_data]="periods1"
+              type="bi_data"
+              [currency]="currency"
+            ></app-financial-table-expand>
+          </div>
+          <div class="tableCol6Border" *ngIf="defaultBalanceSheet">
+            <app-financial-table
+              [table_data]="defaultBalanceSheet"
+              [header_data]="periods1"
+              type="bi_data"
+              [currency]="currency"
+              [company_id]="company_id"
+              [period]="period_finance"
+              [comapny_name]="comapny_name"
+              [isPrivateCompanyActive]="isPrivateCompanyActive"
+              [industry]="company_info.ff_industry"
+            >
+            </app-financial-table>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-6 position-relative ps-0">
+          <div class="maximize-financials">
+            <button
+              class="disabled"
+              (click)="auth.expandopenPopupfinance3 = true"
+              [disabled]="formateSectorData3.length > 0 ? null : true"
+            >
+              <!-- <img src="../../../../../assets/img/resize-icon.png" class="px-1 img-fluid" /> -->
+            </button>
+          </div>
+
+          <div *ngIf="auth.expandopenPopupfinance3">
+            <app-financial-table-expand
+              [table_data]="formateSectorData3"
+              [company_id]="company_id"
+              [period]="period_finance"
+              [comapny_name]="comapny_name"
+              [header_data]="periods1"
+              type="ci_data"
+              [currency]="currency"
+            ></app-financial-table-expand>
+          </div>
+          <div class="tableCol6Border" *ngIf="defaultCashFlow">
+            <app-financial-table
+              [table_data]="defaultCashFlow"
+              [header_data]="periods1"
+              type="ci_data"
+              [currency]="currency"
+              [company_id]="company_id"
+              [period]="period_finance"
+              [comapny_name]="comapny_name"
+              [isPrivateCompanyActive]="isPrivateCompanyActive"
+              [industry]="company_info.ff_industry"
+            >
+            </app-financial-table>
+          </div>
+        </div>
+        <div class="col-6 ps-0 position-relative">
+          <div class="maximize-financials">
+            <button
+              class="disabled"
+              (click)="auth.expandopenPopupfinance4 = true"
+              [disabled]="formateSectorData4.length > 0 ? null : true"
+            >
+              <!-- <img src="../../../../../assets/img/resize-icon.png" class="px-1 img-fluid" /> -->
+            </button>
+          </div>
+
+          <div *ngIf="auth.expandopenPopupfinance4">
+            <app-financial-table-expand
+              [table_data]="formateSectorData7"
+              [company_id]="company_id"
+              [period]="period_finance"
+              [comapny_name]="comapny_name"
+              [financial_ratio_data]="formateSectorData4"
+              [header_data]="periods1"
+              type="ri_data"
+              [currency]="currency"
+            ></app-financial-table-expand>
+          </div>
+          <div class="tableCol6Border" *ngIf="defaultRatio">
+            <app-financial-table
+              [table_data]="defaultRatio"
+              [header_data]="periods1"
+              type="ri_data"
+              [currency]="currency"
+              [company_id]="company_id"
+              [period]="period_finance"
+              [comapny_name]="comapny_name"
+              [isPrivateCompanyActive]="isPrivateCompanyActive"
+              [industry]="company_info.ff_industry"
+            >
+            </app-financial-table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="!show_advance && !auth.showPEVCTabs"
+      id="segment_tab"
+      #segment
+      (mouseenter)="highlightTab('segment_tab')"
+    >
+      <div class="row">
+        <div class="col-12 my-3 px-0">
+          <div class="row">
+            <div class="col-4">
+              <button
+                class="disabled"
+                [disabled]="ietmname_seg.length > 0 ? null : true"
+                (click)="
+                  auth.exploreUser
+                    ? (auth.openUnavailableExploreModal = true)
+                    : segmentExcell()
+                "
+              >
+                <img src="/assets/img/excelDownload.png" class="img-fluid" />
+              </button>
+            </div>
+            <div class="col-4">
+              <h4 class="text-primary text-center">
+                <span class="fs20 fw600">Segment Information</span>
+              </h4>
+            </div>
+          </div>
+        </div>
+        <div class="col-12 ps-0 d-flex justify-content-end">
+          <button
+            class="pb-1 disabled"
+            (click)="auth.expandEstimateModal = true"
+            [disabled]="ietmname_seg.length > 0 ? null : true"
+          >
+            <img
+              src="../../../../../assets/img/resize-icon.png"
+              class="px-1 img-fluid"
+            />
+          </button>
+        </div>
+        <div class="col-12 ps-0 position-relative">
+          <div *ngIf="auth.expandEstimateModal">
+            <app-segment-table-modal
+              [table_data]="ietmname_seg"
+              [header_data]="period_seg"
+              [currency]="currency"
+            >
+            </app-segment-table-modal>
+          </div>
+          <div class="tableCol6Border">
+            <app-segment-table
+              [table_data]="ietmname_seg"
+              [header_data]="period_seg"
+              [currency]="currency"
+            >
+            </app-segment-table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="showDebtProfilePvt"
+      id="debt_tab"
+      #debt
+      (mouseenter)="highlightTab('debt_tab')"
+    >
+      <div class="row">
+        <div class="col-12 my-3 px-0">
+          <div class="row">
+            <div class="col-4">
+              <button
+                class="disabled"
+                (click)="
+                  auth.exploreUser
+                    ? (auth.openUnavailableExploreModal = true)
+                    : downloadDebt()
+                "
+                [disabled]="debt_data.length > 0 ? null : true"
+              >
+                <img
+                  *ngIf="debt_data.length != 0"
+                  src="/assets/img/excelDownload.png"
+                  class="img-fluid"
+                />
+              </button>
+            </div>
+            <h4 class="text-primary text-center col-4">
+              <span class="fs20 fw600">Debt Profile</span>
+            </h4>
+          </div>
+        </div>
+        <div class="col-12 ps-0">
+          <div class="maximize-financials">
+            <button
+              class="disabled"
+              (click)="auth.expandopenPopupModalCash = true"
+              [disabled]="debt_data.length > 0 ? null : true"
+            >
+              <img
+                *ngIf="debt_data.length != 0"
+                src="../../../../../assets/img/resize-icon.png"
+                class="px-1 img-fluid"
+              />
+            </button>
+          </div>
+        </div>
+        <div class="col-12 position-relative ps-0">
+          <div *ngIf="auth.expandopenPopupModalCash" style="z-index: 999">
+            <app-debt-table-modal
+              [table_data]="debt_data"
+              [currency]="currency"
+            ></app-debt-table-modal>
+          </div>
+          <div class="tableCol6Border">
+            <app-debt-table
+              [table_data]="debt_data"
+              [currency]="currency"
+            ></app-debt-table>
+          </div>
+        </div>
+        <div class="col-6 mt-5">
+          <p class="text-primary fs18 text-center">
+            <b>Debt Composition</b>
+          </p>
+          <div id="chartdiv" class="commodityChart"></div>
+        </div>
+
+        <div class="col-6 mt-5">
+          <p class="text-primary fs18 text-center">
+            <b>Maturity Profile ({{ currency }} Million)</b>
+            <span *ngIf="showExpandIcon" class="float-end">
+              <img
+                src="../../../../../assets/img/resize-icon.png"
+                (click)="MaturityDialog()"
+                class="px-1 cursor-pointer img-fluid"
+              />
+            </span>
+          </p>
+          <div id="chartdiv1" class="commodityChart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Investments -->
+    <div
+      *ngIf="auth.showPEVCTabs"
+      id="investments_tab"
+      class="mt-3 row"
+      #summary
+      (mouseenter)="highlightTab('investments_tab')"
+    >
+      <div class="col-12">
+        <div class="row mt-3">
+          <div class="col-12 text-center">
+            <img
+              class="cursor-pointer img-fluid mt-1 ms-1"
+              src="/assets/img/excelDownload.png"
+              alt="excelDownload"
+              style="float: left"
+              [ngClass]="{
+                disableExcelIcon: directInvestmentsTableData.value?.length === 0
+              }"
+              (click)="handleDirectInvestmentExcel()"
+            />
+            <span class="text-center direct-investments-title"
+              >Direct Investments</span
+            >
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <app-investments-expand-table
+              [table_data]="directInvestmentsTableData"
+              (changePage)="onPageChange($event)"
+              [paginateId]="'directInvestmetn'"
+              [totalDataLength]="totalDataLength"
+              [child_table_data]="directInvestmentsChildTableData"
+              (investmentsPEVCChildData)="
+                handleInvestmentsPEVCChildData($event)
+              "
+              (pevcInvestmentsRoundSelected)="
+                handlePevcInvestmentsRoundSelected($event)
+              "
+              (pevcNotListedParticipatingFunds)="
+                handlepevcNotListedParticipatingFundsRedirect($event)
+              "
+              (pevcInvestmentsRoundSelectedChild)="
+                handlepevcInvestmentsRoundSelectedChild($event)
+              "
+              (cusSortParam)="handlecusSortParam($event)"
+              [multiplePartFunds]="multiplePartFunds"
+              [multiplePartFundsChild]="multiplePartFundsChild"
+            ></app-investments-expand-table>
+          </div>
+        </div>
+        <div class="row my-2">
+          <div class="col-12 text-center">
+            <img
+              class="cursor-pointer img-fluid mt-1 ms-1"
+              src="/assets/img/excelDownload.png"
+              alt="excelDownload"
+              style="float: left"
+              [ngClass]="{
+                disableExcelIcon: fundOfFundsInvestmetns.value?.length === 0
+              }"
+              (click)="handleFundsExcel()"
+            />
+            <span class="text-center direct-investments-title"
+              >Fund of Funds Investments</span
+            >
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <app-funds-investment-table
+              [table_data]="fundOfFundsInvestmetns"
+              (changePage)="onPageChangeFundsofFunds($event)"
+              [paginateId]="'fundsOffunds'"
+              [totalDataLength]="totalDataLengthFundsofFunds"
+              (fundSelected)="handlefundSelectedRedirect($event)"
+              (firmSelected)="handlefirmSelectedRedirect($event)"
+            ></app-funds-investment-table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entity Details Modal -->
+    <app-entity-details-modal
+      *ngIf="auth.openEntityDetailsModal"
+      [entityDetailsTableData]="entityDetailsTableData"
+      [fundingRoundHeaderData]="fundingRoundHeaderData"
+      [fundingRoundData]="fundingRoundData"
+      (pevcDetModal)="handlepevcDetModal($event)"
+      (investorNameSelected)="handleinvestorNameSelected($event)"
+      (fundNameSelected)="handlefundNameSelected($event)"
+    ></app-entity-details-modal>
+
+    <!-- Maturity Modal Popup -->
+    <div *ngIf="auth?.openPopupModal">
+      <app-maturiy-graph-modal
+        *ngIf="maturityChartDataExpanded?.length"
+        [maturity_Data_chart]="maturityChartDataExpanded"
+        [item_Data_list]="item_list"
+        [lastCategoryValue]="lastCategoryValue"
+      >
+      </app-maturiy-graph-modal>
+    </div>
+    <!-- Maturity Modal Popup -->
+
+    <div
+      *ngIf="showMngPvt"
+      id="management_tab"
+      #management
+      (mouseenter)="highlightTab('management_tab')"
+    >
+      <div class="row">
+        <div class="col-12 my-3 px-0">
+          <div class="row">
+            <div class="col-4">
+              <button
+                *ngIf="!auth.showPEVCTabs"
+                class="disabled"
+                (click)="
+                  auth.exploreUser
+                    ? (auth.openUnavailableExploreModal = true)
+                    : Managementexcell()
+                "
+                [disabled]="manage_data.length > 0 ? null : true"
+              >
+                <img src="/assets/img/excelDownload.png" class="img-fluid" />
+              </button>
+              <button
+                *ngIf="auth.showPEVCTabs"
+                class="disabled"
+                (click)="ManagementexcellPEVC()"
+                [disabled]="manage_data.length > 0 ? null : true"
+              >
+                <img src="/assets/img/excelDownload.png" class="img-fluid" />
+              </button>
+            </div>
+            <h4 class="text-primary text-center col-4">
+              <span *ngIf="!auth.showPEVCTabs" class="fs20 fw600"
+                >Management & Key Employees</span
+              >
+              <span *ngIf="auth.showPEVCTabs" class="fs20 fw600"
+                >Management</span
+              >
+            </h4>
+          </div>
+        </div>
+        <div class="col-12 position-relative ps-0">
+          <div>
+            <app-manage-table
+              [table_data]="manage_data"
+              [companyName]="comapny_name"
+              mh="313px"
+            ></app-manage-table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <ng-container *ngIf="insiderData.value.length != 0">
+      <div
+        *ngIf="!show_advance"
+        id="insiderTransaction_tab"
+        #debt
+        (mouseenter)="highlightTab('insiderTransaction_tab')"
+      >
+        <div class="row">
+          <div class="col-12 my-3 px-0">
+            <div class="row">
+              <div class="col-4">
+                <button
+                  class="disabled"
+                  (click)="
+                    auth.exploreUser
+                      ? (auth.openUnavailableExploreModal = true)
+                      : downloadInsiderTransaction()
+                  "
+                  [disabled]="insiderData.value.length > 0 ? null : true"
+                >
+                  <img src="/assets/img/excelDownload.png" class="img-fluid" />
+                </button>
+              </div>
+              <h4 class="text-primary text-center col-4">
+                <span class="fs20 fw600">Insider Transactions</span>
+              </h4>
+            </div>
+            <div class="maximize-financials text-end mr-2">
+              <button
+                class="disabled"
+                (click)="auth.insiderTranactionModal = true"
+                [disabled]="formateSectorData.length > 0 ? null : true"
+              >
+                <img
+                  src="../../../../../assets/img/resize-icon.png"
+                  class="px-1 img-fluid"
+                />
+              </button>
+            </div>
+            <div *ngIf="auth.insiderTranactionModal">
+              <app-insider-transaction-modal
+                [table_data]="insiderData"
+                mh="513px"
+              >
+              </app-insider-transaction-modal>
+            </div>
+          </div>
+
+          <div class="col-12 position-relative ps-0">
+            <div class="">
+              <app-table
+                [table_data]="insiderDataDefault"
+                mh="313px"
+              ></app-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-container>
+
+    <div
+      *ngIf="!show_advance"
+      id="ownership_tab"
+      #ownership
+      (mouseenter)="highlightTab('ownership_tab')"
+    >
+      <div class="row">
+        <div class="col-12 my-3 px-0">
+          <div class="row">
+            <div class="col-4">
+              <img
+                src="/assets/img/excelDownload.png"
+                class="cursor-pointer img-fluid"
+                (click)="
+                  auth.exploreUser
+                    ? (auth.openUnavailableExploreModal = true)
+                    : Ownership()
+                "
+              />
+            </div>
+            <h4 class="text-primary text-center col-4">
+              <span class="fs20 fw600">Ownership</span>
+            </h4>
+          </div>
+        </div>
+        <div class="col-6 mt-1">
+          <p class="text-primary fs14">
+            <b>As on {{ toDaysDate | date : "MMM dd,yyyy" }}</b>
+          </p>
+          <div id="chartdiv2" class="commodityChart1"></div>
+        </div>
+
+        <div class="col-6 position-relative mt-1 ownershipTableContainer">
+          <div class="maximize-financials">
+            <button
+              class="disabled"
+              (click)="auth.expandopenPopupcolumn1 = true"
+              [disabled]="ownership_details_data.length > 0 ? null : true"
+            >
+              <img
+                src="../../../../../assets/img/resize-icon.png"
+                class="px-1 img-fluid"
+              />
+            </button>
+          </div>
+          <div class="">
+            <div *ngIf="auth.expandopenPopupcolumn1">
+              <app-ownership-table-expand
+                [header_data]="ownership_title"
+                [table_data]="ownership_details_data"
+                column="1"
+                mh="500px"
+              ></app-ownership-table-expand>
+            </div>
+            <div>
+              <app-ownership-table
+                [header_data]="ownership_title"
+                [table_data]="ownership_details_data"
+                column="1"
+              >
+              </app-ownership-table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6 mt-1 position-relative">
+          <div class="maximize-financials">
+            <button
+              class="disabled"
+              (click)="auth.expandopenPopupcolumn2 = true"
+              [disabled]="promo_ownership_data.length > 0 ? null : true"
+            >
+              <img
+                src="../../../../../assets/img/resize-icon.png"
+                class="px-1 img-fluid"
+              />
+            </button>
+          </div>
+          <div class="">
+            <div *ngIf="auth.expandopenPopupcolumn2">
+              <app-ownership-table-expand
+                [header_data]="promo_ownership_title"
+                [table_data]="promo_ownership_data"
+                column="2"
+                mh="500px"
+              ></app-ownership-table-expand>
+            </div>
+            <div>
+              <app-ownership-table
+                [header_data]="promo_ownership_title"
+                [table_data]="promo_ownership_data"
+                column="2"
+              >
+              </app-ownership-table>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-6 position-relative mt-1">
+          <div class="maximize-financials">
+            <button
+              class="disabled"
+              (click)="auth.expandopenPopupcolumn3 = true"
+              [disabled]="promo_ownership_data.length > 0 ? null : true"
+            >
+              <img
+                src="../../../../../assets/img/resize-icon.png"
+                class="px-1 img-fluid"
+              />
+            </button>
+          </div>
+          <div class="">
+            <div *ngIf="auth.expandopenPopupcolumn3">
+              <app-ownership-table-expand
+                [header_data]="institue_ownership_title"
+                [table_data]="institue_ownership_data"
+                column="3"
+                mh="500px"
+              ></app-ownership-table-expand>
+            </div>
+            <div>
+              <app-ownership-table
+                [header_data]="institue_ownership_title"
+                [table_data]="institue_ownership_data"
+                column="3"
+              ></app-ownership-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Firm Structure -->
+    <div
+      *ngIf="auth.showPEVCTabs"
+      id="firm_structure_tab"
+      class="mt-3 row"
+      #summary
+      (mouseenter)="highlightTab('firm_structure_tab')"
+    >
+      <div class="col-12">
+        <div class="row mt-3">
+          <div class="col-12 text-center">
+            <img
+              class="cursor-pointer img-fluid mt-1 ms-1"
+              src="/assets/img/excelDownload.png"
+              alt="excelDownload"
+              style="float: left"
+              [ngClass]="{
+                disableExcelIcon: firmStructureTableData.value?.length === 0
+              }"
+              (click)="handleFirmStructureExcel()"
+            />
+            <span class="text-center direct-investments-title"
+              >Firm Structure</span
+            >
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <app-funds-investment-table
+              [table_data]="firmStructureTableData"
+              (fundSelected)="handlefundSelectedFirmStructureRedirect($event)"
+              (changePage)="onPageChangeFirmStructure($event)"
+              [paginateId]="'firmStructure'"
+              [totalDataLength]="totalDataLengthFirmStructure"
+            ></app-funds-investment-table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      id="analyst_tab"
+      *ngIf="!show_advance"
+      #analyst
+      (mouseenter)="highlightTab('analyst_tab')"
+    >
+      <div class="row">
+        <div class="col-12 my-3 px-0 row">
+          <div class="col-4">
+            <img
+              [ngClass]="{
+                disableExcelIcon: real_chartdata.length === 0
+              }"
+              src="/assets/img/excelDownload.png"
+              class="cursor-pointer img-fluid"
+              (click)="
+                auth.exploreUser
+                  ? (auth.openUnavailableExploreModal = true)
+                  : Analysexcell()
+              "
+            />
+          </div>
+          <h4 class="text-primary text-center col-4">
+            <span class="fs20 fw600">Analyst Coverage</span>
+          </h4>
+        </div>
+        <div class="col-6 mt-5">
+          <p class="text-primary fs18 text-center">
+            <b>Analyst Recommendations</b>
+          </p>
+          <div id="chartdiv3" class="commodityChart"></div>
+        </div>
+
+        <div class="col-6 mt-5">
+          <p class="text-primary fs18 text-center">
+            <b>Total Recommendations</b>
+          </p>
+          <div id="chartdiv4" class="commodityChart"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- <div
+      id="debt_tab"
+      *ngIf="!show_advance"
+      (mouseenter)="highlightTab('debt_tab')"
+    > -->
+    <div
+      id="analyst_tab"
+      *ngIf="!show_advance"
+      (mouseenter)="highlightTab('analyst_tab')"
+    >
+      <div class="row">
+        <div class="col-12 my-3 px-0">
+          <div class="row">
+            <!-- <div class="col-4">
+              <div class="btn-group mr-2">
+                <button
+                  [ngClass]="{ active1: set_period == 'yearly' }"
+                  class="btn_link fs13 btn_2"
+                  (click)="getSet('yearly')"
+                >
+                  Annual
+                </button>
+                <button
+                  [ngClass]="{ active1: set_period == 'quarterly' }"
+                  class="btn_link fs13 btn_1"
+                  (click)="getSet('quarterly')"
+                >
+                  Quarter
+                </button>
+              </div>
+            </div> -->
+          </div>
+
+          <div id="debt_tab">
+            <div class="row">
+              <div class="col-12 my-3 px-0">
+                <div class="row">
+                  <div class="col-4 p-0">
+                    <button
+                      class="disabled"
+                      (click)="
+                        auth.exploreUser
+                          ? (auth.openUnavailableExploreModal = true)
+                          : EstimatesExcell()
+                      "
+                      [disabled]="formateSectorData.length > 0 ? null : true"
+                    >
+                      <img
+                        src="/assets/img/excelDownload.png"
+                        class="img-fluid"
+                      />
+                    </button>
+                    <div class="btn-group mr-2 ms-4">
+                      <button
+                        [ngClass]="{ active1: set_period == 'yearly' }"
+                        class="btn_link fs13 btn_2"
+                        (click)="getSet('yearly')"
+                      >
+                        Annual
+                      </button>
+                      <button
+                        [ngClass]="{ active1: set_period == 'quarterly' }"
+                        class="btn_link fs13 btn_1"
+                        (click)="getSet('quarterly')"
+                      >
+                        Quarter
+                      </button>
+                    </div>
+                  </div>
+                  <div class="col-4">
+                    <h4 class="text-primary text-center">
+                      <span class="fs20 fw600">Estimates - Consensus</span>
+                    </h4>
+                  </div>
+                  <div class="col-4">
+                    <div style="width: 169px; float: right">
+                      <!-- <div class="col-md-3 ps-0"> -->
+                      <ng-select2
+                        [data]="selectMeanData"
+                        [value]="selectedmean"
+                        (valueChanged)="onValueChanged($event)"
+                        class="cusSelect2 cusSelect2Normal"
+                        [placeholder]="'Select'"
+                      ></ng-select2>
+                      <!-- </div> -->
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="maximize-financials text-end">
+                <button
+                  class="disabled"
+                  (click)="auth.expandopenPopupestimate = true"
+                  [disabled]="formateSectorData.length > 0 ? null : true"
+                >
+                  <img
+                    src="../../../../../assets/img/resize-icon.png"
+                    class="px-1 img-fluid"
+                  />
+                </button>
+              </div>
+              <div class="col-12 position-relative ps-0">
+                <div *ngIf="auth.expandopenPopupestimate">
+                  <app-estimate-modal
+                    [table_data]="formateSectorData"
+                    [header_data]="periods"
+                    [type]="mean_data"
+                  >
+                  </app-estimate-modal>
+                </div>
+                <div>
+                  <ng-container *ngIf="formateSectorData.length > 0">
+                    <div class="tableCol6Border">
+                      <app-estimate-table
+                        mh="165px"
+                        [table_data]="formateSectorDataDefualt"
+                        [header_data]="periods"
+                        [type]="mean_data"
+                      >
+                      </app-estimate-table>
+                    </div>
+                  </ng-container>
+                  <ng-container *ngIf="formateSectorData.length == 0">
+                    <div class="tableCol6Border">
+                      <app-estimate-table
+                        mh="165px"
+                        [table_data]="formateSectorDataDefualt"
+                        [header_data]="periods"
+                        [type]="mean_data"
+                      >
+                      </app-estimate-table>
+                    </div>
+                  </ng-container>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-4 p-0">
+            <button
+              (click)="
+                auth.exploreUser
+                  ? (auth.openUnavailableExploreModal = true)
+                  : auth.userType === 'demo'
+                  ? isAllowToExcel()
+                  : mngGuidExcelDownload()
+              "
+              class="disabled"
+              [disabled]="formateSectorData_analyst.length > 0 ? null : true"
+            >
+              <img src="/assets/img/excelDownload.png" class="img-fluid" />
+            </button>
+            <div class="btn-group mr-2 ms-4">
+              <button
+                [ngClass]="{ active1: set_period_management == 'yearly' }"
+                class="btn_link fs13 btn_2"
+                (click)="getSet3('yearly')"
+              >
+                Annual
+              </button>
+              <button
+                [ngClass]="{
+                  active1: set_period_management == 'quarterly'
+                }"
+                class="btn_link fs13 btn_1"
+                (click)="getSet3('quarterly')"
+              >
+                Quarter
+              </button>
+            </div>
+          </div>
+          <div class="col-4">
+            <h4 class="text-primary text-center">
+              <span class="fs20 fw600">Management Guidance Performance</span>
+            </h4>
+          </div>
+        </div>
+        <div class="maximize-financials text-end">
+          <button
+            class="disabled"
+            (click)="auth.expandManagementGuide = true"
+            [disabled]="formateSectorData_analyst.length > 0 ? null : true"
+          >
+            <img
+              src="../../../../../assets/img/resize-icon.png"
+              class="px-1 mg-fluid"
+            />
+          </button>
+        </div>
+        <div class="col-12 position-relative ps-0">
+          <div *ngIf="auth.expandManagementGuide">
+            <app-management-guide-modal
+              mh="500px"
+              [table_data]="formateSectorData_analyst"
+              [header_data]="periods_analyst"
+            >
+            </app-management-guide-modal>
+          </div>
+          <div>
+            <ng-container>
+              <div class="tableCol6Border">
+                <app-management-guide-table
+                  [table_data]="formateSectorData_analyst"
+                  [header_data]="periods_analyst"
+                  [table]="set_period_management"
+                >
+                </app-management-guide-table>
+              </div>
+            </ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row mb-5">
+      <div
+        id="event_tab"
+        *ngIf="!show_advance"
+        #event
+        (mouseenter)="highlightTab('event_tab')"
+        class="col-6 ps-0 position-relative"
+      >
+        <div class="row pb-4 pt-3">
+          <div class="col-12 row">
+            <div class="col-4">
+              <button
+                class="disabled"
+                (click)="
+                  auth.exploreUser
+                    ? (auth.openUnavailableExploreModal = true)
+                    : Events_Transcripts()
+                "
+                [disabled]="events_data.length > 0 ? null : true"
+              >
+                <img src="/assets/img/excelDownload.png" class="img-fluid" />
+              </button>
+            </div>
+            <h4 class="text-primary text-center col-6">
+              <span class="fs20 fw600">Events & Transcripts</span>
+            </h4>
+          </div>
+        </div>
+        <!-- <div *ngIf="auth.expandopenPopupModalCash">
+        <app-table-modal [table_data]="segment_info_data_expand"></app-table-modal>
+      </div> -->
+
+        <div class="tableCol6Border">
+          <app-events-table
+            (modalData)="onEventTransscriptDataClicked($event)"
+            mh="305px"
+            [header_data]="event_title"
+            [table_data]="events_data"
+            column="4"
+          >
+          </app-events-table>
+        </div>
+      </div>
+
+      <div
+        id="filings_tab"
+        *ngIf="!show_advance"
+        #event
+        (mouseenter)="highlightTab('filings_tab')"
+        class="col-6 position-relative ps-0"
+      >
+        <div class="row pb-4 pt-3">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-8">
+                <h4 class="text-primary text-center">
+                  <span class="fs20 fw600">Company Filings</span>
+                </h4>
+              </div>
+              <div class="col-4">
+                <div style="width: 101px; float: right">
+                  <!-- <div class="col-md-3 ps-0"> -->
+                  <ng-select2
+                    [data]="dropfilldata"
+                    [value]="compsel_data"
+                    (valueChanged)="onValueChangcomp($event)"
+                    class="cusSelect2 cusSelect2Normal"
+                    [placeholder]="'Select Country'"
+                  ></ng-select2>
+                  <!-- </div> -->
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- <div *ngIf="auth.expandopenPopupModalCash">
+        <app-table-modal [table_data]="segment_info_data_expand"></app-table-modal>
+      </div> -->
+        <div>
+          <div class="tableCol6Border">
+            <app-comapny-file-table
+              [header_data]="companyfile_title"
+              [table_data]="companyfile_data"
+              mh="305px"
+            >
+            </app-comapny-file-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- </div> -->
+
+  <!-- PEVC -->
+  <app-pevc-fund
+    *ngIf="auth.hidePublicCompany"
+    (hidePublicCompany)="handlePublicCompany($event)"
+    (showListedPageOutput)="handleListedSelection($event)"
+    (checkPEVC)="handleCheckPEVC($event)"
+    (publicCompanyClick)="handlePublicCompanyClick()"
+    (privateCompanyClick)="handlePrivateCompanyClick()"
+    [notListedSelectedEntityId]="notListedSelectedEntityId"
+    [fundCompanySelectedEntityId]="fundCompanySelectedEntityId"
+    (pevcListedSelectedFromFund)="handlepevcListedSelectedFromFund($event)"
+    [notListedSelectedName]="notListedSelectedName"
+    [fundSelectedName]="fundSelectedName"
+    [fundCompanySelectedEntityIdFirm]="fundCompanySelectedEntityIdFirm"
+    [pevcNotListedParticipatingFundsListed]="
+      pevcNotListedParticipatingFundsListed
+    "
+    [fundSelectedName]="fundSelectedName"
+    [notListedBenchmarkSelectedListed]="notListedBenchmarkSelectedListed"
+    [fundBenchmarkFund]="fundBenchmarkFund"
+  ></app-pevc-fund>
+  <a
+    (click)="gotoTop('topcc')"
+    #moveTop
+    id="scrolltotop-btn"
+    [ngClass]="{
+      show: selectedParentSet != 'summary_tab',
+      hide: selectedParentSet == 'summary_tab'
+    }"
+  ></a>
+</div>
+
+<!-- user management expried UI POPUP -->
+<!-- <div *ngIf="auth?.expriedPopup">
+  <app-expired-alert-modal></app-expired-alert-modal>
+</div> -->
+
+<div *ngIf="auth.closeInsidePopup">
+  <app-financial-alert-popup
+    [fromFinDate]="fromFinDate"
+    [period]="period"
+    (sectionChange)="onFinancialExcelDownload($event)"
+  ></app-financial-alert-popup>
+</div>
+
+<div *ngIf="auth.openEarningsModal">
+  <app-earnings-call-modal [data]="eventModalData"> </app-earnings-call-modal>
+</div>
+
+<div *ngIf="auth.companyBenchmarkModal">
+  <app-comparable-securities-no-selection-modal [value]="">
+  </app-comparable-securities-no-selection-modal>
+</div>
+
+<!-- PEVC Company Selection Modal -->
+<app-pevc-company-modal
+  *ngIf="this.auth.showPEVCCompanyModal"
+  [selectPEVCCompanyData]="selectPEVCCompanyData"
+  [selectedPEVCCompanyData]="selectedPEVCCompanyData"
+  (selectedPEVCListedCompanyEntityId)="
+    handleSelectedPEVCListedCompanyEntityId($event)
+  "
+  (selectedPEVCNotListedCompanyEntityId)="
+    handleselectedPEVCNotListedCompanyEntityId($event)
+  "
+  (selectedPEVCFundCompanyEntityId)="
+    handleselectedPEVCFundCompanyEntityId($event)
+  "
+  (selectedPEVCFundCompanyEntityIdFirm)="
+    handleselectedPEVCFundCompanyEntityIdFirm($event)
+  "
+  (selectedPEVCNotListedName)="handleselectedPEVCNotListedName($event)"
+  (selectedPEVCFundName)="handleselectedPEVCFundName($event)"
+></app-pevc-company-modal>
+
+<div class="backdrop" *ngIf="auth.openPopupModalFin">
+  <div
+    id="alertbox"
+    class="modal sevendayfreetrialpopup-rtda sevendayfreetrialpopup-cm in"
+    tabindex="-1"
+    role="dialog"
+    style="
+      display: block;
+      padding-left: 4px;
+      background-color: rgba(0, 0, 0, 0.5);
+    "
+  >
+    <div class="modal-dialog modal-lg" style="top: 20%">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+          <button
+            type="button"
+            (click)="auth.openPopupModalFin = false"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!--end of modal header-->
+        <div class="modal-body text-center">
+          <span>{{ errorMessage }}</span
+          ><br />
+          <span>{{ nextErrorMessage }}</span>
+        </div>
+        <!--end of modal body-->
+        <!--end of modal footer-->
+      </div>
+    </div>
+  </div>
+</div>

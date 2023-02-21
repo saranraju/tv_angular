@@ -1,0 +1,110 @@
+<div *ngIf="!showadvance" class="commodityTable">
+  <table class="w-100 scroll">
+    <thead *ngIf="table_data.length > 0">
+      <tr>
+        <th>Company</th>
+        <ng-container *ngFor="let header of header_data; let i = index">
+          <!-- <ng-container *ngIf="i < 5"> -->
+          <th class="text-end">
+            {{ header.name }}
+            <span *ngIf="header.unit != 'Million'">{{ header.unit }}</span>
+            <br />
+            <span *ngIf="header.unit == 'Million'">({{ currency }} M)</span>
+          </th>
+          <!-- </ng-container> -->
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody [ngStyle]="{ 'max-height': '313px' }">
+      <ng-container *ngIf="table_data.length > 0">
+        <tr *ngFor="let content of table_data; let i = index">
+          <!-- <ng-container *ngIf="i < 6"> -->
+          <td>
+            <span
+              [ngClass]="{ 'hide-close-icon': companyId === content.id }"
+              *ngIf="
+                enable_edit &&
+                content.filedName != 'p_price' &&
+                globalEntityId != content.entityId &&
+                content.entityId != null
+              "
+              style="padding-right: 5px; cursor: pointer"
+              (click)="sendcompanyData(content)"
+              ><i class="fa fa-close" style="color: #fff"></i
+            ></span>
+            <span
+              [title]="content?.infoVal"
+              *ngIf="!enable_edit"
+              style="padding-right: 5px"
+              (click)="sendcompanyData(content)"
+              ><i class="fa fa-info-circle" style="color: #ffc000"></i
+            ></span>
+            <ng-container
+              *ngIf="content.description.length < 20; else viewdiff"
+            >
+              <span
+                [title]="content.description"
+                (click)="redirect(content)"
+                [ngClass]="content.id ? 'pointer' : ''"
+                >{{ content.description }}</span
+              >
+            </ng-container>
+            <ng-template #viewdiff>
+              <span
+                [title]="content.description"
+                (click)="redirect(content)"
+                [ngClass]="content.id ? 'pointer' : ''"
+              >
+                {{ content.description.substring(0, 19) }}...</span
+              >
+            </ng-template>
+          </td>
+          <ng-container *ngFor="let header of header_data; let j = index">
+            <td class="text-end">
+              <ng-container *ngIf="content[header.name] != null">
+                {{ this.util.standardFormat(content[header.name], 2, "") }}
+              </ng-container>
+              <ng-container *ngIf="content[header.name] == null">
+                -
+              </ng-container>
+            </td>
+          </ng-container>
+          <!-- </ng-container> -->
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="table_data.length == 0">
+        <tr style="height: 18.9rem; border-top: 1px solid #528dc3">
+          <td colspan="7" class="text-center" style="color: #fff">
+            <span *ngIf="table_data.length == 0 && !isLoding">
+              {{
+                isPrivateCompanyActive && company_country !== "IND"
+                  ? benchMarkPrivateCompanyError
+                    ? "Latest Financials Data Not Available to Create Benchmark"
+                    : "Revenue Not Available to Create Revenue Comps"
+                  : companyDelisted
+                  ? companyDelistedMsg
+                  : "Data Not Available"
+              }}
+            </span>
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+<div *ngIf="showadvance" class="commodityTable">
+  <table class="w-100 scroll">
+    <thead></thead>
+    <tbody style="border-top: 1px solid #528dc3">
+      <tr
+        [ngClass]="showadvance ? 'line-height' : ''"
+        *ngFor="let content of table_data; let i = index"
+      >
+        <td>{{ content.title ? content.title : "-" }}</td>
+        <td class="text-start">{{ content.value ? content.value : "" }}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br />

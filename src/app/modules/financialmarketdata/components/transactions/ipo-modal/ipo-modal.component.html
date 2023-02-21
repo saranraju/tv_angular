@@ -1,0 +1,153 @@
+<div class="modal p-3">
+  <div class="close cursor-pointer" (click)="ipoModalClose()">
+    <i class="fa fa-times"></i>
+  </div>
+  <div class="modal-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 my-3 modal-title-container">
+          <span *ngIf="modalTypeIPO === 'Upcoming IPOs'" class="modal-title"
+            >Upcoming IPOs
+          </span>
+          <span
+            *ngIf="modalTypeIPO === 'IPOs Open For Subscription'"
+            class="modal-title"
+            >IPOs Open For Subscription
+          </span>
+          <span *ngIf="modalTypeIPO === 'Historical IPOs'" class="modal-title"
+            >Historical IPOs
+          </span>
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-2">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Select Country'"
+            [data]="countryData"
+            [value]="selectedCountry"
+            (valueChanged)="onModalValueChanged('country', $event)"
+            [options]="IpoNgSelectoptions"
+          ></ng-select2>
+        </div>
+        <div class="col-2">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Select Exchange'"
+            [data]="exchnageData"
+            (valueChanged)="onModalValueChanged('exchnage', $event)"
+            [options]="IpoNgSelectoptions"
+            [value]="selectExchange"
+          ></ng-select2>
+        </div>
+        <div class="col-2" *ngIf="modalTypeIPO === 'Upcoming IPOs'">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Select Status'"
+            [data]="statusList"
+            (valueChanged)="onModalValueChanged('status', $event)"
+            [options]="IpoNgSelectoptions"
+            [value]="selectedStatus"
+          ></ng-select2>
+        </div>
+        <div *ngIf="modalTypeIPO === 'Historical IPOs'" class="col-2">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Select Period'"
+            [data]="periodData"
+            [value]="selectedPeriod"
+            (valueChanged)="onModalValueChanged('period', $event)"
+          ></ng-select2>
+        </div>
+        <div
+          class="col-2"
+          *ngIf="modalTypeIPO === 'IPOs Open For Subscription'"
+        >
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Select Security Type'"
+            [data]="securityType"
+            (valueChanged)="onModalValueChanged('security', $event)"
+            [options]="IpoNgSelectoptions"
+            [value]="selectedSecurity"
+          ></ng-select2>
+        </div>
+        <div class="col-2" *ngIf="modalTypeIPO === 'Historical IPOs'">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Select Industry'"
+            [data]="industrydata"
+            (valueChanged)="onModalValueChanged('industry', $event)"
+            [options]="IpoNgSelectoptions"
+            [value]="selectedSecurity"
+          ></ng-select2>
+        </div>
+        <div class="col-2">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Select Company Name'"
+            [data]="company_name"
+            (valueChanged)="onModalValueChanged('comName', $event)"
+            [options]="IpoNgSelectoptions"
+            [value]="selectedCompany"
+          ></ng-select2>
+        </div>
+        <div *ngIf="modalTypeIPO !== 'Historical IPOs'" class="col-2"></div>
+        <div class="col-2 text-end">
+          <img
+            class="cursor-pointer img-fluid"
+            src="/assets/img/excelDownload.png"
+            alt="excelDownload"
+            (click)="downloadFilteredExcel()"
+          />
+        </div>
+      </div>
+      <div class="row mt-4">
+        <app-ipo-table
+          *ngIf="modalTypeIPO === 'Upcoming IPOs'"
+          [sortType]="true"
+          type="ipo-navigate-comp"
+          [itemsPerPage]="10"
+          [ipo_table_data]="upcoming_ipo_modal_table_data"
+          [paginate]="true"
+          [pageLength]="upcommingDataLength"
+          (rumoured_data)="rumouredTableDataHandler($event)"
+          (sortedDataHandler)="handleSorting($event)"
+          (changePage)="onPageChage($event)"
+          (nonotesAvailable)="onNoData($event)"
+        ></app-ipo-table>
+        <app-ipo-table
+          *ngIf="modalTypeIPO === 'IPOs Open For Subscription'"
+          [itemsPerPage]="10"
+          [sortType]="true"
+          type="ipo-navigate-comp"
+          [ipo_table_data]="subscription_ipo_modal_table_data"
+          [paginate]="true"
+          [pageLength]="openSubsDataLength"
+          (rumoured_data)="rumouredTableDataHandler($event)"
+          (sortedDataHandler)="handleSorting($event)"
+          (changePage)="onPageChage($event)"
+          (nonotesAvailable)="onNoData($event)"
+        ></app-ipo-table>
+        <app-ipo-table
+          *ngIf="modalTypeIPO === 'Historical IPOs'"
+          [itemsPerPage]="10"
+          [sortType]="true"
+          type="ipo-navigate-comp"
+          [ipo_table_data]="historical_ipo_modal_table_data"
+          [paginate]="true"
+          [pageLength]="historicalDataLength"
+          (rumoured_data)="rumouredTableDataHandler($event)"
+          (sortedDataHandler)="handleSorting($event)"
+          (changePage)="onPageChage($event)"
+          (nonotesAvailable)="onNoData($event)"
+        ></app-ipo-table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<app-alertmodel
+  *ngIf="auth.closeInsidePopup"
+  [alertmsg]="alertmsg"
+></app-alertmodel>

@@ -1,0 +1,256 @@
+<div class="modal p-2">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <h3 class="popup-header text-center pt-2 mt-3 fw600 mb-1">
+      {{ "Advance Search" | uppercase }}
+      <span (click)="newsDialogClose()" class="close cursor-pointer"
+        ><i class="fa fa-times"></i
+      ></span>
+    </h3>
+    <div class="row">
+      <div class="col-12 mt-2 mb-2">
+        <img
+          class="img-fluid float-end"
+          src="/assets/img/excelDownload.png"
+          alt="excelDownload"
+          (click)="downloadFilteredExcel()"
+          [ngStyle]="{
+            'pointer-events': dataLength == 0 ? 'none' : 'all',
+            cursor: dataLength == 0 ? 'not-allowed' : 'pointer'
+          }"
+        />
+      </div>
+    </div>
+    <div
+      class="d-flex justify-content-between justify-content-around mt-3 mb-3"
+    >
+      <div>
+        <ng-select2
+          class="cusSelect2 cusSelect2_14rem"
+          [data]="countryData"
+          [value]="selectedCountry"
+          [options]="ngSelectMultipleOption"
+          [placeholder]="'Select Country'"
+          (valueChanged)="onValueChanged('country', $event)"
+        ></ng-select2>
+      </div>
+      <div>
+        <ng-select2
+          class="cusSelect2 cusSelect2_14rem"
+          [data]="exchnageData"
+          [value]="selectedExchange"
+          [options]="ngSelectMultipleOption"
+          [placeholder]="'Add Exchange'"
+          (valueChanged)="onValueChanged('exchnage', $event)"
+        ></ng-select2>
+      </div>
+      <div>
+        <ng-select2
+          class="cusSelect2 cusSelect2_14rem"
+          [data]="statusList"
+          [value]="selectedStatus"
+          [options]="ngSelectMultipleOption"
+          [placeholder]="'Add Status'"
+          (valueChanged)="onValueChanged('status', $event)"
+        ></ng-select2>
+      </div>
+      <div>
+        <ng-select2
+          class="cusSelect2 cusSelect2_14rem"
+          [placeholder]="'Advisor'"
+          [data]="advisorList"
+          [options]="ngSelectMultipleOption"
+          [value]="selectedAdvisor"
+          (valueChanged)="onValueChanged('advisorList', $event)"
+        ></ng-select2>
+      </div>
+      <div>
+        <!-- <ng-select2
+          class="cusSelect2 cusSelect2_14rem"
+          [placeholder]="'Period'"
+          [data]="periodData"
+          [value]="selectedPeriod"
+          (valueChanged)="onValueChanged('period', $event)"
+        ></ng-select2> -->
+        <div class="cusSelect2_14rem period-container">
+          <div
+            class="period-dropdown-select"
+            (click)="handlePeriodClick(); $event.stopPropagation()"
+          >
+            {{ periodValue }}
+          </div>
+          <ng-container *ngIf="showDropdown">
+            <div
+              class="period-dropdown-container"
+              *ngIf="isPeriodSelected"
+              (click)="$event.stopPropagation()"
+            >
+              <div class="date-picker-container">
+                <div class="from-date-container">
+                  <label for="from">From :</label>
+                  <!-- <input
+                    class="date-input-from remove-cal-icon"
+                    type="date"
+                    id="from"
+                    name="from"
+                    [value]="fromDate"
+                    [min]="minDate"
+                    [max]="maxDate"
+                    (change)="handleFromDatePickerChange($event)"
+                  /> -->
+                  <mat-form-field appearance="outline">
+                    <input
+                      [value]="fromDate"
+                      [min]="minDate"
+                      [max]="maxDate"
+                      matInput
+                      (dateChange)="handleFromDatePickerChange($event)"
+                      [matDatepicker]="picker"
+                    />
+                    <mat-datepicker-toggle matSuffix [for]="picker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="to-date-container">
+                  <label for="to">To :</label>
+                  <!-- <input
+                    class="date-input-to remove-cal-icon"
+                    type="date"
+                    id="to"
+                    name="to"
+                    [value]="toDate"
+                    [min]="minDate"
+                    [max]="maxDate"
+                    (change)="handleToDatePickerChange($event)"
+                  /> -->
+                  <mat-form-field appearance="outline">
+                    <input
+                      matInput
+                      [matDatepicker]="date"
+                      [value]="toDate"
+                      [min]="minDate"
+                      [max]="maxDate"
+                      (dateChange)="handleToDatePickerChange($event)"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="date"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #date></mat-datepicker>
+                  </mat-form-field>
+                </div>
+                <div class="go-btn-container">
+                  <button class="go-btn" type="button" (click)="handleGoBtn()">
+                    Go
+                  </button>
+                </div>
+              </div>
+              <div class="period-list-container">
+                <ul class="period-list">
+                  <li (click)="handlePeriodsValues($event)">
+                    <a>Last 3 months</a>
+                  </li>
+                  <li (click)="handlePeriodsValues($event)">
+                    <a>Last 12 months</a>
+                  </li>
+                  <li (click)="handlePeriodsValues($event)">
+                    <a>Last 3 years</a>
+                  </li>
+                  <li (click)="handlePeriodsValues($event)">
+                    <a>Last 5 years</a>
+                  </li>
+                  <li (click)="handlePeriodsValues($event)">
+                    <a>Last 10 years</a>
+                  </li>
+                  <!-- <li (click)="handlePeriodsValues($event)">
+                    <a>Last 20 years</a>
+                  </li> -->
+                  <li (click)="handlePeriodsValues($event)">
+                    <a>{{ last5Years[0] }}</a>
+                  </li>
+                  <li (click)="handlePeriodsValues($event)">
+                    <a>{{ last5Years[1] }}</a>
+                  </li>
+                  <li (click)="handlePeriodsValues($event)">
+                    <a>{{ last5Years[2] }}</a>
+                  </li>
+                  <li (click)="handlePeriodsValues($event)">
+                    <a>{{ last5Years[3] }}</a>
+                  </li>
+                  <li (click)="handlePeriodsValues($event)">
+                    <a>{{ last5Years[4] }}</a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+    <div
+      class="d-flex justify-content-between justify-content-sm-around mt-3 mb-3"
+    >
+      <div class="d-flex">
+        <div style="width: 10rem">
+          <p class="text-primary" style="line-height: 3rem">Transation Value</p>
+        </div>
+        <div>
+          <div>
+            <!-- <div class="addedMetric">{{ isFieldSelected[item].label }}</div> -->
+            <div class="custom-slider">
+              <input
+                class="graphValue"
+                type="number"
+                placeholder="min."
+                (keyup)="changeValue('min', $event)"
+              />
+              <ngx-slider
+                [(value)]="minvalue"
+                [(highValue)]="maxValue"
+                [options]="options"
+              ></ngx-slider>
+              <input
+                class="graphValue"
+                (keyup)="changeValue('max', $event)"
+                type="number"
+                placeholder="max."
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+      <div style="margin-top: 13px">
+        <ng-select2
+          class="cusSelect2 cusSelect2_5rem"
+          [placeholder]="'Currency'"
+          [data]="currencyData"
+          [value]="selectedCurrency"
+          (valueChanged)="onValueChanged('currency', $event)"
+        ></ng-select2>
+      </div>
+      <div>
+        <button (click)="onSearch()" class="search-btn">Search</button>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-12 mb-2" *ngIf="ipo_table_data_modal?.value?.length">
+        <app-ipo-table
+          type="ipo_advance_search"
+          [paginate]="true"
+          [itemsPerPage]="10"
+          [pageLength]="dataLength"
+          [ipo_table_data]="ipo_table_data_modal"
+          (changePage)="onPageChanged($event)"
+          [currentPageSelected]="currentPage"
+        ></app-ipo-table>
+      </div>
+      <div
+        class="col-12 mt-2 mb-3"
+        *ngIf="!ipo_table_data_modal?.value?.length"
+      >
+        <div class="text-center">No Data Available</div>
+      </div>
+    </div>
+  </div>
+</div>

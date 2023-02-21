@@ -1,0 +1,766 @@
+<div class="container-fluid px-0">
+  <div class="row">
+    <div
+      class="btn-group newcompny-tabs"
+      role="group"
+      id="list-example"
+      aria-label="Basic example"
+      (scroll)="onWindowScroll()"
+    >
+      <button
+        type="button"
+        fragment="summary_tab"
+        class="btn summary-btn"
+        (click)="navigateToSection('summary_tab')"
+        [ngClass]="{
+          active: selectedParentSet == 'summary_tab'
+        }"
+      >
+        Summary
+      </button>
+      <button
+        type="button"
+        fragment="investments_tab"
+        class="btn investments-btn"
+        (click)="navigateToSection('investments_tab')"
+        [ngClass]="{
+          active: selectedParentSet == 'investments_tab'
+        }"
+      >
+        Investments
+      </button>
+      <button
+        *ngIf="!auth.showNotListedPage"
+        type="button"
+        fragment="limited_partners_tab"
+        class="btn limited_partners-btn"
+        (click)="navigateToSection('limited_partners_tab')"
+        [ngClass]="{
+          active: selectedParentSet == 'limited_partners_tab'
+        }"
+      >
+        Limited Partners
+      </button>
+      <button
+        fragment="management_tab"
+        [ngClass]="{
+          active: selectedParentSet == 'management_tab'
+        }"
+        (click)="navigateToSection('management_tab')"
+        type="button"
+        class="btn"
+      >
+        Management
+      </button>
+      <button
+        *ngIf="auth.showNotListedPage"
+        fragment="firm_structure_tab"
+        (click)="navigateToSection('firm_structure_tab')"
+        type="button"
+        class="btn"
+        [ngClass]="{
+          active: selectedParentSet == 'firm_structure_tab'
+        }"
+      >
+        Firm Structure
+      </button>
+    </div>
+  </div>
+  <div *ngIf="auth.showFundPage && !auth.showNotListedPage" class="row py-2">
+    <div>
+      <h3 class="fixed_header company-title m-0">
+        {{
+          this.fundSelectedName
+            ? this.fundSelectedName.replaceAll("%23", "#")
+            : "-"
+        }}
+        |
+        {{ companyInfo ? companyInfo?.controlling_firm : "-" }}
+      </h3>
+    </div>
+  </div>
+  <div *ngIf="!auth.showFundPage && auth.showNotListedPage" class="row py-2">
+    <div>
+      <h3 class="fixed_header company-title m-0">
+        {{ this.notListedSelectedName.replaceAll("%23", "#") }}
+      </h3>
+    </div>
+  </div>
+</div>
+
+<div class="container-fluid px-0">
+  <div class="company-pevc-content">
+    <div
+      id="summary_tab"
+      class="pt-2 row mb-4"
+      #summary
+      (mouseenter)="highlightTab('summary_tab')"
+    >
+      <div
+        [ngClass]="!companyInfo?.description ? 'hide-desc' : 'show-desc'"
+        class="col-6 company-desc"
+      >
+        <span>{{ companyInfo?.description?.substring(0, 197) }}...</span>
+        <i
+          class="fa fa-angle-double-right comdescinfo cursor-pointer"
+          (click)="auth.expandopenPopupcompinfo = true"
+        ></i>
+        <ng-container *ngIf="auth.expandopenPopupcompinfo">
+          <app-company-info-modal
+            [header_data]="
+              auth.showFundPage
+                ? companyInfo?.controlling_firm
+                : this.notListedSelectedName
+            "
+            [table_data]="companyInfoDesc"
+            [isModal]="true"
+          ></app-company-info-modal>
+        </ng-container>
+      </div>
+      <div class="col-6">
+        <div class="row">
+          <div class="col-4 curSel">
+            <ng-select2
+              id="companyStep6"
+              [data]="selectCurrencyData"
+              [value]="selectedCurrencyData"
+              (valueChanged)="handleCurrencyValueChanged($event)"
+              class="cusSelect2 cusSelect2Normal"
+              [placeholder]="'Select Currency'"
+            >
+            </ng-select2>
+          </div>
+          <div class="col-8">
+            <div class="publicprivt-onlyradiobtn">
+              <div class="checkbox_class">
+                <input
+                  type="radio"
+                  name="EntityType"
+                  value="public"
+                  id="entitySelect1"
+                  data-id="teleAdminDIT"
+                  (click)="handlePEVCCompanyClick()"
+                  checked
+                />
+                <label class="customradiobtn">PE/VC</label>
+                <input
+                  type="radio"
+                  name="EntityType"
+                  value="public"
+                  id="entitySelect1"
+                  data-id="teleAdminDIT"
+                  (click)="handlePublicCompanyClick()"
+                />
+                <label class="customradiobtn">Public Company</label>
+                <input
+                  type="radio"
+                  name="EntityType"
+                  value="private"
+                  id="entitySelect2"
+                  data-id="teleAdminDIT"
+                  (click)="handlePrivateCompanyClick()"
+                />
+                <label class="customradiobtn">Private Company</label>
+              </div>
+              <div id="companyStep1">
+                <ng-select2
+                  *ngIf="auth.showNotListedPage"
+                  id="companyDropdownNotListed"
+                  [data]="selectCompanyPEVCData"
+                  [value]="selectedPEVCCompany"
+                  (valueChanged)="valueChangedHandler($event)"
+                  class="cusSelect2 cusSelect2Normal"
+                  [placeholder]="'Select Company'"
+                ></ng-select2>
+                <ng-select2
+                  *ngIf="auth.showFundPage"
+                  id="companyDropdownMNA1"
+                  [data]="selectCompanyPEVCData1"
+                  [value]="selectedPEVCCompany1"
+                  (click)="handleCompanyClick()"
+                  (valueChanged)="valueChangedHandler1($event)"
+                  class="cusSelect2 cusSelect2Normal"
+                  [placeholder]="'Select Company'"
+                ></ng-select2>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        *ngIf="auth.showFundPage && !auth.showNotListedPage"
+        class="col-6 mt-3"
+      >
+        <h3 class="controlling-firm-name">
+          Controlling Firm Name:
+          {{
+            pevcFundSummary?.controlling_firm_name
+              ? pevcFundSummary?.controlling_firm_name
+              : "-"
+          }}
+        </h3>
+        <div class="row mt-4">
+          <div class="col-12 px-0">
+            <div class="row">
+              <div class="col-4 px-0">
+                <span class="field-title"
+                  >Initiation Date:
+                  <span class="field-value">{{
+                    pevcFundSummary?.open_date
+                      ? pevcFundSummary?.open_date
+                      : "-"
+                  }}</span></span
+                >
+              </div>
+              <div class="col-4 px-0">
+                <span class="field-title"
+                  >Amount Sought (USD M):
+                  <span class="field-value">{{
+                    pevcFundSummary?.amt_sought
+                      ? pevcFundSummary?.amt_sought
+                      : "-"
+                  }}</span></span
+                >
+              </div>
+              <div class="col-4 px-0">
+                <span class="field-title"
+                  >Amount Raised (USD M):
+                  <span class="field-value">{{
+                    pevcFundSummary?.amt_raised
+                      ? pevcFundSummary?.amt_raised
+                      : "-"
+                  }}</span></span
+                >
+              </div>
+            </div>
+            <div class="row my-3">
+              <div class="col-4 px-0">
+                <span class="field-title"
+                  >Fund Type:
+                  <span class="field-value">{{
+                    pevcFundSummary?.fund_type
+                      ? pevcFundSummary?.fund_type
+                      : "-"
+                  }}</span></span
+                >
+              </div>
+              <div class="col-4 px-0">
+                <span class="field-title"
+                  >Funds Status:
+                  <span class="field-value">{{
+                    pevcFundSummary?.fund_status_desc
+                      ? pevcFundSummary?.fund_status_desc
+                      : "-"
+                  }}</span></span
+                >
+              </div>
+              <div class="col-4 px-0">
+                <span class="field-title"
+                  >Liquidation Date:
+                  <span class="field-value">{{
+                    pevcFundSummary?.liquidation_date
+                      ? pevcFundSummary?.liquidation_date
+                      : "-"
+                  }}</span></span
+                >
+              </div>
+            </div>
+            <div class="row my-4">
+              <div class="col-12 px-0">
+                <span class="field-title"
+                  >Address of Fund:
+                  <span class="field-value">{{
+                    addressPEVC ? addressPEVC : "-"
+                  }}</span></span
+                >
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4 px-0">
+                <span class="field-title"
+                  >Phone number:
+                  <span class="field-value">{{
+                    phonePEVC ? phonePEVC : "-"
+                  }}</span></span
+                >
+              </div>
+              <div class="col-6 px-0">
+                <span class="field-title"
+                  >Email:
+                  <span class="field-value">{{
+                    contactPEVC ? contactPEVC : "-"
+                  }}</span></span
+                >
+              </div>
+            </div>
+            <div class="row my-3">
+              <div class="col-12 px-0">
+                <span class="field-title"
+                  >Website:
+                  <span class="field-value">{{
+                    websitePEVC ? websitePEVC : "-"
+                  }}</span></span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        *ngIf="!auth.showFundPage && auth.showNotListedPage"
+        class="col-6 pe-0"
+      >
+        <div class="row mt-4">
+          <div class="col-12 px-0">
+            <div class="row">
+              <div class="col-4 px-0 found-custom-width">
+                <span class="field-title"
+                  >Founded:
+                  <span class="field-value">{{
+                    yearFounded ? yearFounded : "-"
+                  }}</span></span
+                >
+              </div>
+              <div class="col-4 px-0 aum-custom-width">
+                <span class="field-title">
+                  Assets Under Management ({{ selectedCurrencyData }} M):
+                  <span class="field-value">{{
+                    pevcNoAssetsUnderMng ? pevcNoAssetsUnderMng : "-"
+                  }}</span></span
+                >
+              </div>
+              <div class="col-3 px-0 tni-custom-width">
+                <span class="field-title">
+                  Total Number of Investments:
+                  <span class="field-value">{{
+                    pevcTotalInvestments ? pevcTotalInvestments : "-"
+                  }}</span></span
+                >
+              </div>
+            </div>
+            <div class="row my-3">
+              <div class="col-4 px-0 found-custom-width">
+                <span class="field-title">
+                  Average Fund Size ({{ selectedCurrencyData }} M):
+                  <span class="field-value">{{
+                    pevcAvgFundSize ? pevcAvgFundSize : "-"
+                  }}</span></span
+                >
+              </div>
+              <div class="col-5 px-0 mng-custom-width">
+                <span class="field-title"
+                  >Number of Funds Under Management:
+                  <span class="field-value">{{
+                    pevcNoFundsUnderMng ? pevcNoFundsUnderMng : "-"
+                  }}</span></span
+                >
+              </div>
+              <div class="col-3 px-0">
+                <span class="field-title">
+                  Number of Active Funds:
+                  <span class="field-value">{{
+                    pevcNoActiveFunds ? pevcNoActiveFunds : "-"
+                  }}</span></span
+                >
+              </div>
+            </div>
+            <div class="row my-4">
+              <div class="col-12 px-0">
+                <span class="field-title"
+                  >Address of Firm:
+                  <span class="field-value">{{
+                    addressPEVC ? addressPEVC : "-"
+                  }}</span></span
+                >
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-4 px-0 phone-custom-width">
+                <span class="field-title"
+                  >Phone number:
+                  <span class="field-value">{{
+                    phonePEVC ? phonePEVC : "-"
+                  }}</span></span
+                >
+              </div>
+              <div class="col-6 px-0">
+                <span class="field-title"
+                  >Email:
+                  <span class="field-value">{{
+                    contactPEVC ? contactPEVC : "-"
+                  }}</span></span
+                >
+              </div>
+            </div>
+            <div class="row my-3">
+              <div class="col-12 px-0">
+                <span class="field-title"
+                  >Website:
+                  <span class="field-value">{{
+                    websitePEVC ? websitePEVC : "-"
+                  }}</span></span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div
+        *ngIf="auth.showFundPage || auth.showNotListedPage"
+        class="col-6 mt-3"
+      >
+        <h4 class="benchmark-title">Benchmark-Interactive Analysis</h4>
+        <app-funds-investment-table
+          *ngIf="auth.showFundPage"
+          [table_data]="benchmarkTableData"
+          [tableType]="'fundBenchmark'"
+          [paginateId]="'fundBenchmark'"
+          (fundSelectedBenchmark)="handlefundSelectedBenchmark($event)"
+          (firmSelectedBenchmarkFund)="handlefirmSelectedBenchmarkFund($event)"
+        ></app-funds-investment-table>
+        <app-funds-investment-table
+          *ngIf="auth.showNotListedPage"
+          [table_data]="benchmarkTableDataNotListed"
+          [tableType]="'notListedBenchmark'"
+          [paginateId]="'notListedBenchmark'"
+          (firmSelected)="handlefirmSelectedBenchmark($event)"
+        ></app-funds-investment-table>
+      </div>
+      <div *ngIf="auth.showFundPage && !hideFocusSection" class="col-6 mt-3">
+        <div class="row">
+          <div class="col-6">
+            <h5 class="focus-title">Country Focus</h5>
+            <ul class="focus-list">
+              <li
+                class="focus-list-item"
+                *ngFor="let country of pevcFundCountryFocus"
+                (click)="transactionRedirection(country)"
+              >
+                {{ country?.country_name }}
+              </li>
+            </ul>
+          </div>
+          <div class="col-6">
+            <h5 class="focus-title">Sector Focus</h5>
+            <ul class="focus-list">
+              <li
+                class="focus-list-item"
+                *ngFor="let sector of pevcFundSectorFocus"
+                (click)="transactionRedirectionSector(sector)"
+              >
+                {{ sector?.sector_name }}
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+      <div *ngIf="auth.showFundPage && !hideFocusSection" class="col-6 mt-3">
+        <h5 class="focus-title">Investments Details</h5>
+        <div class="investment-details-table">
+          <table class="investment-details-table">
+            <thead>
+              <tr>
+                <th>Instrument Used</th>
+                <th>Investment Type</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let iUsed of instrumentUsed; let i = index">
+                <td>{{ iUsed?.instrument_used }}</td>
+                <td>{{ instrumenttype[i]?.transaction_type }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+    <div
+      *ngIf="auth.showFundPage || auth.showNotListedPage"
+      id="investments_tab"
+      class="pt-2 row"
+      (mouseenter)="highlightTab('investments_tab')"
+    >
+      <div class="col-12 ps-0">
+        <div class="row mt-3">
+          <div class="col-12">
+            <div class="row">
+              <div class="col-10">
+                <img
+                  *ngIf="auth.showNotListedPage && !auth.showFundPage"
+                  class="cursor-pointer img-fluid mt-1 ms-1"
+                  src="/assets/img/excelDownload.png"
+                  alt="excelDownload"
+                  style="float: left"
+                  [ngClass]="{
+                    disableExcelIcon:
+                      directInvestmentsTableDataNotListed.value?.length === 0
+                  }"
+                  (click)="directExcel()"
+                />
+                <img
+                  *ngIf="!auth.showNotListedPage && auth.showFundPage"
+                  class="cursor-pointer img-fluid mt-1 ms-1"
+                  src="/assets/img/excelDownload.png"
+                  alt="excelDownload"
+                  style="float: left"
+                  [ngClass]="{
+                    disableExcelIcon:
+                      directInvestmentsTableData.value?.length === 0
+                  }"
+                  (click)="directExcel()"
+                />
+                <span class="text-center direct-investments-title"
+                  >Direct Investments</span
+                >
+              </div>
+              <div
+                *ngIf="!auth.showNotListedPage"
+                class="col-2 status-drop-down d-none"
+              >
+                <ng-select2
+                  class="cusSelect2 cusSelect2Normal"
+                  [data]="statusListData"
+                  [value]="selectedStatusListData"
+                  (valueChanged)="handleStatusValueChanged($event)"
+                  [placeholder]="'Select Status'"
+                >
+                </ng-select2>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <app-investments-expand-table
+              *ngIf="!auth.showNotListedPage"
+              [table_data]="directInvestmentsTableData"
+              [child_table_data]="directInvestmentsChildTableData"
+              (investmentsPEVCChildData)="
+                handleInvestmentsPEVCFundChildData($event)
+              "
+              (pevcInvestmentsRoundSelected)="
+                handlePevcInvestmentsRoundSelected($event)
+              "
+              (pevcInvestmentsRoundSelectedChild)="
+                handlepevcInvestmentsRoundSelectedChild($event)
+              "
+              (changePage)="onPageChangeDirectFund($event)"
+              (cusSortParam)="handlecusSortParamFund($event)"
+              [paginateId]="'directInvestmetnFund'"
+              [totalDataLength]="totalDataLengthFund"
+              [multiplePartFunds]="multiplePartFundsFund"
+              [multiplePartFundsChild]="multiplePartFundsChildFund"
+            ></app-investments-expand-table>
+            <app-investments-expand-table
+              *ngIf="auth.showNotListedPage"
+              [table_data]="directInvestmentsTableDataNotListed"
+              (changePage)="onPageChangeDirectNotListed($event)"
+              [paginateId]="'directInvestmetnNotListed'"
+              [totalDataLength]="totalDataLength"
+              [child_table_data]="directInvestmentsChildTableDataNotListed"
+              (investmentsPEVCChildData)="
+                handleInvestmentsPEVCChildData($event)
+              "
+              (pevcInvestmentsRoundSelected)="
+                handlePevcInvestmentsRoundSelected($event)
+              "
+              (pevcNotListedParticipatingFunds)="
+                handlepevcNotListedParticipatingFunds($event)
+              "
+              (pevcInvestmentsRoundSelectedChild)="
+                handlepevcInvestmentsRoundSelectedChild($event)
+              "
+              (cusSortParam)="handlecusSortParam($event)"
+              [multiplePartFunds]="multiplePartFunds"
+              [multiplePartFundsChild]="multiplePartFundsChild"
+            ></app-investments-expand-table>
+          </div>
+        </div>
+        <div *ngIf="auth.showNotListedPage" class="row mt-2">
+          <div class="col-12 text-center">
+            <img
+              class="cursor-pointer img-fluid mt-1 ms-1"
+              src="/assets/img/excelDownload.png"
+              alt="excelDownload"
+              style="float: left"
+              [ngClass]="{
+                disableExcelIcon: fundOfFundsInvestmetns.value?.length === 0
+              }"
+              (click)="fundOfFundsExcel()"
+            />
+            <span class="text-center mng-investments-title"
+              >Fund of Funds Investments</span
+            >
+          </div>
+          <div class="row mt-2">
+            <div class="col-12 ps-0">
+              <app-funds-investment-table
+                *ngIf="auth.showNotListedPage"
+                [table_data]="fundOfFundsInvestmetns"
+                (fundSelected)="handleFundSelected($event)"
+                (firmSelected)="handlefirmSelected($event)"
+                (changePage)="onPageChangefundsoffundsNotListed($event)"
+                [paginateId]="'fundsoffundsNotListed'"
+                [totalDataLength]="totalDataLengthfundsoffundsNotListed"
+              ></app-funds-investment-table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Entity Details Modal -->
+    <app-entity-details-modal
+      *ngIf="auth.openEntityDetailsModal"
+      [entityDetailsTableData]="entityDetailsTableData"
+      [fundingRoundHeaderData]="fundingRoundHeaderData"
+      [fundingRoundData]="fundingRoundData"
+      (pevcDetModal)="handlepevcDetModal($event)"
+      (investorNameSelected)="handleinvestorNameSelected($event)"
+      (fundNameSelected)="handlefundNameSelected($event)"
+    ></app-entity-details-modal>
+
+    <div
+      *ngIf="auth.showFundPage && !auth.showNotListedPage"
+      id="limited_partners_tab"
+      class="pt-2 row"
+      (mouseenter)="highlightTab('limited_partners_tab')"
+    >
+      <div class="col-12 ps-0">
+        <div class="row mt-3">
+          <div class="col-12 text-center">
+            <img
+              class="cursor-pointer img-fluid mt-1 ms-1"
+              src="/assets/img/excelDownload.png"
+              alt="excelDownload"
+              style="float: left"
+              [ngClass]="{
+                disableExcelIcon: limitedPartnersTableData.value?.length === 0
+              }"
+              (click)="limitedPartnersExcel()"
+            />
+            <span class="text-center mng-investments-title"
+              >Limited Partners</span
+            >
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <app-funds-investment-table
+              [table_data]="limitedPartnersTableData"
+              [paginateId]="'limitedPartners'"
+              (changePage)="onPageChangeDirectLimitedPartners($event)"
+              [totalDataLength]="totalDataLengthLimitedPartners"
+            ></app-funds-investment-table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngIf="auth.showFundPage || auth.showNotListedPage"
+      id="management_tab"
+      class="pt-2 row"
+      (mouseenter)="highlightTab('management_tab')"
+    >
+      <div class="col-12 ps-0">
+        <div class="row mt-3">
+          <div class="col-12 text-center">
+            <img
+              *ngIf="auth.showNotListedPage && !auth.showFundPage"
+              class="cursor-pointer img-fluid mt-1 ms-1"
+              src="/assets/img/excelDownload.png"
+              alt="excelDownload"
+              style="float: left"
+              [ngClass]="{
+                disableExcelIcon: manage_data?.length === 0
+              }"
+              (click)="Managementexcell()"
+            />
+            <img
+              *ngIf="!auth.showNotListedPage && auth.showFundPage"
+              class="cursor-pointer img-fluid mt-1 ms-1"
+              src="/assets/img/excelDownload.png"
+              alt="excelDownload"
+              style="float: left"
+              [ngClass]="{
+                disableExcelIcon: manage_data.length === 0
+              }"
+              (click)="ManagementexcellFund()"
+            />
+            <span class="text-center mng-investments-title">Management</span>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12">
+            <!-- <app-funds-investment-table
+              [table_data]="managementTableData"
+              (changePage)="onPageChangeMngNotListed($event)"
+              [paginateId]="'mngNotListed'"
+              [totalDataLength]="totalDataLengthMng"
+            ></app-funds-investment-table> -->
+            <app-manage-table
+              [table_data]="manage_data"
+              [companyName]="notListedSelectedName"
+              mh="313px"
+            ></app-manage-table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div
+      *ngIf="auth.showNotListedPage"
+      id="firm_structure_tab"
+      class="mt-3 row"
+      #summary
+      (mouseenter)="highlightTab('firm_structure_tab')"
+    >
+      <div class="col-12">
+        <div class="row mt-3">
+          <div class="col-12 text-center ps-0">
+            <img
+              class="cursor-pointer img-fluid mt-1 ms-1"
+              src="/assets/img/excelDownload.png"
+              alt="excelDownload"
+              style="float: left"
+              [ngClass]="{
+                disableExcelIcon: firmStructureTableData.value?.length === 0
+              }"
+              (click)="firmStructure()"
+            />
+            <span class="text-center mng-investments-title"
+              >Firm Structure</span
+            >
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-12 ps-0">
+            <app-funds-investment-table
+              [table_data]="firmStructureTableData"
+              [paginateId]="'firmStructure'"
+              (changePage)="onPageChangeFirmStructureNotListed($event)"
+              [paginateId]="'FirmStructure'"
+              [totalDataLength]="totalDataLengthFirmStructure"
+              (fundSelected)="handleFundSelected($event)"
+            ></app-funds-investment-table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <br />
+  </div>
+</div>
+
+<app-pevc-fund-company-modal
+  *ngIf="auth.showPEVCCompanyModalFund"
+  (selectedPEVCListedCompanyEntityId)="
+    handleSelectedPEVCListedCompanyEntityId($event)
+  "
+  (selectedPEVCNotListedCompanyEntityId)="
+    handleselectedPEVCNotListedCompanyEntityId($event)
+  "
+  (selectedPEVCFundCompanyEntityId)="
+    handleselectedPEVCFundCompanyEntityId($event)
+  "
+></app-pevc-fund-company-modal>

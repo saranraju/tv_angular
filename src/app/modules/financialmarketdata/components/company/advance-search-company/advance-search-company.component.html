@@ -1,0 +1,101 @@
+<div class="modal p-2 modal_styling">
+  <div class="modal-dialog-style">
+    <!-- Modal content -->
+    <div class="modal-content scroll">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        autocomplete="new-search"
+        (click)="newsDialogClose()"
+      >
+        ×
+      </button>
+      <h3 class="popup-header pt-2 fw600 mb-1">ADVANCED SEARCH</h3>
+      <div class="row mt-3 mb-3">
+        <div class="col-3">
+          <div class="d-flex justify-content-between">
+            <div class="fs14 fw400 text-primary align-center">Entity Type</div>
+            <div>
+              <ng-select2
+                [data]="selectEntitydata"
+                [value]="selectedEntity"
+                class="cusSelect2 cusSelect2_10rem me-3"
+                [placeholder]="'Private'"
+                (valueChanged)="valueChangedHandler('Entity', $event)"
+              ></ng-select2>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="d-flex justify-content-between">
+            <div class="fs14 fw400 text-primary align-center">Industry :</div>
+            <div>
+              <ng-select2
+                class="cusSelect2 cusSelect2_10rem me-3"
+                [data]="industryData"
+                [value]="selectedSector"
+                [placeholder]="'All'"
+                (valueChanged)="valueChangedHandler('Industry', $event)"
+              ></ng-select2>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="d-flex justify-content-between">
+            <div class="fs14 fw400 text-primary align-center">Country :</div>
+            <div>
+              <ng-select2
+                [data]="countryData"
+                [value]="selectedCountry"
+                (valueChanged)="valueChangedHandler('Country', $event)"
+                class="cusSelect2 cusSelect2_10rem me-3"
+                [placeholder]="'All'"
+              ></ng-select2>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="d-flex justify-content-between">
+            <div class="fs14 fw400 text-primary align-center">Currency :</div>
+            <div>
+              <ng-select2
+                [data]="currency_data"
+                [value]="selectedcurrecny"
+                (valueChanged)="valueChangedHandler('Currency', $event)"
+                class="cusSelect2 cusSelect2_10rem"
+                [placeholder]="'Select Currency'"
+              ></ng-select2>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-12 mb-2">
+          <div class="position-relative">
+            <input
+              type="text"
+              (keyup)="applyFilterAdvanceTable($event)"
+              class="exchange-input-filter tv-width"
+              style="width: 100% !important"
+              matInput
+              placeholder="Enter Company Name to Search"
+            />
+            <i class="fa fa-search icon-search"></i>
+          </div>
+        </div>
+        <div class="col-12 mt-2 mb-3">
+          <div *ngIf="company_response?.length">
+            <app-company-advance-search-table
+              [table_data]="company_response"
+              [selectedCurrency]="selectedcurrecny"
+            >
+            </app-company-advance-search-table>
+          </div>
+          <div class="text-center" *ngIf="this.noCompany">No Company Found</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

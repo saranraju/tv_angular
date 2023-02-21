@@ -1,0 +1,52 @@
+<div class="modal p-3">
+  <div class="close cursor-pointer" (click)="handleEarningsModalClick()">
+    <i class="fa fa-times"></i>
+  </div>
+  <!-- Modal Content -->
+  <div class="modal-content">
+    <div class="container-fluid px-0">
+      <div class="row earnings-call-container">
+        <h2 class="modal-title ps-1">{{ data.meta.title }}</h2>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <h4 class="participants-title px-0">Participants</h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <h4 class="corporate-participants-title px-0 text-center">
+            Corporate participants
+          </h4>
+        </div>
+      </div>
+      <ul class="row corp-participant-list-container">
+        <li *ngFor="let participants of data.meta.participants" class="col-6">
+          <a href="">{{ participants.name }}</a
+          ><span>{{ participants.title }}</span>
+        </li>
+      </ul>
+      <div class="row">
+        <div class="col-12">
+          <h4 class="corporate-participants-title px-0 text-center">
+            Other participants
+          </h4>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 mng-section-container">
+          <span *ngFor="let speakerData of data.body.section">
+            <h5 class="mng-section-title px-0">{{ speakerData.name }}</h5>
+            <div class="mng-discussion-text">
+              <span *ngFor="let speaker of speakerData.speaker">
+                <p *ngFor="let speakerContent of speaker.plist">
+                  {{ speakerContent }}
+                </p>
+              </span>
+            </div>
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

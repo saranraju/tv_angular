@@ -1,0 +1,44 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th>% Change</th>
+        <ng-container *ngFor="let header of header_data; let i = index">
+          <ng-container *ngIf="i < 5">
+            <th class="text-end">
+              {{ header }}
+            </th>
+          </ng-container>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngFor="let content of table_data; let i = index">
+        <tr>
+          <td *ngIf="i == 0">Company</td>
+          <td *ngIf="i == 1">Index</td>
+          <ng-container *ngFor="let header of header_data; let j = index">
+            <td class="text-end" *ngIf="j < 5">
+              <ng-container *ngIf="content[j] != null">
+                <span
+                  [ngStyle]="{
+                    color:
+                      content[j] < 0
+                        ? '#c70b0b'
+                        : content[j] > 0
+                        ? '#158d71'
+                        : null
+                  }"
+                  >{{ this.util.standardFormat(content[j], 2, "") }}</span
+                >
+              </ng-container>
+              <ng-container *ngIf="content[j] == null"> - </ng-container>
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<br />

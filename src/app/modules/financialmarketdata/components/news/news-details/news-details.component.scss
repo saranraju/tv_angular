@@ -1,0 +1,138 @@
+.news-details-title {
+  font-size: 21px;
+  color: #ffc000;
+  margin-bottom: 0;
+}
+
+.news-advanced-search-btn {
+  background: 0;
+  border: 1px solid #ffc000;
+  color: #ffc000;
+  font-size: 13px;
+  padding: 5px 40px;
+  text-transform: uppercase;
+}
+
+.news-advanced-search-btn:hover {
+  color: #333 !important;
+  background: #ffc000;
+}
+
+.news-details-dropdowns-container .col-2 {
+  width: 20% !important;
+}
+
+.news-details-table {
+  .news-details-loader {
+    height: 15rem !important;
+  }
+  table {
+    font-weight: 400;
+    font-size: 12px;
+
+    tbody {
+      display: block;
+      overflow-y: auto;
+      border-bottom: 1px solid #528dc3;
+      height: 53vh;
+      min-height: 15rem;
+      max-height: 25rem;
+    }
+
+    thead,
+    tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    th {
+      font-weight: 600;
+      border-top: 1px solid #528dc3;
+      border-bottom: 1px solid #528dc3;
+      color: #ffc000;
+      font-size: 12px !important;
+      background-color: #00071e !important;
+      padding: 3px 5px;
+    }
+
+    tr:nth-child(odd) {
+      background-color: #122543;
+    }
+
+    td {
+      padding: 3px 5px;
+      font-size: 12px !important;
+    }
+  }
+}
+
+.news-list-container {
+  padding: 0;
+  margin-bottom: 0.4rem;
+  border-top: 1px solid #507ac4;
+  border-bottom: 1px solid #507ac4;
+  height: calc(100vh - 14rem);
+  overflow-y: auto !important;
+}
+
+.news-list-item {
+  list-style: none;
+  font-size: 12px;
+  padding: 5px 0;
+}
+
+.news-list-item:nth-child(even) {
+  background-color: #122543;
+}
+.custom_ngselect {
+  position: relative;
+
+  .close_icon {
+    position: absolute;
+    z-index: 10;
+    right: 4px;
+    top: 2px;
+    cursor: pointer;
+  }
+}
+
+.news-text {
+  margin-bottom: 0;
+  word-break: break-word;
+  padding: 3px 7px;
+}
+
+.latest-news-title {
+  color: #ffc000;
+  font-size: 18px;
+}
+
+.latest-news-header-container {
+  // border-top: 1px solid #507ac4;
+  // background-color: #161d34;
+  // width: 24% !important;
+  // height: calc(100vh - 14rem);
+  height: 100%;
+}
+
+.news-details-container {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 10px;
+}
+
+.news-list-content {
+  list-style: none;
+  font-size: 12px;
+  padding: 5px 0;
+}
+
+.news-list-content:nth-child(even) {
+  background-color: #122543;
+}
+
+.news-list-content:hover {
+  cursor: pointer;
+  text-decoration: underline;
+}

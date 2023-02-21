@@ -1,0 +1,50 @@
+<div class="modal p-2">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <h3 class="popup-header pt-2 mb-1">
+      <b>NEWS</b>
+      <span (click)="newsDialogClose()" class="close cursor-pointer"
+        ><i class="fa fa-times"></i
+      ></span>
+    </h3>
+    <div class="newsSections">
+      <div class="newsSection" *ngFor="let news of news_detail">
+        <div
+          *ngIf="news.emptyTitle !== '-'"
+          class="float100 economy-news-prtclr"
+        >
+          <div
+            class="d-flex align-items-center justify-content-between px-2 bg-heading text-black py-2"
+          >
+            <h6 class="mb-0 fw600">{{ news.title }}</h6>
+            <h6 class="mb-0 fw600">
+              {{ news.period | date: "yyyy-MM-dd HH:mm" }}
+            </h6>
+          </div>
+
+          <div class="">
+            <p class="line-height px-2 fw400 pt-3 pb-3 mb-0">
+              {{ news.description | slice: 0:500 }}
+              <a
+                *ngIf="news?.description?.length > 400"
+                (click)="insideDialog(news)"
+                class="newsModal"
+              >
+                Read More..</a
+              >
+            </p>
+          </div>
+        </div>
+      </div>
+      <!-- inside Popup Modal -->
+
+      <div *ngIf="auth?.closeInsidePopup && single_news_detail">
+        <app-news-dialog-popup
+          [popupDetail]="single_news_detail"
+        ></app-news-dialog-popup>
+      </div>
+
+      <!-- inside Popup Modal -->
+    </div>
+  </div>
+</div>

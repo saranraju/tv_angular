@@ -1,0 +1,138 @@
+.commodityTable {
+  table {
+    font-weight: 400;
+    font-size: 13px;
+
+    .tdBorderRight {
+      border-right: 1px dotted #528dc3;
+    }
+
+    .industry_monitor {
+      display: block;
+      overflow-y: auto;
+    }
+
+    .coustom_according {
+      height: 192px;
+    }
+
+    tbody {
+      display: block;
+      // overflow-y: auto;
+    }
+
+    thead,
+    tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+      background-color: #00071e;
+    }
+
+    th {
+      font-weight: 600;
+      border-top: 1px solid #528dc3;
+      border-bottom: 1px solid #528dc3;
+      font-size: 11px;
+      color: #ffc000;
+      background-color: #00071e !important;
+      padding: 4px 4px 4px 10px;
+    }
+
+    .ecoTable {
+      tbody:nth-child(odd) {
+        tr {
+          background-color: #122543;
+        }
+      }
+    }
+
+    .background_accordin {
+      background-color: #00071e !important;
+      font-size: 13px !important;
+    }
+
+    .ecoTable {
+      tbody {
+        tr:first-child {
+          position: sticky;
+          top: 0px;
+          // background-color: #00071e !important;
+          z-index: 1;
+        }
+
+        td {
+          tr:nth-child(odd) {
+            background-color: #00071e;
+            position: unset;
+          }
+        }
+      }
+    }
+
+    .cusIcon {
+      position: absolute;
+      left: 3px;
+      top: 6px;
+    }
+
+    td {
+      padding: 4px 4px 4px 8px;
+      font-size: 11px;
+    }
+
+    td:first-child {
+      color: #ffc000;
+    }
+
+    .text-primary {
+      color: #ffc000 !important;
+    }
+
+    .economy_padding {
+      td:nth-child(2) {
+        text-align: left !important;
+      }
+
+      td:nth-child(3) {
+        text-align: left !important;
+      }
+
+      td:nth-child(4) {
+        text-align: left !important;
+      }
+
+      td:nth-child(5) {
+        // width: 110px !important;
+        text-align: left !important;
+        font-size: 10px;
+        padding: 0px;
+        padding-left: 6px;
+      }
+
+      td:nth-child(6) {
+        // width: 110px !important;
+        text-align: left !important;
+        font-size: 10px;
+        padding: 0px;
+        padding-left: 6px;
+      }
+    }
+
+    .arrow_icon::before {
+      content: "\2192";
+      position: absolute;
+      left: 9px;
+    }
+  }
+
+  .cursor-default {
+    cursor: auto !important;
+  }
+}
+
+.custom-spacing {
+  display: flex;
+  flex-direction: row;
+  // min-width: 90px;
+}

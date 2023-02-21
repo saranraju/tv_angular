@@ -1,0 +1,60 @@
+<div class="modal p-2">
+  <div class="modal-dialog-style">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        (click)="tableDialogClose()"
+        autocomplete="new-search"
+      >
+        ×
+      </button>
+      <div class="commodityTable">
+        <table class="w-100 scroll">
+          <thead>
+            <tr>
+              <th>Particulars</th>
+              <ng-container *ngFor="let header of header_data; let i = index">
+                <th class="text-end">
+                  {{ header | date: "MMM-y" }}
+                </th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody style="max-height: 500px">
+            <tr *ngFor="let content of table_data; let i = index">
+              <!-- <ng-container *ngIf="i < 6"> -->
+              <td>{{ content.description }}</td>
+
+              <ng-container *ngFor="let header of header_data; let j = index">
+                <td class="text-end">
+                  <ng-container
+                    *ngIf="content[type + '-' + header] != undefined"
+                  >
+                    {{
+                      this.util.standardformatCustom(
+                        content[type + "-" + header],
+                        2,
+                        ""
+                      )
+                    }}
+                  </ng-container>
+                  <ng-container
+                    *ngIf="content[type + '-' + header] == undefined"
+                  >
+                    -
+                  </ng-container>
+                </td>
+              </ng-container>
+              <!-- </ng-container> -->
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <br />
+    </div>
+  </div>
+</div>

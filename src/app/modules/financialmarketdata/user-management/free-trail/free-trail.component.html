@@ -1,0 +1,151 @@
+<app-user-management-header></app-user-management-header>
+<div class="section container-fluid">
+  <div class="row">
+    <div class="col-sm-12">
+      <h3 class="sub-title">Financial Market Data</h3>
+    </div>
+    <div class="col-sm-12">
+      <div class="text-center">
+        <h5 class="fs19 fw600">Comprehensive Data at the Lowest* Price</h5>
+      </div>
+    </div>
+    <div *ngIf="message" class="alert alert-warning" role="alert">
+      {{ message }}
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+    <div class="responsive">
+      <div class="right-container">
+        <div class="row mt-3">
+          <div class="col-12">
+            <h5 class="interactive">
+              Interactive one-stop global data solution to enhance productivity
+            </h5>
+            <ul class="interacive-points-container">
+              <li class="interacive-points">
+                Global coverage of both private and publicly traded companies,
+                Industries, Economies, Commodities, Bonds, ETFs, Futures and
+                Options, Transactions (PE, VC, M&A and IPOs) and Operational
+                data
+              </li>
+              <li class="interacive-points">
+                Powerful visualization and analytics tools with smart charting
+              </li>
+              <li class="interacive-points">
+                Hardware agnostic, web-based platform – no terminal needed!
+              </li>
+              <li class="interacive-points">Intuitive, easy to use platform</li>
+            </ul>
+            <div class="video-min-height">
+              <video width="100%" autoplay="" loop="" muted="" playsinline="">
+                <source
+                  src="https://www.televisory.com/TelevisoryV2-portlet/videos/equibase-video-new.mp4"
+                  type="video/mp4"
+                />
+                Your browser does not support HTML5 video.
+              </video>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="left-container">
+        <div class="row mt-3 explorebtnwhole">
+          <div>
+            <form
+              [formGroup]="freeTrailForm"
+              (ngSubmit)="
+                freeTrailAccess(freeTrailForm.valid, freeTrailForm.value)
+              "
+              class="row form-container align-center"
+            >
+              <span class="header-container">
+                <label> Register for a FREE Trial </label>
+                <label>or</label>
+                <button
+                  type="button"
+                  [routerLink]="['/demo-request', 'financial']"
+                  class="req-btn"
+                >
+                  Request Demo
+                </button>
+              </span>
+              <input formControlName="email" placeholder="Email Address" />
+              <input
+                formControlName="comapanyName"
+                placeholder="Company Name"
+              />
+              <input
+                formControlName="password"
+                type="password"
+                placeholder="Enter Password"
+              />
+              <small>
+                <b>* </b>Password must be alphanumeric with at least 6
+                characters. Special characters are not allowed.</small
+              >
+              <input
+                formControlName="rePassword"
+                type="password"
+                placeholder="Re Enter Password"
+              />
+              <b
+                >By signing up, you agree to our
+                <span> Terms of Use </span> ,<span> Terms of Access </span> ,
+                <span> Policy </span> .</b
+              >
+              <div class="btn-container">
+                <button [disabled]="disableButton" type="submit">
+                  Start Free Trial
+                </button>
+              </div>
+            </form>
+            <div class="inform-container">
+              <p>
+                Information Empowerment for Investors, Lenders, Entrepreneurs,
+              </p>
+              <p>Corporations, and Advisors</p>
+            </div>
+            <div class="finM-data">
+              <p>
+                *Financial Market Data - Global Subscription at $5,000/Annum
+                Only
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <footer class="telFooter">
+    <div class="row">
+      <div class="col-sm-4">
+        <p class="mb-0 px-3">
+          Copyright © 2022 Televisory <span class="px-1">|</span> All Rights
+          Reserved
+        </p>
+      </div>
+      <div class="col-sm-8">
+        <ul class="mb-0 text-white">
+          <li class="">
+            <a href="https://televisory.com/terms-of-use">Terms of Use</a>
+          </li>
+          <li class="">
+            <a href="https://televisory.com/terms-of-access">Terms of Access</a>
+          </li>
+          <li class="">
+            <a href="https://televisory.com/policy">Privacy Policy</a>
+          </li>
+          <li class="">
+            <a href="https://televisory.com/sitemap">Site map </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<app-form-alert-model
+  *ngIf="authService.closeInsidePopup"
+  [alertmsg]="alertmsg"
+></app-form-alert-model>

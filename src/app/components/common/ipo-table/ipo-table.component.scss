@@ -1,0 +1,95 @@
+.ipo-table {
+  table {
+    font-weight: 400;
+    font-size: 12px;
+
+    tbody {
+      display: block;
+      overflow-y: auto;
+      min-height: 5rem;
+      max-height: 60vh;
+      // border-bottom: 1px solid #528dc3;
+    }
+    .fixedheight {
+      height: 100%;
+    }
+
+    thead,
+    tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+    .fixedheight {
+      max-height: 450px;
+      tr {
+        height: 85px;
+      }
+    }
+    .tableRow {
+      tr {
+        height: 4rem;
+      }
+    }
+
+    th {
+      font-weight: 600;
+      border-top: 1px solid #528dc3;
+      border-bottom: 1px solid #528dc3;
+      color: #ffc000;
+      font-size: 12px !important;
+      background-color: #00071e !important;
+      padding: 3px 5px;
+    }
+
+    tr:nth-child(odd) {
+      background-color: #122543;
+    }
+
+    td {
+      padding: 7px 7px;
+      font-size: 12px !important;
+    }
+
+    td:first-child {
+      color: #ffc000;
+    }
+  }
+  .rumoured-icon {
+    border-radius: 25px;
+    padding: 0px 5px;
+    background-color: #ffc000;
+    color: black;
+  }
+  .border-btm {
+    border-bottom: 1px solid #528dc3;
+  }
+  .hover-header {
+    // text-decoration: none;
+    cursor: pointer;
+  }
+  // .hover-header:hover {
+  //   text-decoration: underline;
+  // }
+}
+
+.paginationDesign {
+  // background-color: #ffc000;
+  display: flex;
+  justify-content: center;
+
+  div {
+    width: 400px;
+    // background-color: #122543;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+  }
+  p {
+    margin: 0px;
+    cursor: pointer;
+  }
+  i {
+    cursor: pointer;
+  }
+}

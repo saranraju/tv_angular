@@ -1,0 +1,427 @@
+.text-primary {
+  color: #ffc000 !important;
+}
+
+.commodityChart {
+  width: 100%;
+  height: 300px;
+  max-width: 100%;
+}
+
+.commodityChart1 {
+  width: 100%;
+  height: 180px;
+  max-width: 100%;
+}
+
+.bottom {
+  align-self: end !important;
+}
+
+// input[type='radio']:checked:after {
+//   background-color: #fbe5c6;
+//   color: #ffc000;
+// }
+
+.stocktitle-whole {
+  // position: fixed;
+  background-color: #00071e;
+  // z-index: 9;
+
+  .fixed_header {
+    margin-top: 6px;
+  }
+
+  b {
+    font-size: 17px;
+    text-transform: uppercase;
+    font-weight: bold;
+    color: #ffc000;
+
+    span {
+      font-size: 15px;
+      // color: white;
+    }
+  }
+}
+
+.style_container {
+  // margin-top: 6rem;
+
+  .company_desc {
+    font-size: 12px;
+    max-width: 49%;
+  }
+
+  .curSel {
+    margin-top: 14px;
+    text-align: center;
+
+    b {
+      font-weight: normal;
+      color: #ffc000;
+      font-size: 12px;
+    }
+  }
+
+  .publicprivt-onlyradiobtn {
+    float: right;
+    width: 78%;
+
+    .checkbox_class {
+      float: right;
+    }
+
+    .customradiobtn {
+      font-size: 12px;
+      color: white;
+      padding-left: 9px;
+      padding-right: 10px;
+    }
+  }
+}
+
+.maximize-financials {
+  float: right;
+  margin-bottom: 6px;
+}
+
+.newcompny-tabs {
+  margin-top: 2px;
+  text-align: center;
+  width: 100%;
+  padding: 5px;
+
+  .btn {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background: 0;
+    border: 1px solid #ffc000;
+    color: #ffc000;
+    font-size: 13px;
+    padding: 6px 10px;
+    flex: none;
+  }
+  .btn:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  .active {
+    color: #333 !important;
+    background: #ffc000;
+  }
+}
+
+.betaSec {
+  p {
+    display: inline-block;
+  }
+}
+
+.btn_link {
+  background: #fbe5c6;
+  color: #333;
+  border: 1px solid #ffc000;
+  padding: 4px 4px;
+  width: 84px;
+  border-radius: 4px;
+}
+
+.btn_link1 {
+  background: #fbe5c6;
+  color: #333;
+  border: 1px solid #ffc000;
+  padding: 3px 4px;
+  width: 85px;
+  border-radius: 4px;
+}
+
+.active1 {
+  background: #ffc000;
+  color: #333;
+  box-shadow: none;
+  border: 1px solid #ffc000;
+}
+
+.btn_1 {
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.btn_2 {
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.text_truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: break-spaces;
+  height: 38px;
+}
+
+.comdescinfo {
+  color: white !important;
+  font-size: 19px;
+  padding-left: 5px;
+}
+
+.beta_styling {
+  margin-left: 15px;
+}
+
+.company_content {
+  overflow: auto;
+  height: 72vh;
+  position: fixed;
+}
+
+.stock-price {
+  padding-left: 8px;
+  padding-top: 2px;
+  // margin-right: auto;
+}
+
+.btn-ml {
+  margin-left: 1rem;
+}
+
+.po-seg {
+  position: relative;
+  top: 1.6rem;
+}
+
+.po-ana {
+  position: relative;
+  top: 7.8rem;
+}
+
+.summary-btn {
+  z-index: 0 !important;
+}
+
+.margin-advance {
+  margin-top: 2.8rem !important;
+  font-weight: 600;
+}
+
+input[type="radio"]:before {
+  content: "";
+  display: block;
+  width: 73%;
+  height: 70%;
+  margin: 19% auto;
+  border-radius: 50%;
+  margin-left: 2px;
+  margin-top: 2px;
+}
+
+input[type="radio"]:checked:before {
+  background: #ffc000;
+}
+
+input[type="radio"]:checked {
+  border-color: #ffc000;
+}
+
+.edit_benchmark {
+  margin-left: 28px;
+  background: #fbe5c6;
+  color: #333;
+  width: 56px;
+  padding: 2px 4px 1px 4px;
+  border: 1px solid #ffc000;
+  border-radius: 3px;
+  font-style: normal;
+  cursor: pointer;
+  height: 1.5rem;
+}
+
+.text-center {
+  text-align: center;
+}
+
+#scrolltotop-btn.show {
+  opacity: 1;
+  visibility: visible;
+}
+
+#scrolltotop-btn {
+  display: inline-block;
+  background-color: #ffc000;
+  text-align: center;
+  border-radius: 4px;
+  position: fixed;
+  z-index: 999 !important;
+  transition: background-color 0.3s, opacity 0.5s, visibility 0.5s;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1000;
+  width: 32px;
+  height: 32px;
+  text-align: center;
+  border-radius: 4px;
+  position: fixed;
+  bottom: 4.2rem;
+  right: 26px;
+  cursor: pointer;
+}
+
+.show {
+  display: block !important;
+}
+
+.hide {
+  display: none !important;
+}
+
+a {
+  color: #ffc000;
+  text-decoration: none;
+  outline: 0;
+}
+
+#scrolltotop-btn::after {
+  content: "\f077";
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 18px;
+  line-height: 50px;
+  position: absolute;
+  color: white;
+  top: -9px;
+  left: 7px;
+}
+
+.container,
+.container-fluid,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl,
+.container-xxl {
+  padding-left: 0px;
+}
+
+.row > * {
+  padding-left: 0px;
+}
+
+.removePaddingRight {
+  padding-right: 0px !important;
+}
+
+.textUnderline {
+  text-decoration: underline;
+}
+
+.relative_styling {
+  font-size: 13.5px;
+  font-style: italic;
+}
+
+.ownershipTableContainer {
+  height: fit-content;
+  max-height: 328px;
+}
+
+.pr13px {
+  padding-right: 13px;
+}
+
+.bt528dc3 {
+  border-top: 1px solid #528dc3;
+}
+
+.cusSelect2Normal01 {
+  top: -2.2rem;
+}
+
+.close-icon-position {
+  position: absolute;
+  left: 218px;
+  top: -26px;
+}
+
+// PEVC Firm Profile
+.firm-profile-title {
+  font-size: 19px;
+  font-weight: 600;
+  color: #ffc000;
+}
+
+.firm-field-title {
+  font-size: 12px;
+  color: #ffc000;
+}
+
+.firm-field-value {
+  color: #fff;
+}
+
+.direct-investments-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ffc000;
+}
+
+.disableExcelIcon {
+  pointer-events: none;
+  opacity: 0.5;
+}
+
+@media screen and (max-width: 995px), screen and (max-height: 650px) {
+  .company_content {
+    height: 52vh;
+  }
+}
+
+.modal-dialog {
+  background: #00071e;
+  transform: translate(0, 0);
+  width: 800px;
+  height: 160px;
+}
+
+.modal-content {
+  background: #00071e;
+}
+
+.modal-header {
+  border-bottom: 1px solid #e5e5e5;
+  // padding: 6px 6px;
+  padding: 13px 26px;
+}
+
+.text-primary {
+  color: #ffc000 !important;
+}
+
+.modal-body {
+  position: relative;
+  padding: 15px;
+  color: #ffc000;
+}
+
+.modal-footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+
+.close {
+  color: white;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 1;
+  text-shadow: 0 1px 0 white;
+}
+
+button.close {
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  -webkit-appearance: none;
+}

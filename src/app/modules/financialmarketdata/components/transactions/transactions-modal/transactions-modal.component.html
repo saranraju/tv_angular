@@ -1,0 +1,82 @@
+<div class="modal p-3">
+  <div class="close cursor-pointer" (click)="transactionsModalClose()">
+    <i class="fa fa-times"></i>
+  </div>
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 my-3">
+          <h2 class="modal-title">Top Funded Companies</h2>
+        </div>
+      </div>
+      <div class="row justify-content-center align-items-center">
+        <div class="col-2 d-flex ms-5">
+          <p class="modal-sub-title">Country:</p>
+          <span class="modal-sub-span"
+            >{{ topFundedCompaniesData[0]?.country }}
+          </span>
+        </div>
+        <div class="col-2 d-flex">
+          <p class="modal-sub-title">Period:</p>
+          <span class="modal-sub-span">{{
+            selectedPEVCPeriod?.replaceAll("_", " ")
+          }}</span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col entries-container">
+          <label for="entries">Show</label>
+          <select name="entries" id="entries" (change)="handleEntries($event)">
+            <option value="10">10</option>
+            <option value="25">25</option>
+            <option value="50">50</option>
+            <option value="100">100</option>
+          </select>
+          <span>entries</span>
+        </div>
+      </div>
+      <!-- Table -->
+      <div class="row my-2">
+        <div class="col-12">
+          <app-table
+            [table_data]="modal_table_data"
+            (selectedRow)="handleSelectedRow($event)"
+            mh="470px"
+          ></app-table>
+          <div class="container-fluid px-0 modal-pagination-container">
+            <span (click)="handlePrevClick()">
+              <img
+                class="prev-icon"
+                src="assets/img/next.svg"
+                alt="previous-page"
+                [ngClass]="currentPage < 2 ? 'hide-prev' : ''"
+              />
+            </span>
+            <span class="pagination" *ngFor="let i of modalPageNumbers">
+              <a
+                class="pagination-item"
+                [ngClass]="currentPage === i ? 'active-page' : ''"
+                (click)="handlePagination(i)"
+                >{{ i }}</a
+              >
+            </span>
+            <span (click)="handleNextClick()">
+              <img
+                class="next-icon"
+                src="../../../../../assets/img/next.svg"
+                alt="next-page"
+                [ngClass]="
+                  currentPage === modalPageNumbers?.length ||
+                  modalPageNumbers?.length === 0
+                    ? 'hide-next'
+                    : ''
+                "
+              />
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

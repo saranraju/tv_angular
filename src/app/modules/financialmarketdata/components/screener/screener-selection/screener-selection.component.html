@@ -1,0 +1,308 @@
+<div class="container-fluid px-0">
+  <div class="row d-flex align-items-center my-2">
+    <div class="col-2 ps-1">
+      <h1 *ngIf="!hideFilterCriteria" class="screener-selection-title mb-0">
+        Screener Selection
+      </h1>
+    </div>
+    <div class="col-10">
+      <div class="btn-group">
+        <button
+          *ngFor="let tab of headerTabs"
+          type="button"
+          class="btn"
+          (click)="onChangeHeaderTab(tab.id)"
+          [ngClass]="{
+            active: tab.id === tabactive
+          }"
+        >
+          {{ tab.instrument_type }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!hideFilterCriteria" class="row my-4 d-flex align-items-center">
+    <div *ngIf="!regionSelected" class="col-4 ps-1">
+      <ng-select2
+        class="cusSelect2 cusSelect2Normal"
+        [data]="selectCountryData"
+        [value]="selectedCountry"
+        [options]="selectOptions"
+        [placeholder]="'Select Country'"
+        (valueChanged)="onValueChangedDropdowns('country', $event)"
+      ></ng-select2>
+    </div>
+    <div *ngIf="regionSelected" class="col-4 ps-1">
+      <ng-select2
+        class="cusSelect2 cusSelect2Normal"
+        [data]="selectRegionData"
+        [value]="selectedRegion"
+        [options]="selectOptions"
+        [placeholder]="'Select Region'"
+        (valueChanged)="onValueChangedDropdowns('region', $event)"
+      ></ng-select2>
+    </div>
+    <div *ngIf="!regionSelected" class="col-5">
+      <ng-select2
+        class="cusSelect2 cusSelect2Normal"
+        [data]="selectIndustryData"
+        [value]="selectedIndustry"
+        [options]="selectOptions"
+        [placeholder]="'Select Industry'"
+        (valueChanged)="onValueChangedDropdowns('industry', $event)"
+      ></ng-select2>
+    </div>
+    <div *ngIf="regionSelected" class="col-5">
+      <ng-select2
+        class="cusSelect2 cusSelect2Normal"
+        [data]="selectSectorData"
+        [value]="selectedSector"
+        [options]="selectOptions"
+        [placeholder]="'Select Sector'"
+        (valueChanged)="onValueChangedDropdowns('sector', $event)"
+      ></ng-select2>
+    </div>
+    <div class="col-2">
+      <ng-select2
+        class="cusSelect2 cusSelect2Normal"
+        [data]="selectCurrencyData"
+        [value]="selectedCurrency"
+        [placeholder]="'Select Currency'"
+        (valueChanged)="onValueChangedDropdowns('currency', $event)"
+        [disabled]="tabactive === 5 || tabactive === 6"
+      ></ng-select2>
+    </div>
+    <div class="col-1">
+      <span class="screener-icons">
+        <i (click)="handleRefreshIconClick()" class="fa fa-refresh ms-2"></i>
+        <i
+          (click)="handleDownloadIconClick()"
+          class="fa fa-cloud-download ms-4"
+        ></i>
+      </span>
+    </div>
+  </div>
+  <div *ngIf="!hideFilterCriteria" class="row">
+    <div class="col-3 ps-1">
+      <div class="criteria-container add-criteria-container">
+        <div class="row">
+          <div class="col-12 criteria-title">Add Criteria:</div>
+        </div>
+        <div class="row">
+          <div class="col-12">
+            <ul *ngIf="!subMetricTabSelected" class="add-criteria-list">
+              <li *ngFor="let item of addCriteriaData; let i = index">
+                <span (click)="handleExpandIconClick(i)"
+                  ><i
+                    [ngClass]="
+                      selectedPlus_icon && index == i ? 'fa-minus' : 'fa-plus'
+                    "
+                    class="fa fa-solid cursor-pointer"
+                  ></i>
+                </span>
+                {{ item.criteriaName }}
+                <ul
+                  *ngIf="showChildList && index === i"
+                  class="add-criteria-sub-list"
+                >
+                  <li
+                    style="cursor: pointer"
+                    (click)="
+                      handleChildListItemClick(
+                        i,
+                        data,
+                        item.screenerSubCriteria
+                      )
+                    "
+                    *ngFor="let data of item.screenerSubCriteria"
+                  >
+                    {{ data.subCriteriaName }}
+                    <span *ngIf="data.criteriaSelected"
+                      ><i class="fa fa-check float-right me-2"></i
+                    ></span>
+                  </li>
+                </ul>
+              </li>
+            </ul>
+            <ul *ngIf="subMetricTabSelected" class="add-criteria-list">
+              <li
+                (click)="handleChildListItemClickSubMetric(i, item)"
+                style="cursor: pointer"
+                *ngFor="let item of addCriteriaData; let i = index"
+              >
+                {{ item.criteriaName }}
+                <span *ngIf="item.criteriaSelected"
+                  ><i class="fa fa-check float-right me-2"></i
+                ></span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-9">
+      <div class="criteria-container">
+        <div class="row">
+          <div class="col-12 criteria-title">Edit Criteria:</div>
+        </div>
+        <div
+          *ngFor="let item of Object.keys(isFieldSelected)"
+          class="row align-items-center"
+        >
+          <div class="col-3">{{ isFieldSelected[item].label }}</div>
+          <div
+            *ngIf="isFieldSelected[item].metricType === 'dropdown'"
+            class="col-8 my-2"
+          >
+            <ng-select2
+              class="cusSelect2 cusSelect2Normal formula-unit"
+              [data]="selectAdvisorData"
+              [value]="selectedAdvisor"
+              [options]="selectOptions"
+              [placeholder]="'Advisor - All'"
+            ></ng-select2>
+          </div>
+          <div
+            *ngIf="isFieldSelected[item].metricType === 'date'"
+            class="col-8 my-2"
+          >
+            <div class="row">
+              <div class="col-6">
+                <span class="me-3">Start Date</span>
+                <input type="text" />
+              </div>
+              <div class="col-6">
+                <span class="me-3">End Date</span>
+                <input type="text" />
+              </div>
+            </div>
+          </div>
+          <div
+            *ngIf="isFieldSelected[item].metricType === 'slider'"
+            class="col-8 my-2 custom-slider"
+          >
+            <input
+              class="slider-input"
+              type="text"
+              [(ngModel)]="isFieldSelected[item].min"
+            />
+            <ngx-slider
+              [id]="isFieldSelected[item].id"
+              [(value)]="isFieldSelected[item].min"
+              [(highValue)]="isFieldSelected[item].max"
+              [options]="options"
+              (valueChange)="getValueData($event)"
+              (highValueChange)="getHighValueData($event)"
+            ></ngx-slider>
+            <input
+              class="slider-input"
+              type="text"
+              [(ngModel)]="isFieldSelected[item].max"
+            />
+          </div>
+          <div (click)="removeMatric(item)" class="col-1 text-center ps-5">
+            <i class="fa fa-times cursor-pointer"></i>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="!hideFilterCriteria" class="row my-3">
+    <div class="col-6 ps-1">
+      <button
+        (click)="handleFormulaBuilderClick()"
+        *ngIf="tabactive === 1"
+        type="button"
+        class="footer-btn active me-4"
+      >
+        Formula Builder
+      </button>
+      <button
+        (click)="handleHideFilterBtnClick()"
+        *ngIf="showExecuteUI"
+        type="button"
+        class="footer-btn active"
+      >
+        Hide Filter Criteria
+      </button>
+    </div>
+    <div class="col-6 d-flex justify-content-end">
+      <button
+        *ngIf="showExecuteUI"
+        (click)="handleSaveBtnClick()"
+        type="button"
+        class="footer-btn active footer-btn-right"
+      >
+        Save
+      </button>
+      <button
+        (click)="handleExecuteBtnClick()"
+        type="button"
+        class="footer-btn active ms-4 footer-btn-right"
+      >
+        Execute
+      </button>
+    </div>
+  </div>
+  <div *ngIf="showExecuteUI" class="row mt-3">
+    <div class="col-6 ps-1 align-items-center">
+      <h1 style="display: inline" class="screener-selection-title mb-0">
+        Screen {{ screenName }}
+      </h1>
+      <button
+        *ngIf="hideFilterCriteria"
+        (click)="handleEditCriteriaBtnClick()"
+        type="button"
+        class="footer-btn active ms-4"
+      >
+        Edit Criteria
+      </button>
+    </div>
+    <div class="col-6 ps-1 text-end">
+      <span class="results-per-page-text">Results per Page</span>
+      <ng-select2
+        [data]="resultsPerPageData"
+        [value]="selectedResultsValue"
+        (valueChanged)="handleResultsPerPageChanged($event)"
+        class="cusSelect2 sSelect2NormalScreener mx-3"
+      ></ng-select2>
+      <img
+        class="cursor-pointer img-fluid"
+        src="/assets/img/excelDownload.png"
+        alt="excelDownload"
+      />
+    </div>
+  </div>
+  <div *ngIf="showExecuteUI" class="row mt-3 ps-1">
+    <app-screener-table
+      class="px-0"
+      [screenerTable]="screenResultsTableData"
+      [paginate]="true"
+      [currentPageSelected]="currentPageSelected"
+      [itemsPerPage]="itemsPerPage"
+      [pageChanged]="pageChanged"
+    ></app-screener-table>
+  </div>
+</div>
+
+<!-- Save Screen Modal -->
+<app-save-screen-modal
+  *ngIf="auth.showSavedScreensModal"
+  [savedScreen]="savedScreen"
+  (selectedSavedScreen)="handleSelectedSavedScreen($event)"
+  (selectedSavedScreenInput)="handelselectedSavedScreenInput($event)"
+></app-save-screen-modal>
+
+<!-- Saved Screen Modal -->
+<app-saved-screen-modal
+  *ngIf="auth.showSavedScreensModal2"
+  [savedScreen]="savedScreen"
+  (savedScreenText)="handleSavedScreenSelected($event)"
+  (savedScreenDeleteText)="handleSavedScreenDeleteText($event)"
+  (confirmDeletion)="handleConfirmDeletion($event)"
+></app-saved-screen-modal>
+
+<!-- Formula Builder Modal -->
+<app-formula-builder-modal
+  *ngIf="auth.showFormulaBuilderModal"
+></app-formula-builder-modal>

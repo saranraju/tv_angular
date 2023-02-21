@@ -1,0 +1,107 @@
+<div class="funds-investments-table">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th
+          *ngFor="let header of table_data.title; let i = index"
+          [ngStyle]="{
+            width: header?.width,
+            'text-align': header?.align,
+            cursor: header?.headerCursor
+          }"
+          (click)="sortByKey(header.key, i, header.sorting)"
+        >
+          {{ header.label }}
+          <i
+            *ngIf="i != iconIndex && header?.sorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort"
+          ></i>
+          <i
+            *ngIf="i == iconIndex && shortDown && header?.sorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-down"
+          ></i>
+          <i
+            *ngIf="i == iconIndex && !shortDown && header?.sorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-up"
+          ></i>
+        </th>
+      </tr>
+    </thead>
+    <div>
+      <tbody>
+        <tr
+          *ngFor="
+            let content of table_data.value
+              | paginate
+                : {
+                    itemsPerPage: paginateId === 'pevcCompanyFund' ? 50 : 10,
+                    currentPage: currentPageIndex,
+                    id: paginateId,
+                    totalItems: totalDataLength
+                  };
+            let i = index
+          "
+          (click)="tableSelectedRow(content, $event)"
+        >
+          <td
+            *ngFor="let header of table_data.title"
+            [ngStyle]="{
+              width: header?.width,
+              'text-align': header?.align,
+              color: header?.color,
+              height: content?.height,
+              cursor: header?.cursor,
+              'text-decoration': header?.textDecoration
+            }"
+            [ngClass]="
+              content[header.key] === 'Multiple' ? 'multiple-color' : ''
+            "
+            [ngClass]="
+              content['entityProperName'] &&
+              content['entityType'] === 'Individual'
+                ? 'text-decoration-custom'
+                : ''
+            "
+            (click)="handleFundFirmSelected(header.key, content)"
+          >
+            <span>
+              {{
+                header.formattedNum
+                  ? util?.standardFormat(content[header.key], 2, "")
+                  : content[header.key]
+                  ? content[header.key]
+                  : "-"
+              }}</span
+            >
+          </td>
+        </tr>
+        <tr *ngIf="!table_data.value?.length">
+          <span class="text-center mb-3 funding-detail-no-data"
+            >No Data Available</span
+          >
+        </tr>
+      </tbody>
+    </div>
+
+    <tfoot *ngIf="table_data.value?.length">
+      <div
+        *ngIf="
+          paginateId !== 'fundBenchmark' &&
+          paginateId !== 'notListedBenchmark' &&
+          paginateId !== 'listedBenchmark'
+        "
+        class="container-fluid px-0 text-center mt-1"
+      >
+        <pagination-controls
+          *ngIf="totalDataLength > 10"
+          [id]="paginateId"
+          [previousLabel]="labels.previousLabel"
+          [nextLabel]="labels.nextLabel"
+          [maxSize]="11"
+          class="funding-details-pagination"
+          (pageChange)="onPageChange($event)"
+        ></pagination-controls>
+      </div>
+    </tfoot>
+  </table>
+</div>

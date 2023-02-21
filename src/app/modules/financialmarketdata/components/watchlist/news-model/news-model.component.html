@@ -1,0 +1,149 @@
+<!-- The Modal -->
+<div id="myModal" [ngStyle]="{ display: displayStyle }" class="modal p-2">
+
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="popup-header pt-2 mb-1">
+      <span class="close"><i class="fa fa-close" (click)="closePopup()"></i></span>
+      <span>News</span>
+    </div>
+    <div class="newsSections">
+      <div class="newsSection" *ngFor="let news of news_detail">
+        <div class="float100 economy-news-prtclr">
+          <div class="d-flex align-items-center justify-content-between px-2 bg-heading text-black py-2">
+            <h6 class="mb-0 fw600">{{ news.title }}</h6>
+            <h6 class="mb-0 fw600">
+              {{ news.period | date: "yyyy-MM-dd HH:mm" }}
+            </h6>
+          </div>
+
+          <div class="">
+            <p class="line-height px-2 fw400 pt-3 pb-3 mb-0">
+              {{ news.description | slice: 0:500 }}
+              <a *ngIf="news?.description?.length > 400" (click)="insideDialog(news)" class="newsModal">
+               <u>Read More..</u> </a>
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="footer">
+      <span>Events</span>
+       <div class="watchlist-table">
+                <table class="w-100 scroll">
+                  <thead>
+                    <tr cdkDropList cdkDropListOrientation="horizontal">
+                      <th
+                        cdkDrag
+                        cdkDragHandle
+                        *ngFor="let header of table_data.title; let i = index"
+                        [ngStyle]="{
+                          width: header?.width,
+                          'text-align': header.headerAlign
+                            ? header?.headerAlign
+                            : header?.align,
+                          cursor: header?.pointer && 'pointer',
+                          display: 'header?.header_none'
+                        }"
+                      >
+                        {{ header.label }}
+                    
+                        <!-- <i
+                          *ngIf="i != iconIndex && header?.shorting"
+                          class="ms-1 fa fa-sort"
+                        ></i>
+                        <i
+                          *ngIf="i == iconIndex && shortDown && header?.shorting"
+                          class="ms-1 fa fa-solid fa-long-arrow-down"
+                        ></i>
+                        <i
+                          *ngIf="i == iconIndex && !shortDown && header?.shorting"
+                          class="ms-1 fa fa-solid fa-long-arrow-up"
+                        ></i> -->
+                      </th>
+                    </tr>
+                  </thead>
+                  <tbody
+                    [ngStyle]="{ 'max-height': mh }"
+                    [ngClass]="
+                      fixedHeight === 'ipo'
+                        ? 'fixedheight'
+                        : !display_none
+                        ? 'border-btm'
+                        : ''
+                    "
+                  >
+                    <tr
+                      *ngFor="
+                        let content of table_data.value
+                          | paginate
+                            : {
+                                itemsPerPage: 3,
+                                currentPage: 1
+                              }
+                      "
+                    >
+                      <td
+                        *ngFor="
+                          let header of table_data.title;
+                          let i = index;
+                          let last = last;
+                       
+                        "
+                        [title]="titlevalue"
+                      >
+                        {{
+                          header.formattedNum
+                            ? util?.standardFormat(content[header.key], 2, "")
+                            : content[header.key]
+          
+          
+                        }}
+                      
+                           </td>
+                    </tr>
+                    <tr *ngIf="!table_data.value?.length">
+                      <p class="text-center my-2">No Data Available</p>
+                    </tr>
+                  </tbody>
+                  <tfoot>
+                    <!-- <div class="container-fluid px-0 text-center mt-1">
+                        <pagination-controls> </pagination-controls>
+                      </div> -->
+                  </tfoot>
+                </table>
+              </div>
+      <div class="table">
+       </div>
+    </div>
+  </div>
+ 
+</div>
+
+
+<!-- this is the single-news-model -->
+<div class="inside-popup" *ngIf="single_news">
+  <div class="modal">
+    <div class="modal-content" style="padding: 0px !important">
+      <div>
+        <div class="newsSection">
+          <div class="border-box">
+            <div class="d-flex align-items-center justify-content-between px-2 bg-heading text-black py-2">
+              <h6 class="mb-0 fw600">{{ popupDetail.title }}</h6>
+              <h6 class="mb-0 fw600">
+                {{ popupDetail.period | date: "yyyy-MM-dd HH:mm" }}
+                <span (click)="insidePopupDialogClose()"
+                  class="text-black inside-Popup-close close cursor-pointer pe-0"><i class="fa fa-times"></i></span>
+              </h6>
+            </div>
+            <div class="">
+              <p class="line-height fw400 px-2 pt-3 pb-3 mb-0 mb-0">
+                {{ popupDetail.description }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

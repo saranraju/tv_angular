@@ -1,0 +1,86 @@
+<div class="backdrop">
+  <div
+    id="alertbox"
+    class="modal sevendayfreetrialpopup-rtda sevendayfreetrialpopup-cm in"
+    tabindex="-1"
+    role="dialog"
+    style="
+      display: block;
+      padding-left: 4px;
+      background-color: rgba(0, 0, 0, 0.5);
+    "
+  >
+    <div class="modal-dialog modal-lg" style="top: 3%">
+      <div class="modal-content position-relative">
+        <div
+          *ngIf="chartModelType == 'commodity'"
+          class="align-items-center d-flex jus-end graphFilterSection"
+        >
+          <div>
+            <ul class="mb-0 p-0">
+              <li
+                [ngClass]="{ activeDateFilter: selectedDatetype === '1W' }"
+                (click)="dateChange('1W')"
+              >
+                1W
+              </li>
+              <li
+                [ngClass]="{ activeDateFilter: selectedDatetype === '3M' }"
+                (click)="dateChange('3M')"
+              >
+                3M
+              </li>
+              <li
+                [ngClass]="{ activeDateFilter: selectedDatetype === '6M' }"
+                (click)="dateChange('6M')"
+              >
+                6M
+              </li>
+              <li
+                [ngClass]="{ activeDateFilter: selectedDatetype === '1Y' }"
+                (click)="dateChange('1Y')"
+              >
+                1Y
+              </li>
+              <li
+                [ngClass]="{ activeDateFilter: selectedDatetype === '5Y' }"
+                (click)="dateChange('5Y')"
+              >
+                5Y
+              </li>
+              <li
+                [ngClass]="{ activeDateFilter: selectedDatetype === '10Y' }"
+                (click)="dateChange('10Y')"
+              >
+                10Y
+              </li>
+              <li
+                [ngClass]="{ activeDateFilter: selectedDatetype === 'MAX' }"
+                (click)="dateChange('MAX')"
+              >
+                MAX
+              </li>
+            </ul>
+          </div>
+        </div>
+        <div class="display-flex">
+          <h5 class="modal-title text-align-center">{{ chartModelTitle }}</h5>
+          <button
+            type="button"
+            (click)="auth.openPopupModal = false"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!--end of modal header-->
+        <div class="modal-body text-center">
+          <div id="chartDiv"></div>
+        </div>
+        <!--end of modal body-->
+      </div>
+    </div>
+  </div>
+</div>

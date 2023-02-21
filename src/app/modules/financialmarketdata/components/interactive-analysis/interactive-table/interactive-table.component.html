@@ -1,0 +1,37 @@
+<div class="commodityTable">
+  <div class="mb-3" *ngFor="let item of table_data; let i = index">
+    <p class="mb-00 custom-tt" *ngIf="item.tableTitle">{{ item.tableTitle }}</p>
+    <div class="scroll">
+      <table class="w-100 scroll">
+        <thead>
+          <tr>
+            <th
+              class="pointer"
+              *ngFor="let head of item[headerTitleCount] | keys; let j = index"
+              (click)="sortByKey(head, j)"
+            >
+              {{ head }}
+              <i
+                *ngIf="j != iconIndex"
+                class="shortIconColor ms-1 fa fa-solid fa-sort"
+              ></i>
+              <i
+                *ngIf="j == iconIndex && shortDown"
+                class="shortIconColor ms-1 fa fa-solid fa-sort-down"
+              ></i>
+              <i
+                *ngIf="j == iconIndex && !shortDown"
+                class="shortIconColor ms-1 fa fa-solid fa-sort-up"
+              ></i>
+            </th>
+          </tr>
+        </thead>
+        <tbody style="max-height: 270px">
+          <tr *ngFor="let item of item">
+            <td *ngFor="let list of item | keys">{{ item[list] }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

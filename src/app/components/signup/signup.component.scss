@@ -1,0 +1,117 @@
+.header-toolbar {
+  position: fixed;
+  width: 100%;
+  z-index: 1;
+  top: 0;
+}
+
+.signUp-box {
+  background-color: #002060;
+  padding-top: 7rem;
+
+  .signUp-header {
+    font-size: 35px;
+    font-family: "Impact";
+  }
+
+  // .signUp-card {
+  //   background: #ffffff;
+  //   margin: auto;
+  //   max-width: 420px;
+  //   border-radius: 4px;
+  // }
+
+  // .form-label {
+  //   font-weight: normal;
+  //   display: block;
+  //   color: #444;
+  // }
+
+  // .input-custom-pass {
+  //   border-color: #a94442;
+  // }
+
+  // .forgot-custom {
+  //   color: #158d71 !important;
+  //   text-decoration: underline;
+  //   font-style: normal;
+  //   font-size: 14px;
+  // }
+
+  // .blue-btn {
+  //   background: #158d71;
+  //   padding: 10px 30px;
+  //   border-radius: 5px;
+  //   border: 0;
+  //   display: inline-block;
+  //   color: #fff;
+  //   width: 100%;
+  //   font-size: 18px;
+  //   margin-top: 20px;
+  // }
+
+  // .password-close {
+  //   position: absolute;
+  //   right: 12px;
+  //   margin-top: 9px;
+  //   font-size: 14px;
+  //   top: 0;
+  // }
+  .firstSection {
+    h6 {
+      background-color: #3a3a3a;
+      padding: 12px 20px;
+    }
+
+    ul {
+      list-style: none;
+      color: #454040;
+
+      li {
+        font-size: 14px;
+        padding: 8px 12px 8px 20px;
+        border-bottom: 1px solid #ddd;
+        background-color: #ffffff;
+      }
+    }
+  }
+
+}
+
+footer.telFooter {
+  background-color: #002060;
+  border-top: 1px solid #204184;
+  clear: both;
+  color: #fff !important;
+  padding: 10px 0 5px;
+  margin-left: 0;
+  margin-right: 0;
+  height: calc(100% - 43.3rem);
+  font-size: 14px;
+
+  ul {
+    list-style: none;
+    float: right;
+    text-align: center;
+
+    li {
+      display: inline-block;
+
+      a {
+        text-decoration: none;
+        color: #fff;
+        padding: 0 10px;
+      }
+    }
+
+    li:after {
+      content: "|";
+      font-weight: 600;
+      color: #fff;
+    }
+
+    li:last-child::after {
+      visibility: hidden;
+    }
+  }
+}

@@ -1,0 +1,99 @@
+<div class="container-fluid">
+  <div class="row mt-2">
+    <div class="col-md-12 secondryheader">
+      <div class="col-md-3 ps-0 sectorHead">
+        <div *ngIf="showChart" (click)="backClicked()">
+          <i
+            class="fa fa-arrow-circle-left arrowIconClass"
+            aria-hidden="true"
+          ></i>
+        </div>
+        <div class="selectWorld">
+          {{ this?.page_Title?.toUpperCase() }} ({{
+            page_CountryName?.toUpperCase()
+          }})
+        </div>
+      </div>
+      <div id="industryStep2" class="col-md-5 centerDropdown">
+        <span class="perodicity">Periodicity</span>
+        <ng-select2
+          class="cusSelect2 cusSelect2_6rem"
+          [placeholder]="'Select Period'"
+          [data]="periodDropdownData"
+          [value]="periodType"
+          (valueChanged)="onValueChanged('Period', $event)"
+        ></ng-select2>
+        <ng-select2
+          class="cusSelect2 cusSelect2_6rem"
+          [placeholder]="'Select Date'"
+          [data]="dateListData"
+          [value]="date"
+          (valueChanged)="onValueChanged('Date', $event)"
+        ></ng-select2>
+        <ng-select2
+          class="cusSelect2 cusSelect2_7rem"
+          [placeholder]="'Select Currency'"
+          [data]="selectCurrencyData"
+          [value]="selectedCurrency"
+          (valueChanged)="onValueChanged('Currency', $event)"
+        ></ng-select2>
+      </div>
+      <div class="col-md-4 pe-0 endDropdown">
+        <ng-select2
+          id="industryStep1"
+          class="cusSelect2 cusSelect2_20rem"
+          [data]="countryData"
+          [value]="selectedCountry"
+          [placeholder]="'Select Country'"
+          (valueChanged)="onValueChanged('Country', $event)"
+        >
+        </ng-select2>
+      </div>
+    </div>
+    <div>
+      <div *ngIf="showChart && showIndustrychart == false" class="col-12">
+        <app-industry-chart
+          [graphAllData]="graphAllData"
+          [graph_currency]="this.currencyMcap"
+          [graph_unit]="this.unitMCap"
+          [period_type]="this.periodType"
+        ></app-industry-chart>
+      </div>
+      <div *ngIf="showChart && showIndustrychart" class="col-12">
+        <app-industry-chart
+          [graphThirdLevelData]="graphThirdLevelData"
+          [graph_currency]="this.currencyMcap"
+          [graph_unit]="this.unitMCap"
+          [period_type]="this.periodType"
+        ></app-industry-chart>
+      </div>
+    </div>
+    <div class="col-12 mt-4">
+      <div>
+        <app-table
+          idName="industryStep3"
+          [table_data]="industry_table_data"
+          [tabValue]="tabValue"
+          (ticSectorCode)="handleTicSectorId($event)"
+          [showChart]="this.showChart"
+          [selectedCurrency]="this.selectedCurrency"
+          mh="520px"
+          fontSize="true"
+        >
+        </app-table>
+      </div>
+    </div>
+    <div class="col-12">
+      <div class="pagination pb-5">
+        {{
+          "Showing 1 to " +
+            this.industry_table_data.value.length +
+            " of
+        " +
+            this.industry_table_data.value.length +
+            " entries"
+        }}
+      </div>
+    </div>
+  </div>
+</div>

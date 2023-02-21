@@ -1,0 +1,128 @@
+.modal {
+  display: block;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.8);
+  transition: opacity 500ms;
+}
+
+/* Modal Content */
+.modal-content {
+  background: #00071e !important;
+  padding: 0px 10px !important;
+  width: 75% !important;
+  height: 430px !important;
+  overflow-y: auto;
+  margin-top: 10rem;
+  border: 1px solid #ffc000;
+}
+
+.formula-builder-title {
+  font-size: 22px;
+  color: #ffc000;
+  font-weight: 600;
+  text-transform: uppercase;
+}
+
+.formula-name-input {
+  width: 100%;
+  background-color: #fbe5c6;
+  font-size: 13px;
+  padding: 3px 10px;
+  border-radius: 3px;
+  border: 1px solid #ffc000;
+}
+
+.formula-text {
+  width: 100%;
+  border: 1px solid #ffc000;
+  padding: 3px 10px;
+  font-size: 13px;
+  outline: none;
+  background-color: #fbe5c6;
+}
+
+.footer-btn {
+  border-radius: 4px;
+  background: 0;
+  border: 1px solid #ffc000;
+  color: #ffc000;
+  font-size: 13px;
+  padding: 5px;
+  width: 15%;
+  flex: none;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.active {
+  color: #333 !important;
+  background: #ffc000 !important;
+}
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-40-width {
+  width: 100%;
+}
+.container {
+  padding: 10px;
+  padding-bottom: 60px;
+    width: 100%;
+    margin-top: 0px;
+    background-color: #fbe5c6;
+    height: 215px;
+}
+.mat-option-text {
+  display: inline-block;
+  flex-grow: 1;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  background-color: #fbe5c6;
+}
+.mat-option.mat-active {
+  width: 100%;
+  color: black;
+}
+.mat-autocomplete-panel-above .mat-autocomplete-panel {
+  border-radius: 0;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  width: 30%;
+}
+input.mat-input-element {
+  
+  color: black;
+  height: 30px;
+}
+::ng-deep .mat-form-field-appearance-legacy .mat-form-field-underline {
+  height: 0px!important;
+}
+::ng-deep .mat-autocomplete-panel-above .mat-autocomplete-panel {
+  border-radius: 0;
+  border-top-left-radius: 4px;
+  border-top-right-radius: 4px;
+  width: 30%;
+}
+::ng-deep .mat-autocomplete-panel.mat-autocomplete-visible {
+  visibility: visible;
+  width: 30%;
+  border: solid;
+  border-color: #ffc000;
+}
+::ng-deep .mat-form-field-underline {
+  position: absolute;
+  width: 100%;
+  pointer-events: none;
+  transform: scale3d(1, 1.0001, 1);
+  display: none;
+}
+.option_class{
+border: solid;
+border-color: #ffc000;
+}
+::ng-deep .mat-form-field-label{
+  color:#000 !important;
+}

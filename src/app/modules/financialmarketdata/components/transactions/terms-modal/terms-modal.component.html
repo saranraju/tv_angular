@@ -1,0 +1,258 @@
+<div class="modal p-3">
+  <div class="close cursor-pointer" (click)="transactionsTermsModalClose()">
+    <i class="fa fa-times"></i>
+  </div>
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 my-3 modal-title-container">
+          <h2 class="modal-title">Deals Terms & Synopsis</h2>
+          <i class="excel-icon">
+            <img
+              class="cursor-pointer img-fluid ms-1 pt-1"
+              src="/assets/img/excelDownload.png"
+              alt="excelDownload"
+              (click)="
+                auth.exploreUser
+                  ? (auth.openUnavailableExploreModal = true)
+                  : handleTermsSynopsisExcelClick($event)
+              "
+            />
+          </i>
+        </div>
+      </div>
+      <div class="row mt-1">
+        <div class="synopsis-container">
+          <h5 class="synopsis-title">Synopsis</h5>
+          <div class="synopsis-content-container">
+            <p class="synopsis-content">
+              {{ dealItem?.synopsis }}
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="deal-advisor-container">
+          <h5 class="deal-advisor-title">Deal Advisor</h5>
+          <app-table [table_data]="terms_synopsis_table"></app-table>
+        </div>
+      </div>
+      <div class="row">
+        <div class="deal-terms-container">
+          <h5 class="deal-terms-title">Deal Terms</h5>
+          <div class="deal-terms-table-container">
+            <table>
+              <tbody>
+                <tr>
+                  <td>Effect Date</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{ dealTerm?.effect_date ? dealTerm?.effect_date : "-" }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Target</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{ dealTerm?.target ? dealTerm?.target : "-" }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Mode of Payment</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{ dealTerm?.mop ? dealTerm?.mop : "-" }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Source Funds</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.source_funds_desc
+                        ? dealTerm?.source_funds_desc
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Cash ({{ selectedCurrency }} Million)</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.cash
+                        ? util?.standardFormat(dealTerm?.cash, 2, "")
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Stock ({{ selectedCurrency }} Million)</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.stock
+                        ? util?.standardFormat(dealTerm?.stock, 2, "")
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>% Sought</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.percent_sought
+                        ? util?.standardFormat(dealTerm?.percent_sought, 2, "")
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>% Owned</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.percent_owned
+                        ? util?.standardFormat(dealTerm?.percent_owned, 2, "")
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Deal Value ({{ selectedCurrency }} Million)</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.transaction_value
+                        ? util?.standardFormat(
+                            dealTerm?.transaction_value,
+                            2,
+                            ""
+                          )
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>EV ({{ selectedCurrency }} Million)</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.ev
+                        ? util?.standardFormat(dealTerm?.ev, 2, "")
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr *ngIf="showRevenueLTM">
+                  <td>Target LTM Revenue ({{ selectedCurrency }} Million)</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.revenue_ltm_before_deal
+                        ? util?.standardFormat(
+                            dealTerm?.revenue_ltm_before_deal,
+                            2,
+                            ""
+                          )
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr *ngIf="showEbitdaLTM">
+                  <td>Target LTM EBITDA ({{ selectedCurrency }} Million)</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.ebitda_ltm_before_deal
+                        ? util?.standardFormat(
+                            dealTerm?.ebitda_ltm_before_deal,
+                            2,
+                            ""
+                          )
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr *ngIf="showPriceShare">
+                  <td>
+                    Offered Price per Share (Total) ({{ selectedCurrency }})
+                  </td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.price_share
+                        ? util?.standardFormat(dealTerm?.price_share, 2, "")
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr *ngIf="showStockPriceShare">
+                  <td>
+                    Offered Price per Share (Stock) ({{ selectedCurrency }})
+                  </td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.stock_price_share
+                        ? util?.standardFormat(
+                            dealTerm?.stock_price_share,
+                            2,
+                            ""
+                          )
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr *ngIf="showOneDayPrem">
+                  <td>1 Day Prior Share Price Premium (%)</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.one_day_prem
+                        ? util?.standardFormat(dealTerm?.one_day_prem, 2, "")
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr *ngIf="showEVREV">
+                  <td>EV to Sales (x)</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.ev_rev
+                        ? util?.standardFormat(dealTerm?.ev_rev, 2, "")
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr *ngIf="showEVEBITDA">
+                  <td>EV to EBITDA (x)</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.ev_ebitda
+                        ? util?.standardFormat(dealTerm?.ev_ebitda, 2, "")
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>
+                    Cash Adjusted Deal Value ({{ selectedCurrency }} Million)
+                  </td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.cash_adjusted_deal_value
+                        ? util?.standardFormat(
+                            dealTerm?.cash_adjusted_deal_value,
+                            2,
+                            ""
+                          )
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+                <tr>
+                  <td>Deal Stage</td>
+                  <td *ngFor="let dealTerm of dealTerms">
+                    {{
+                      dealTerm?.term_change_desc
+                        ? dealTerm?.term_change_desc
+                        : "-"
+                    }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

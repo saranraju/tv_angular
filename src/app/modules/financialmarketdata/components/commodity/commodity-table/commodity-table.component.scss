@@ -1,0 +1,61 @@
+.commodityTable {
+  table {
+    font-weight: 400;
+    font-size: 13px;
+
+    .tdBorderRight {
+      border-right: 1px dotted #528dc3;
+    }
+
+    tbody {
+      display: block;
+      // max-height: 398px;
+      overflow-y: auto;
+      border-bottom: 1px solid #528dc3;
+    }
+
+    thead,
+    tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    th {
+      font-weight: 600;
+      border-top: 1px solid #528dc3;
+      border-bottom: 1px solid #528dc3;
+      font-size: 11px;
+      background-color: #00071e !important;
+    }
+
+    tr:nth-child(odd) {
+      background-color: #122543;
+    }
+
+    td {
+      padding: 2px 5px;
+      font-size: 11px;
+    }
+
+    .staticGraph {
+      width: 30px;
+      height: 20px;
+    }
+  }
+}
+
+.cursor-pointer:hover {
+  cursor: pointer;
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.no-data {
+  font-size: 12px;
+  text-align: center;
+  padding: 3rem;
+  background-color: #122543;
+}

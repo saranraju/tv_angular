@@ -1,0 +1,385 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12 px-1 mt-2">
+      <p class="text-primary fw600 fs12 text-end mb-1 cursor-pointer">
+        <span (click)="auth.openPopupModal = true">{{
+          "Advanced Search" | uppercase
+        }}</span>
+      </p>
+    </div>
+    <div *ngIf="auth.openPopupModal">
+      <app-advance-search-modal
+        (comportable_table)="compartableTableDataHandler($event)"
+        [isin_number]="bonds_isn_Number"
+        [selectedBalanceModel]="selectedBalanceModel"
+      >
+      </app-advance-search-modal>
+    </div>
+    <div class="col-md-4 ps-0">
+      <ng-select2
+        [data]="selectCategoryData"
+        [value]="selectedCategory"
+        class="cusSelect2 cusSelect2Normal"
+        [placeholder]="'Select Category'"
+        (valueChanged)="valueChangedHandler('Category', $event, '')"
+      ></ng-select2>
+    </div>
+    <div class="col-md-4">
+      <ng-select2
+        [data]="selectCurrencyData"
+        [value]="selectedCurrency"
+        class="cusSelect2 cusSelect2Normal"
+        [placeholder]="'Select Currency'"
+        (valueChanged)="valueChangedHandler('Currency', $event, '')"
+      ></ng-select2>
+    </div>
+    <div class="col-md-4 pe-0">
+      <ng-select2
+        id="bondDropdown"
+        [data]="selectBondData"
+        [value]="selectedBond"
+        class="cusSelect2 cusSelect2Normal"
+        [placeholder]="'Select Bond'"
+        (valueChanged)="valueChangedHandler('Bond', $event, '')"
+        (click)="handleBondsDropdownClick()"
+      ></ng-select2>
+    </div>
+
+    <div class="mt-3 col-12 px-0">
+      <p class="mb-2 text-primary fw600 fs17">
+        <span *ngIf="comportable_table?.description">
+          {{
+            comportable_table?.description +
+              " | " +
+              comportable_table?.maturityDate +
+              " | " +
+              comportable_table?.industryLvl1Desc +
+              "
+          | " +
+              comportable_table?.maturityType
+          }}
+          Bonds
+        </span>
+      </p>
+    </div>
+    <div class="col-12 px-0">
+      <div class="d-flex mb-2 justify-content-between align-items-center">
+        <div>
+          <ng-select2
+            [data]="selectBalanceModelData"
+            [value]="selectedBalanceModel"
+            class="cusSelect2 cusSelect2_20rem"
+            [placeholder]="'Price'"
+            (valueChanged)="valueChangedHandler('BalanceModel', $event, '')"
+          ></ng-select2>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 px-0">
+      <div class="align-items-center d-flex graphFilterSection mt-2 mb-5">
+        <ul class="mb-0 p-0">
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '1W' }"
+            (click)="dateChange('1W')"
+            class="filter-hover-effect"
+          >
+            1W
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '1M' }"
+            (click)="dateChange('1M')"
+            class="filter-hover-effect"
+          >
+            1M
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '3M' }"
+            (click)="dateChange('3M')"
+            class="filter-hover-effect"
+          >
+            3M
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '6M' }"
+            (click)="dateChange('6M')"
+            class="filter-hover-effect"
+          >
+            6M
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '1Y' }"
+            (click)="dateChange('1Y')"
+            class="filter-hover-effect"
+          >
+            1Y
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '5Y' }"
+            (click)="dateChange('5Y')"
+            class="filter-hover-effect"
+          >
+            5Y
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === 'MAX' }"
+            (click)="dateChange('MAX')"
+            class="filter-hover-effect"
+          >
+            MAX
+          </li>
+        </ul>
+      </div>
+      <div id="chartdiv" class="bondsChart"></div>
+    </div>
+    <div class="col-6 position-relative">
+      <div>
+        <p class="text-primary fs16 position-relative">
+          <b>Comparable Securities</b>
+          <span
+            *ngIf="edit_search_dropdown"
+            class="fixedincome-editcomparable cds-editcomparable"
+          >
+            <ng-select2
+              id="customers_select"
+              [data]="selectBondData"
+              [value]="selectedBond"
+              class="cusSelect2 cusSelect2Normal"
+              [placeholder]="'Select Security'"
+              (valueChanged)="
+                valueChangedHandler('bond_edit', $event, 'append')
+              "
+              (click)="handleSecurityDropdownClick()"
+            ></ng-select2>
+            <i
+              (click)="resetTable('icon')"
+              class="editClose fa fa-close"
+              aria-hidden="true"
+            ></i>
+          </span>
+          <span (click)="editTable()" class="editbtn-fi editbtn-cds">
+            Edit <i class="fa fa-pencil"></i>
+          </span>
+          <span class="reset" (click)="resetTable()" *ngIf="showReset"
+            >Reset <i class="fa fa-refresh"></i>
+          </span>
+        </p>
+        <div class="space24">
+          <app-comparable-securities-table
+            *ngIf="comparableSecuritiesData?.length"
+            [table_data]="comparableSecuritiesData"
+            [remove_icon]="edit_search_dropdown"
+            (comportable_table)="compartableTableDataHandler($event)"
+            [country_name]="bondLatestData?.iso_currency_code"
+            (selectedRowData)="handleselectedRowData($event)"
+          >
+          </app-comparable-securities-table>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="auth.closeInsidePopup">
+      <app-comparable-securities-no-selection-modal [value]="selectBondData">
+      </app-comparable-securities-no-selection-modal>
+    </div>
+    <div class="col-12 mt-3 px-0">
+      <h4 class="text-primary">
+        <span class="fs16 fw600">Summary Information</span
+        ><span class="fs14 fw400">
+          (as on {{ bondLatestData?.as_of_date }})</span
+        >
+      </h4>
+      <div class="row bond-summer-info">
+        <div class="col-3">
+          <div>
+            <p class="text-primary mb-0"><b>Price (EOD) :</b></p>
+            <p>
+              {{
+                bondLatestData?.price
+                  ? util?.standardFormat(comportable_table?.price, 2, "")
+                  : "-"
+              }}
+              <span *ngIf="bondLatestData?.price">{{
+                bondLatestData?.iso_currency_code
+              }}</span>
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Maturity Date :</b></p>
+            <p>
+              {{
+                bondLatestData?.maturity_date
+                  ? bondLatestData?.maturity_date
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Accrued Interest :</b></p>
+            <p>
+              {{
+                bondLatestData?.accrued_interest
+                  ? util?.standardFormat(
+                      bondLatestData?.accrued_interest,
+                      2,
+                      ""
+                    )
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+        <div class="col-3">
+          <div>
+            <p class="text-primary mb-0"><b>Country:</b></p>
+            <p>
+              {{
+                bondLatestData?.country_name
+                  ? bondLatestData?.country_name
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Maturity Type :</b></p>
+            <p>
+              {{
+                bondLatestData?.maturity_type
+                  ? bondLatestData?.maturity_type
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Category :</b></p>
+            <p>
+              {{
+                bondLatestData?.industry_lvl_1_desc
+                  ? bondLatestData?.industry_lvl_1_desc
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+        <div class="col-3">
+          <div>
+            <p class="text-primary mb-0"><b>Currency :</b></p>
+            <p>
+              {{
+                bondLatestData?.iso_currency_code
+                  ? bondLatestData?.iso_currency_code
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Current Period Coupon :</b></p>
+            <p>
+              {{
+                bondLatestData?.current_period_coupon
+                  ? bondLatestData?.current_period_coupon
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0">
+              <b>Maturity / Weighted Average Life :</b>
+            </p>
+            <p>
+              {{
+                bondLatestData?.maturity_wal
+                  ? util?.standardFormat(bondLatestData?.maturity_wal, 2, "")
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+        <div class="col-3">
+          <div>
+            <p class="text-primary mb-0"><b>Industry :</b></p>
+            <p>
+              {{
+                bondLatestData?.industry_lvl_4_desc
+                  ? bondLatestData?.industry_lvl_4_desc
+                  : "- "
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Subordinate Type :</b></p>
+            <p>
+              {{
+                bondLatestData?.subordination_type
+                  ? bondLatestData?.subordination_type
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Years to Worst :</b></p>
+            <p>
+              {{
+                bondLatestData?.years_to_worst
+                  ? util?.standardFormat(bondLatestData?.years_to_worst, 2, "")
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-12 my-3 px-0">
+      <h4 class="text-primary">
+        <span class="fs16 fw600">Key Information</span>
+      </h4>
+    </div>
+    <div class="col-6 position-relative ps-0" *ngIf="yield?.length">
+      <div class="tableCol6Border space13">
+        <app-key-information-table
+          [table_data]="yield"
+          section_name="YIELD"
+          [bondLatestData]="bondLatestData"
+        >
+        </app-key-information-table>
+      </div>
+    </div>
+    <div class="col-6 position-relative ps-0" *ngIf="duration?.length">
+      <div class="tableCol6Border space13">
+        <app-key-information-table
+          [table_data]="duration"
+          section_name="DURATION"
+          [bondLatestData]="bondLatestData"
+        >
+        </app-key-information-table>
+      </div>
+    </div>
+    <div
+      class="col-6 position-relative ps-0"
+      style="top: -12px"
+      *ngIf="convexity?.length"
+    >
+      <div class="tableCol6Border space13">
+        <app-key-information-table
+          [table_data]="convexity"
+          section_name="CONVEXITY"
+          [bondLatestData]="bondLatestData"
+        >
+        </app-key-information-table>
+      </div>
+    </div>
+    <div
+      class="col-6 position-relative ps-0"
+      style="top: -12px"
+      *ngIf="spread?.length"
+    >
+      <div class="tableCol6Border space13">
+        <app-key-information-table
+          [table_data]="spread"
+          section_name="SPREAD"
+          [bondLatestData]="bondLatestData"
+        >
+        </app-key-information-table>
+      </div>
+    </div>
+  </div>
+</div>
+<br />

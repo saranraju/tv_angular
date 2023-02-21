@@ -1,0 +1,41 @@
+<div class="backdrop">
+  <div
+    id="alertbox"
+    class="modal sevendayfreetrialpopup-rtda sevendayfreetrialpopup-cm in"
+    tabindex="-1"
+    role="dialog"
+    style="
+      display: block;
+      padding-left: 4px;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 10000000 !important;
+    "
+  >
+    <div class="modal-dialog modal-lg" style="top: 25%">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+          <button
+            type="button"
+            (click)="auth.freeTrialAlert = false"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!--end of modal header-->
+        <div class="modal-body text-center">
+          <span> You have reached your download limit</span><br />
+          <span
+            >For further download please
+            <a [routerLink]="['/subscribe']" class="sub-link">subscribe</a>
+            now</span
+          >
+        </div>
+        <!--end of modal body-->
+      </div>
+    </div>
+  </div>
+</div>

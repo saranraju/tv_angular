@@ -1,0 +1,57 @@
+<div
+  class="modal-import"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{ display: displayStyle }"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="row">
+        <p class="imp-p text-start">Import Portfolio:</p>
+
+        <i class="fa fa-times text-end" (click)="closePopup()"></i>
+      </div>
+      <div class="row">
+        <div class="col">
+          <span *ngFor="let btn of buttons" class="btn-group watchlist-tabs">
+            <button
+              fragment="management_tab"
+              type="button"
+              class="btn"
+              (click)="onButtonClick(btn.id)"
+              [ngClass]="{
+                active: btn.id == buttonactive
+              }"
+            >
+              {{ btn.title }}
+            </button>
+          </span>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col imp-p mt-3">Add to a Portfolio</div>
+      </div>
+      <div class="watch-list-contaienr">
+        <div class="row" *ngFor="let value of watchlistArray; let i = index">
+          <div class="col">
+            <label class="container">
+              <input
+                type="checkbox"
+                val="checked"
+                (change)="onChecked($event, i)"
+                #watchlistCheckBox
+              />
+              <span class="checkmark"></span>
+            </label>
+            <span class="listName"> {{ value.title }}</span>
+          </div>
+        </div>
+      </div>
+      <div class="d-flex justify-content-center">
+        <button class="impfile-btn" type="button" (click)="onSubmit(buttons)">
+          Submit
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,174 @@
+<div class="modal p-2 modal_styling">
+  <div class="modal-dialog-style">
+    <!-- Modal content -->
+    <div class="modal-content scroll">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        autocomplete="new-search"
+        (click)="tableDialogClose()"
+      >
+        ×
+      </button>
+      <div class="w-100 style_heading">
+        <span class="fs17">People Profile:</span>
+        <b class="fs17 manage_man">{{ other_data.management }}</b>
+      </div>
+      <br />
+      <div class="row">
+        <div class="col-4">
+          <b class="fs14 color_head">Company:</b>
+          <span class="fs14"> {{ companyName ? companyName : " - " }} </span>
+        </div>
+        <div class="col-4">
+          <b class="fs14 color_head">Position:</b>
+          <span class="fs14">
+            {{
+              other_data.instrumentType ? other_data.instrumentType : " - "
+            }}</span
+          >
+        </div>
+        <div class="col-4">
+          <b class="fs14 color_head">Address:</b>
+          <span class="fs14">{{
+            other_data.address ? other_data.address : " - "
+          }}</span>
+        </div>
+
+        <div class="col-4">
+          <b class="fs14 color_head">Email:</b>
+          <span class="fs14">{{
+            other_data.email ? other_data.email : " - "
+          }}</span>
+        </div>
+        <div class="col-4">
+          <b class="fs14 color_head">Phone:</b>
+          <span class="fs14">{{
+            other_data.phone ? other_data.phone : " - "
+          }}</span>
+        </div>
+        <div class="col-4">
+          <b class="fs14 color_head">Fax:</b>
+          <span class="fs14">
+            {{ other_data.fax ? other_data.fax : " - " }}
+          </span>
+        </div>
+
+        <div class="col-12 mt12">
+          <b class="fs14 color_head">Biography:</b>
+          <span class="fs14">{{
+            other_data.biography ? other_data.biography : " - "
+          }}</span>
+        </div>
+        <br />
+        <div class="empyment_history">
+          <div class="text-primary text-center">
+            <b class="fs20">Employment History</b>
+          </div>
+          <div class="row commodityTable">
+            <table class="w-100">
+              <thead>
+                <tr>
+                  <th>Company/Council</th>
+                  <th>Title</th>
+                  <th>Inception Date</th>
+                  <th>Termination Date</th>
+                  <th>Years</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let content of table_data">
+                  <td class="manage_1">{{ content.company }}</td>
+                  <td class="manage_2">{{ content.title }}</td>
+                  <td class="manage_3">{{ content.period }}</td>
+                  <td class="manage_4">
+                    {{
+                      content.terminationDate ? content.terminationDate : " - "
+                    }}
+                  </td>
+                  <td class="manage_5">
+                    {{ content.experience ? content.experience : " - " }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="empyment_history">
+          <div class="text-primary text-center">
+            <b class="fs20">Holdings</b>
+          </div>
+          <div class="row commodityTable">
+            <table class="w-100">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>As On</th>
+                  <th>No. of Shares</th>
+                  <th>% Holding</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let content of holding_data">
+                  <td class="manage_1">{{ content.company }}</td>
+                  <td class="manage_2">
+                    {{ content.asOnDate ? content.asOnDate : "-" }}
+                  </td>
+                  <td class="manage_3">
+                    {{ content.noOfShares ? content.noOfShares : "-" }}
+                  </td>
+                  <td class="manage_4">
+                    {{
+                      this.util.standardFormat(content.percentHoldings, 2, "")
+                    }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+        <div class="empyment_history">
+          <div class="text-primary text-center">
+            <b class="fs20">Directorship</b>
+          </div>
+          <div class="row commodityTable">
+            <table class="w-100">
+              <thead>
+                <tr>
+                  <th>Company</th>
+                  <th>Title</th>
+                  <th>Inception Date</th>
+                  <th>Termination Date</th>
+                  <th>Years</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let content of director_data">
+                  <td class="manage_1">{{ content.company }}</td>
+                  <td class="manage_2">
+                    {{ content.title ? content.title : "-" }}
+                  </td>
+                  <td class="manage_3">
+                    {{ content.period ? content.period : "-" }}
+                  </td>
+                  <td class="manage_3">
+                    {{
+                      content.terminationDate ? content.terminationDate : "-"
+                    }}
+                  </td>
+                  <td class="manage_4">
+                    {{ content.experience ? content.experience : "-" }}
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <br />
+      </div>
+    </div>
+  </div>
+</div>

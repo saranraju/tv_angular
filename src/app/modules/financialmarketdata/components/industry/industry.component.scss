@@ -1,0 +1,53 @@
+.text-primary {
+  color: #ffc000 !important;
+}
+
+.secondryheader {
+  justify-content: space-between;
+  display: flex;
+  align-items: center;
+  margin-bottom: 25px;
+  margin-top: 10px;
+}
+
+.centerDropdown {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.endDropdown {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.perodicity {
+  color: #ffc000;
+  margin-right: 5px;
+  font-size: 15px;
+}
+
+.selectWorld {
+  color: #ffc000;
+  font-size: 17px;
+  font-weight: bolder;
+}
+
+.pagination {
+  font-size: 12px;
+  color: #ffffff;
+  margin-top: -10px;
+}
+
+.arrowIconClass {
+  margin-right: 10px;
+  font-size: 22px;
+  color: white;
+  cursor: pointer;
+}
+
+.sectorHead {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+}

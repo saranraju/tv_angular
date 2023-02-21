@@ -1,0 +1,128 @@
+<div class="backdrop">
+  <div
+    id="alertbox"
+    class="modal sevendayfreetrialpopup-rtda sevendayfreetrialpopup-cm in"
+    tabindex="-1"
+    role="dialog"
+    style="
+      display: block;
+      padding-left: 4px;
+      background-color: rgba(0, 0, 0, 0.5);
+    "
+  >
+    <div class="modal-dialog modal-lg" style="top: 20%">
+      <form
+        [formGroup]="periodForm"
+        (ngSubmit)="
+          auth.exploreUser
+            ? (auth.openUnavailableExploreModal = true)
+            : downloadExcel(periodForm.valid, periodForm.value)
+        "
+      >
+        <div class="modal-content">
+          <div
+            class="modal-header"
+            [ngClass]="
+              PeriodData && !duplicate_Values
+                ? 'padding-header-one'
+                : 'padding-header'
+            "
+          >
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              <span class="text-primary" *ngIf="PeriodData && !duplicate_Values"
+                >Select period</span
+              >
+            </h5>
+            <button
+              type="button"
+              (click)="auth.closeInsidePopup = false"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--end of modal header-->
+          <div *ngIf="duplicate_Values" class="modal-body text-center">
+            {{
+              data_type === "Company_two"
+                ? "Company selected already"
+                : data_type === "Country_one"
+                ? "Country selected already"
+                : data_type + " selected already"
+            }}
+          </div>
+          <div
+            class="modal-body text-center"
+            *ngIf="!duplicate_Values && !PeriodData"
+          >
+            <span
+              *ngIf="!third_column_data?.length && !commodityArrayList?.length"
+              >Please select data to download</span
+            >
+            <span
+              *ngIf="
+                third_column_data?.length > 0 || commodityArrayList?.length > 0
+              "
+              >Please select periodicity to proceed
+            </span>
+          </div>
+          <div
+            *ngIf="PeriodData && !duplicate_Values"
+            class="modal-body text-center"
+          >
+            <div class="row">
+              <div class="col-sm-6">
+                <div>
+                  <label for="" class="labeltext">From Period</label>
+                </div>
+                <div class="position-relative">
+                  <ngx-datepicker
+                    id="startDateRef"
+                    formControlName="startDate"
+                    [options]="options"
+                  ></ngx-datepicker>
+                  <i
+                    class="fa fa-calendar cus-calender position-absolute cursor-pointer"
+                    (click)="startDatetoggle($event)"
+                  ></i>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div>
+                  <label for="" class="labeltext">To Period</label>
+                </div>
+                <div class="position-relative">
+                  <ngx-datepicker
+                    id="endDateRef"
+                    formControlName="endDate"
+                    [options]="options"
+                  ></ngx-datepicker>
+                  <i
+                    class="fa fa-calendar cus-calender position-absolute cursor-pointer"
+                    (click)="endDatetoggle($event)"
+                  ></i>
+                </div>
+              </div>
+
+              <div class="col-sm-12">
+                <div id="periodErrorMsg"></div>
+              </div>
+            </div>
+          </div>
+          <!--end of modal body-->
+          <div class="modal-footer" *ngIf="PeriodData && !duplicate_Values">
+            <div>
+              <button type="submit" class="btn bluebtn-dd">
+                Download Excel
+              </button>
+            </div>
+          </div>
+          <!--end of modal footer-->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

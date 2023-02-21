@@ -1,0 +1,159 @@
+.modal-dialog {
+  background: #00071e;
+  transform: translate(0, 0);
+  min-width: 70%;
+  height: 20rem;
+}
+.modal-content {
+  background: #00071e;
+}
+.modal-header {
+  border-bottom: 1px solid transparent !important;
+  padding-bottom: 0;
+}
+.modal-title {
+  color: #f7bb33 !important;
+  font-size: 1rem;
+}
+.modal-body {
+  position: relative;
+  padding: 15px;
+  color: #ffc000;
+}
+.modal-footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+.close {
+  color: white;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 1;
+  text-shadow: 0 1px 0 white;
+}
+button.close {
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  -webkit-appearance: none;
+}
+.mat-form-field-flex {
+  background: white !important;
+}
+
+.bluebtn-dd,
+a.bluebtn-dd {
+  background: #ffc000;
+  border: 2px solid #ffc000;
+  padding: 8px 30px;
+  border-radius: 5px;
+  display: inline-block;
+  color: white;
+  vertical-align: top;
+}
+
+#templateName {
+  background: #fbe5c6;
+  border: none;
+  margin-left: 2rem;
+  height: 2rem;
+}
+
+.table-align {
+  margin: 0 2rem;
+  display: flex;
+  justify-content: space-around;
+}
+
+.lable-table {
+  background: #ffc000;
+  color: black;
+  font-weight: 600;
+  padding: 5px 15px;
+}
+
+.lable-table:hover {
+  cursor: pointer;
+}
+
+.cus-select {
+  width: 40%;
+  background: #fbe5c6;
+}
+
+.fa-plus-circle {
+  font-size: 2.5rem;
+}
+
+.cus-ye {
+  background: #fec134;
+  font-weight: 700;
+  height: 2.5rem;
+  width: 5rem;
+  border-radius: 3px;
+}
+
+.left-10 {
+  left: 10%;
+}
+
+.fs-35 {
+  font-size: 35px;
+}
+
+.add-metrices,
+.selected-metrices {
+  .title {
+    background: #ffc000;
+    color: black;
+    font-weight: 700;
+    padding: 5px;
+    text-align: left;
+  }
+
+  .body {
+    min-height: 20rem;
+    max-height: 20rem;
+    background: #fbe5c6;
+    overflow: hidden auto;
+
+    .container {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      width: 95%;
+      padding: 5px 2px;
+
+      .icon {
+        color: black;
+      }
+
+      p {
+        // list-style: none;
+        // padding: 3px 0px;
+        color: black;
+        // padding-inline-start: 1rem;
+        // width: 100%;
+        margin: 0px;
+      }
+      &:hover {
+        background-color: #a9a9a9;
+        cursor: pointer;
+      }
+    }
+    .selected {
+      background-color: #a9a9a9;
+      cursor: pointer;
+    }
+  }
+}
+
+.conf-btn {
+  background: #fec134;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  margin-right: 10px !important;
+}

@@ -1,0 +1,159 @@
+<div class="modal p-2">
+  <div class="modal-dialog-style">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        (click)="tableDialogClose()"
+        autocomplete="new-search"
+      >
+        ×
+      </button>
+      <div class="commodityTable">
+        <table class="w-100 scroll">
+          <thead>
+            <tr>
+              <th>Operating Segments ({{ currency }} Million)</th>
+              <ng-container *ngFor="let header of header_data; let i = index">
+                <ng-container *ngIf="i < 7">
+                  <th class="text-end">
+                    {{ header | date: "MMM - y" }}
+                  </th>
+                </ng-container>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody style="max-height: 600px">
+            <tr class="syle_tr">
+              <td>Sales</td>
+            </tr>
+            <tr *ngFor="let content of table_data; let i = index">
+              <td>{{ content.label }}</td>
+              <ng-container *ngFor="let header of header_data; let j = index">
+                <td *ngIf="j < 7" class="text-end">
+                  <ng-container *ngIf="content['sales' + header] != undefined">
+                    {{
+                      this.util.standardFormat(content["sales" + header], 2, "")
+                    }}
+                  </ng-container>
+                  <ng-container
+                    *ngIf="
+                      content['sales' + header] == undefined &&
+                      content['sales' + header] == null
+                    "
+                  >
+                    -
+                  </ng-container>
+                </td>
+              </ng-container>
+            </tr>
+
+            <tr class="syle_tr">
+              <td>Operating Income</td>
+            </tr>
+            <tr *ngFor="let content of table_data; let i = index">
+              <td>{{ content.label }}</td>
+              <ng-container *ngFor="let header of header_data; let j = index">
+                <td *ngIf="j < 7" class="text-end">
+                  <ng-container *ngIf="content['opinc' + header] != undefined">
+                    {{
+                      this.util.standardFormat(content["opinc" + header], 2, "")
+                    }}
+                  </ng-container>
+                  <ng-container
+                    *ngIf="
+                      content['opinc' + header] == undefined &&
+                      content['opinc' + header] == null
+                    "
+                  >
+                    -
+                  </ng-container>
+                </td>
+              </ng-container>
+            </tr>
+
+            <tr class="syle_tr">
+              <td>Assets</td>
+            </tr>
+            <tr *ngFor="let content of table_data; let i = index">
+              <td>{{ content.label }}</td>
+              <ng-container *ngFor="let header of header_data; let j = index">
+                <td *ngIf="j < 7" class="text-end">
+                  <ng-container *ngIf="content['assets' + header] != undefined">
+                    {{
+                      this.util.standardFormat(
+                        content["assets" + header],
+                        2,
+                        ""
+                      )
+                    }}
+                  </ng-container>
+                  <ng-container
+                    *ngIf="
+                      content['assets' + header] == undefined &&
+                      content['assets' + header] == null
+                    "
+                  >
+                    -
+                  </ng-container>
+                </td>
+              </ng-container>
+            </tr>
+
+            <tr class="syle_tr">
+              <td>Capital Expenditure</td>
+            </tr>
+            <tr *ngFor="let content of table_data; let i = index">
+              <td>{{ content.label }}</td>
+              <ng-container *ngFor="let header of header_data; let j = index">
+                <td *ngIf="j < 7" class="text-end">
+                  <ng-container *ngIf="content['capex' + header] != undefined">
+                    {{
+                      this.util.standardFormat(content["capex" + header], 2, "")
+                    }}
+                  </ng-container>
+                  <ng-container
+                    *ngIf="
+                      content['capex' + header] == undefined &&
+                      content['capex' + header] == null
+                    "
+                  >
+                    -
+                  </ng-container>
+                </td>
+              </ng-container>
+            </tr>
+
+            <tr class="syle_tr">
+              <td>Depreciation Expense</td>
+            </tr>
+            <tr *ngFor="let content of table_data; let i = index">
+              <td>{{ content.label }}</td>
+              <ng-container *ngFor="let header of header_data; let j = index">
+                <td *ngIf="j < 7" class="text-end">
+                  <ng-container *ngIf="content['dep' + header] != undefined">
+                    {{
+                      this.util.standardFormat(content["dep" + header], 2, "")
+                    }}
+                  </ng-container>
+                  <ng-container
+                    *ngIf="
+                      content['dep' + header] == undefined &&
+                      content['dep' + header] == null
+                    "
+                  >
+                    -
+                  </ng-container>
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <br />
+    </div>
+  </div>
+</div>

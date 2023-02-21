@@ -1,0 +1,55 @@
+.modal {
+  display: block;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.8);
+  transition: opacity 500ms;
+}
+
+/* Modal Content */
+.modal-content {
+  background: #00071e !important;
+  padding: 0px 10px !important;
+  width: 60% !important;
+  height: 285px !important;
+  overflow-y: auto;
+  margin-top: 10rem;
+}
+
+.modal-title {
+  font-size: 17px;
+  color: #ffc000;
+}
+
+.saved-screen-list {
+  list-style: none;
+  background-color: #fbe5c6;
+  color: #000;
+  font-size: 14px;
+  padding: 0.6rem;
+  height: 124px;
+  overflow-y: auto;
+}
+
+.new-screen-name {
+  background-color: #fbe5c6;
+  padding: 5px 10px;
+  font-size: 14px;
+}
+
+.footer-btn {
+  border-radius: 4px;
+  background: 0;
+  border: 1px solid #ffc000;
+  color: #ffc000;
+  font-size: 13px;
+  padding: 5px;
+  width: 15%;
+  flex: none;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.active {
+  color: #333 !important;
+  background: #ffc000 !important;
+}

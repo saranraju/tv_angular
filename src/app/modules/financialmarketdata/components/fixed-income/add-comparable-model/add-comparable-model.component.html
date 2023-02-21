@@ -1,0 +1,40 @@
+<div class="backdrop">
+  <div id="alertbox" class="modal sevendayfreetrialpopup-rtda  sevendayfreetrialpopup-cm in" tabindex="-1" role="dialog"
+    style="display: block; padding-left: 4px;background-color: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-lg" style="top: 25%;">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">Add Comparable</h5>
+          <button type="button" (click)="auth.expandEstimateModal =false" class="close" data-dismiss="modal"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!--end of modal header-->
+
+        <div class="modal-body text-center">
+          <div class="comparable-section p-3">
+            <div class="input section">
+              <input type="search" placeholder="Search Instrument" (input)="nodeFilter($event)"
+                (focus)="disbleSelectedOption()">
+              <div class="list-of-options">
+                <li *ngFor="let data of instrumentLists" (click)="comparableClick(data)"> {{ data.text }}
+                </li>
+              </div>
+            </div>
+            <div class="selected-options">
+              <div class="list-options mt-2" *ngFor="let data of selectedLists">
+                <li> {{ data.text }} </li>
+                <span> <i class="fa fa-close ml-3" (click)="removeComparableClick(data)"></i> </span>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4">
+            <button class="btn">Add</button>
+          </div>
+        </div>
+        <!--end of modal body-->
+      </div>
+    </div>
+  </div>
+</div>

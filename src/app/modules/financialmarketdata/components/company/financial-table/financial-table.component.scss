@@ -1,0 +1,83 @@
+.commodityTable {
+  table {
+    font-weight: 400;
+    font-size: 13px;
+
+    tbody {
+      display: block;
+      overflow-y: auto;
+      // border-bottom: 1px solid #528dc3;
+    }
+
+    thead,
+    tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    th {
+      font-weight: 600;
+      border-top: 1px solid #528dc3;
+      border-bottom: 1px solid #528dc3;
+      color: #ffc000;
+      font-size: 12px;
+      background-color: #00071e !important;
+      padding: 6px 8px;
+    }
+
+    tr:nth-child(odd) {
+      background-color: #122543;
+    }
+
+    th:last-child {
+      text-align: end;
+    }
+
+    td {
+      padding: 6px 8px;
+      font-size: 12px;
+      // height: 54.59px;
+      line-height: 21px;
+
+      .chartdivtrend {
+        width: 50px;
+        height: 23px;
+      }
+    }
+
+    td:first-child {
+      color: #ffc000;
+      width: 280px;
+    }
+
+    th:first-child {
+      // color: #ffc000;
+      width: 280px;
+    }
+
+    td:last-child {
+      text-align: end;
+    }
+  }
+}
+
+.cursor:hover {
+  cursor: pointer;
+}
+
+svg {
+  width: 140px;
+  height: 20px;
+  float: left;
+  margin: 5px;
+  overflow: visible;
+}
+
+.funding-detail-no-data {
+  background: #122543;
+  height: 200px !important;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}

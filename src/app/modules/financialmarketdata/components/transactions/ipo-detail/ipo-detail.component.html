@@ -1,0 +1,114 @@
+<div class="header ipo-container">
+  <div class="fixed-income container-fluid">
+    <div class="d-flex mt-2 justify-content-between">
+      <div class="d-flex align-items-center justify-content-start flex-fill">
+        <!-- <span>
+          <i class="fa fa-arrow-circle-left" (click)="backButton()"></i>
+        </span> -->
+        <span class="fixed-income-title"
+          >{{ companyName }}.({{ exchange }}
+          <span *ngIf="exchange && ticker"> : </span>{{ ticker }}) |<span
+            class="fs-6 ps-1 text-white"
+            >{{ country }}</span
+          >
+          |<span class="fs-5 ps-1 text-white">{{ status }}</span>
+        </span>
+      </div>
+      <div class="d-flex align-items-center justify-content-end flex-fill pe-4">
+        <ng-select2
+          [data]="currencyDataList"
+          [value]="selectedCurrency"
+          (valueChanged)="valueChangedHandler('currency', $event)"
+          class="cusSelect2 cusSelect2_14rem ml-2"
+          [placeholder]="'Change Currency'"
+        ></ng-select2>
+        <ng-select2
+          [data]="company_name"
+          [value]="selectedCompany"
+          (valueChanged)="valueChangedHandler('company', $event)"
+          class="cusSelect2 cusSelect2_14rem ml-2"
+          [placeholder]="'Select Company'"
+        ></ng-select2>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="d-flex justify-content-between mt-2">
+  <p class="text-primary ps-3 fs-5">Issue Details</p>
+  <div class="pe-5">
+    <small
+      class="under-line text-primary fs13 cursor-pointer mr-4"
+      (click)="backButton()"
+      >Back to Dashboard</small
+    >
+    <img
+      class="cursor-pointer img-fluid pe-4"
+      src="/assets/img/excelDownload.png"
+      alt="excelDownload"
+      (click)="downloadFilteredExcel()"
+    />
+    <small
+      *ngIf="compamyRedirectData?.length > 0"
+      class="under-line text-primary fs13 cursor-pointer"
+      (click)="routeToCompanyPage()"
+      >Detailed Company Information</small
+    >
+  </div>
+</div>
+<div class="row mt-3">
+  <div class="col-4">
+    <app-ipo-table
+      *ngIf="this.ipo_table_data_detail_one?.value?.length"
+      display_none="true"
+      [ipo_table_data]="this.ipo_table_data_detail_one"
+      fixedHeight="ipo-details"
+    ></app-ipo-table>
+  </div>
+  <div class="col-4">
+    <app-ipo-table
+      *ngIf="ipo_table_data_detail_two?.value?.length"
+      display_none="true"
+      [ipo_table_data]="ipo_table_data_detail_two"
+      fixedHeight="ipo-details"
+    ></app-ipo-table>
+  </div>
+  <div class="col-4">
+    <app-ipo-table
+      *ngIf="ipo_table_data_detail_three?.value?.length"
+      display_none="true"
+      type="ipo-notes-one"
+      (notesDataEmit)="openModalPopUp($event)"
+      [ipo_table_data]="ipo_table_data_detail_three"
+      (nonotesAvailable)="onNoData($event)"
+      fixedHeight="ipo-details"
+    ></app-ipo-table>
+  </div>
+</div>
+<div class="d-flex justify-content-between mt-2">
+  <p class="text-primary ps-3 fs-5">Offer Revision</p>
+</div>
+<div class="row mt-3 p-2 padding-bottom">
+  <div class="col-8">
+    <app-ipo-table
+      *ngIf="ipo_table_data_detail_four?.value?.length"
+      type="ipo-notes-two"
+      border_none="true"
+      [ipo_table_data]="ipo_table_data_detail_four"
+      (notesEmitTableTwo)="openNotesOfferRevision($event)"
+      (nonotesAvailable)="onNoData($event)"
+      fixedHeight="ipo-details"
+    ></app-ipo-table>
+  </div>
+</div>
+
+<div *ngIf="auth.ipoNotesModalOne">
+  <app-ipo-notes-modal
+    [notesData]="notesData"
+    [notesID]="notesId"
+  ></app-ipo-notes-modal>
+</div>
+
+<app-alertmodel
+  *ngIf="auth.closeInsidePopup"
+  [alertmsg]="alertmsg"
+></app-alertmodel>

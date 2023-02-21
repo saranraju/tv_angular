@@ -1,0 +1,38 @@
+<div class="modal p-3">
+  <!-- Modal Content -->
+  <div class="modal-content">
+    <div class="container-fluid px-0">
+      <div class="row">
+        <div class="col-12 py-2 close-icon-container">
+          <i
+            (click)="handleUnavailableExploreModalClick()"
+            class="fa fa-times fa-2x close cursor-pointer"
+          ></i>
+        </div>
+      </div>
+      <div class="row mt-4">
+        <div class="col-12">
+          <h2 class="modal-title text-center">Not Available in Explore</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <h4 class="modal-title modal-subtitle text-center">
+            Get
+            <a
+              (click)="handleUnavailableExploreModalClick()"
+              [routerLink]="['/free-trail']"
+              >14-Days Free Trial</a
+            >
+            or
+            <a
+              (click)="handleUnavailableExploreModalClick()"
+              [routerLink]="['/subscribe']"
+              >Subscribe</a
+            >
+          </h4>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

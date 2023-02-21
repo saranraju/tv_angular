@@ -1,0 +1,150 @@
+<div class="container-fluid px-0 mt-3">
+  <!-- Dropdown -->
+  <div class="row d-flex justify-content-between align-items-center">
+    <div
+      [ngClass]="{ 'hide-dropdowns': hideCdsDashboard === true }"
+      class="col-8 px-0 cds-dashboard-dropdowns-container"
+    >
+      <div class="row cds-dashboard-dropdowns">
+        <div class="col-1 ps-0">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Region'"
+          ></ng-select2>
+        </div>
+        <div class="col-1 ps-0">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Sector'"
+          ></ng-select2>
+        </div>
+        <div class="col-1 ps-0">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Seniority'"
+          ></ng-select2>
+        </div>
+        <div class="col-1 ps-0">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Currency'"
+          ></ng-select2>
+        </div>
+        <div class="col-1 ps-0">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Restructuring Type'"
+          ></ng-select2>
+        </div>
+        <div class="col-1 ps-0">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Quoting Convention'"
+          ></ng-select2>
+        </div>
+        <div class="col-1 ps-0">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Tenor'"
+          ></ng-select2>
+        </div>
+      </div>
+    </div>
+    <div class="col-4 cds-dashboard-tab">
+      <div class="btn-group-cds">
+        <button
+          *ngFor="let button of buttonTypes"
+          type="button"
+          class="btn-cds-db"
+          (click)="switchTabs(button.id)"
+          [ngClass]="{
+            active: button.id === buttonTwo
+          }"
+        >
+          {{ button.title }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <!-- Expand Table -->
+  <div *ngIf="!hideCdsDashboard" class="row mt-4">
+    <app-expand-table-cds-dashboard
+      class="px-0"
+      [table_data]="cds_dashboard_table_data"
+      (hideCdsDashboard)="hideCdsDashboardHandler($event)"
+      (cdsCompanyData)="cdsCompanyDataHandler($event)"
+    ></app-expand-table-cds-dashboard>
+  </div>
+  <!-- Cds Company Details -->
+  <div *ngIf="hideCdsDashboard" class="container-fluid px-0">
+    <div class="row mt-3">
+      <div class="col-8">
+        <span class="company-display-name"
+          >ABC Ltd | 0.25Y | EUR | MMR | Senior</span
+        >
+      </div>
+      <div class="col-4">
+        <ng-select2
+          class="cusSelect2 cusSelect2Normal"
+          [placeholder]="'Select CDS'"
+        ></ng-select2>
+      </div>
+    </div>
+    <div class="row mt-2 d-flex align-items-center">
+      <div
+        class="col-3 align-items-center d-flex graphFilterSection filter-company-details"
+      >
+        <ul class="mb-0 p-0">
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '1W' }"
+            (click)="dateChange('1W')"
+          >
+            1W
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '3M' }"
+            (click)="dateChange('3M')"
+          >
+            3M
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '6M' }"
+            (click)="dateChange('6M')"
+          >
+            6M
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '1Y' }"
+            (click)="dateChange('1Y')"
+          >
+            1Y
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '5Y' }"
+            (click)="dateChange('5Y')"
+          >
+            5Y
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '10Y' }"
+            (click)="dateChange('10Y')"
+          >
+            10Y
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === 'MAX' }"
+            (click)="dateChange('MAX')"
+          >
+            MAX
+          </li>
+        </ul>
+      </div>
+      <div class="col-4 px-0">
+        <ng-select2
+          class="cusSelect2 cusSelect2Normal"
+          [placeholder]="'Par Spread Mid'"
+        ></ng-select2>
+      </div>
+    </div>
+  </div>
+</div>

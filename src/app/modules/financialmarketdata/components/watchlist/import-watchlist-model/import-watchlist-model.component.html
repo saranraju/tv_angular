@@ -1,0 +1,32 @@
+<div
+  class="modal-import"
+  tabindex="-1"
+  role="dialog"
+  [ngStyle]="{ display: displayStyle }"
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="row">
+        <p class="imp-p text-start">Import Watchlist:</p>
+
+        <i class="fa fa-times text-end" (click)="closePopup()"></i>
+      </div>
+
+      <input
+        type="file"
+        class="form-control importfile"
+        id="import"
+        (change)="addfile($event)"
+        accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+      />
+      <button class="impfile-btn" type="button" (click)="tablemodel()">
+        Submit
+      </button>
+      <p class="note">
+        Note: Please input a valid csv/excel file with two columns, one for
+        identifier [Ticker, ISIN, Sedol, FIGI] and the other for identifier
+        type.
+      </p>
+    </div>
+  </div>
+</div>

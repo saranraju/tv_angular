@@ -1,0 +1,58 @@
+.modal {
+  display: block;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.8);
+  transition: opacity 500ms;
+}
+
+/* Modal Content */
+.modal-content {
+  background: #00071e !important;
+  padding: 0px 10px !important;
+  width: 100% !important;
+  min-height: 30% !important;
+  overflow-y: auto;
+}
+
+.close {
+  color: #ffff;
+  float: right;
+  font-size: 17px;
+}
+
+.modal-title {
+  font-size: 18px;
+  font-weight: 600;
+  text-align: left;
+  color: #ffc000;
+}
+
+.modal-desc {
+  font-size: 18px;
+  font-weight: 600;
+  color: #ffc000;
+  margin-left: 5px;
+}
+
+.summary-container {
+  font-size: 12px;
+}
+
+.summary-container b {
+  color: #ffc000;
+  font-weight: normal;
+}
+
+.summary-row-container {
+  padding-bottom: 12px;
+}
+
+.excel-icon {
+  margin-left: 10px;
+  margin-bottom: 5px;
+}
+
+.disableExcelIcon {
+  pointer-events: none;
+  opacity: 0.5;
+}

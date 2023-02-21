@@ -1,0 +1,195 @@
+.overflow-subscribe {
+  overflow: auto !important;
+}
+
+footer.telFooter {
+  background-color: #002060;
+  border-top: 1px solid #204184;
+  clear: both;
+  color: #fff !important;
+  padding: 10px 0 5px;
+  margin-left: 0;
+  margin-right: 0;
+  font-size: 14px;
+
+  ul {
+    list-style: none;
+    float: right;
+    text-align: center;
+
+    li {
+      display: inline-block;
+
+      a {
+        text-decoration: none;
+        color: #fff;
+        padding: 0 10px;
+      }
+    }
+
+    li:after {
+      content: "|";
+      font-weight: 600;
+      color: #fff;
+    }
+
+    li:last-child::after {
+      visibility: hidden;
+    }
+  }
+}
+
+.bg-color-black {
+  color: black;
+}
+
+.bg-green {
+  color: #3f9071;
+  text-decoration: none;
+}
+
+.selectpicker option {
+  border: none;
+  background-color: white;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  color: #14b1b2;
+  font-weight: bold;
+  font-size: 30px;
+  margin: 0;
+  padding-left: 0;
+  margin-top: -20px;
+  background: none;
+}
+.selectpicker {
+  border: none;
+  background-color: white;
+  outline: none;
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  color: #14b1b2;
+  font-weight: bold;
+  font-size: 30px;
+  margin: 0;
+  padding-left: 0;
+  margin-top: -20px;
+  background: none;
+}
+
+.subscribe-btn {
+  width: max-content;
+  padding: 5px 10px;
+  background: #3f9071;
+  color: white;
+  border: none;
+  border-radius: 5px;
+}
+
+input[type="text"] {
+  font-size: 12px;
+  padding: 5px;
+  border: 1px solid #b9b9b9;
+  border-radius: 5px;
+  padding-inline-start: 10px;
+}
+input[type="password"] {
+  font-size: 12px;
+  padding: 5px;
+  border: 1px solid #b9b9b9;
+  border-radius: 5px;
+  padding-inline-start: 10px;
+}
+
+//body section
+body {
+  margin-top: 40px;
+  background: #022360 !important;
+  height: calc(100% - 5.9rem);
+  .custom-center {
+    text-align: center;
+    .title {
+      font-weight: 900;
+    }
+    p {
+      margin-bottom: 0.5rem !important;
+    }
+  }
+  .card {
+    border: none;
+    height: 100%;
+    .card-title {
+      background: #3a3a3a;
+      padding: 10px;
+    }
+    .card-body {
+      color: #3a3a3a;
+      padding: 0;
+      font-size: 14px;
+      p {
+        border-bottom: 1px solid #cfcfcf;
+        padding: 0 10px;
+        &:last-child {
+          border-bottom: none;
+          margin: 0 0 6px 0;
+        }
+      }
+    }
+  }
+  .plan-card-section {
+    .btn-section {
+      display: flex;
+      button {
+        &:hover {
+          text-decoration: underline;
+        }
+        border: none;
+        width: 50%;
+        padding: 10px;
+      }
+      .activeBtn {
+        background-color: #3f9071;
+        color: white;
+      }
+    }
+    h5 {
+      font-size: 18px !important;
+    }
+    .your-order {
+      margin: 5px 0;
+    }
+    .billig-plan-div {
+      border: 2px solid #218be1;
+      background-color: #d6eefe;
+      width: 10rem;
+      font-weight: 400;
+
+      p {
+        margin: 7px;
+      }
+    }
+    .region_con {
+      max-width: 8rem;
+    }
+    .regionData {
+      font-size: 11px;
+      font-style: italic;
+      width: 10rem;
+      font-weight: 800;
+      margin-top: 10px;
+    }
+    .billing_container {
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+  .sucess_message_container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+  }
+  .sucess_message_container > p {
+    color: #ffc000;
+  }
+}

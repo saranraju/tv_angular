@@ -1,0 +1,261 @@
+<app-add-column-model></app-add-column-model>
+<!-- <div class="container"> -->
+<div *ngIf="tablecontent">
+  <div class="row">
+    <div class="col">
+      <h1 class="company-watchlist">{{ table_title }}</h1>
+    </div>
+  </div>
+  <div class="row">
+    <!-- //Watchlist_button -->
+    <div class="col-8">
+      <span *ngFor="let btn of buttons" class="btn-group watchlist-tabs">
+        <button
+          fragment="management_tab"
+          type="button"
+          class="btn"
+          (click)="testclick(btn.id)"
+          [ngClass]="{
+            active: btn.id == buttonactive
+          }"
+        >
+          {{ btn.title }}
+        </button>
+      </span>
+      <i class="fa fa-pencil" (click)="onpenclick()"></i>
+    </div>
+    <!-- //reported Currency -->
+    <div class="col-2 reported_currency_class">
+      <span>Reported Currency</span>
+      <label class="switch">
+        <input type="checkbox" />
+        <span class="slider round"></span>
+      </label>
+    </div>
+
+    <!-- dropdown -->
+    <div class="col-2">
+      <ng-select2
+        *ngIf="dropdownFlagTable"
+        [data]="table_data"
+        placeholder="LTM"
+        value=""
+        [options]="option"
+      >
+      </ng-select2>
+      <img class="excel_icon" src="/assets/img/excelDownload.png" />
+    </div>
+  </div>
+  <!-- </div> -->
+  <div class="row table-row-class">
+    <div class="col-12 d-flex">
+      <div class="watchlist-table">
+        <table class="w-100 scroll">
+          <thead>
+            <tr
+              cdkDropList
+              cdkDropListOrientation="horizontal"
+              (cdkDropListDropped)="dropCol($event)"
+            >
+              <th
+                style="width: 15 rem"
+                [cdkDragDisabled]="header.label == 'Company'"
+                cdkDrag
+                cdkDragHandle
+                *ngFor="let header of table_data.title; let i = index"
+                [ngStyle]="{
+                  width: header?.width,
+                  'text-align': header.headerAlign
+                    ? header?.headerAlign
+                    : header?.align,
+                  cursor: header?.pointer && 'pointer',
+                  display: 'header?.header_none'
+                }"
+                (click)="sortByKey(header.key, i, header.shorting)"
+              >
+                {{ header.label }}
+                <i
+                  *ngIf="i != iconIndex && header?.shorting"
+                  class="ms-1 fa fa-sort"
+                ></i>
+                <i
+                  *ngIf="i == iconIndex && shortDown && header?.shorting"
+                  class="ms-1 fa fa-solid fa-long-arrow-down"
+                ></i>
+                <i
+                  *ngIf="i == iconIndex && !shortDown && header?.shorting"
+                  class="ms-1 fa fa-solid fa-long-arrow-up"
+                ></i>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            [ngStyle]="{ 'max-height': mh }"
+            [ngClass]="
+              fixedHeight === 'ipo'
+                ? 'fixedheight'
+                : !display_none
+                ? 'border-btm'
+                : ''
+            "
+          >
+            <tr
+              *ngFor="
+                let content of table_data.value
+                  | paginate
+                    : {
+                        itemsPerPage: itemsPerPage,
+                        currentPage: currentPageSelected
+                      }
+              "
+            >
+              <td
+                style="width: 15 rem"
+                *ngFor="let header of table_data.title; let i = index"
+                (click)="i == 0 && redirectCompany($event, content)"
+                [ngStyle]="{
+                  width: header?.width,
+                  cursor: i == 0 ? 'pointer' : 'default'
+                }"
+              >
+                <span *ngIf="header?.newsalert">
+                  <i
+                    class="fa fa-info-circle newsclass"
+                    title="news alerts will be here"
+                  ></i>
+                </span>
+                {{
+                  header.formattedNum
+                    ? util?.standardFormat(content[header.key], 2, "")
+                    : content[header.key]
+                }}
+                <span style="position: relative" *ngIf="header?.newsIcon">
+                  <i
+                    *ngIf="content?.newNews"
+                    class="fa fa-info-circle alertOnNews"
+                  ></i>
+                  <i
+                    class="fa fa-newspaper-o newsclass"
+                    (click)="Newsfunction()"
+                    [title]="titlevalue"
+                  ></i>
+                </span>
+
+                <span *ngIf="header?.companyIcon">
+                  <i
+                    class="fa fa-file newsclass"
+                    (click)="downloadProfile()"
+                    [title]="titlevalue"
+                  ></i>
+                </span>
+                <span class="custom-tooltip" *ngIf="header?.graph"
+                  ><i class="fa fa-line-chart"></i>
+                  <span class="c-tooltip">
+                    <div class="row">
+                      <div class="col-12 px-0">
+                        <div
+                          class="align-items-center d-flex graphFilterSection mt-2 mb-3 justify-content-between"
+                        >
+                          <ul id="companyStep9" class="mb-0 p-0">
+                            <li
+                              [ngClass]="{
+                                activeDateFilter: util.selectedDatetype === '1W'
+                              }"
+                              (click)="dateChange('1W')"
+                            >
+                              1W
+                            </li>
+
+                            <li
+                              [ngClass]="{
+                                activeDateFilter: util.selectedDatetype === '3M'
+                              }"
+                              (click)="dateChange('3M')"
+                            >
+                              3M
+                            </li>
+                            <li
+                              [ngClass]="{
+                                activeDateFilter: util.selectedDatetype === '6M'
+                              }"
+                              (click)="dateChange('6M')"
+                            >
+                              6M
+                            </li>
+                            <li
+                              [ngClass]="{
+                                activeDateFilter: util.selectedDatetype === '1Y'
+                              }"
+                              (click)="dateChange('1Y')"
+                            >
+                              1Y
+                            </li>
+                            <li
+                              [ngClass]="{
+                                activeDateFilter: util.selectedDatetype === '5Y'
+                              }"
+                              (click)="dateChange('5Y')"
+                            >
+                              5Y
+                            </li>
+                            <li
+                              [ngClass]="{
+                                activeDateFilter:
+                                  util.selectedDatetype === '10Y'
+                              }"
+                              (click)="dateChange('10Y')"
+                            >
+                              10Y
+                            </li>
+                            <li
+                              [ngClass]="{
+                                activeDateFilter:
+                                  util.selectedDatetype === 'MAX'
+                              }"
+                              (click)="dateChange('MAX')"
+                            >
+                              MAX
+                            </li>
+                          </ul>
+                          <span class="text-primary fs15 d-block stock-price"
+                            >Stock Price History ({{ currency }})</span
+                          >
+                          <img
+                            id="companyStep10"
+                            src="/assets/img/excelDownload.png"
+                            class="cursor-pointer img-fluid"
+                          />
+                        </div>
+
+                        <!-- Chart -->
+                        <div id="chartdiv5" class="commodityChart"></div>
+                      </div>
+                    </div>
+                  </span>
+                </span>
+              </td>
+            </tr>
+            <tr *ngIf="!table_data.value?.length">
+              <p class="text-center my-2">No Data Available</p>
+            </tr>
+          </tbody>
+          <tfoot>
+            <!-- <div class="container-fluid px-0 text-center mt-1">
+              <pagination-controls> </pagination-controls>
+            </div> -->
+          </tfoot>
+        </table>
+      </div>
+      <span class="edit_column_span">
+        <i class="fa fa-pencil" (click)="addnewcolumn()"></i>
+      </span>
+    </div>
+    <!-- <div class="col-1">
+      <i class="fa fa-pencil" (click)="addnewcolumn()"></i>
+    </div> -->
+  </div>
+</div>
+
+<ng-container *ngIf="auth.expandopenPopupPdfViewer">
+  <app-pdf-viewer-modal [pdf_data]="pdfDataOutput"></app-pdf-viewer-modal>
+</ng-container>

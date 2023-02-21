@@ -1,0 +1,79 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th *ngIf="type == 'is_data'">
+          Income Statement ({{ currency }} Million)
+        </th>
+        <th *ngIf="type == 'bi_data'">
+          Balance Sheet ({{ currency }} Million)
+        </th>
+        <th *ngIf="type == 'ci_data'">Cash Flow ({{ currency }} Million)</th>
+        <th *ngIf="type == 'ri_data'">Ratios</th>
+        <th *ngIf="!isPrivateCompanyActive">Trend</th>
+        <ng-container *ngFor="let header of header_data; let i = index">
+          <ng-container *ngIf="i < 3">
+            <th class="text-end">
+              {{ header | date: "MMM - y" }}
+            </th>
+          </ng-container>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let content of table_data; let i = index">
+        <ng-container *ngIf="i < 6">
+          <td>{{ content?.description }}</td>
+          <!-- <td>
+            <svg viewBox="0 0 500 100" class="chart">
+              <polyline
+                fill="none"
+                stroke="#0074d9"
+                stroke-width="9"
+                points=" 00,120 20,60 40,80 60,20 80,80 100,80 120,60 140,100 160,90 180,80 200, 110 220 "
+              />
+            </svg>
+          </td> -->
+          <td
+            *ngIf="!isPrivateCompanyActive"
+            [ngClass]="content?.graphflag === '1' ? 'cursor-pointer' : ''"
+          >
+            <div
+              (click)="redirectToInteractive(content)"
+              *ngIf="content?.graphflag == '1'"
+              id="{{ content?.fieldName }}"
+              class="chartdivtrend"
+            >
+              <app-thumbnail-graph
+                id="{{ i == 0 ? idName : '' }}"
+                [data]="content"
+              ></app-thumbnail-graph>
+            </div>
+            <!-- <div id="chartdivtrend">
+              <div id="sparklines"></div>
+              {{svgGraph()}}
+          </div> -->
+          </td>
+          <ng-container *ngFor="let header of header_data; let j = index">
+            <td class="text-end" *ngIf="j < 3">
+              <ng-container *ngIf="content">
+                <ng-container *ngIf="content[header] != null">
+                  {{ this.util.standardformatCustom(content[header], 2, "") }}
+                  <!-- {{content[header] | number}} -->
+                </ng-container>
+                <ng-container *ngIf="content[header] == null"> - </ng-container>
+              </ng-container>
+            </td>
+          </ng-container>
+        </ng-container>
+      </tr>
+      <tr *ngIf="!table_data.length">
+        <span class="text-center mb-3 funding-detail-no-data"
+          >No Data Available</span
+        >
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br />

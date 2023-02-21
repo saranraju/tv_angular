@@ -1,0 +1,127 @@
+<div class="modal p-2">
+  <div class="modal-dialog-style">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        (click)="tableDialogClose()"
+        autocomplete="new-search"
+      >
+        ×
+      </button>
+      <div class="commodityTable">
+        <table class="w-100 scroll">
+          <thead>
+            <tr>
+              <th *ngIf="type == 'is_data'">
+                Income Statement ({{ currency }} Million)
+              </th>
+              <th *ngIf="type == 'bi_data'">
+                Balance Sheet ({{ currency }} Million)
+              </th>
+              <th *ngIf="type == 'ci_data'">
+                Cash Flow ({{ currency }} Million)
+              </th>
+              <th *ngIf="type == 'ri_data'">Ratios</th>
+              <th>Trend</th>
+              <ng-container *ngFor="let header of header_data; let i = index">
+                <th class="text-end">
+                  {{ header | date: "MMM - y" }}
+                </th>
+              </ng-container>
+            </tr>
+          </thead>
+          <tbody
+            [ngStyle]="{
+              'max-height': financial_ratio_data?.length ? '250px' : '500px'
+            }"
+          >
+            <tr *ngFor="let content of table_data; let i = index">
+              <td
+                [ngClass]="
+                  content?.depth === '0'
+                    ? 'font-bold'
+                    : content?.depth === '2'
+                    ? 'left-padding'
+                    : ''
+                "
+              >
+                {{ content.description }}
+              </td>
+              <td [ngClass]="content.graphflag == '1' ? 'cursor-pointer' : ''">
+                <div
+                  (click)="redirectToInteractive(content)"
+                  *ngIf="content.graphflag == '1'"
+                  id="{{ content.fieldName }}"
+                  class="chartdivtrend"
+                >
+                  <app-thumbnail-graph [data]="content"></app-thumbnail-graph>
+                </div>
+              </td>
+              <ng-container *ngFor="let header of header_data; let j = index">
+                <td class="text-end">
+                  <ng-container *ngIf="content[header] != null">
+                    {{ this.util.standardformatCustom(content[header], 2, "") }}
+                    <!-- {{content[header] | number}} -->
+                  </ng-container>
+                  <ng-container *ngIf="content[header] == null">
+                    -
+                  </ng-container>
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+          <tbody
+            *ngIf="financial_ratio_data?.length"
+            class="financial_ratios_styles"
+          >
+            <tr *ngFor="let content of financial_ratio_data; let i = index">
+              <td
+                [ngClass]="
+                  content?.depth === '0'
+                    ? 'font-bold'
+                    : content?.depth === '2'
+                    ? 'left-padding'
+                    : ''
+                "
+              >
+                {{ content.description }}
+              </td>
+              <td [ngClass]="content.graphflag == '1' ? 'cursor-pointer' : ''">
+                <div
+                  (click)="redirectToInteractive(content)"
+                  *ngIf="content.graphflag == '1'"
+                  id="{{ content.fieldName }}"
+                  class="chartdivtrend"
+                >
+                  <app-thumbnail-graph [data]="content"></app-thumbnail-graph>
+                </div>
+              </td>
+              <ng-container *ngFor="let header of header_data; let j = index">
+                <td class="text-end">
+                  <ng-container *ngIf="content[header] != null">
+                    {{
+                      this.util.formatNumberWithCommasCustom(
+                        content[header],
+                        2,
+                        ""
+                      )
+                    }}
+                    <!-- {{ content[header] | number }} -->
+                  </ng-container>
+                  <ng-container *ngIf="content[header] == null">
+                    -
+                  </ng-container>
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <br />
+    </div>
+  </div>
+</div>

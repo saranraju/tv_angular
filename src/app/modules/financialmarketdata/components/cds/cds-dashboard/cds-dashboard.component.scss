@@ -1,0 +1,47 @@
+.cds-dashboard-dropdowns .col-1 {
+  width: 14% !important;
+}
+
+.cds-dashboard-dropdowns-container {
+  width: 70% !important;
+}
+
+.cds-dashboard-tab {
+  width: 28% !important;
+}
+
+.btn-group-cds {
+  display: flex;
+  justify-content: end;
+}
+
+.btn-cds-db {
+  background: 0;
+  border: 1px solid #ffc000;
+  color: #ffc000;
+  font-size: 13px;
+  padding: 5px 28px;
+}
+
+.active {
+  color: #333 !important;
+  background: #ffc000;
+}
+
+.disable-active {
+  color: #ffc000 !important;
+  background: 0;
+}
+
+.hide-dropdowns {
+  opacity: 0;
+}
+
+.company-display-name {
+  color: #ffc000;
+  font-size: 19px !important;
+}
+
+.filter-company-details {
+  width: 20% !important;
+}

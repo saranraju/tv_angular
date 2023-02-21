@@ -1,0 +1,143 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th
+          *ngFor="let header of table_data.title; let i = index"
+          [ngStyle]="{
+            width: header?.width,
+            'text-align': header?.align
+          }"
+        >
+          {{ header.label }}
+        </th>
+      </tr>
+    </thead>
+    <div id="parent-table">
+      <tbody
+        *ngFor="
+          let content of table_data.value
+            | paginate: { itemsPerPage: 12, currentPage: currentPageDet };
+          let i = index
+        "
+      >
+        <tr>
+          <td
+            *ngFor="let header of table_data.title"
+            [ngStyle]="{
+              width: header?.width,
+              'text-align': header?.align,
+              color: header?.color,
+              height: content?.height,
+              cursor: header?.pointer && 'pointer'
+            }"
+          >
+            <i
+              *ngIf="header?.plusIcon === true"
+              [ngClass]="
+                selectedPlus_icon && index === i ? ' fa-minus' : ' fa-plus'
+              "
+              (click)="handleExpandTableClick(content, i)"
+              class="fa fa-solid"
+              style="cursor: pointer"
+            ></i>
+            <span
+              (click)="header?.pointer && handleCdsCompanyClick(content)"
+              *ngIf="content[header.key]"
+            >
+              {{
+                header.formattedNum
+                  ? util?.standardFormat(content[header.key], 2, "")
+                  : content[header.key]
+              }}</span
+            >
+          </td>
+        </tr>
+        <tr *ngIf="index === i && hideChildContent">
+          <div class="container-fluid my-3">
+            <div class="row">
+              <div class="col-6 px-0">
+                <div class="container-fluid px-0">
+                  <div class="row">
+                    <div class="col-3 px-0">
+                      <ng-select2
+                        class="cusSelect2 cusSelect2Normal"
+                        [placeholder]="'Par Spread - Mid'"
+                      ></ng-select2>
+                    </div>
+                  </div>
+                  <div class="row mt-3">
+                    <div class="col-12 px-0 tradingview-cds-container">
+                      <div id="tradingview-cds-table"></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-5 px-0 mx-auto">
+                <div class="container0fluid px-0">
+                  <div class="row">
+                    <div class="col-3 px-0">
+                      <span class="cds-quote-title">CDS Quote</span>
+                    </div>
+                  </div>
+                  <div class="row mt-4">
+                    <div class="col-12 px-0 cds-quote-table">
+                      <table>
+                        <tr>
+                          <th class="hor-header"></th>
+                          <th class="hor-header" scope="col">Bid</th>
+                          <th class="hor-header" scope="col">Mid</th>
+                          <th class="hor-header" scope="col">Offer</th>
+                        </tr>
+                        <tr>
+                          <th class="ver-title par-spread" scope="row">
+                            Par Spread
+                          </th>
+                          <td>XX.XX</td>
+                          <td>XX.XX</td>
+                          <td>XX.XX</td>
+                        </tr>
+                        <tr>
+                          <th class="ver-title quote-spread" scope="row">
+                            Quote Spread
+                          </th>
+                          <td>XX.XX</td>
+                          <td>XX.XX</td>
+                          <td>XX.XX</td>
+                        </tr>
+                        <tr class="last-row">
+                          <th class="ver-title" scope="row">Upfront</th>
+                          <td>XX.XX</td>
+                          <td>XX.XX</td>
+                          <td>XX.XX</td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </tr>
+      </tbody>
+    </div>
+
+    <div *ngIf="!table_data.value?.length">
+      <span class="text-center mb-3 funding-detail-no-data"
+        >No Data Available</span
+      >
+    </div>
+    <tfoot *ngIf="table_data.value?.length">
+      <div class="container-fluid px-0 text-center mt-1">
+        <pagination-controls
+          (pageChange)="currentPageDet = $event"
+          [previousLabel]="labels.previousLabel"
+          [nextLabel]="labels.nextLabel"
+          [maxSize]="11"
+          class="funding-details-pagination"
+          (click)="handlePaginateClick()"
+        ></pagination-controls>
+      </div>
+    </tfoot>
+  </table>
+</div>

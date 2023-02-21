@@ -1,0 +1,170 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead *ngIf="table_data.length > 0">
+      <tr>
+        <th>Particulars</th>
+        <ng-container *ngIf="table == 'yearly'">
+          <ng-container *ngFor="let header of header_data; let i = index">
+            <th *ngIf="i < 3" colspan="4" class="fixed-header-width">
+              {{ header | date: "MMM - y" }}
+            </th>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="table == 'quarterly'">
+          <ng-container *ngFor="let header of header_data; let i = index">
+            <th *ngIf="i < 3" colspan="4" class="fixed-header-width">
+              {{ header | date: "MMM - y" }}
+            </th>
+          </ng-container>
+        </ng-container>
+      </tr>
+      <tr>
+        <th></th>
+        <ng-container *ngIf="table == 'yearly'">
+          <ng-container *ngFor="let header of header_data; let i = index">
+            <th class="fixed-width" *ngIf="i < 3">High</th>
+            <th class="fixed-width" *ngIf="i < 3">Low</th>
+            <th class="fixed-width" *ngIf="i < 3">Actual</th>
+            <th class="fixed-width" *ngIf="i < 3">Deviation</th>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="table == 'quarterly'">
+          <ng-container *ngFor="let header of header_data; let i = index">
+            <th class="fixed-width" *ngIf="i < 3">High</th>
+            <th class="fixed-width" *ngIf="i < 3">Low</th>
+            <th class="fixed-width" *ngIf="i < 3">Actual</th>
+            <th class="fixed-width" *ngIf="i < 3">Deviation</th>
+          </ng-container>
+        </ng-container>
+      </tr>
+    </thead>
+    <thead *ngIf="table_data.length == 0">
+      <tr>
+        <th>Particulars</th>
+        <th></th>
+        <th></th>
+        <th></th>
+        <th></th>
+      </tr>
+      <tr>
+        <th></th>
+        <th>High</th>
+        <th>Low</th>
+        <th>Actual</th>
+        <th>Deviation</th>
+      </tr>
+    </thead>
+    <ng-container *ngIf="table_data.length > 0">
+      <tbody *ngIf="table == 'yearly'">
+        <tr
+          style="height: 50px"
+          *ngFor="let content of table_data; let i = index"
+        >
+          <!-- <ng-container *ngIf="i < 6"> -->
+          <td>{{ content.description }}</td>
+
+          <ng-container *ngFor="let header of header_data; let j = index">
+            <td class="fixed-width" *ngIf="j < 3">
+              {{
+                content["high-" + header]
+                  ? this.util.standardFormat(content["high-" + header], 2, "")
+                  : "-"
+              }}
+            </td>
+            <td class="fixed-width" *ngIf="j < 3">
+              {{
+                content["low-" + header]
+                  ? this.util.standardFormat(content["low-" + header], 2, "")
+                  : "-"
+              }}
+            </td>
+            <td class="fixed-width" *ngIf="j < 3">
+              {{
+                content["actual-" + header]
+                  ? this.util.standardFormat(content["actual-" + header], 2, "")
+                  : "-"
+              }}
+            </td>
+            <td class="fixed-width" *ngIf="j < 3">
+              {{
+                content["deviation-" + header] === "in-line"
+                  ? "in-line"
+                  : content["deviation-" + header]
+                  ? this.util.standardFormat(
+                      content["deviation-" + header],
+                      2,
+                      ""
+                    ) + "%"
+                  : "-"
+              }}
+            </td>
+          </ng-container>
+          <!-- </ng-container> -->
+        </tr>
+      </tbody>
+      <tbody *ngIf="table == 'quarterly'">
+        <tr
+          style="height: 50px"
+          *ngFor="let content of table_data; let i = index"
+        >
+          <!-- <ng-container *ngIf="i < 6"> -->
+          <td>{{ content.description }}</td>
+
+          <ng-container *ngFor="let header of header_data; let j = index">
+            <td class="fixed-width" *ngIf="j < 3">
+              {{
+                content["high-" + header]
+                  ? this.util.standardFormat(content["high-" + header], 2, "")
+                  : "-"
+              }}
+            </td>
+            <td class="fixed-width" *ngIf="j < 3">
+              {{
+                content["low-" + header]
+                  ? this.util.standardFormat(content["low-" + header], 2, "")
+                  : "-"
+              }}
+            </td>
+            <td class="fixed-width" *ngIf="j < 3">
+              {{
+                content["actual-" + header]
+                  ? this.util.standardFormat(content["actual-" + header], 2, "")
+                  : "-"
+              }}
+            </td>
+            <td class="fixed-width" *ngIf="j < 3">
+              {{
+                content["deviation-" + header] === "in-line"
+                  ? "in-line"
+                  : content["deviation-" + header]
+                  ? this.util.standardFormat(
+                      content["deviation-" + header],
+                      2,
+                      ""
+                    ) + "%"
+                  : "-"
+              }}
+            </td>
+          </ng-container>
+          <!-- </ng-container> -->
+        </tr>
+      </tbody>
+    </ng-container>
+    <!-- No data  -->
+    <ng-container *ngIf="table_data.length == 0">
+      <tbody>
+        <tr style="height: 270px">
+          <td
+            class="text-center"
+            style="text-align: center !important; color: #fff !important"
+            colspan="8"
+          >
+            No Data Available
+          </td>
+        </tr>
+      </tbody>
+    </ng-container>
+  </table>
+</div>
+
+<br />

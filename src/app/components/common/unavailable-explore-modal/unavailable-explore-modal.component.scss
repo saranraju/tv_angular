@@ -1,0 +1,42 @@
+.modal {
+  display: block;
+  z-index: 100000;
+  background: rgba(0, 0, 0, 0.8);
+  transition: opacity 500ms;
+}
+
+/* Modal Content */
+.modal-content {
+  background: #00071e !important;
+  width: 40% !important;
+  height: 160px !important;
+  overflow-y: auto;
+  margin: 0 auto;
+  margin-top: 150px;
+}
+
+.popup-header {
+  font-size: 18px;
+  color: #ffc000;
+}
+
+.close {
+  color: #fff;
+}
+
+.modal-title {
+  font-size: 17px;
+}
+
+.close-icon-container {
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.modal-subtitle {
+  margin-top: 15px;
+  font-size: 16px;
+}
+
+.modal-subtitle a {
+  color: #ffc000;
+}

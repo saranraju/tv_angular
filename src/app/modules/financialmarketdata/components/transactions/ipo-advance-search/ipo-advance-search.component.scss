@@ -1,0 +1,301 @@
+.modal {
+  display: block;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.8);
+  transition: opacity 500ms;
+}
+
+/* Modal Content */
+.modal-content {
+  background: #00071e !important;
+  padding: 0px 10px !important;
+  height: fit-content;
+  width: 100% !important;
+}
+
+.text-primary {
+  color: #ffc000 !important;
+}
+
+.popup-header {
+  font-size: 18px;
+  color: #ffc000;
+}
+
+.close {
+  color: #ffff;
+  float: right;
+  font-size: 17px;
+}
+
+.align-center {
+  display: flex;
+  margin-right: 10px;
+  align-items: center;
+}
+.search-btn {
+  padding: 4px 54px;
+  background-color: #00071e;
+  color: #ffc000;
+  font-size: 13px;
+  margin-right: 8px;
+  margin-top: 13px;
+  cursor: pointer;
+  border: 1px solid #ffc000;
+}
+.search-btn:hover {
+  background-color: #ffc000;
+  font-weight: bold;
+  color: black;
+}
+
+// input css
+.graphValue {
+  color: #333 !important;
+  background: #fbe5c6;
+  border: 1px solid #ffc000 !important;
+  float: left;
+  color: #555 !important;
+  width: 10rem;
+  // border: 1px solid #ccc;
+  height: 30px;
+  padding: 2px;
+  font-size: 10px;
+  border-radius: 5px;
+}
+// ngx plugin css
+::ng-deep {
+  .custom-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+  }
+
+  .custom-slider .ngx-slider {
+    width: 26rem;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-bar {
+    background: transparent;
+    height: 2px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-selection {
+    background: transparent;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-pointer {
+    width: 12px;
+    height: 24px;
+    top: auto;
+    /* to remove the default positioning */
+    bottom: 0;
+    background-color: #ffc000;
+    border-radius: unset;
+    border: 1px solid #d9d9d9;
+    border-radius: 3px;
+    // border-top-left-radius: 3px;
+    // border-top-right-radius: 3px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-tick {
+    top: unset !important;
+    bottom: -4px !important;
+    border-radius: 0px !important;
+    width: 2px !important;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-pointer:after {
+    // display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 3px;
+    gap: 3px;
+    position: initial;
+    z-index: 99;
+    width: 1px;
+    height: 14px;
+    background-color: #d9d9d9;
+    margin: 4px 0 0 3px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-pointer::before {
+    // display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 3px;
+    gap: 3px;
+    position: initial;
+    z-index: 99;
+    width: 1px;
+    height: 14px;
+    background-color: #d9d9d9;
+    margin: 6px 0 0 3px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-bubble {
+    bottom: 14px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-limit {
+    font-weight: bold;
+    color: orange;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-tick {
+    width: 1px;
+    height: 1px;
+    margin-left: 4px;
+    border-radius: 50%;
+    background: #ffc000;
+    top: -1px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-tick.ngx-slider-selected {
+    background: orange;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-bubble {
+    display: none;
+  }
+
+  // .custom-slider .ngx-slider .ngx-slider-bar-wrapper{
+  //   width: 250px;
+  // }
+
+  .horizontalLine {
+    width: 1px;
+    height: 14px;
+    background-color: #d9d9d9;
+  }
+  .period-container {
+    position: relative;
+    width: 16rem;
+  }
+  .period-dropdown-container {
+    width: 93.5%;
+    position: absolute;
+    z-index: 20;
+    background: #fbe5c6;
+    margin-top: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    color: #1f396d;
+    font-size: 12px;
+  }
+  .period-dropdown-container-det {
+    width: 93%;
+    position: absolute;
+    z-index: 20;
+    background: #fbe5c6;
+    margin-top: 2px;
+    border: 1px solid rgba(0, 0, 0, 0.15);
+    border-radius: 4px;
+    color: #1f396d;
+    font-size: 12px;
+  }
+  .period-dropdown-select {
+    width: 100%;
+    text-align: left;
+    padding: 4px 8px;
+    font-size: 13px;
+    background: #fbe5c6;
+    color: #1f396d;
+    border: 1px solid #ffc000;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  .date-picker-container {
+    padding: 10px;
+    font-weight: bold;
+  }
+  .from-date-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .to-date-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: 10px;
+
+    label {
+      margin: 0px;
+    }
+  }
+
+  .from-date-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .date-input-from {
+    padding: 5px 8px;
+    width: 80%;
+    border: 1px solid #ccc;
+  }
+
+  .date-input-to {
+    padding: 5px 8px;
+    width: 80%;
+    border: 1px solid #ccc;
+  }
+
+  .go-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    margin-left: 7rem;
+  }
+
+  .go-btn {
+    background: #00071e;
+    color: #ffc000;
+    border: 1px solid #ffc000;
+    border-radius: 4px;
+    padding: 4px 16px;
+    font-size: 12px;
+  }
+
+  .period-list {
+    list-style: none;
+    padding-left: 12px;
+    border-bottom: none;
+    padding-top: 10px;
+  }
+
+  .period-list li {
+    padding: 5px 0;
+    padding-left: 5px;
+    cursor: pointer;
+  }
+  .mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0 0.75em 0 0.75em;
+    margin-top: -0.25em;
+    position: relative;
+    width: 150px !important;
+  }
+}
+::ng-deep {
+  .ngx-pagination a,
+  .ngx-pagination button {
+    cursor: pointer;
+    color: #ffc000 !important;
+    text-decoration: none !important;
+  }
+  .ipo-pagination .ngx-pagination .current {
+    color: #fff !important;
+    background: none !important;
+  }
+  .select2-container--default .select2-results > .select2-results__options {
+    max-height: 200px;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}

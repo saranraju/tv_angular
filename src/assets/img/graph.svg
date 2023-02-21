@@ -1,0 +1,227 @@
+<svg
+  width="NaNpx"
+  height="NaNpx"
+  style=""
+  version="1.1"
+  xmlns="http://www.w3.org/2000/svg"
+  xmlns:xlink="http://www.w3.org/1999/xlink"
+>
+  <g xmlns="http://www.w3.org/2000/svg">
+    <g>
+      <g>
+        <g>
+          <g>
+            <g>
+              <g>
+                <g fill="#ffffff" fill-opacity="0">
+                  <rect width="30" height="18"></rect>
+                </g>
+                <g>
+                  <g><g></g></g>
+                  <g><g></g></g>
+                  <g>
+                    <g>
+                      <g
+                        role="group"
+                        stroke-opacity="1"
+                        fill-opacity="0"
+                        stroke="#639fd7"
+                        stroke-width="2"
+                        aria-describedby="id-122-description"
+                      >
+                        <g>
+                          <g clip-path="url(#id-125)">
+                            <g>
+                              <g>
+                                <g>
+                                  <g
+                                    fill="#67b7dc"
+                                    fill-opacity="0"
+                                    stroke="#639fd7"
+                                    stroke-opacity="1"
+                                    stroke-width="2"
+                                    style="pointer-events: none"
+                                  >
+                                    <g>
+                                      <g stroke-opacity="0"><path></path></g>
+                                      <g fill="none" fill-opacity="0">
+                                        <path
+                                          d=" M2.3,9.7  M2.5,9.9  C3.5001,9.9 5.4999,8.1 7.5,8.1 C9.5001,8.1 10.4999,12.15 12.5,12.15 C14.5001,12.15 15.4999,11.25 17.5,11.25 C19.5001,11.25 20.4999,9.99 22.5,9.99 C24.5001,9.99 26.5,10.71 27.5,10.71"
+                                        ></path>
+                                      </g>
+                                    </g>
+                                  </g>
+                                </g>
+                              </g>
+                            </g>
+                          </g>
+                          <g></g>
+                        </g>
+                        <desc id="id-122-description">Series</desc>
+                      </g>
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <g fill="#67b7dc" stroke="#639fd7"><g></g></g>
+                    </g>
+                  </g>
+                  <g>
+                    <g>
+                      <g><g></g></g>
+                      <g><g></g></g>
+                    </g>
+                  </g>
+                  <g><g></g></g>
+                  <g><g></g></g>
+                  <g
+                    role="button"
+                    focusable="true"
+                    tabindex="0"
+                    opacity="0"
+                    visibility="hidden"
+                    aria-hidden="true"
+                    display="none"
+                  >
+                    <g
+                      fill="#6794dc"
+                      stroke="#ffffff"
+                      fill-opacity="1"
+                      stroke-opacity="0"
+                    >
+                      <path></path>
+                    </g>
+                    <g transform="translate(1,1)">
+                      <g stroke="#ffffff" style="pointer-events: none">
+                        <path
+                          d=" M0,0  L11,0 "
+                          transform="translate(2.5,7.5)"
+                        ></path>
+                      </g>
+                      <g fill="#000000" style="pointer-events: none"><g></g></g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <g>
+                <g>
+                  <g aria-hidden="true">
+                    <g>
+                      <g fill="#000000" transform="translate(0,9) rotate(-90)">
+                        <g display="none"></g>
+                      </g>
+                      <g
+                        display="none"
+                        stroke="#000000"
+                        stroke-opacity="0.15"
+                        fill="none"
+                        transform="translate(0,18)"
+                      >
+                        <path
+                          transform="translate(-0.5,-0.5)"
+                          d=" M0,0  L30,0 "
+                        ></path>
+                      </g>
+                      <g>
+                        <g>
+                          <g
+                            fill="#000000"
+                            fill-opacity="0"
+                            opacity="0"
+                            stroke-opacity="0"
+                            style="pointer-events: none"
+                            display="none"
+                            transform="translate(0,9)"
+                          >
+                            <g
+                              transform="translate(-18,-11)"
+                              style="user-select: none"
+                            >
+                              <text x="0" y="21.5" dy="-5.805">
+                                <tspan>L</tspan>
+                              </text>
+                            </g>
+                          </g>
+                        </g>
+                      </g>
+                      <g
+                        display="none"
+                        stroke="#000000"
+                        stroke-opacity="0"
+                        fill="none"
+                        style="pointer-events: none"
+                      >
+                        <path
+                          transform="translate(-0.5,-0.5)"
+                          d=" M0,0  L0,18 "
+                        ></path>
+                      </g>
+                    </g>
+                  </g>
+                </g>
+              </g>
+              <g transform="translate(30,0)"><g></g></g>
+            </g>
+          </g>
+          <g><g></g></g>
+          <g transform="translate(0,18)">
+            <g>
+              <g aria-hidden="true">
+                <g>
+                  <g
+                    display="none"
+                    stroke="#000000"
+                    stroke-opacity="0"
+                    fill="none"
+                    style="pointer-events: none"
+                  >
+                    <path
+                      transform="translate(-0.5,-0.5)"
+                      d=" M0,0  L30,0 "
+                    ></path>
+                  </g>
+                  <g>
+                    <g>
+                      <g
+                        fill="#000000"
+                        fill-opacity="0"
+                        opacity="0"
+                        stroke-opacity="0"
+                        style="pointer-events: none"
+                        display="none"
+                      >
+                        <g
+                          transform="translate(-4,10)"
+                          style="user-select: none"
+                        >
+                          <text x="0" y="21.5" dy="-5.805">
+                            <tspan>L</tspan>
+                          </text>
+                        </g>
+                      </g>
+                    </g>
+                  </g>
+                  <g
+                    display="none"
+                    stroke="#000000"
+                    stroke-opacity="0.15"
+                    fill="none"
+                    transform="translate(0,-18)"
+                  >
+                    <path
+                      transform="translate(-0.5,-0.5)"
+                      d=" M0,0  L0,18 "
+                    ></path>
+                  </g>
+                  <g fill="#000000" transform="translate(15,0)">
+                    <g display="none"></g>
+                  </g>
+                </g>
+              </g>
+            </g>
+          </g>
+        </g>
+      </g>
+    </g>
+  </g>
+</svg>

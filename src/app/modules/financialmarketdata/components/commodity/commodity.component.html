@@ -1,0 +1,739 @@
+ <div class="row bg-border mt-3 w-99 mb-5" *ngIf="tabName == 'Details'">
+  <div class="row">
+    <div class="col-6 border-right pl-0">
+      <div class="title-section d-flex justify-content-between">
+        <div class="table-title tableSection">Commodity Live OTC</div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="title-section d-flex justify-content-between align-items-center pr-0">
+        <div class=" table-title tableSection">Commodity - EOD Reference Data</div>
+        <i class="fa fa-external-link" (click)="expandDashboard()"></i>
+      </div>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-6 pl-0 border-right ">
+      <div class="bg-with-border fix-the-div">
+        <h5 class="mt-1 font-weight-bold">OTC - Energy</h5>
+        <commodity-phase-two-table [tableData]="tableDataEnergy" [OTCorEnergy]="'Energy'" [tableDataHeader]="headerData"
+          [headerBorder]="true" [bottomBorder]="true" [homeData]="true" (commodityData)="redirectionToDetails($event)">
+        </commodity-phase-two-table>
+        <h5 class="mt-4 font-weight-bold">OTC - Precious Metals</h5>
+        <commodity-phase-two-table [tableData]="tableDataMetal?.content" [tableDataHeader]="headerData"
+          [tableDataLength]="tableDataMetal?.totalElements" [homeData]="true" [pagination]="true" [headerBorder]="true"
+          [OTCorEnergy]="'Metals'" [bottomBorder]="true" (changePage)="onPageChange($event)"
+          (commodityData)="redirectionToDetails($event)">
+        </commodity-phase-two-table>
+      </div>
+    </div>
+    <div class="col-6 ml-2 pl-0 right-section pr-0">
+      <div class="">
+        <div class="mb-1 d-flex justify-content-between">
+          <h6 class="mb-0 fs15 title"><b>Energy</b></h6>
+          <p class="mb-0 pe-5 me-3 fw600 fs13 title">Estimates</p>
+        </div>
+        <app-commodity-table [isDetailClick]="true" (detailClick)="dashboardRedirect($event)" [tableData]="energy"
+          mh="217px"></app-commodity-table>
+      </div>
+
+      <div class="mt-4">
+        <div class="mb-1 d-flex justify-content-between">
+          <h6 class="mb-0 fs15 title"><b>Agriculture</b></h6>
+          <p class="mb-0 pe-5 me-3 fw600 fs13 title">Estimates</p>
+        </div>
+        <app-commodity-table [isDetailClick]="true" (detailClick)="dashboardRedirect($event)" [tableData]="agricultural"
+          mh="398px"></app-commodity-table>
+      </div>
+
+      <div class="mt-4">
+        <div class="mb-1 d-flex justify-content-between">
+          <h6 class="mb-0 fs15 title"><b>Industrial</b></h6>
+          <p class="mb-0 pe-5 me-3 fw600 fs13 title">Estimates</p>
+        </div>
+        <app-commodity-table [isDetailClick]="true" (detailClick)="dashboardRedirect($event)" [tableData]="industrial"
+          mh="313px"></app-commodity-table>
+      </div>
+
+      <div class="mt-4">
+        <div class="mb-1 d-flex justify-content-between">
+          <h6 class="mb-0 fs15 title"><b>Base Metals</b></h6>
+          <p class="mb-0 pe-5 me-3 fw600 fs13 title">Estimates</p>
+        </div>
+        <app-commodity-table [isDetailClick]="true" (detailClick)="dashboardRedirect($event)" [tableData]="base_metals"
+          mh="97px" idName="commodityStep3"></app-commodity-table>
+      </div>
+
+      <div class="mt-4">
+        <div class="mb-1 d-flex justify-content-between">
+          <h6 class="mb-0 fs15 title"><b>Precious Metals</b></h6>
+          <p class="mb-0 pe-5 me-3 fw600 fs13 title">Estimates</p>
+        </div>
+        <app-commodity-table [isDetailClick]="true" (detailClick)="dashboardRedirect($event)"
+          [tableData]="precious_metals" mh="121px"></app-commodity-table>
+      </div>
+
+      <div class="mt-4">
+        <div class="mb-1 d-flex justify-content-between">
+          <h6 class="mb-0 fs15 title"><b>Livestock</b></h6>
+          <p class="mb-0 pe-5 me-3 fw600 fs13 title">Estimates</p>
+        </div>
+        <app-commodity-table [isDetailClick]="true" (detailClick)="dashboardRedirect($event)" [tableData]="livestock"
+          borderBottom="none" mh="120"></app-commodity-table>
+      </div>
+
+      <div class="mt-4">
+        <div class="mb-1 d-flex justify-content-between">
+          <h6 class="mb-0 fs15 title"><b>Indices</b></h6>
+          <p class="mb-0 pe-5 me-3 fw600 fs13 title">Estimates</p>
+        </div>
+        <app-commodity-table [isDetailClick]="true" (detailClick)="dashboardRedirect($event)" [tableData]="indices"
+          borderBottom="none" mh="120px"></app-commodity-table>
+      </div>
+    </div>
+  </div>
+</div> 
+<!-- *ngIf="tabName == 'Dashboard'" -->
+<div>
+  <div class="container-fluid">
+    <!-- <h5 class="tableSection">Commodity Dashboard</h5> -->
+    <div class="row mt-4">
+      <div class="col-8 p-0">
+        <div class="d-flex justify-content-between align-items-center">
+          <div id="commodityStep1">
+            <ng-select2
+              [data]="selectCommodityData"
+              [value]="selectedCommodity"
+              class="cusSelect2 cusSelect2_16rem"
+              [placeholder]="'Select Commodity'"
+              (valueChanged)="onCommodityChanged($event)"
+            ></ng-select2>
+            <span class="unitLabel ms-2">{{
+              selectedCommodityData?.unit
+            }}</span>
+            <!-- <button class="back-to-btn ml-4" (click)="goBack()">
+              COMMODITY DASHBOARD
+            </button> -->
+          </div>
+          <img
+            src="/assets/img/excelDownload.png"
+            class="cursor-pointer img-fluid"
+            (click)="
+              auth.exploreUser
+                ? (auth.openUnavailableExploreModal = true)
+                : excelDownloadHandler()
+            "
+          />
+        </div>
+      </div>
+      <div class="col-4 d-flex justify-content-end align-items-center">
+        <img
+          src="/assets/img/refresh.png"
+          class="cursor-pointer img-fluid"
+          (click)="refreshHandlerResetCurrency()"
+        />
+      </div>
+      <div class="col-8 p-0">
+        <div class="align-items-center d-flex graphFilterSection my-4">
+          <div>
+            <ul id="commodityStep2" class="mb-0 p-0">
+              <li
+                [ngClass]="{ activeDateFilter: util.selectedDatetype === '1W' }"
+                (click)="dateChange('1W')"
+              >
+                1W
+              </li>
+              <li
+                [ngClass]="{ activeDateFilter: util.selectedDatetype === '3M' }"
+                (click)="dateChange('3M')"
+              >
+                3M
+              </li>
+              <li
+                [ngClass]="{ activeDateFilter: util.selectedDatetype === '6M' }"
+                (click)="dateChange('6M')"
+              >
+                6M
+              </li>
+              <li
+                [ngClass]="{ activeDateFilter: util.selectedDatetype === '1Y' }"
+                (click)="dateChange('1Y')"
+              >
+                1Y
+              </li>
+              <li
+                [ngClass]="{ activeDateFilter: util.selectedDatetype === '5Y' }"
+                (click)="dateChange('5Y')"
+              >
+                5Y
+              </li>
+              <li
+                [ngClass]="{
+                  activeDateFilter: util.selectedDatetype === '10Y'
+                }"
+                (click)="dateChange('10Y')"
+              >
+                10Y
+              </li>
+              <li
+                [ngClass]="{
+                  activeDateFilter: util.selectedDatetype === 'MAX'
+                }"
+                (click)="dateChange('MAX')"
+              >
+                MAX
+              </li>
+            </ul>
+          </div>
+          <h5 class="price-histroy-font mb-0 ps-5 ms-5">
+            Price Movement History
+          </h5>
+        </div>
+        <div id="chartdiv" class="commodityChart"></div>
+        <p class="commodityDescription mt-2 textJustify">
+          {{ this.selectedCommodityData?.teleDescription }}
+        </p>
+      </div>
+      <div class="col-4 newsSection mt-3">
+        <div class="d-flex justify-content-end">
+          <ng-select2
+            [data]="currencyData"
+            [value]="selectedCurrency"
+            class="cusSelect2 cusSelect2_16rem mb-n14px"
+            [placeholder]="'Select Currency'"
+            (valueChanged)="onCurrencyChanged($event)"
+          ></ng-select2>
+        </div>
+        <h6>
+          News
+          <a>
+            <img
+              src="/assets/img/resize-icon.png"
+              (click)="auth.openPopupModal = true"
+              class="px-1 cursor-pointer img-fluid"
+            />
+          </a>
+        </h6>
+        <!-- new detail modal -->
+        <div *ngIf="auth.openPopupModal">
+          <app-news-modal [news_detail]="news_list"></app-news-modal>
+        </div>
+        <!-- news detail model ended -->
+        <div class="newsTable">
+          <table class="w-100">
+            <tbody>
+              <tr *ngFor="let news of news_list">
+                <td (click)="dialogPopup(news)" class="w-75 cursor-pointer">
+                  {{ news.title }}
+                </td>
+                <td class="text-white w-25 text-end">
+                  {{ news.period | date : "yyyy-MM-dd" }}
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <!-- news single click  Poppup  Model -->
+    <div *ngIf="auth?.closeInsidePopup && single_news_detail">
+      <app-news-dialog-popup
+        [popupDetail]="single_news_detail"
+      ></app-news-dialog-popup>
+    </div>
+    <!-- news single click  Poppup  Model-->
+    <div class="row tableSection my-3">
+      <div class="col-6 ps-0 position-relative tableCol6Border">
+        <div class="mt-4">
+          <div class="mb-1 d-flex justify-content-between">
+            <h6 class="mb-0 fs15"><b>Energy</b></h6>
+            <p class="mb-0 pe-5 me-3 fw600 fs13">Estimates</p>
+          </div>
+          <app-commodity-table
+            [tableData]="energy"
+            [isDetailClick]="true"
+            (detailClick)="dashboardRedirectInside1($event)"
+            mh="217px"
+          >
+          </app-commodity-table>
+        </div>
+
+        <div class="mt-4">
+          <div class="mb-1 d-flex justify-content-between">
+            <h6 class="mb-0 fs15"><b>Agriculture</b></h6>
+            <p class="mb-0 pe-5 me-3 fw600 fs13">Estimates</p>
+          </div>
+          <app-commodity-table
+            [tableData]="agricultural"
+            [isDetailClick]="true"
+            (detailClick)="dashboardRedirectInside1($event)"
+            mh="398px"
+          ></app-commodity-table>
+        </div>
+
+        <div class="mt-4 mb-5">
+          <div class="mb-1 d-flex justify-content-between">
+            <h6 class="mb-0 fs15"><b>Livestock</b></h6>
+            <p class="mb-0 pe-5 me-3 fw600 fs13">Estimates</p>
+          </div>
+          <app-commodity-table
+            [tableData]="livestock"
+            [isDetailClick]="true"
+            (detailClick)="dashboardRedirectInside1($event)"
+            mh="120"
+          ></app-commodity-table>
+        </div>
+      </div>
+      <div class="col-6 ps-0 position-relative tableCol6Border">
+        <div class="mt-4">
+          <div class="mb-1 d-flex justify-content-between">
+            <h6 class="mb-0 fs15"><b>Base Metals</b></h6>
+            <p class="mb-0 pe-5 me-3 fw600 fs13">Estimates</p>
+          </div>
+          <app-commodity-table
+            [tableData]="base_metals"
+            mh="97px"
+            [isDetailClick]="true"
+            (detailClick)="dashboardRedirectInside1($event)"
+            idName="commodityStep3"
+          ></app-commodity-table>
+        </div>
+
+        <div class="mt-4">
+          <div class="mb-1 d-flex justify-content-between">
+            <h6 class="mb-0 fs15"><b>Precious Metals</b></h6>
+            <p class="mb-0 pe-5 me-3 fw600 fs13">Estimates</p>
+          </div>
+          <app-commodity-table
+            [tableData]="precious_metals"
+            [isDetailClick]="true"
+            (detailClick)="dashboardRedirectInside1($event)"
+            mh="121px"
+          ></app-commodity-table>
+        </div>
+
+        <div class="mt-4">
+          <div class="mb-1 d-flex justify-content-between">
+            <h6 class="mb-0 fs15"><b>Industrial</b></h6>
+            <p class="mb-0 pe-5 me-3 fw600 fs13">Estimates</p>
+          </div>
+          <app-commodity-table
+            [tableData]="industrial"
+            [isDetailClick]="true"
+            (detailClick)="dashboardRedirectInside1($event)"
+            mh="313px"
+          ></app-commodity-table>
+        </div>
+
+        <div class="mt-4 mb-5">
+          <div class="mb-1 d-flex justify-content-between">
+            <h6 class="mb-0 fs15"><b>Indices</b></h6>
+            <p class="mb-0 pe-5 me-3 fw600 fs13">Estimates</p>
+          </div>
+          <app-commodity-table
+            [tableData]="indices"
+            [isDetailClick]="true"
+            (detailClick)="dashboardRedirectInside1($event)"
+            mh="120px"
+          ></app-commodity-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="tabName == 'leftDetails'">
+  <div class="fixed-income mx-2 mb-4">
+    <div class="header mb-3">
+      <div class="fixed-income container-fluid">
+        <div class="row d-flex mt-4 justify-content-between">
+          <div
+            class="d-flex pl-0"
+            *ngIf="detailData.length != 0; else NoContent"
+          >
+            <i class="fa fa-arrow-circle-left mr-4" (click)="goBack()"></i>
+            <div class="fixed-income-title">
+              {{ detailData?.description ?? "-" }} ({{
+                detailData?.currency ?? "-"
+              }}
+              {{ detailData?.unit ?? "-" }}
+              {{
+                detailData?.updatedCodeDescription ??
+                  detailData?.updateCode ??
+                  "-"
+              }}) | {{ detailData?.cityId ?? "-" }} |
+              {{ detailData?.regionId ?? "-" }}
+            </div>
+            <div class="d-flex align-items-center justify-content-end ml-4">
+              {{
+                detailData?.bidPrice != "null"
+                  ? detailData?.bidPrice ?? "-"
+                  : "-"
+              }}
+              {{ detailData?.currency ?? "-" }} (
+              <span
+                [ngClass]="
+                  isPositive(detailData?.perChange)
+                    ? 'color-green'
+                    : 'color-red'
+                "
+              >
+                <i
+                  *ngIf="detailData?.perChange != 'null'"
+                  [ngClass]="
+                    isPositive(detailData?.perChange)
+                      ? 'fa fa-arrow-up'
+                      : 'fa fa-arrow-down'
+                  "
+                ></i>
+                {{
+                  detailData?.perChange != "null"
+                    ? detailData?.perChange + "%" ?? "-"
+                    : "-"
+                }}</span
+              >
+              ) | {{ detailData?.datetime ?? "-" }}
+            </div>
+          </div>
+          <div class="d-flex align-items-center justify-content-end flex-fill">
+            <ng-select2
+              class="cusSelect2 cusSelect2_14rem ml-2"
+              (valueChanged)="enrgyOrMetalChangeHandler($event)"
+              [data]="selectCommodityContractData"
+              [value]="selectedCommodityContractData"
+              placeholder="Search Commodity Contract"
+            ></ng-select2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row pb-4">
+      <div class="col-6 mb-4">
+        <div class="row d-flex justify-content-between align-items-end mb-3">
+          <div class="col-12">
+            <div class="mb-3" *ngIf="detailData.length != 0; else NoContent">
+              <div class="row d-flex justify-content-between mb-2">
+                <div class="col-4 px-0">
+                  <span class="fs12">
+                    <span class="color-yellow">Bid Price:</span>
+                    <span
+                      [ngClass]="
+                        isPositive(detailData?.bidPrice)
+                          ? 'color-green'
+                          : 'color-red'
+                      "
+                    >
+                      {{
+                        detailData?.bidPrice == "null"
+                          ? "-"
+                          : detailData?.bidPrice ?? "-"
+                      }}
+                    </span>
+                  </span>
+                </div>
+                <div class="col-4 text-center">
+                  <span class="fs12">
+                    <span class="color-yellow">Ask Price:</span>
+                    <span
+                      [ngClass]="
+                        isPositive(detailData?.askPrice)
+                          ? 'color-green'
+                          : 'color-red'
+                      "
+                    >
+                      {{
+                        detailData?.askPrice == "null"
+                          ? "-"
+                          : detailData?.askPrice ?? "-"
+                      }}
+                    </span>
+                  </span>
+                </div>
+                <div class="col-4 px-0 text-end">
+                  <span class="fs12">
+                    <span class="color-yellow">Trade Price:</span>
+                    <span
+                      [ngClass]="
+                        detailData?.tradeTick != '*'
+                          ? detailData?.tradeTick == '+'
+                            ? 'color-green'
+                            : 'color-red'
+                          : 'color-white'
+                      "
+                    >
+                      {{
+                        detailData?.tradePrice == "null"
+                          ? "-"
+                          : detailData?.tradePrice ?? "-"
+                      }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div class="row d-flex justify-content-between mb-2">
+                <div class="col-3 px-0">
+                  <span class="fs12">
+                    <span class="color-yellow">Open:</span>
+                    <span
+                      [ngClass]="{
+                        'color-green': detailData?.open > 0,
+                        'color-red': detailData?.open < 0
+                      }"
+                    >
+                      {{
+                        detailData?.open == "null"
+                          ? "-"
+                          : detailData?.open ?? "-"
+                      }}
+                    </span>
+                  </span>
+                </div>
+                <div class="col-3 text-center">
+                  <span class="fs12">
+                    <span class="color-yellow">High:</span>
+                    <span
+                      [ngClass]="{
+                        'color-green': detailData?.high > 0,
+                        'color-red': detailData?.high < 0
+                      }"
+                    >
+                      {{
+                        detailData?.high == "null"
+                          ? "-"
+                          : detailData?.high ?? "-"
+                      }}
+                    </span>
+                  </span>
+                </div>
+                <div class="col-3 text-center">
+                  <span class="fs12">
+                    <span class="color-yellow">Low:</span>
+                    <span
+                      [ngClass]="{
+                        'color-green': detailData?.low > 0,
+                        'color-red': detailData?.low < 0
+                      }"
+                    >
+                      {{
+                        detailData?.low == "null" ? "-" : detailData?.low ?? "-"
+                      }}
+                    </span>
+                  </span>
+                </div>
+                <div class="col-3 text-end">
+                  <span class="fs12">
+                    <span class="color-yellow">Previous Close:</span>
+                    <span
+                      [ngClass]="{
+                        'color-green': detailData?.previousClose > 0,
+                        'color-red': detailData?.previousClose < 0
+                      }"
+                    >
+                      {{
+                        detailData?.previousClose == "null"
+                          ? "-"
+                          : detailData?.previousClose ?? "-"
+                      }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+              <div class="row d-flex justify-content-between mb-2">
+                <div class="col-4 px-0">
+                  <span class="fs12">
+                    <span class="color-yellow">1 Day Change:</span>
+                    <span
+                      [ngClass]="
+                        isPositive(detailData?.perChange)
+                          ? 'color-green'
+                          : 'color-red'
+                      "
+                    >
+                      {{
+                        detailData?.oneDyaChange == "null"
+                          ? "-"
+                          : detailData?.oneDyaChange ?? "-"
+                      }}
+                    </span>
+                  </span>
+                </div>
+                <div class="col-4 text-center">
+                  <span class="fs12">
+                    <span class="color-yellow">1 Week Change:</span>
+                    <span
+                      [ngClass]="{
+                        'color-green': detailData?.oneWeekChange > 0,
+                        'color-red': detailData?.oneWeekChange < 0
+                      }"
+                    >
+                      {{
+                        detailData?.oneWeekChange == "null"
+                          ? "-"
+                          : detailData?.oneWeekChange ?? "-"
+                      }}
+                    </span>
+                  </span>
+                </div>
+                <div class="col-4 text-end">
+                  <span class="fs12">
+                    <span class="color-yellow">1 Month Change:</span>
+                    <span
+                      [ngClass]="{
+                        'color-green': detailData?.oneMonthChange > 0,
+                        'color-red': detailData?.oneMonthChange < 0
+                      }"
+                    >
+                      {{
+                        detailData?.oneMonthChange == "null"
+                          ? "-"
+                          : detailData?.oneMonthChange ?? "-"
+                      }}
+                    </span>
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="chart margin-3 position-relative">
+                <!-- <div *ngIf="graphData.length"
+                  class="align-items-center position-absolute d-flex graphFilterSection mt-2 mb-3 justify-content-between"
+                  style="right: 0;z-index: 1000;">
+                  <ul class="mb-0 p-0">
+                    <li [ngClass]="{
+                        activeDateFilter: selectedChartType === '1W'
+                      }" (click)="chartSwitch('1W')">
+                      1W
+                    </li>
+                    <li [ngClass]="{
+                        activeDateFilter: selectedChartType === '1M'
+                      }" (click)="chartSwitch('1M')">
+                      1M
+                    </li>
+                  </ul>
+                </div> -->
+                <div class="no-data" *ngIf="graphData.length == 0">
+                  <svg
+                    class="circular"
+                    viewBox="25 25 50 50"
+                    style="height: 10px"
+                  >
+                    <circle
+                      class="path"
+                      cx="50"
+                      cy="50"
+                      r="20"
+                      fill="none"
+                      stroke-width="2"
+                      stroke-miterlimit="10"
+                    />
+                  </svg>
+                  <img
+                    style="width: 4rem"
+                    class="loader_img rounded mx-auto d-block"
+                    src="../assets/img/televisory-loader.gif"
+                  />
+                </div>
+                <div id="tradingview_chart"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6 table-section">
+        <h3 class="title">OTC Commodity Quote</h3>
+        <table>
+          <thead [ngClass]="{ headerBorder: true }">
+            <tr>
+              <th *ngFor="let col of commodityQueueheaderData; let i = index">
+                <span class="flex-center">
+                  <span> {{ col.label }} </span>
+                </span>
+              </th>
+            </tr>
+          </thead>
+          <tbody
+            [ngClass]="{ bottomBorder: true }"
+            *ngIf="detailTableData?.length; else emptyContent"
+          >
+            <tr *ngFor="let row of detailTableData">
+              <ng-container>
+                <td *ngFor="let col of commodityQueueheaderData; let z = index">
+                  <span *ngIf="z == 0 || z == 1">
+                    {{ row[col.field] == "null" ? "-" : row[col.field] ?? "-" }}
+                  </span>
+                  <span
+                    *ngIf="z == 2 || z == 3"
+                    [ngClass]="{
+                      'color-green': row[col.field] > 0,
+                      'color-red': row[col.field] < 0
+                    }"
+                  >
+                    {{ row[col.field] == "null" ? "-" : row[col.field] ?? "-" }}
+                  </span>
+                  <span
+                    *ngIf="z == 4"
+                    [ngClass]="
+                      row['tradeTick'] != '*'
+                        ? row['tradeTick'] == '+'
+                          ? 'color-green'
+                          : 'color-red'
+                        : 'color-white'
+                    "
+                  >
+                    {{ row[col.field] == "null" ? "-" : row[col.field] ?? "-" }}
+                  </span>
+                </td>
+              </ng-container>
+            </tr>
+          </tbody>
+        </table>
+        <ng-template #emptyContent>
+          <tbody class="no-data">
+            <svg class="circular" viewBox="25 25 50 50" style="height: 10px">
+              <circle
+                class="path"
+                cx="50"
+                cy="50"
+                r="20"
+                fill="none"
+                stroke-width="2"
+                stroke-miterlimit="10"
+              />
+            </svg>
+            <img
+              style="width: 4rem"
+              class="loader_img rounded mx-auto d-block"
+              src="../assets/img/televisory-loader.gif"
+            />
+          </tbody>
+        </ng-template>
+
+        <!-- <commodity-phase-two-table [tableData]="detailTableData" [OTCorEnergy]="'detail'"
+          [tableDataHeader]="commodityQueueheaderData" [headerBorder]="true" [bottomBorder]="true">
+        </commodity-phase-two-table> -->
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #NoContent>
+  <div class="no-data">
+    <svg class="circular" viewBox="25 25 50 50" style="height: 10px">
+      <circle
+        class="path"
+        cx="50"
+        cy="50"
+        r="20"
+        fill="none"
+        stroke-width="2"
+        stroke-miterlimit="10"
+      />
+    </svg>
+    <img
+      style="width: 4rem"
+      class="loader_img rounded mx-auto d-block"
+      src="../assets/img/televisory-loader.gif"
+    />
+  </div>
+</ng-template>

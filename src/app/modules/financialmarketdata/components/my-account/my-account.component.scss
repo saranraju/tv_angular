@@ -1,0 +1,129 @@
+.my-acc-container {
+  background: #022360 !important;
+  height: 100%;
+  position: absolute;
+  top: 57px;
+  left: 0;
+  padding: 0 20px;
+  padding-top: 35px;
+}
+
+.your-transaction-container {
+  border: 1px solid white;
+  padding: 10px;
+}
+
+.your-transaction-title {
+  font-size: 1rem;
+  font-weight: 700;
+}
+
+.change-pass-container {
+  border: 1px solid white;
+  padding: 10px;
+  width: 31% !important;
+}
+
+.pass-condition {
+  font-size: 12px;
+  color: #fff;
+  line-height: 17px;
+}
+
+.save-btn {
+  background: #3a8e71;
+  color: #fff;
+  border-radius: 5px;
+  width: 94%;
+  margin: auto;
+  padding: 5px 0;
+  border: 0;
+}
+
+.save-btn:hover {
+  background: #0daa8e;
+}
+
+.my-acc-table {
+  table {
+    font-weight: 400;
+    font-size: 13px;
+
+    tbody {
+      display: block;
+      overflow-y: auto;
+    }
+
+    thead,
+    tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    td {
+      padding: 5px;
+    }
+
+    tr {
+      background-color: #fff;
+      margin: 5px 0;
+    }
+  }
+}
+
+.sort-icon {
+  color: #fff !important;
+}
+
+.your-transaction-container-mobile {
+  display: none;
+}
+
+@media only screen and (max-device-width: 768px) {
+  .your-transaction-container {
+    display: none !important;
+  }
+
+  .your-transaction-container-mobile {
+    display: block;
+  }
+
+  .your-transaction-container-mobile {
+    border: 1px solid white;
+    padding: 10px;
+  }
+
+  .transaction-list-container {
+    background-color: #fff;
+    color: #000;
+  }
+
+  .transaction-list {
+    list-style: none;
+    padding-left: 0;
+  }
+
+  .transaction-list-item {
+    padding: 10px 0;
+  }
+
+  .transaction-list-label-item {
+    font-weight: 600;
+  }
+
+  .change-pass-container {
+    border: 1px solid white;
+    padding: 10px;
+    width: 100% !important;
+    margin-top: 3rem;
+  }
+
+  .save-btn {
+    width: 98%;
+  }
+
+  .transaction-list-item:first-child {
+    color: #557fc9;
+  }
+}

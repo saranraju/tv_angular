@@ -1,0 +1,29 @@
+<footer class="container-fluid bg-white telFooter">
+  <div class="row">
+    <div class="col-sm-4">
+      <p class="mb-0 px-3">Copyright © 2022 Televisory | All Rights Reserved</p>
+    </div>
+    <div class="col-3 text-center">
+      <span *ngIf="auth.exploreUser"
+        >Remaining Time: {{ minutes }}: {{ seconds < 10 ? "0" : ""
+        }}{{ seconds }}</span
+      >
+    </div>
+    <div class="col-sm-5 px-0">
+      <ul class="mb-0">
+        <li class="">
+          <a href="https://televisory.com/terms-of-use">Terms of Use</a>
+        </li>
+        <li class="">
+          <a href="https://televisory.com/terms-of-access">Terms of Access</a>
+        </li>
+        <li class="">
+          <a href="https://televisory.com/policy">Privacy Policy</a>
+        </li>
+        <li class="">
+          <a href="https://televisory.com/sitemap">Site map </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>

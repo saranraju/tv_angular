@@ -1,0 +1,103 @@
+<div class="comparableSecurities">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th style="width: 16rem; margin-right: 1rem">
+          {{ section_name1 ? section_name1 : "Security" }}
+        </th>
+        <th style="width: 6rem" class="text-center">
+          {{ section_name2 ? section_name2 : "Maturity Date" }}
+        </th>
+        <th style="width: 5rem" class="text-center">
+          <span *ngIf="section_name3">{{ section_name3 }}</span>
+          <span *ngIf="!section_name3"
+            >Price ({{ country_name ? country_name : "USD" }})</span
+          >
+        </th>
+        <th class="text-end" style="width: 5rem">
+          {{ section_name4 ? section_name4 : "Yield to Maturity (%)" }}
+        </th>
+        <th class="text-end" style="width: 5rem" *ngIf="!section_name1">
+          Modified Duration (Years)
+        </th>
+      </tr>
+    </thead>
+    <tbody [ngStyle]="{ 'max-height': mh, height: ht }">
+      <tr
+        *ngFor="let data of table_data; let i = index"
+        (click)="compartableSelectedRow(data)"
+      >
+        <td style="width: 16rem; padding-right: 1rem" class="cursor-pointer">
+          <div class="position-relative" style="left: 15px">
+            <span class="position-absolute" style="left: -17px">
+              <i
+                (click)="removeTable(i, data)"
+                *ngIf="i != 0 && remove_icon"
+                class="fa fa-close comparableClose"
+                aria-hidden="true"
+              ></i>
+            </span>
+            {{ data.description ? data.description : data.entityName }}
+            <span *ngIf="data.description || data.entityName">|</span>
+            {{ data.maturityDate ? data.maturityDate : data.tenor + " Y" }}
+            <span *ngIf="data.maturityDate || data.tenor">| </span>
+            {{ data.industryLvl1Desc ? data.industryLvl1Desc : data.currency }}
+            <span *ngIf="data.industryLvl1Desc || data.currency">|</span>
+            <span *ngIf="data.restructuringType">
+              {{ data?.restructuringType }} |</span
+            >
+            {{
+              data?.maturityType
+                ? data?.maturityType + " Bond"
+                : data?.seniority
+            }}
+          </div>
+        </td>
+        <td style="width: 6rem" class="text-center">
+          {{
+            data?.maturityDate
+              ? data?.maturityDate
+              : util?.standardFormat(data?.parSpreadMid, 2, "")
+          }}
+        </td>
+        <td style="width: 5rem" class="text-end">
+          <!-- {{
+          data?.price
+          ? util?.standardFormat(data?.price, 2, "")
+          : util?.standardFormat(data?.quoteSpreadMid, 2, "")
+          }} -->
+          <span *ngIf="data?.price">{{
+            data?.price ? util?.standardFormat(data?.price, 2, "") : "-"
+          }}</span>
+          <span *ngIf="data?.quoteSpreadMid">{{
+            data?.quoteSpreadMid
+              ? util?.standardFormat(data?.quoteSpreadMid, 2, "")
+              : "-"
+          }}</span>
+        </td>
+        <td class="text-end" style="width: 6rem">
+          <!-- {{
+          data?.yieldToMaturity
+          ? util?.standardFormat(data?.yieldToMaturity, 2, "") ?? '-'
+          : util.standardFormat(data?.upFrontMid, 2, "") ?? '-'
+          }} -->
+          <span *ngIf="data?.yieldToMaturity">{{
+            data?.yieldToMaturity
+              ? util?.standardFormat(data?.yieldToMaturity, 2, "")
+              : "-"
+          }}</span>
+          <span *ngIf="data?.upFrontMid">{{
+            data?.upFrontMid
+              ? util.standardFormat(data?.upFrontMid, 2, "")
+              : "-"
+          }}</span>
+        </td>
+        <td class="text-end" style="width: 5rem" *ngIf="!section_name1">
+          {{ util?.standardFormat(data?.modifiedDuration, 2, "") }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br />

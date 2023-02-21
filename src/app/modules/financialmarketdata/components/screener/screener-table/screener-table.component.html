@@ -1,0 +1,90 @@
+<div class="screener-table">
+  <table class="w-100">
+    <thead>
+      <tr
+        cdkDropList
+        cdkDropListOrientation="horizontal"
+        (cdkDropListDropped)="dropCol($event)"
+      >
+        <th
+          [cdkDragDisabled]="header.label === 'Company Name'"
+          cdkDrag
+          cdkDragHandle
+          *ngFor="let header of screenerTable.title; let i = index"
+          [ngStyle]="{
+            width: header?.width,
+            color: header?.color,
+            'text-align': header?.align
+          }"
+          (click)="sortByKey(header?.key, i, header.sorting)"
+        >
+          {{ header.label }}
+          <i
+            *ngIf="i != iconIndex && header?.sorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort"
+          ></i>
+          <i
+            *ngIf="i == iconIndex && shortDown && header?.sorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-down"
+          ></i>
+          <i
+            *ngIf="i == iconIndex && !shortDown && header?.sorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-up"
+          ></i>
+        </th>
+      </tr>
+    </thead>
+    <div id="table-border">
+      <tbody>
+        <tr
+          *ngFor="
+            let content of screenerTable.value
+              | paginate
+                : {
+                    itemsPerPage: itemsPerPage,
+                    currentPage: currentPageSelected,
+                    totalItems: pageLength
+                  }
+          "
+        >
+          <td
+            *ngFor="
+              let header of screenerTable.title;
+              let i = index;
+              let last = last
+            "
+            [ngStyle]="{
+              width: header?.width,
+              color: header?.color,
+              'text-align': header?.align
+            }"
+          >
+            {{
+              header.formattedNum
+                ? util?.standardFormat(content[header.key], 2, "")
+                : content[header.key]
+            }}
+          </td>
+        </tr>
+        <tr *ngIf="!screenerTable.value?.length">
+          <p class="text-center my-2">No Data Available</p>
+        </tr>
+      </tbody>
+    </div>
+  </table>
+</div>
+
+<div
+  *ngIf="screenerTable.value?.length"
+  class="container-fluid px-0 text-center mt-1"
+>
+  <pagination-controls
+    *ngIf="paginate === true"
+    class="ipo-pagination screener-pagination"
+    [previousLabel]="labels.previousLabel"
+    [nextLabel]="labels.nextLabel"
+    [maxSize]="9"
+    (pageChange)="onPageChange($event)"
+  >
+  </pagination-controls>
+</div>

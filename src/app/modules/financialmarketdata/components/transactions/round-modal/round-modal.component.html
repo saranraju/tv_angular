@@ -1,0 +1,130 @@
+<div class="modal p-3">
+  <div class="close cursor-pointer" (click)="transactionsRoundModalClose()">
+    <i class="fa fa-times"></i>
+  </div>
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 my-3 modal-title-container">
+          <span class="modal-title">{{
+            fundingRoundHeaderData?.entityProperName
+          }}</span>
+          <span class="modal-desc">{{
+            fundingRoundHeaderData?.categoryNameDesc
+          }}</span>
+          <img
+            class="cursor-pointer img-fluid excel-icon"
+            [ngClass]="{
+              disableExcelIcon: round_table.value?.length === 0
+            }"
+            src="/assets/img/excelDownload.png"
+            alt="excelDownload"
+            (click)="
+              auth.exploreUser
+                ? (auth.openUnavailableExploreModal = true)
+                : handleFundingRoundExcelDownload()
+            "
+          />
+        </div>
+      </div>
+      <div class="row mt-2 summary-container">
+        <div class="container-fluid px-0 summary-row-container">
+          <div class="row">
+            <div class="col-4">
+              <b>Entity Name: </b>
+              <span id="entity">{{
+                fundingRoundHeaderData?.entityProperName
+                  ? fundingRoundHeaderData?.entityProperName
+                  : "-"
+              }}</span>
+            </div>
+            <div class="col-4">
+              <b>Country: </b>
+              <span id="ct">{{
+                fundingRoundHeaderData?.countryName
+                  ? fundingRoundHeaderData?.countryName
+                  : "-"
+              }}</span>
+            </div>
+            <div class="col-4">
+              <b>Industry: </b>
+              <span id="iIndustry">{{
+                fundingRoundHeaderData?.ticsIndustryName
+                  ? fundingRoundHeaderData?.ticsIndustryName
+                  : "-"
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid px-0 summary-row-container">
+          <div class="row">
+            <div class="col-4">
+              <b>Round: </b>
+              <span id="round">{{
+                fundingRoundHeaderData?.categoryNameDesc
+                  ? fundingRoundHeaderData?.categoryNameDesc
+                  : "-"
+              }}</span>
+            </div>
+            <div class="col-4">
+              <b>Issue Type: </b>
+              <span id="issueType">{{
+                fundingRoundHeaderData?.issueType
+                  ? fundingRoundHeaderData?.issueType
+                  : "-"
+              }}</span>
+            </div>
+            <div class="col-4">
+              <b>Financing Type: </b>
+              <span id="finType">{{
+                fundingRoundHeaderData?.portcoFinType
+                  ? fundingRoundHeaderData?.portcoFinType
+                  : "-"
+              }}</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="container-fluid px-0 summary-row-container">
+          <div class="row">
+            <div class="col-4">
+              <b>Inception Date: </b>
+              <span id="iDate">{{
+                fundingRoundHeaderData?.inceptionDate
+                  ? fundingRoundHeaderData?.inceptionDate
+                  : "-"
+              }}</span>
+            </div>
+            <div class="col-4">
+              <b>Investment Curreny: </b>
+              <span id="iCurrency">{{
+                fundingRoundHeaderData?.investmentCurrency
+                  ? fundingRoundHeaderData?.investmentCurrency
+                  : "-"
+              }}</span>
+            </div>
+            <div class="col-4">
+              <b>Total Amount ({{ selectedPEVCCurrency }} Million): </b>
+              <span id="tAmount">{{
+                fundingRoundHeaderData?.valuationCal
+                  ? util?.standardFormat(
+                      fundingRoundHeaderData?.valuationCal,
+                      2,
+                      ""
+                    )
+                  : "-"
+              }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12">
+          <app-table [table_data]="round_table"></app-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

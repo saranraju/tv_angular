@@ -1,0 +1,252 @@
+.text-primary {
+  color: #ffc000 !important;
+}
+
+.container-fluid {
+  padding-right: var(--bs-gutter-x, 1.75rem) !important;
+  padding-left: var(--bs-gutter-x, 0.75rem) !important;
+}
+
+.indstry-btn {
+  border-radius: 5px;
+  border: 0;
+  padding: 6px 12px;
+  display: inline-block;
+  width: 140px;
+  background: #ffc000;
+  font-size: 15px;
+}
+
+.paragraph-section {
+  font-size: 14px;
+}
+
+.title-border {
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+  padding-bottom: 4px;
+  margin-bottom: 7px;
+}
+
+.section-border {
+  border: 1px solid #ddd;
+  // padding: 10px;
+  // margin: 20px 0 0 0;
+}
+
+.selectperiodbtn {
+  color: #99999c;
+  width: 100%;
+  text-align: left;
+  color: #ffc000;
+  width: 16%;
+  border-radius: 4px;
+  text-align: left;
+  position: relative;
+}
+
+.caret {
+  float: right;
+}
+
+.selectperiodbtn button {
+  background: #fbe5c6;
+  border: 1px solid #ffc000;
+  color: #99999c;
+  height: 30px;
+  width: 100%;
+  padding: 0px;
+  font-weight: 100;
+  font-size: 13px;
+  text-align: left;
+  padding-left: 7px;
+}
+
+.dropdown-toggle::after {
+  position: relative;
+  left: 24%;
+  top: 10%;
+  color: #fff;
+  font-size: 18px;
+}
+
+.sub-menu-for {
+  min-width: 100px;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  z-index: 1000;
+  display: none;
+  float: left;
+  min-width: 160px;
+  padding: 5px 0;
+  margin: 2px 0 0;
+  list-style: none;
+  font-size: 14px;
+  text-align: left;
+  background-color: white;
+  border: 1px solid #ccc;
+  border: 1px solid rgba(0, 0, 0, 0.15);
+  border-radius: 4px;
+  -webkit-box-shadow: 0 6px 12px rgb(0 0 0 / 18%);
+  box-shadow: 0 6px 12px rgb(0 0 0 / 18%);
+  background-clip: padding-box;
+}
+
+.periodChange {
+  background: #fbe5c6;
+  min-width: 48%;
+  font-size: 12px;
+  color: #49396d;
+}
+
+.caret-left-quqr {
+  position: relative;
+  left: 6px;
+}
+
+.caret-left-year {
+  position: relative;
+  left: 24px;
+}
+
+.periodChange li {
+  cursor: pointer;
+  padding-left: 19px;
+  // text-align: center;
+  transition: all 600ms;
+  padding-top: 1px;
+  padding-bottom: 1px;
+}
+
+.periodChange li:hover {
+  background-color: #f8c145;
+}
+
+.fa-caret-right:before {
+  font-size: 15px;
+}
+
+.quqr-year {
+  position: absolute;
+  left: 48%;
+  top: 122%;
+}
+
+.quqr-month {
+  position: absolute;
+  left: 96%;
+  top: 138%;
+}
+
+.item-active {
+  background-color: #f8c145;
+}
+
+.asia_pacific {
+  height: 100%;
+}
+
+.Europe {
+  height: 200px;
+}
+
+.section-border {
+  padding: 5px;
+  margin: 0px 7px;
+  margin-top: 20px;
+
+  .section-scroll {
+    height: 300px;
+    display: flex;
+    overflow-y: auto;
+    overflow-x: hidden;
+  }
+}
+
+.btn-sel {
+  color: #1f3975 !important;
+}
+
+.modal-pos {
+  margin: -1.25rem auto;
+  min-width: 46%;
+  min-height: 460px;
+}
+
+.close {
+  background: none;
+  border: none;
+  color: #fff;
+  float: right;
+  font-size: 18px;
+}
+
+.modal-content {
+  background-color: #00071e;
+}
+
+.modal-header {
+  padding: 0rem 1rem;
+}
+
+.modal-body p {
+  color: #f8c145;
+  font-size: 14px;
+  height: 75px;
+}
+
+.country-height {
+  height: 359px;
+  overflow: auto;
+}
+
+.accrodin_body {
+  height: 192px;
+  margin-right: 5px;
+}
+
+.btn-sel {
+  color: #444 !important;
+}
+
+.select2-selection__arrow {
+  padding: 2px 6px;
+  background-color: #ffc000 !important;
+  border-radius: 4px;
+  position: absolute;
+  right: 0px;
+  top: 1px;
+}
+
+.select2-selection__arrow b {
+  border: 2px solid;
+  border-color: white transparent transparent transparent !important;
+  border-width: 6px 4px 0 4px !important;
+  position: relative;
+  top: 16px;
+}
+
+.select2-container--default
+  ::ng-deep
+  .select2-selection--single
+  .select2-selection__placeholder
+  ::placeholder {
+  color: #999;
+}
+
+.btn:focus {
+  outline: none;
+  box-shadow: none;
+}
+.modal-footer {
+  .modal_button {
+    border-radius: 5px;
+    border: 0;
+    padding: 6px 7px;
+    display: inline-block;
+    width: 140px;
+    background: #ffc000;
+    font-size: 15px;
+  }
+}

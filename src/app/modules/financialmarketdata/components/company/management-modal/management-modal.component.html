@@ -1,0 +1,59 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th
+          *ngFor="let header of manage_info_data.title; let i = index"
+          [ngStyle]="{
+            width: header?.width,
+            'text-align': header?.align
+          }"
+        >
+          {{ header.label }}
+        </th>
+      </tr>
+    </thead>
+    <tbody [ngStyle]="{ 'max-height': mh }" class="border-0">
+      <tr *ngFor="let content of table_data">
+        <!-- <td
+          *ngFor="let header of manage_info_data.title"
+          [ngStyle]="{
+            width: header?.width,
+            'text-align': header?.align,
+            height: content?.height
+          }"
+          [ngClass]="{ 'text-end': header?.align === 'right' }"
+        >
+          {{
+            header.formattedNum
+              ? util?.standardFormat(content[header.key], 2, "")
+              : content[header.key]
+          }}
+        </td> -->
+        <td class="manage_1" (click)="getpersoninfo(content.personId, content)">
+          {{ content.management }}
+        </td>
+        <td class="manage_2">{{ content.instrumentType }}</td>
+        <td class="manage_3">{{ content.experience }}</td>
+        <td class="manage_4">{{ content.appointed ?? "-" }}</td>
+        <td class="manage_5">{{ content.otherCompanies ?? "-" }}</td>
+      </tr>
+      <tr *ngIf="showNoData">
+        <span class="text-center funding-detail-no-data"
+          >No Data Available</span
+        >
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br />
+<ng-container *ngIf="auth.managehistoryModal">
+  <app-manage-history-modal
+    [table_data]="employment_history"
+    [other_data]="content_data"
+    [holding_data]="holding_data"
+    [director_data]="directorship_data"
+    [companyName]="companyName"
+  ></app-manage-history-modal>
+</ng-container>

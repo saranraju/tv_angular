@@ -1,0 +1,41 @@
+<div class="backdrop">
+  <div
+    id="alertbox"
+    class="modal sevendayfreetrialpopup-rtda sevendayfreetrialpopup-cm in"
+    tabindex="-1"
+    role="dialog"
+    style="
+      display: block;
+      padding-left: 4px;
+      background-color: rgba(0, 0, 0, 0.5);
+    "
+  >
+    <div class="modal-dialog modal-lg" style="top: 20%">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+          <button
+            type="button"
+            (click)="
+              auth.closeInsidePopup = false;
+              auth.companyBenchmarkModal = false;
+              value = []
+            "
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!--end of modal header-->
+        <div class="modal-body text-center">
+          Please remove any security first before adding
+        </div>
+
+        <!--end of modal body-->
+        <!--end of modal footer-->
+      </div>
+    </div>
+  </div>
+</div>

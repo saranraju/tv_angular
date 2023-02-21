@@ -1,0 +1,328 @@
+<div class="container-fluid">
+  <div class="col-12 px-1 mt-2">
+    <p class="text-primary fw600 fs12 text-end mb-1 cursor-pointer">
+      <span (click)="auth.openPopupModal = true">{{
+        "Advanced Search" | uppercase
+      }}</span>
+    </p>
+  </div>
+  <div *ngIf="auth.openPopupModal">
+    <app-advance-search-modal
+      [isin_number]="cds_identifier"
+      [selectedBalanceModel]="selectedBalanceModel"
+      (comportable_table)="comportable_table_paricular_Data($event)"
+      type="CDS"
+      [SectorData]="selectSectorData"
+    >
+    </app-advance-search-modal>
+  </div>
+  <div class="row mt-2">
+    <div class="col-md-4 ps-0">
+      <ng-select2
+        [data]="selectSectorData"
+        [value]="selectedSector"
+        (valueChanged)="valueChangedHandler('Sector', $event, '')"
+        class="cusSelect2 cusSelect2Normal"
+        [placeholder]="'Select Sector'"
+      ></ng-select2>
+    </div>
+    <div class="col-4">
+      <ng-select2
+        [data]="selectCurrencyData"
+        [value]="selectedCurrency"
+        (valueChanged)="valueChangedHandler('Currency', $event, '')"
+        class="cusSelect2 cusSelect2Normal"
+        [placeholder]="'Select Currency'"
+      ></ng-select2>
+    </div>
+    <div class="col-4 pe-0">
+      <ng-select2
+        [data]="selectCDSNameListData"
+        [value]="selectedCDSNameList"
+        id="cdsSearch"
+        (click)="searchcds()"
+        (valueChanged)="valueChangedHandler('CDSNameList', $event, '')"
+        class="cusSelect2 cusSelect2Normal"
+        [placeholder]="'Select CDS'"
+      ></ng-select2>
+    </div>
+
+    <div class="mt-3 col-12 px-0">
+      <p class="mb-2 text-primary fw600 fs17">
+        <span *ngIf="comportable_table?.entityName">
+          {{
+            comportable_table?.entityName +
+              " | " +
+              comportable_table?.tenor +
+              "Y" +
+              " | " +
+              comportable_table?.currency +
+              " | " +
+              comportable_table?.restructuringType +
+              " | " +
+              comportable_table?.seniority
+          }}
+        </span>
+      </p>
+    </div>
+    <div class="col-12 px-0">
+      <div class="d-flex mb-2 justify-content-between align-items-center">
+        <div>
+          <ng-select2
+            [data]="selectBalanceModelData"
+            [value]="selectedBalanceModel"
+            (valueChanged)="valueChangedHandler('BalanceModel', $event, '')"
+            class="cusSelect2 cusSelect2_20rem"
+            [placeholder]="'Quote Spread Mid'"
+          ></ng-select2>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 px-0">
+      <div class="align-items-center d-flex graphFilterSection mt-2 mb-5">
+        <ul class="mb-0 p-0">
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '1W' }"
+            (click)="dateChange('1W')"
+          >
+            1W
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '1M' }"
+            (click)="dateChange('1M')"
+          >
+            1M
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '3M' }"
+            (click)="dateChange('3M')"
+          >
+            3M
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '6M' }"
+            (click)="dateChange('6M')"
+          >
+            6M
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '1Y' }"
+            (click)="dateChange('1Y')"
+          >
+            1Y
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === '5Y' }"
+            (click)="dateChange('5Y')"
+          >
+            5Y
+          </li>
+          <li
+            [ngClass]="{ activeDateFilter: util.selectedDatetype === 'MAX' }"
+            (click)="dateChange('MAX')"
+          >
+            MAX
+          </li>
+        </ul>
+      </div>
+      <div id="chartdiv" class="bondsChart"></div>
+    </div>
+    <div class="col-6 position-relative">
+      <div class="position-relative">
+        <p class="text-primary fs16 position-relative">
+          <b>Comparable CDS</b>
+          <span
+            *ngIf="edit_search_dropdown"
+            class="fixedincome-editcomparable cds-editcomparable"
+          >
+            <ng-select2
+              class="cusSelect2 cusSelect2Normal"
+              id="comaparablesSearch"
+              (click)="SearchCDScomaparables()"
+              [data]="ComparableCDSNameListData"
+              [value]="comparablesSearch"
+              (valueChanged)="
+                valueChangedHandler('CDSNameList_edit', $event, 'append')
+              "
+              [placeholder]="'Select CDS'"
+            >
+            </ng-select2>
+            <i
+              (click)="resetTable('icon')"
+              class="editClose fa fa-close"
+              aria-hidden="true"
+            ></i>
+          </span>
+          <span (click)="editTable()" class="editbtn-fi editbtn-cds">
+            Edit <i class="fa fa-pencil"></i>
+          </span>
+          <span class="reset" (click)="resetTable()" *ngIf="showReset"
+            >Reset <i class="fa fa-refresh"></i>
+          </span>
+        </p>
+        <div class="space100">
+          <app-comparable-securities-table
+            *ngIf="comparableCDS?.length"
+            [table_data]="comparableCDS"
+            section_name1="Details"
+            section_name2="Par Spread (bps)"
+            section_name3="Quote Spread (bps)"
+            section_name4="Upfront (bps)"
+            (comportable_table)="compartableTableDataHandler($event)"
+            [country_name]="selectedCurrency"
+            [remove_icon]="edit_search_dropdown"
+            (selectedRowData)="handleselectedRowData($event)"
+            ht="217px"
+          >
+          </app-comparable-securities-table>
+        </div>
+      </div>
+    </div>
+    <div *ngIf="auth.closeInsidePopup">
+      <app-comparable-securities-no-selection-modal></app-comparable-securities-no-selection-modal>
+    </div>
+    <div class="col-6 mt-3 px-0">
+      <h4 class="text-primary mb-3">
+        <span class="fs16 fw600">Summary Information</span
+        ><span class="fs14 fw400 font-italic">
+          (as on {{ cdsLatestData?.business_date_time }})</span
+        >
+      </h4>
+      <div class="row bond-summer-info">
+        <div class="col-4">
+          <div>
+            <p class="text-primary mb-0"><b>Ticker :</b></p>
+            <p>
+              {{ cdsLatestData?.cma_ticker ? cdsLatestData?.cma_ticker : "-" }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Region :</b></p>
+            <p>{{ cdsLatestData?.region ? cdsLatestData?.region : "-" }}</p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Coupon :</b></p>
+            <p>{{ cdsLatestData?.coupon ? cdsLatestData?.coupon : "-" }}</p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Restructuring Type :</b></p>
+            <p>
+              {{
+                cdsLatestData?.restructuringType
+                  ? cdsLatestData?.restructuringType
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+        <div class="col-4">
+          <div>
+            <p class="text-primary mb-0"><b>Sector :</b></p>
+            <p>{{ cdsLatestData?.sector ? cdsLatestData?.sector : "-" }}</p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Derivation Type :</b></p>
+            <p>
+              {{
+                cdsLatestData?.derivation_type
+                  ? cdsLatestData?.derivation_type
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Maturity Date :</b></p>
+            <p>
+              {{
+                cdsLatestData?.maturity_date
+                  ? cdsLatestData?.maturity_date
+                  : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Seniority :</b></p>
+            <p>
+              {{ cdsLatestData?.seniority ? cdsLatestData?.seniority : "-" }}
+            </p>
+          </div>
+        </div>
+        <div class="col-4">
+          <div>
+            <p class="text-primary mb-0"><b>Currency :</b></p>
+            <p>{{ cdsLatestData?.currency ? cdsLatestData?.currency : "-" }}</p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Tenor :</b></p>
+            <p>{{ cdsLatestData?.tenor ? cdsLatestData?.tenor + "Y" : "-" }}</p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Default Date :</b></p>
+            <p>
+              {{
+                cdsLatestData?.default_date ? cdsLatestData?.default_date : "-"
+              }}
+            </p>
+          </div>
+          <div>
+            <p class="text-primary mb-0"><b>Instrument Type :</b></p>
+            <p>
+              {{
+                cdsLatestData?.instrument_type
+                  ? cdsLatestData?.instrument_type
+                  : "-"
+              }}
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 position-relative mt-6">
+      <div class="tableCol6Border space26">
+        <app-key-information-table
+          [bondLatestData]="cdsLatestData"
+          *ngIf="pricing?.length"
+          [table_data]="pricing"
+          type="cds"
+          section_name="Pricing"
+          section_name1="Bid Price"
+          section_name2="Ask Price"
+          [weekly_change]="system"
+        >
+        </app-key-information-table>
+      </div>
+    </div>
+    <div class="col-12 my-3 px-0">
+      <h4 class="text-primary">
+        <span class="fs16 fw600">Key Information</span>
+      </h4>
+    </div>
+    <div class="col-6 position-relative ps-0">
+      <div class="mt-2 tableCol6Border">
+        <app-key-information-table
+          value="0.00 %"
+          [bondLatestData]="cdsLatestData"
+          *ngIf="pricingInfo?.length"
+          [table_data]="pricingInfo"
+          section_name="Pricing"
+          [weekly_change]="system"
+          type="cds"
+        >
+        </app-key-information-table>
+      </div>
+    </div>
+    <div class="col-6 position-relative ps-0">
+      <div class="mt-2 tableCol6Border">
+        <app-key-information-table
+          [bondLatestData]="cdsLatestData"
+          *ngIf="analytics?.length"
+          [table_data]="analytics"
+          section_name="Analytics"
+          [weekly_change]="system"
+          type="cds"
+        >
+        </app-key-information-table>
+      </div>
+    </div>
+  </div>
+</div>

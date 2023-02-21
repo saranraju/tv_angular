@@ -1,0 +1,55 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th *ngIf="table_data.length != 0">Particulars</th>
+        <ng-container *ngIf="table_data.length == 0">
+          <tbody>
+            <tr style="height: 270px">
+              <td class="text-center" colspan="8">No Data Available</td>
+            </tr>
+          </tbody>
+        </ng-container>
+        <ng-container *ngFor="let header of header_data; let i = index">
+          <ng-container *ngIf="i < 6">
+            <th class="text-end">
+              {{ header | date: "MMM - y" }}
+            </th>
+          </ng-container>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody [ngStyle]="{ 'max-height': mh }">
+      <tr *ngFor="let content of table_data; let i = index">
+        <ng-container *ngIf="i < 6">
+          <td>{{ content.description }}</td>
+
+          <ng-container *ngFor="let header of header_data; let j = index">
+            <td *ngIf="j < 6" class="text-end">
+              <ng-container *ngIf="content[type + '-' + header] != undefined">
+                {{
+                  this.util.standardformatCustom(
+                    content[type + "-" + header],
+                    2,
+                    ""
+                  )
+                }}
+              </ng-container>
+
+              <ng-container *ngIf="content[type + '-' + header] == undefined">
+                -
+              </ng-container>
+            </td>
+          </ng-container>
+        </ng-container>
+        <ng-container *ngIf="header_data == 0">
+          <td *ngIf="i == 2" class="text-center" colspan="8">
+            No Data Available
+          </td>
+        </ng-container>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br />

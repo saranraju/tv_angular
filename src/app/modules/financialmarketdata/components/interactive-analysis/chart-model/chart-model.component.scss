@@ -1,0 +1,79 @@
+.modal-dialog {
+  background: #00071e;
+  transform: translate(0, 0);
+  min-width: 90%;
+  min-height: 45rem;
+}
+
+.modal-content {
+  background: #00071e;
+}
+
+.modal-body {
+  position: relative;
+  padding: 15px;
+  color: #ffc000;
+}
+
+.modal-footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+
+.close {
+  color: white;
+  font-size: 16px;
+  text-shadow: 0 1px 0 white;
+}
+
+button.close {
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  -webkit-appearance: none;
+  position: absolute;
+  right: 5px;
+}
+
+.text-align-center {
+  text-align: center;
+}
+
+.mat-form-field-flex {
+  background: white !important;
+}
+
+.modal-title {
+  font-size: 14px;
+  margin-top: 10px;
+}
+
+.bluebtn-dd,
+a.bluebtn-dd {
+  background: #ffc000;
+  border: 2px solid #ffc000;
+  padding: 8px 30px;
+  border-radius: 5px;
+  display: inline-block;
+  color: white;
+  vertical-align: top;
+}
+
+.display-flex {
+  display: flex;
+  justify-content: center;
+}
+
+#chartDiv {
+  min-width: 75rem;
+  min-height: 35rem;
+}
+
+.graphFilterSection {
+  position: absolute;
+  top: 0.5rem;
+  left: 1.5rem;
+  transform: scale(0.95);
+}

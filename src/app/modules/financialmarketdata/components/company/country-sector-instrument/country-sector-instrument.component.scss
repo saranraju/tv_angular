@@ -1,0 +1,35 @@
+h5 {
+    color: rgb(255, 192, 0);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+li {
+    list-style: none;
+    padding: 1rem;
+    cursor: pointer;
+}
+
+li:nth-child(odd),tr:nth-child(odd) {
+    background-color: #122543;
+}
+
+.border-cus {
+    border: 1px solid #fec134;
+    margin-bottom: 1rem;
+    min-height: 14rem;
+}
+
+table {
+    width: 100%;
+    border: 1px solid #fec134;
+    min-height: 14rem;
+
+    th {
+        color: #fec134;
+    }
+
+    td,th {
+        padding: .5rem;
+    }
+}

@@ -1,0 +1,25 @@
+<div class="inside-popup">
+  <div class="modal">
+    <div class="modal-content" style="padding: 0px !important">
+      <div>
+        <div class="newsSection">
+          <div class="border-box">
+            <div class="d-flex align-items-center justify-content-between px-2 bg-heading text-black py-2">
+              <h6 class="mb-0 fw600">{{ popupDetail.title }}</h6>
+              <h6 class="mb-0 fw600">
+                {{ popupDetail.period | date: "yyyy-MM-dd HH:mm" }}
+                <span (click)="insidePopupDialogClose()"
+                  class="text-black inside-Popup-close close cursor-pointer pe-0"><i class="fa fa-times"></i></span>
+              </h6>
+            </div>
+            <div class="">
+              <p class="line-height fw400 px-2 pt-3 pb-3 mb-0 mb-0">
+                {{ popupDetail.description }}
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

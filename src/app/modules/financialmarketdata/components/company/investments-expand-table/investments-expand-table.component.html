@@ -1,0 +1,204 @@
+<div class="investments-table">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th
+          *ngFor="let header of table_data.title; let i = index"
+          [ngStyle]="{
+            width: header?.width,
+            'text-align': header?.align,
+            cursor: header?.headerCursor
+          }"
+          (click)="sortByKey(header.key, i, header.sorting, header?.customSort)"
+        >
+          {{ header.label }}
+          <i
+            *ngIf="header?.customSort"
+            class="shortIconColor ms-1 fa fa-solid fa-sort"
+          ></i>
+          <i
+            *ngIf="i != iconIndex && header?.sorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort"
+          ></i>
+          <i
+            *ngIf="i == iconIndex && shortDown && header?.sorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-down"
+          ></i>
+          <i
+            *ngIf="i == iconIndex && !shortDown && header?.sorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-up"
+          ></i>
+        </th>
+      </tr>
+    </thead>
+    <div style="position: relative" id="parent-table">
+      <tbody
+        *ngFor="
+          let content of table_data.value
+            | paginate
+              : {
+                  itemsPerPage: 10,
+                  currentPage: currentPageIndex,
+                  id: paginateId,
+                  totalItems: totalDataLength
+                };
+          let i = index
+        "
+      >
+        <tr>
+          <td
+            *ngFor="let header of table_data.title"
+            [ngStyle]="{
+              width: header?.width,
+              'text-align': header?.align,
+              color: header?.color,
+              height: content?.height,
+              cursor: header?.cursor,
+              'text-decoration': header?.textDecoration
+            }"
+            class="bubble-container"
+            [ngClass]="
+              content[header.key] === 'Multiple' ? 'multiple-color' : ''
+            "
+            (click)="handleInvestmentRoundClick(header.key, content)"
+          >
+            <i
+              *ngIf="header?.plusIcon === true"
+              [ngClass]="
+                selectedPlus_icon && index === i ? ' fa-minus' : ' fa-plus'
+              "
+              (click)="handleExpandTableClick(content, i)"
+              class="fa fa-solid"
+              style="cursor: pointer"
+            ></i>
+            <span>
+              {{
+                header.formattedNum
+                  ? util?.standardFormat(content[header.key], 2, "")
+                  : content[header.key]
+                  ? content[header.key]
+                  : "-"
+              }}</span
+            >
+            <div
+              *ngIf="content[header.key] === 'Multiple'"
+              [attr.data-funds]="multiplePartFunds"
+              class="text-center bubble"
+            >
+              <ng-container *ngFor="let multipleFunds of multiplePartFunds">
+                <ng-container *ngFor="let funds of multipleFunds.fund"
+                  ><span
+                    (click)="
+                      handleMultipleFundClick(
+                        $event,
+                        content,
+                        multipleFunds.id,
+                        multipleFunds
+                      )
+                    "
+                    *ngIf="multipleFunds.name === content.entity_name"
+                    >{{ funds }}</span
+                  >
+                </ng-container></ng-container
+              >
+            </div>
+          </td>
+        </tr>
+        <tr *ngIf="index === i && hideChildContent">
+          <div class="direct-investments-child-table">
+            <table>
+              <thead>
+                <tr>
+                  <th
+                    *ngFor="let header of child_table_data.title; let i = index"
+                    [ngStyle]="{
+                      width: header?.width,
+                      'text-align': header?.align
+                    }"
+                  >
+                    {{ header.label }}
+                  </th>
+                </tr>
+              </thead>
+              <div>
+                <tbody>
+                  <tr *ngFor="let content of child_table_data.value">
+                    <td
+                      *ngFor="let header of child_table_data.title"
+                      [ngStyle]="{
+                        width: header?.width,
+                        'text-align': header?.align,
+                        color: header?.color,
+                        'text-decoration': header?.textDecoration,
+                        cursor: header?.cursor
+                      }"
+                      class="bubble-container"
+                      [ngClass]="
+                        content[header.key] === 'Multiple'
+                          ? 'multiple-color'
+                          : ''
+                      "
+                      (click)="handleEntityNameClick(header.key, content)"
+                    >
+                      {{
+                        header.formattedNum
+                          ? util?.standardFormat(content[header.key], 2, "")
+                          : content[header.key]
+                          ? content[header.key]
+                          : "-"
+                      }}
+                      <div
+                        *ngIf="content[header.key] === 'Multiple'"
+                        [attr.data-funds]="multiplePartFundsChild.join(', ')"
+                        class="text-center bubble child-bubble"
+                      >
+                        <ng-container
+                          *ngFor="let multipleFunds of multiplePartFundsChild"
+                        >
+                          <ng-container *ngFor="let funds of multipleFunds.fund"
+                            ><span
+                              (click)="
+                                handleMultipleFundChildClick(
+                                  $event,
+                                  content,
+                                  multipleFunds.id,
+                                  multipleFunds
+                                )
+                              "
+                              *ngIf="multipleFunds.name === content.description"
+                              >{{ funds }}</span
+                            >
+                          </ng-container></ng-container
+                        >
+                      </div>
+                    </td>
+                  </tr>
+                </tbody>
+              </div>
+            </table>
+          </div>
+        </tr>
+      </tbody>
+    </div>
+
+    <div *ngIf="!table_data.value?.length">
+      <span class="text-center mb-3 funding-detail-no-data"
+        >No Data Available</span
+      >
+    </div>
+    <tfoot *ngIf="table_data.value?.length">
+      <div class="container-fluid px-0 text-center mt-1">
+        <pagination-controls
+          *ngIf="totalDataLength > 10"
+          [id]="paginateId"
+          (pageChange)="onPageChange($event)"
+          [previousLabel]="labels.previousLabel"
+          [nextLabel]="labels.nextLabel"
+          [maxSize]="11"
+          class="funding-details-pagination"
+          (click)="handlePaginateClick()"
+        ></pagination-controls>
+      </div>
+    </tfoot>
+  </table>
+</div>

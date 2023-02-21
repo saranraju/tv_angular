@@ -1,0 +1,361 @@
+.metric-container {
+  border: 1px solid #122543;
+}
+
+.metric-title {
+  background-color: #122543;
+  font-size: 13px;
+  color: #ffc000;
+  padding: 4px 5px;
+}
+
+.metric-list {
+  list-style: none;
+  padding: 0;
+  font-size: 13px;
+  color: #ffc000;
+}
+
+.metric-list-item {
+  padding: 9px 4px 8px 4px !important;
+  border-top: 1px solid #122543 !important;
+  cursor: pointer;
+  position: relative;
+  border-right: 1px solid #122543;
+}
+
+.activeMetricTab {
+  background: #122543 !important;
+  font-weight: 600;
+}
+
+.metric-list-item::before {
+  content: "";
+  width: 0;
+  height: 0;
+  border-style: solid;
+  position: absolute;
+  top: 0;
+  border-width: 17px 0 17px 6px;
+  border-color: transparent transparent transparent #00071e !important;
+  right: -7px;
+  cursor: default;
+}
+
+.activeMetricTab::before {
+  border-color: transparent transparent transparent #122543 !important;
+  cursor: pointer;
+}
+
+.result-container {
+  border-top: 1px solid #ccc;
+}
+
+.result-table-title {
+  font-size: 14px;
+  color: #ffc000;
+}
+
+.result-table-height{
+  height:250px;
+}
+
+.table-clear-all {
+  font-size: 12px;
+  color: #ffc000;
+  text-decoration-line: underline;
+  cursor: pointer;
+}
+
+.excel-img {
+  float: right;
+  cursor: pointer;
+  margin-right: 13px;
+}
+
+.result-entries {
+  font-size: 13px;
+  color: #666;
+}
+
+.addMetricData {
+  margin-left: 2em;
+  font-size: 13px;
+  margin-top: 1em;
+}
+
+.dataBlock {
+  overflow-y: auto;
+  max-height: 9em;
+  width: 58.3%;
+  // position: absolute;
+  // left: 17rem;
+}
+
+.warning {
+  font-size: 13px;
+  text-align: center;
+  margin-top: 15px;
+}
+
+.disabled {
+  pointer-events: none;
+  // color: #ffc000;
+}
+
+// css for histogram graph
+.addedMetric {
+  font-size: 13px;
+  color: #ffc000;
+  margin-left: 4px;
+}
+
+.modal-header {
+  padding: 0.5rem 1rem;
+}
+
+.modal-content {
+  background-color: #00071e;
+  height: 10em;
+}
+
+.modal-dialog {
+  height: 10em;
+}
+
+@media (min-width: 576px) {
+  .modal-dialog {
+    margin: 8.5rem auto;
+  }
+}
+
+.modal-body {
+  font-size: 14px;
+  color: #ffc000;
+  text-align: center;
+}
+
+.cross {
+  cursor: pointer;
+}
+
+.easy-basket-filter {
+  width: 50%;
+  margin: 84px 25%;
+  position: relative;
+  margin-left: 13.5%;
+}
+
+.fill {
+  height: 3px;
+  width: 100%;
+  background-color: #01bab0;
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 2;
+}
+
+.easy-basket-filter-info {
+  box-sizing: border-box;
+  padding: 0;
+  width: 100%;
+  justify-content: space-between;
+  position: absolute;
+  top: -83px;
+}
+
+.easy-basket-filter-info p {
+  // border-radius: 3px;
+  margin: 0;
+  margin-left: -87px;
+  margin-right: -87px;
+  color: #333 !important;
+  background: #fbe5c6;
+  // border: 1px solid #ffc000;
+}
+
+.easy-basket-filter-info .iLower {
+  float: left;
+  // display: inline-block;
+}
+
+.easy-basket-filter-info .iUpper {
+  float: right;
+  // display: inline-block;
+}
+
+.easy-basket-filter-info input {
+  width: inherit;
+  color: #333;
+  font: 11px Open Sans;
+  background: #fbe5c6;
+  border: 1px solid #ffc000;
+  width: 70px;
+  height: 30px;
+  text-align: center;
+}
+
+/***** Position dual *****/
+.range {
+  position: absolute;
+  left: 0;
+  top: -3.2em;
+  z-index: -1;
+}
+
+/****** Style range ******/
+
+.graphValue {
+  color: #333 !important;
+  background: #fbe5c6;
+  border: 1px solid #ffc000;
+  float: left;
+  color: #555 !important;
+  width: 70px;
+  border: 1px solid #ccc;
+  height: 30px;
+  padding: 2px;
+  font-size: 10px;
+}
+
+.closeImg {
+  height: 12px;
+  width: 12px;
+  cursor: pointer;
+  margin-right: 6px;
+}
+
+// We need to use ::ng-deep to overcome view encapsulation
+::ng-deep {
+  .custom-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+  }
+
+  .custom-slider .ngx-slider {
+    max-width: 30rem;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-bar {
+    background: transparent;
+    height: 2px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-selection {
+    background: transparent;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-pointer {
+    width: 12px;
+    height: 24px;
+    top: auto;
+    /* to remove the default positioning */
+    bottom: 0;
+    background-color: #ffc000;
+    border-radius: unset;
+    border: 1px solid #d9d9d9;
+    border-radius: 3px;
+    // border-top-left-radius: 3px;
+    // border-top-right-radius: 3px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-tick {
+    top: unset !important;
+    bottom: -4px !important;
+    border-radius: 0px !important;
+    width: 2px !important;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-pointer:after {
+    // display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 3px;
+    gap: 3px;
+    position: initial;
+    z-index: 99;
+    width: 1px;
+    height: 14px;
+    background-color: #d9d9d9;
+    margin: 4px 0 0 3px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-pointer::before {
+    // display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 3px;
+    gap: 3px;
+    position: initial;
+    z-index: 99;
+    width: 1px;
+    height: 14px;
+    background-color: #d9d9d9;
+    margin: 6px 0 0 3px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-bubble {
+    bottom: 14px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-limit {
+    font-weight: bold;
+    color: orange;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-tick {
+    width: 1px;
+    height: 1px;
+    margin-left: 4px;
+    border-radius: 50%;
+    background: #ffc000;
+    top: -1px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-tick.ngx-slider-selected {
+    background: orange;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-bubble {
+    display: none;
+  }
+
+  // .custom-slider .ngx-slider .ngx-slider-bar-wrapper{
+  //   width: 250px;
+  // }
+
+  .horizontalLine {
+    width: 1px;
+    height: 14px;
+    background-color: #d9d9d9;
+  }
+
+  // .sliderR{
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   gap: 3px;
+  //   position: absolute;
+  //   margin-left: 24.1em;
+  //   z-index: 99;
+  // }
+  // .sliderL{
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   gap: 3px;
+  //   position: absolute;
+  //   margin-right: 29.41em;
+  //   z-index: 99;
+  // }
+}
+
+.disableExcelIcon {
+  pointer-events: none !important;
+  opacity: 0.5;
+}

@@ -1,0 +1,254 @@
+<div class="modal p-2">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <h3 class="popup-header pt-2 fw600 mb-1">
+      {{ "Advanced Search" | uppercase }}
+      <span (click)="newsDialogClose()" class="close cursor-pointer"
+        ><i class="fa fa-times"></i
+      ></span>
+    </h3>
+    <div class="row mt-3 mb-3" *ngIf="!type; else cdsTemp">
+      <div class="col-2">
+        <div class="d-flex justify-content-between">
+          <div class="fs13 fw400 text-primary align-center">Category</div>
+          <div>
+            <ng-select2
+              [data]="selectCategoryData"
+              [value]="selectedCategory"
+              class="cusSelect2 cusSelect2_5rem"
+              [placeholder]="'All'"
+              (valueChanged)="valueChangedHandler('Category', $event)"
+            ></ng-select2>
+          </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="d-flex justify-content-between">
+          <div class="fs13 fw400 text-primary align-center">Country</div>
+          <div>
+            <ng-select2
+              class="cusSelect2 cusSelect2_5rem"
+              [data]="countryData"
+              [value]="selectedCountry"
+              [placeholder]="'Select Country'"
+              (valueChanged)="valueChangedHandler('Country', $event)"
+            ></ng-select2>
+          </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="d-flex justify-content-between">
+          <div class="fs13 fw400 text-primary align-center">Currency</div>
+          <div>
+            <ng-select2
+              [data]="selectCurrencyData"
+              [value]="selectedCurrency"
+              (valueChanged)="valueChangedHandler('Currency', $event)"
+              class="cusSelect2 cusSelect2_5rem"
+              [placeholder]="'All'"
+            ></ng-select2>
+          </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="d-flex justify-content-between">
+          <div class="fs13 fw400 text-primary align-center">Tenor</div>
+          <div>
+            <ng-select2
+              [data]="tenoryData"
+              [value]="selectedTenory"
+              (valueChanged)="valueChangedHandler('tenor', $event)"
+              class="cusSelect2 cusSelect2_5rem"
+              [placeholder]="'All'"
+            ></ng-select2>
+          </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="d-flex justify-content-between">
+          <div class="fs13 fw400 text-primary align-center">
+            Yield to Maturity
+          </div>
+          <div>
+            <ng-select2
+              [data]="YieldData"
+              [value]="selectedYield"
+              (valueChanged)="valueChangedHandler('yield', $event)"
+              class="cusSelect2 cusSelect2_5rem"
+              [placeholder]="'All'"
+            ></ng-select2>
+          </div>
+        </div>
+      </div>
+      <div class="col-2">
+        <div class="d-flex justify-content-between">
+          <div class="fs13 fw400 text-primary align-center">
+            Modified Duration
+          </div>
+          <div>
+            <ng-select2
+              [data]="modifiedData"
+              [value]="selectedModified"
+              (valueChanged)="valueChangedHandler('modified', $event)"
+              class="cusSelect2 cusSelect2_5rem"
+              [placeholder]="'All'"
+            ></ng-select2>
+          </div>
+        </div>
+      </div>
+    </div>
+    <ng-template #cdsTemp>
+      <div class="row mt-3 mb-3">
+        <div class="col-3">
+          <div class="d-flex justify-content-between">
+            <p class="fs13 fw400 text-primary">Tenor</p>
+            <div>
+              <ng-select2
+                [data]="tenoryData"
+                [value]="selectedTenory"
+                (valueChanged)="valueChangedHandler('tenor', $event)"
+                class="cusSelect2 cusSelect2_5rem"
+                [placeholder]="'All'"
+              ></ng-select2>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="d-flex justify-content-between">
+            <p class="fs13 fw400 text-primary">Currency</p>
+            <div>
+              <ng-select2
+                [data]="selectCurrencyData"
+                [value]="selectedCurrency"
+                (valueChanged)="valueChangedHandler('Currency', $event)"
+                class="cusSelect2 cusSelect2_5rem"
+                [placeholder]="'All'"
+              ></ng-select2>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="d-flex justify-content-between">
+            <p class="fs13 fw400 text-primary">Par Spread</p>
+            <div>
+              <ng-select2
+                [data]="par_speed"
+                [value]="selectedParSpeed"
+                (valueChanged)="valueChangedHandler('par_speed', $event)"
+                class="cusSelect2 cusSelect2_5rem"
+                [placeholder]="'All'"
+              ></ng-select2>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="d-flex justify-content-between">
+            <p class="fs13 fw400 text-primary">Quote Spread</p>
+            <div>
+              <ng-select2
+                [data]="quote_speed"
+                [value]="selectedQuoteSpeed"
+                (valueChanged)="valueChangedHandler('quote_speed', $event)"
+                class="cusSelect2 cusSelect2_5rem"
+                [placeholder]="'All'"
+              ></ng-select2>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="d-flex justify-content-between">
+            <p class="fs13 fw400 text-primary">Upfront premium</p>
+            <div>
+              <ng-select2
+                [data]="upfront_premium"
+                [value]="selectedUpfront"
+                (valueChanged)="valueChangedHandler('upfront_premium', $event)"
+                class="cusSelect2 cusSelect2_5rem"
+                [placeholder]="'All'"
+              ></ng-select2>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="d-flex justify-content-between">
+            <p class="fs13 fw400 text-primary">Hazard Rate</p>
+            <div>
+              <ng-select2
+                [data]="hazard_rate"
+                [value]="selectedhazard_rate"
+                (valueChanged)="valueChangedHandler('hazard_rate', $event)"
+                class="cusSelect2 cusSelect2_5rem"
+                [placeholder]="'All'"
+              ></ng-select2>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="d-flex justify-content-between">
+            <p class="fs13 fw400 text-primary">
+              Cumulative Probability of Default
+            </p>
+            <div>
+              <ng-select2
+                [data]="cumulative_probability"
+                [value]="selectedcumulative_probability"
+                (valueChanged)="
+                  valueChangedHandler('cumulative_probability', $event)
+                "
+                class="cusSelect2 cusSelect2_5rem"
+                [placeholder]="'All'"
+              ></ng-select2>
+            </div>
+          </div>
+        </div>
+        <div class="col-3">
+          <div class="d-flex justify-content-between">
+            <p class="fs13 fw400 text-primary">Sector</p>
+            <div>
+              <ng-select2
+                [data]="SectorData"
+                (valueChanged)="valueChangedHandler('Sector', $event)"
+                [value]="selectedSector"
+                class="cusSelect2 cusSelect2_5rem"
+                [placeholder]="'All'"
+              ></ng-select2>
+            </div>
+          </div>
+        </div>
+      </div>
+    </ng-template>
+    <div class="row">
+      <div class="col-12 mb-2">
+        <div class="position-relative">
+          <input
+            type="text"
+            (keyup)="applyFilterAdvanceTable($event)"
+            class="exchange-input-filter tv-width"
+            style="width: 100% !important"
+            matInput
+            placeholder="Enter name to search"
+          />
+          <i class="fa fa-search icon-search"></i>
+        </div>
+      </div>
+      <div class="col-12 mt-2 mb-3">
+        <div *ngIf="advance_search_data?.length">
+          <app-bonds-advance-search-table
+            (comportable_Search_table)="compartableTableDataHandler($event)"
+            [table_data]="advance_search_data"
+            [table_header]="type ? cds_table_data : industry_table_data"
+            [type]="type"
+            mh="470px"
+          >
+          </app-bonds-advance-search-table>
+        </div>
+        <div
+          class="text-center"
+          *ngIf="!advance_search_data?.length && no_found == 'true'"
+        >
+          {{ type ? "No CDS Found" : "No Bonds Found" }}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

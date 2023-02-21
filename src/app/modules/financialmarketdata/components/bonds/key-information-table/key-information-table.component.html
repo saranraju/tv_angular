@@ -1,0 +1,79 @@
+<div class="keyInformation">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th>
+          {{ section_name }}
+        </th>
+        <th class="text-end">
+          {{ section_name1 ? section_name1 : "Value" }}
+        </th>
+        <th class="text-end">
+          {{ section_name2 ? section_name2 : "Weekly Change" }}
+        </th>
+      </tr>
+    </thead>
+    <tbody [ngStyle]="{ 'max-height': mh }">
+      <tr *ngFor="let content of table_data">
+        <td>
+          {{
+            content?.displayName
+              ? content?.displayName
+              : content?.tableDisplayName
+          }}
+        </td>
+        <td class="text-end">
+          {{
+            bondLatestData[content?.fieldName]
+              ? util?.standardFormat(bondLatestData[content?.fieldName], 2, "")
+              : "-"
+          }}
+          <span *ngIf="bondLatestData[content.fieldName]">{{
+            content.unit
+          }}</span>
+        </td>
+        <td class="text-end">
+          <span *ngIf="!section_name2"
+            >{{
+              content?.unit != "undefined" &&
+              content?.fieldName &&
+              content?.unit != null &&
+              (content?.unit.toLowerCase() === "percent" ||
+                content?.unit === "%")
+                ? bondLatestData[content?.fieldName + "_1w_percent_change"]
+                  ? bondLatestData[content?.fieldName + "_1w_percent_change"] +
+                    " " +
+                    handleWeeklyFunction(weekly_change, content)
+                  : " - "
+                : util?.standardFormat(
+                    bondLatestData &&
+                      bondLatestData[content?.fieldName + "_1w_percent_change"],
+                    2,
+                    ""
+                  )
+                ? util?.standardFormat(
+                    bondLatestData[content?.fieldName + "_1w_percent_change"],
+                    2,
+                    ""
+                  ) +
+                  " " +
+                  (!type ? "%" : content?.unit == null ? "%" : content?.unit)
+                : " - "
+            }}
+          </span>
+          <span *ngIf="section_name2">{{
+            util?.standardFormat(
+              bondLatestData[content?.fieldName?.replace("bid", "offer")],
+              2,
+              ""
+            ) +
+              " " +
+              content?.unit
+          }}</span>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br />

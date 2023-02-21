@@ -1,0 +1,132 @@
+<table>
+  <thead [ngClass]="{ headerBorder: headerBorder == true }">
+    <tr>
+      <th
+        *ngFor="let col of tableDataHeader; let i = index"
+        [ngStyle]="{ width: col.width }"
+        (click)="sort && sortByKey(col.field, i)"
+      >
+        <span class="flex-center">
+          <span> {{ col.label }} </span>
+          <i
+            *ngIf="sort && i != iconIndex"
+            class="shortIconColor ms-1 fa fa-solid fa-sort"
+          ></i>
+          <i
+            *ngIf="sort && i == iconIndex && shortDown"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-down"
+          ></i>
+          <i
+            *ngIf="sort && i == iconIndex && !shortDown"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-up"
+          ></i>
+        </span>
+      </th>
+    </tr>
+  </thead>
+  <tbody
+    [ngClass]="{ bottomBorder: bottomBorder == true }"
+    *ngIf="!loadingForexTable; else loading"
+  >
+    <tr
+      *ngFor="
+        let row of tableData
+          | paginate
+            : {
+                itemsPerPage: totalResultCount ?? 10,
+                currentPage: currentPageSelected ?? 1,
+                totalItems: tableDataLength,
+                id: paginateId
+              }
+      "
+    >
+      <ng-container *ngIf="homeData; else anotherSection">
+        <td
+          *ngFor="let col of tableDataHeader; let z = index"
+          (click)="commodityEmitData(z, row)"
+          [ngClass]="{ 'cursor-pointer': z == 0 }"
+        >
+          <span
+            *ngIf="
+              !col?.tradeTick && !col.colorChange && !col.tradeTickMultiple
+            "
+          >
+            {{ row[col.field] == "null" ? "-" : row[col.field] ?? "-" }}
+          </span>
+          <span
+            *ngIf="col?.tradeTick"
+            [ngClass]="{
+              'color-green': row['tradeTick'] == '+',
+              'color-red': row['tradeTick'] == '-'
+            }"
+          >
+            {{ row[col.field] == "null" ? "-" : row[col.field] ?? "-" }}
+          </span>
+          <span
+            *ngIf="col?.tradeTickMultiple"
+            [ngClass]="{
+              'color-green': row[col.field + 'ticker'] == '+',
+              'color-red': row[col.field + 'ticker'] == '-'
+            }"
+          >
+            {{ row[col.field] == "null" ? "-" : row[col.field] ?? "-" }}
+          </span>
+          <span
+            *ngIf="col?.colorChange"
+            [ngClass]="{
+              'color-green': row[col.field] > 0,
+              'color-red': row[col.field] < 0
+            }"
+          >
+            {{ row[col.field] == "null" ? "-" : row[col.field] ?? "-" }}
+          </span>
+        </td>
+      </ng-container>
+      <ng-template #anotherSection>
+        <td *ngFor="let col of tableDataHeader">
+          <span
+            >{{ row[col.field] == "null" ? "-" : row[col.field] ?? "-" }}
+          </span>
+        </td>
+      </ng-template>
+    </tr>
+  </tbody>
+  <tfoot *ngIf="tableData?.length && pagination && !loadingForexTable">
+    <div class="container-fluid px-0 text-center mt-1">
+      <pagination-controls
+        class="cus-pagination"
+        [id]="paginateId"
+        [previousLabel]="labels.previousLabel"
+        [nextLabel]="labels.nextLabel"
+        (pageChange)="onPageChange($event)"
+        [autoHide]="true"
+      ></pagination-controls>
+    </div>
+  </tfoot>
+</table>
+<div class="no-data-container">
+  <span class="no-data" *ngIf="tableDataLength == 0 && !loadingForexTable">
+    No Data Available
+  </span>
+</div>
+
+<ng-template #loading>
+  <tbody class="no-data">
+    <svg class="circular" viewBox="25 25 50 50" style="height: 10px">
+      <circle
+        class="path"
+        cx="50"
+        cy="50"
+        r="20"
+        fill="none"
+        stroke-width="2"
+        stroke-miterlimit="10"
+      />
+    </svg>
+    <img
+      style="width: 4rem"
+      class="loader_img rounded mx-auto d-block"
+      src="../../../../../../assets/img/televisory-loader.gif"
+    />
+  </tbody>
+</ng-template>

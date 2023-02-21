@@ -1,0 +1,37 @@
+<table>
+  <thead class="headerBorder">
+    <tr cdkDropList cdkDropListOrientation="horizontal" (cdkDropListDropped)="dropCol($event)">
+      <th cdkDrag cdkDragHandle *ngFor="let col of displayColumn;">
+        <span class="flex-center">
+          <span> {{ transformWordFirstLetterToCapital(col.label) }} </span>
+        </span>
+      </th>
+    </tr>
+  </thead>
+  <tbody class="bottomBorder" *ngIf="expandDataTable?.length;else emptyContent">
+    <tr *ngFor="
+        let row of expandDataTable
+          | paginate
+            : {
+                itemsPerPage: totalResultCount ?? 10,
+                currentPage: currentPageSelected
+              }
+      ">
+      <td *ngFor="let col of displayColumn">
+        {{ row[col.field] != 'null' || null ? (row[col.field] ?? '-') : '-' }}
+      </td>
+    </tr>
+  </tbody>
+  <tfoot *ngIf="expandDataTable?.length && pagination">
+    <div class="container-fluid px-0 text-center mt-1">
+      <pagination-controls class="cus-pagination" [previousLabel]="labels.previousLabel" [nextLabel]="labels.nextLabel"
+        (pageChange)="currentPageSelected = $event"></pagination-controls>
+    </div>
+  </tfoot>
+</table>
+
+<ng-template #emptyContent>
+  <tbody class="no-data">
+    No Data Available
+  </tbody>
+</ng-template>

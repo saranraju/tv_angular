@@ -1,0 +1,199 @@
+<div class="commodityTable">
+  <table
+    id="excel-table"
+    class="w-100 scroll"
+    [ngClass]="fontSize ? 'industry-font' : ''"
+  >
+    <thead>
+      <tr>
+        <th
+          *ngFor="let header of table_data.title; let i = index"
+          [ngStyle]="{
+            width: header?.width,
+            'text-align': header.headerAlign
+              ? header?.headerAlign
+              : header?.align,
+            cursor: header?.headerPointer && 'pointer'
+          }"
+          (click)="
+            sortByKey(header.key, i, header.shorting, header?.topDealSort)
+          "
+          [attr.colspan]="header?.colspan"
+          [attr.rowspan]="header?.rowspan"
+          [ngClass]="fontSize ? 'industry-font' : ''"
+        >
+          {{ header.label
+          }}<span>{{ header?.currency || header?.unit ? "(" : "" }}</span
+          ><span>{{ header.currency ? header?.currency : "" }}</span
+          ><span>{{
+            header.unit && header.currency
+              ? " " + header?.unit?.charAt(0)
+              : header.unit
+              ? "" + header?.unit?.charAt(0)
+              : ""
+          }}</span
+          ><span>{{ header?.currency || header?.unit ? ")" : "" }}</span>
+          <i
+            *ngIf="i != iconIndex && header?.topDealSort"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-down"
+          ></i>
+          <i
+            *ngIf="i != iconIndex && header?.shorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort"
+          ></i>
+          <i
+            *ngIf="i == iconIndex && shortDown && header?.shorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-down"
+          ></i>
+          <i
+            *ngIf="i == iconIndex && !shortDown && header?.shorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-up"
+          ></i>
+        </th>
+      </tr>
+    </thead>
+    <tbody [ngStyle]="{ 'max-height': mh }">
+      <tr *ngFor="let content of table_data.value; let i = index">
+        <td
+          id="{{ i == 0 ? idName : '' }}"
+          *ngFor="let header of table_data.title; let last = last"
+          [ngStyle]="{
+            width: header?.width,
+            'text-align': header?.align,
+            color: header?.color,
+            height: content?.height,
+            padding: header?.padding
+          }"
+          [ngClass]="{ pointer: header?.hover === true }"
+          [ngClass]="
+            fontSize
+              ? 'industry-font'
+              : highLowColor && content['changeInOI'] > 0 && last
+              ? 'der-high'
+              : highLowColor && content['changeInOI'] < 0 && last
+              ? 'der-low'
+              : ''
+          "
+        >
+          <i
+            *ngIf="header?.plusIcon === true"
+            class="fa fa-solid fa-plus"
+            style="cursor: pointer"
+          ></i>
+          <img
+            *ngIf="header?.icon === true"
+            src="{{ content[header.key] }}"
+            alt="document download"
+            class="doc-icon"
+            (click)="
+              handleDocDownloadClick(content); auth.openTermsModal = true
+            "
+          />
+          <input
+            *ngIf="header?.radio === true"
+            type="radio"
+            name="radio"
+            (click)="handleRadioInputChange(content)"
+            [checked]="i === 0"
+            [ngClass]="{ pointer: header?.radio === true }"
+          />
+          <span
+            *ngIf="content[header.key]"
+            [ngClass]="
+              header?.hover === true
+                ? 'hover-effect'
+                : header?.pointer === true
+                ? 'cursor-pointer'
+                : ''
+            "
+            (click)="
+              header.pointer == true &&
+                tabValue == 'industry' &&
+                onClickIndustryRow(content)
+            "
+            [ngStyle]="{ cursor: header?.pointer == true ? 'pointer' : '' }"
+            [ngClass]="
+              fontSize
+                ? 'padding-right'
+                : header?.hover === true
+                ? 'hover-effect'
+                : ''
+            "
+            data-toggle="{tabValue == 'industry' ? 'tooltip' : null}"
+            data-placement="right"
+            [title]="tabValue == 'industry' ? header.label : ''"
+            aria-hidden="true"
+            (click)="tableSelectedRow(content, header.key)"
+          >
+            {{
+              header.formattedNum
+                ? header.key === "Company Count"
+                  ? util.numberWithCommas(content[header.key])
+                  : util?.standardFormat(content[header.key], 2, "")
+                : header?.icon === true
+                ? ""
+                : content[header.key]
+            }}
+          </span>
+          <span
+            class="industry-no-data"
+            *ngIf="!content[header.key] && tabValue === 'industry'"
+            >-</span
+          >
+          <span
+            *ngIf="
+              !content[header.key] && !header?.radio && tabValue !== 'industry'
+            "
+            >-</span
+          >
+        </td>
+      </tr>
+      <tr
+        *ngIf="
+          !table_data.value?.length &&
+          tabValue !== 'screener' &&
+          tabValue !== 'transactions'
+        "
+      >
+        <p class="text-center my-2">No Data Available</p>
+      </tr>
+      <tr class="forScreener" *ngIf="tabValue === 'screener'">
+        <p
+          *ngIf="tabValue === 'screener' && selectedIndustry == ''"
+          class="noData mt-3"
+        >
+          Select Industry to get the data.
+        </p>
+        <p
+          *ngIf="
+            tabValue === 'screener' &&
+            selectedIndustry !== '' &&
+            !table_data?.value?.length &&
+            isLoading
+          "
+          class="noData mt-3"
+        >
+          Loading...
+        </p>
+        <p
+          *ngIf="
+            tabValue === 'screener' &&
+            selectedIndustry !== '' &&
+            !table_data.value?.length &&
+            !isLoading
+          "
+          class="noData mt-3"
+        >
+          No matching records found
+        </p>
+      </tr>
+      <tr *ngIf="!table_data.value?.length && tabValue === 'transactions'">
+        <span class="text-center funding-detail-no-data">
+          No M&A Transaction in {{ transactionsMNAPeriod }}
+        </span>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br />

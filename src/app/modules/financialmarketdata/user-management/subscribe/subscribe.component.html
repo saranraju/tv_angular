@@ -1,0 +1,297 @@
+<app-user-management-header></app-user-management-header>
+
+<body class="overflow-subscribe">
+  <ng-container *ngIf="subscribeUser === 'false'">
+    <div class="row mt-5 custom-center">
+      <h3 class="title">
+        Televisory's Financial Market Data Subscription Plan
+      </h3>
+      <p>Select a plan best suited to your data and analytical needs</p>
+      <p>(Get complimentary subscription of Real Time Data Analytics)</p>
+    </div>
+    <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
+      {{ errorMessage }}
+    </div>
+    <div class="row mt-3 mx-5">
+      <div class="col-4">
+        <div class="card">
+          <div class="card-title">Features (Unlimited Access)</div>
+          <div class="card-body">
+            <p>Financial and Valuation Data</p>
+            <p>Economic, Forex and Commodity Data</p>
+            <p>Shareholding & Management Data</p>
+            <p>Debt Profile</p>
+            <p>Fixed Income and Derivatives</p>
+            <p>M&A, PE/VC and IPO</p>
+            <p>Company Profiling</p>
+            <p>Screener and Dynamic Watchlist</p>
+            <p>Industry Monitor</p>
+            <p>Data Download</p>
+          </div>
+        </div>
+      </div>
+      <div class="col-8">
+        <div class="card plan-card-section">
+          <div class="btn-section">
+            <button
+              (click)="planButtonChange('premiumPlan')"
+              [ngClass]="{ activeBtn: planButton == 'premiumPlan' }"
+            >
+              Premium Plan
+            </button>
+            <button
+              (click)="planButtonChange('customPlan')"
+              [ngClass]="{ activeBtn: planButton == 'customPlan' }"
+            >
+              Customize Your Plan
+            </button>
+          </div>
+          <div
+            class="row mt-2 mb-4 bg-color-black"
+            *ngIf="planButton == 'premiumPlan'; else customPlan"
+          >
+            <div class="col-4 mt-2">
+              <h5>Global Plan</h5>
+              <p class="fs12 text-end your-order">Your Order</p>
+              <div class="billing_container">
+                <div>
+                  <div class="billig-plan-div">
+                    <p class="fs12">Billing Plan</p>
+                    <p class="fs12">$ 5000</p>
+                    <p class="fs12">Charged Annually</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-8 mt-2">
+              <p class="fs13 mb-0">
+                Already have an account?
+                <span
+                  [routerLink]="['/login']"
+                  class="bg-green font-weight-bold cursor-pointer"
+                >
+                  Login
+                </span>
+              </p>
+              <p class="fs13 font-weight-bold">Provide Details</p>
+              <form
+                [formGroup]="subscribeForm"
+                (ngSubmit)="
+                  subscribeFormSubmit(subscribeForm.valid, subscribeForm.value)
+                "
+              >
+                <input
+                  class="w-100 mb-2"
+                  type="text"
+                  formControlName="firstName"
+                  placeholder="Enter First Name"
+                />
+                <input
+                  class="w-100 mb-2"
+                  type="text"
+                  formControlName="lastName"
+                  placeholder="Enter Last Name"
+                />
+                <input
+                  class="w-100 mb-2"
+                  type="text"
+                  formControlName="emailAddress"
+                  placeholder="Enter Email Address"
+                />
+                <input
+                  class="w-100 mb-2"
+                  type="password"
+                  formControlName="pass"
+                  placeholder="Enter Password"
+                />
+                <input
+                  class="w-100 mb-2"
+                  type="password"
+                  formControlName="rePass"
+                  placeholder="Re-Enter Password"
+                />
+                <p class="fs13">
+                  By signing up, you agree to our
+                  <a class="bg-green" href="https://televisory.com/terms-of-use"
+                    >Terms of Use </a
+                  >,
+                  <a
+                    class="bg-green"
+                    href="https://televisory.com/terms-of-access"
+                    >Terms of Access</a
+                  >
+                  ,
+                  <a class="bg-green" href="https://televisory.com/policy"
+                    >Privacy Policy</a
+                  >.
+                </p>
+                <button
+                  [disabled]="disableButton"
+                  class="subscribe-btn"
+                  type="submit"
+                >
+                  Subscribe Now
+                </button>
+              </form>
+            </div>
+          </div>
+          <ng-template #customPlan>
+            <div class="row mt-2 mb-4 bg-color-black">
+              <div class="col-6 mt-2">
+                <h5>Customizable Plan</h5>
+                <p class="fs14 font-italic">
+                  Select a country or region of your choice to build your own
+                  plan
+                </p>
+                <div class="d-flex justify-content-between mb-2">
+                  <ng-select2
+                    class="subscribeSelect cusSelect2 cusSelect2Normal col-6 ps-0"
+                    placeholder="Select Country or Region"
+                    id="countryDropdown"
+                    [options]="{ data: selectCountry }"
+                    [value]="selectedCountry"
+                    (valueChanged)="valueChangeHandler('Country', $event)"
+                  >
+                  </ng-select2>
+                  <p class="fs12 text-end your-order">Your Order</p>
+                </div>
+                <div class="billing_container">
+                  <div>
+                    <div class="billig-plan-div">
+                      <p class="fs12">Billing Plan</p>
+                      <p class="fs12">$ {{ selectedAmount }}</p>
+                      <p class="fs12">Charged Annually</p>
+                    </div>
+                    <div class="region_con">
+                      <p class="regionData" *ngIf="flag && regionPlan">
+                        {{ regionPlan[0].regionName }}'s plan available at $
+                        {{ regionPlan[0].amount }}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="col-6 mt-2">
+                <p class="fs13 mb-0">
+                  Already have an account?
+                  <span
+                    [routerLink]="['/login']"
+                    class="bg-green font-weight-bold cursor-pointer"
+                  >
+                    Login
+                  </span>
+                </p>
+                <p class="fs13 font-weight-bold">Provide Details</p>
+                <form
+                  [formGroup]="subscribeForm"
+                  (ngSubmit)="
+                    subscribeFormSubmit(
+                      subscribeForm.valid,
+                      subscribeForm.value
+                    )
+                  "
+                >
+                  <input
+                    class="w-100 mb-2"
+                    type="text"
+                    formControlName="firstName"
+                    placeholder="Enter First Name"
+                  />
+                  <input
+                    class="w-100 mb-2"
+                    type="text"
+                    formControlName="lastName"
+                    placeholder="Enter Last Name"
+                  />
+                  <input
+                    class="w-100 mb-2"
+                    type="text"
+                    formControlName="emailAddress"
+                    placeholder="Enter Email Address"
+                  />
+                  <input
+                    class="w-100 mb-2"
+                    type="password"
+                    formControlName="pass"
+                    placeholder="Enter Password"
+                  />
+                  <input
+                    class="w-100 mb-2"
+                    type="password"
+                    formControlName="rePass"
+                    placeholder="Re-Enter Password"
+                  />
+                  <p class="fs13">
+                    By signing up, you agree to our
+                    <a
+                      class="bg-green"
+                      href="https://televisory.com/terms-of-use"
+                      >Terms of Use </a
+                    >,
+                    <a
+                      class="bg-green"
+                      href="https://televisory.com/terms-of-access"
+                      >Terms of Access</a
+                    >
+                    ,
+                    <a class="bg-green" href="https://televisory.com/policy"
+                      >Privacy Policy</a
+                    >.
+                  </p>
+                  <button
+                    [disabled]="disableButton"
+                    class="subscribe-btn"
+                    type="submit"
+                  >
+                    Subscribe Now
+                  </button>
+                </form>
+              </div>
+            </div>
+          </ng-template>
+        </div>
+      </div>
+    </div>
+  </ng-container>
+  <ng-container *ngIf="subscribeUser === 'true'">
+    <div class="sucess_message_container">
+      <p>
+        Televisory team will contact you on your registered email id with the
+        details of your subscription plan
+      </p>
+    </div>
+  </ng-container>
+</body>
+
+<footer class="container-fluid telFooter">
+  <div class="row">
+    <div class="col-sm-4">
+      <p class="mb-0 px-3">
+        Copyright © 2022 Televisory <span class="px-1">|</span> All Rights
+        Reserved
+      </p>
+    </div>
+    <div class="col-sm-8">
+      <ul class="mb-0 text-white">
+        <li class="">
+          <a href="https://televisory.com/terms-of-use">Terms of Use</a>
+        </li>
+        <li class="">
+          <a href="https://televisory.com/terms-of-access">Terms of Access</a>
+        </li>
+        <li class="">
+          <a href="https://televisory.com/policy">Privacy Policy</a>
+        </li>
+        <li class="">
+          <a href="https://televisory.com/sitemap">Site map </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</footer>
+
+<app-form-alert-model
+  *ngIf="auth.closeInsidePopup"
+  [alertmsg]="alertmsg"
+></app-form-alert-model>

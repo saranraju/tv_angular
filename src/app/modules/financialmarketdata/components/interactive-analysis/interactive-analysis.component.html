@@ -1,0 +1,885 @@
+<div class="row mt-05">
+  <div class="col-2 cus-col-2 min-height">
+    <div class="accordion" id="accordionExample">
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingOne">
+          <button
+            class="accordion-button"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseOne"
+            aria-expanded="true"
+            aria-controls="collapseOne"
+          >
+            Company
+          </button>
+        </h2>
+        <div
+          id="collapseOne"
+          class="accordion-collapse collapse show"
+          aria-labelledby="headingOne"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="accordion-body">
+            <div class="company-section" id="analysisStep1">
+              <div
+                class="pointer"
+                (click)="childNodeToggle('company-div', $event)"
+              >
+                <i class="fa fa-plus"></i> Add company
+              </div>
+              <div
+                class="optionList mh-35 search-filter-data hide"
+                id="company-div"
+              >
+                <div class="sticky">
+                  <input
+                    type="search"
+                    class="form-control"
+                    placeholder="Search Company"
+                    (input)="searchCompany($event)"
+                  />
+                </div>
+                <ul class="custom-ul-style">
+                  <ng-container *ngFor="let item of selectCompanyData">
+                    <li
+                      class="custom-li-style"
+                      *ngIf="!selectedCompany?.includes(item)"
+                      (click)="listStyleClick(item, 'company-div', $event)"
+                    >
+                      {{ item.name + "(" + item.exchangeName + ")" }}
+                    </li>
+                  </ng-container>
+                </ul>
+              </div>
+              <div class="selected-items">
+                <div
+                  class="row cus-margin"
+                  *ngFor="let data of selectedCompany; let i = index"
+                >
+                  <div class="col-1">
+                    <input
+                      type="checkbox"
+                      (change)="companyTabData()"
+                      [(ngModel)]="data.customLableCheck"
+                    />
+                  </div>
+                  <div class="col-8">
+                    {{ data.name + "(" + data.exchangeName + ")" }}
+                  </div>
+                  <div class="col-2 display-flex">
+                    <i
+                      class="fa fa-square"
+                      [ngStyle]="{ color: colorList[i] }"
+                    ></i>
+                    <i
+                      class="fa fa-close"
+                      (click)="removeListStyleData(data, 'company-div')"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="mertices-section" id="analysisStep2">
+              <div
+                class="pointer"
+                (click)="childNodeToggle('company-metrices-div', $event)"
+              >
+                <i class="fa fa-plus"></i> Add metrics
+              </div>
+              <div
+                class="optionList mh-27 search-filter-data hide"
+                id="company-metrices-div"
+              >
+                <div class="sticky">
+                  <input
+                    type="search"
+                    class="form-control"
+                    placeholder="Search Metrices"
+                    (input)="nodeFilter($event)"
+                  />
+                </div>
+                <ul class="custom-ul-style">
+                  <ng-container *ngFor="let item of metricesData">
+                    <li
+                      class="custom-li-style"
+                      *ngIf="!selectedCompanyMetrices?.includes(item)"
+                      (click)="
+                        listStyleClick(item, 'company-metrices-div', $event)
+                      "
+                    >
+                      {{ item.description }}
+                    </li>
+                  </ng-container>
+                </ul>
+              </div>
+              <div class="selected-items">
+                <div
+                  class="row cus-margin"
+                  *ngFor="let data of selectedCompanyMetrices"
+                >
+                  <div class="col-1">
+                    <input
+                      type="checkbox"
+                      (change)="companyMetricDataToHide(data)"
+                      [(ngModel)]="data.customLableCheck"
+                    />
+                  </div>
+                  <div class="col-9">
+                    {{ data.description }}
+                  </div>
+                  <div class="col-1">
+                    <i
+                      class="fa fa-close"
+                      (click)="
+                        removeListStyleData(data, 'company-metrices-div')
+                      "
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingTwo">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseTwo"
+            aria-expanded="false"
+            aria-controls="collapseTwo"
+          >
+            Industry
+          </button>
+        </h2>
+        <div
+          id="collapseTwo"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingTwo"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="accordion-body">
+            <div class="radio-section mb-2">
+              <label for="CountryWise" class="ml-0">
+                <input
+                  type="radio"
+                  name="industryType"
+                  id="CountryWise"
+                  value="country"
+                  [(ngModel)]="industryChoice"
+                  (change)="industryChoose($event)"
+                />
+                Country Wise
+              </label>
+              <label for="IndustryWise" class="ml-0 mr-0">
+                <input
+                  type="radio"
+                  name="industryType"
+                  id="IndustryWise"
+                  value="industry"
+                  [(ngModel)]="industryChoice"
+                  (change)="industryChoose($event)"
+                />
+                Industry Wise
+              </label>
+            </div>
+            <div class="industry-section">
+              <div
+                class="pointer"
+                (click)="childNodeToggle('industry-div', $event)"
+              >
+                <i class="fa fa-plus"></i> Add Industry
+              </div>
+              <div
+                class="optionList mh-33 search-filter-data hide"
+                id="industry-div"
+              >
+                <div class="sticky">
+                  <input
+                    type="search"
+                    class="form-control"
+                    placeholder="Search Industry"
+                    (input)="nodeFilter($event)"
+                  />
+                </div>
+                <ul class="custom-ul-style">
+                  <ng-container *ngFor="let item of industryData">
+                    <li
+                      class="custom-li-style"
+                      *ngIf="!selectedIndustry?.includes(item)"
+                      (click)="listStyleClick(item, 'industry-div', $event)"
+                    >
+                      {{ item.ticsIndustryName }}
+                    </li>
+                  </ng-container>
+                </ul>
+              </div>
+              <div class="selected-items">
+                <div
+                  class="row cus-margin"
+                  *ngFor="let data of selectedIndustry; let i = index"
+                >
+                  <div class="col-1">
+                    <input
+                      type="checkbox"
+                      (change)="industryTabData()"
+                      [(ngModel)]="data.customLableCheck"
+                    />
+                  </div>
+                  <div class="col-8">
+                    {{ data.ticsIndustryName }}
+                  </div>
+                  <div class="col-2 display-flex">
+                    <i
+                      class="fa fa-square"
+                      *ngIf="industryChoice == 'country'"
+                      [ngStyle]="{ color: colorList[i] }"
+                    ></i>
+                    <i
+                      class="fa fa-close"
+                      (click)="removeListStyleData(data, 'industry-div')"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="country-section">
+              <div
+                class="pointer"
+                (click)="childNodeToggle('industry-country-div', $event)"
+              >
+                <i class="fa fa-plus"></i> Add Country
+              </div>
+              <div
+                class="optionList mh-28 search-filter-data hide"
+                id="industry-country-div"
+              >
+                <div class="sticky">
+                  <input
+                    type="search"
+                    class="form-control"
+                    placeholder="Search Country"
+                    (input)="nodeFilter($event)"
+                  />
+                </div>
+                <ul class="custom-ul-style">
+                  <ng-container *ngFor="let item of selectIndustryCountryData">
+                    <li
+                      class="custom-li-style"
+                      *ngIf="!selectedIndustryCountry?.includes(item)"
+                      (click)="
+                        listStyleClick(item, 'industry-country-div', $event)
+                      "
+                    >
+                      {{ item.countryName }}
+                    </li>
+                  </ng-container>
+                </ul>
+              </div>
+              <div class="selected-items">
+                <div
+                  class="row cus-margin"
+                  *ngFor="let data of selectedIndustryCountry; let i = index"
+                >
+                  <div class="col-1">
+                    <input
+                      type="checkbox"
+                      (change)="industryTabData()"
+                      [(ngModel)]="data.customLableCheck"
+                    />
+                  </div>
+                  <div class="col-8">
+                    {{ data.countryName }}
+                  </div>
+                  <div class="col-2 display-flex">
+                    <i
+                      class="fa fa-square"
+                      *ngIf="industryChoice == 'industry'"
+                      [ngStyle]="{ color: colorList[i] }"
+                    ></i>
+                    <i
+                      class="fa fa-close"
+                      (click)="
+                        removeListStyleData(data, 'industry-country-div')
+                      "
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="in-mertices-section">
+              <div
+                class="pointer"
+                (click)="childNodeToggle('industry-metrices-div', $event)"
+              >
+                <i class="fa fa-plus"></i> Add metrics
+              </div>
+              <div
+                class="optionList mh-16 search-filter-data hide"
+                id="industry-metrices-div"
+              >
+                <div class="sticky">
+                  <input
+                    type="search"
+                    class="form-control"
+                    placeholder="Search Metrices"
+                    (input)="nodeFilter($event)"
+                  />
+                </div>
+                <ul class="custom-ul-style">
+                  <ng-container *ngFor="let item of metricesDataindustry">
+                    <li
+                      class="custom-li-style"
+                      *ngIf="!selectedIndustryMetrices?.includes(item)"
+                      (click)="
+                        listStyleClick(item, 'industry-metrices-div', $event)
+                      "
+                    >
+                      {{ item.description }}
+                    </li>
+                  </ng-container>
+                </ul>
+              </div>
+              <div class="selected-items">
+                <div
+                  class="row cus-margin"
+                  *ngFor="let data of selectedIndustryMetrices"
+                >
+                  <div class="col-1">
+                    <input
+                      type="checkbox"
+                      (change)="industryTabData()"
+                      [(ngModel)]="data.customLableCheck"
+                    />
+                  </div>
+                  <div class="col-9">
+                    {{ data.description }}
+                  </div>
+                  <div class="col-1">
+                    <i
+                      class="fa fa-close"
+                      (click)="
+                        removeListStyleData(data, 'industry-metrices-div')
+                      "
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingThree">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            id="economyAcc"
+            data-bs-toggle="collapse"
+            data-bs-target="#collapseThree"
+            aria-expanded="false"
+            aria-controls="collapseThree"
+          >
+            Economy
+          </button>
+        </h2>
+        <div
+          id="collapseThree"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingThree"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="accordion-body">
+            <div class="economy-country-section">
+              <div
+                class="pointer"
+                (click)="childNodeToggle('economy-country-div', $event)"
+              >
+                <i class="fa fa-plus"></i> Add Country
+              </div>
+              <div
+                class="optionList mh-35 search-filter-data hide"
+                id="economy-country-div"
+              >
+                <div class="sticky">
+                  <input
+                    type="search"
+                    class="form-control"
+                    placeholder="Search Country"
+                    (input)="nodeFilter($event)"
+                  />
+                </div>
+                <ul class="custom-ul-style">
+                  <ng-container *ngFor="let item of economyCountryData">
+                    <li
+                      class="custom-li-style"
+                      *ngIf="!selectedEconomyCountryData?.includes(item)"
+                      (click)="
+                        listStyleClick(item, 'economy-country-div', $event)
+                      "
+                    >
+                      {{ item.countryName }}
+                    </li>
+                  </ng-container>
+                </ul>
+              </div>
+              <div class="selected-items">
+                <div
+                  class="row cus-margin"
+                  *ngFor="let data of selectedEconomyCountryData; let i = index"
+                >
+                  <div class="col-1">
+                    <input
+                      type="checkbox"
+                      (change)="economyTabData(); forexTabData()"
+                      [(ngModel)]="data.customLableCheck"
+                    />
+                  </div>
+                  <div class="col-8">
+                    {{ data.countryName }}
+                  </div>
+                  <div class="col-2 display-flex">
+                    <i
+                      class="fa fa-square"
+                      [ngStyle]="{ color: colorList[i] }"
+                    ></i>
+                    <i
+                      class="fa fa-close"
+                      (click)="removeListStyleData(data, 'economy-country-div')"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="economy-indicators-section">
+              <div
+                class="pointer"
+                (click)="childNodeToggle('economy-indicator-div', $event)"
+              >
+                <i class="fa fa-plus"></i> Add Indicators
+              </div>
+              <div
+                class="optionList mh-20 search-filter-data hide"
+                id="economy-indicator-div"
+              >
+                <div class="sticky">
+                  <div class="forex">
+                    <span>Forex</span>
+                    <span
+                      ><i class="fa fa-caret-right fa-right-custom"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="search"
+                    class="form-control search-top"
+                    placeholder="Search Metric"
+                    (input)="nodeFilter($event)"
+                  />
+                </div>
+                <ul class="custom-ul-style">
+                  <ng-container *ngFor="let item of economyIndicatorData">
+                    <li
+                      class="custom-li-style"
+                      *ngIf="!selectedEconomyIndicatorData?.includes(item)"
+                      (click)="
+                        listStyleClick(item, 'economy-indicator-div', $event)
+                      "
+                    >
+                      {{ item.category + " " + "[" + item.periodType + "]" }}
+                    </li>
+                  </ng-container>
+                </ul>
+              </div>
+              <div class="selected-items">
+                <div
+                  class="row cus-margin"
+                  *ngFor="let data of selectedEconomyIndicatorData"
+                >
+                  <div class="col-1">
+                    <input
+                      type="checkbox"
+                      (change)="economyTabData()"
+                      [(ngModel)]="data.customLableCheck"
+                    />
+                  </div>
+                  <div class="col-9">
+                    {{ data.category + "[" + data.periodType + "]" }}
+                  </div>
+                  <div class="col-1">
+                    <i
+                      class="fa fa-close"
+                      (click)="
+                        removeListStyleData(data, 'economy-indicator-div')
+                      "
+                    ></i>
+                  </div>
+                </div>
+                <div class="row cus-margin" *ngFor="let data of selectedForex">
+                  <div class="col-1">
+                    <input
+                      type="checkbox"
+                      (change)="forexTabData()"
+                      [(ngModel)]="data.customLableCheck"
+                    />
+                  </div>
+                  <div class="col-9">
+                    {{ data.text }}
+                  </div>
+                  <div class="col-1">
+                    <i
+                      class="fa fa-close"
+                      (click)="removeListStyleData(data, 'economy-forex-div')"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="accordion-item">
+        <h2 class="accordion-header" id="headingFour">
+          <button
+            class="accordion-button collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            id="commodityAcc"
+            data-bs-target="#collapseFour"
+            aria-expanded="false"
+            aria-controls="collapseFour"
+          >
+            Commodity
+          </button>
+        </h2>
+        <div
+          id="collapseFour"
+          class="accordion-collapse collapse"
+          aria-labelledby="headingFour"
+          data-bs-parent="#accordionExample"
+        >
+          <div class="accordion-body">
+            <div class="commodity-section">
+              <div
+                class="pointer"
+                (click)="childNodeToggle('commodity-div', $event)"
+              >
+                <i class="fa fa-plus"></i> Add Commodity
+              </div>
+              <div
+                class="optionList mh-36 search-filter-data hide"
+                id="commodity-div"
+              >
+                <div class="sticky">
+                  <input
+                    type="search"
+                    class="form-control"
+                    placeholder="Search Commodity"
+                    (input)="nodeFilter($event)"
+                  />
+                </div>
+                <ul class="custom-ul-style">
+                  <ng-container *ngFor="let item of selectCommodityData">
+                    <li
+                      class="custom-li-style"
+                      *ngIf="!selectedCommodity?.includes(item)"
+                      (click)="listStyleClick(item, 'commodity-div', $event)"
+                    >
+                      {{ item.name }}
+                    </li>
+                  </ng-container>
+                </ul>
+              </div>
+              <div class="selected-items">
+                <div
+                  class="row cus-margin"
+                  *ngFor="let data of selectedCommodity; let i = index"
+                >
+                  <div class="col-1">
+                    <input
+                      type="checkbox"
+                      (change)="commodityTabData('1Y')"
+                      [(ngModel)]="data.customLableCheck"
+                    />
+                  </div>
+                  <div class="col-8">
+                    {{ data.name }}
+                  </div>
+                  <div class="col-2 display-flex">
+                    <i
+                      class="fa fa-square"
+                      [ngStyle]="{ color: colorList[i] }"
+                    ></i>
+                    <i
+                      class="fa fa-close"
+                      (click)="removeListStyleData(data, 'commodity-div')"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-10 cus-col-10 pb-5">
+    <div
+      class="d-flex justify-content-lg-between align-center ml-5 intAnalCusSelect"
+    >
+      <div
+        class="position-relative d-flex align-items-center"
+        id="analysisStep3"
+      >
+        <span class="custom-span">Date Range</span>
+        <!-- <ngx-datepicker id="startDateRef" #startDateRef [(ngModel)]="startDate" [options]="optionsStartDate"
+          (ngModelChange)="refreshDataStart($event)"></ngx-datepicker>
+        <i class="fa fa-calendar cus-calender position-absolute" (click)="startDatetoggle()"></i> -->
+        <mat-form-field appearance="outline">
+          <input
+            [(ngModel)]="startDate"
+            (ngModelChange)="refreshDataStart($event)"
+            [max]="currentDate"
+            matInput
+            [matDatepicker]="picker"
+          />
+          <mat-datepicker-toggle matSuffix [for]="picker">
+          </mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div
+        class="position-relative d-flex align-items-center"
+        id="analysisStep4"
+      >
+        <span class="custom-span">To</span>
+        <!-- <ngx-datepicker id="endDateRef" #endDateRef [(ngModel)]="endDate" [options]="optionsEndDate"
+          (ngModelChange)="refreshDataEnd()">
+        </ngx-datepicker>
+        <i class="fa fa-calendar cus-calender position-absolute" (click)="endDatetoggle()"></i> -->
+        <mat-form-field appearance="outline">
+          <input
+            matInput
+            (ngModelChange)="refreshDataEnd()"
+            [matDatepicker]="date"
+            [min]="startDate"
+            [max]="currentDate"
+            [(ngModel)]="endDate"
+          />
+          <mat-datepicker-toggle matSuffix [for]="date"></mat-datepicker-toggle>
+          <mat-datepicker #date></mat-datepicker>
+        </mat-form-field>
+      </div>
+      <div id="analysisStep5">
+        <span class="custom-span2">Periodicity</span>
+        <ng-select2
+          [data]="selectPeriodData"
+          [value]="selectedPeriod"
+          class="cusSelect2 sSelect2Normal1"
+          placeholder="select"
+          (valueChanged)="valueChangeHandler('Period', $event)"
+        ></ng-select2>
+        <ng-select2
+          [data]="selectCurrencyData"
+          [value]="selectedCurrency"
+          class="cusSelect2 sSelect2Normal1 ml10"
+          placeholder="select"
+          (valueChanged)="valueChangeHandler('Currency', $event)"
+        ></ng-select2>
+      </div>
+      <div class="d-flex">
+        <i
+          [ngClass]="isChartOrTable ? 'fa fa-table' : 'fa fa-bar-chart'"
+          (click)="toggleTable()"
+          [title]="isChartOrTable ? 'Table View' : 'Chart View'"
+        ></i>
+        <i
+          class="fa fa-refresh"
+          title="Clear Selection"
+          (click)="refreshPage()"
+        ></i>
+        <img
+          _ngcontent-jbe-c76=""
+          src="/assets/img/excelDownload.png"
+          alt="excelDownload"
+          class="pointer img-fluid"
+          (click)="
+            auth.exploreUser
+              ? (auth.openUnavailableExploreModal = true)
+              : downloadExcel()
+          "
+        />
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-12 mt-4 min-height-scroll">
+        <div id="chartdiv" class="analysisChart"></div>
+        <div
+          [ngStyle]="
+            isChartOrTable ? { display: 'block' } : { display: 'none' }
+          "
+        >
+          <div id="chartDivAppend">
+            <div id="companyChartCustom"></div>
+            <div id="companyStockChartCustom"></div>
+            <div id="industryChartCustom"></div>
+            <div id="economyChartCustom"></div>
+            <div id="forexChartCustom"></div>
+            <div
+              *ngIf="allCommodityDataTables?.length"
+              class="align-items-center d-flex jus-end graphFilterSection position-relative"
+            >
+              <h5 class="font-15 cus-align-tit position-absolute leftfifty">
+                Commodity (% Daily Change)
+              </h5>
+              <div>
+                <ul class="mb-0 p-0">
+                  <li
+                    [ngClass]="{
+                      activeDateFilter: util.selectedDatetype === '1W'
+                    }"
+                    (click)="dateChange('1W')"
+                  >
+                    1W
+                  </li>
+                  <li
+                    [ngClass]="{
+                      activeDateFilter: util.selectedDatetype === '3M'
+                    }"
+                    (click)="dateChange('3M')"
+                  >
+                    3M
+                  </li>
+                  <li
+                    [ngClass]="{
+                      activeDateFilter: util.selectedDatetype === '6M'
+                    }"
+                    (click)="dateChange('6M')"
+                  >
+                    6M
+                  </li>
+                  <li
+                    [ngClass]="{
+                      activeDateFilter: util.selectedDatetype === '1Y'
+                    }"
+                    (click)="dateChange('1Y')"
+                  >
+                    1Y
+                  </li>
+                  <li
+                    [ngClass]="{
+                      activeDateFilter: util.selectedDatetype === '5Y'
+                    }"
+                    (click)="dateChange('5Y')"
+                  >
+                    5Y
+                  </li>
+                  <li
+                    [ngClass]="{
+                      activeDateFilter: util.selectedDatetype === '10Y'
+                    }"
+                    (click)="dateChange('10Y')"
+                  >
+                    10Y
+                  </li>
+                  <li
+                    [ngClass]="{
+                      activeDateFilter: util.selectedDatetype === 'MAX'
+                    }"
+                    (click)="dateChange('MAX')"
+                  >
+                    MAX
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div id="commodityChartCustom"></div>
+          </div>
+        </div>
+        <div
+          id="chartTableAppend"
+          class="mt-1"
+          [ngStyle]="
+            !isChartOrTable ? { display: 'block' } : { display: 'none' }
+          "
+        >
+          <div *ngIf="allCompanyDataTables?.length">
+            <app-interactive-table
+              [table_data]="allCompanyDataTables"
+            ></app-interactive-table>
+          </div>
+          <div *ngIf="allCompanyStockDataTables?.length">
+            <app-interactive-table
+              [table_data]="allCompanyStockDataTables"
+            ></app-interactive-table>
+          </div>
+          <div *ngIf="allIndustryDataTables?.length">
+            <app-interactive-table
+              [table_data]="allIndustryDataTables"
+            ></app-interactive-table>
+          </div>
+          <div *ngIf="allEconomyDataTables?.length">
+            <app-interactive-table
+              [table_data]="allEconomyDataTables"
+            ></app-interactive-table>
+          </div>
+          <div *ngIf="allForexDataTables?.length">
+            <app-interactive-table
+              [table_data]="allForexDataTables"
+            ></app-interactive-table>
+          </div>
+          <div *ngIf="allCommodityDataTables?.length">
+            <div class="for-table-title">Commodity (% Daily Change)</div>
+            <app-interactive-table
+              [table_data]="allCommodityDataTables"
+            ></app-interactive-table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="economy-forex-section">
+  <div class="optionList mh-20 search-filter-data hide" id="economy-forex-div">
+    <div class="sticky">
+      <input
+        type="search"
+        class="form-control"
+        placeholder="Search Currency"
+        (input)="nodeFilter($event)"
+      />
+    </div>
+    <ul class="custom-ul-style">
+      <ng-container *ngFor="let item of selectForex">
+        <li
+          class="custom-li-style"
+          *ngIf="!selectedForex?.includes(item)"
+          (click)="listStyleClick(item, 'economy-forex-div', $event)"
+        >
+          {{ item.text }}
+        </li>
+      </ng-container>
+    </ul>
+  </div>
+</div>
+
+<!-- alert msg Popup Modal -->
+<app-alertmodel
+  *ngIf="auth.closeInsidePopup"
+  [alertmsg]="alertmsg"
+></app-alertmodel>
+
+<!-- Chart Popup Modal -->
+<app-chart-model
+  *ngIf="auth.openPopupModal"
+  [chartModelData]="chartModelData"
+  [chartModelTitle]="chartModelTitle"
+  [selectedCommodity]="selectedCommodity"
+  [CommodityChartData]="CommodityChartData"
+  [commodityData]="commodityData"
+  [chartModelType]="chartModelType"
+  [selectedPeriod]="selectedPeriod"
+></app-chart-model>

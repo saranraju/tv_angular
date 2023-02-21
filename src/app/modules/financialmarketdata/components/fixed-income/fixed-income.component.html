@@ -1,0 +1,1065 @@
+<div *ngIf="!isInstruments;else instrumentAvailable">
+  <div class="fixed-income mx-2 mb-4" *ngIf="isExpandTable;else expandTableTemplate">
+    <div class="header">
+      <div class="fixed-income container-fluid">
+        <div class="d-flex mt-2 justify-content-between">
+          <div class="d-flex  align-items-center justify-content-start flex-fill">
+            <span class="fixed-income-title ">FIXED INCOME DASHBOARD</span>
+            <span class="fixed-income-template ml-4 fs20">Template</span>
+            <ng-select2 [data]="templateNames" [value]="selectedTemplate" class="cusSelect2 cusSelect2_10rem ml-2"
+              placeholder="Select Template" (valueChanged)="valueChangeHandler('template', $event)"></ng-select2>
+            <span class="ml-3 pointer" (click)="createEditTemplate()">Create Template</span>
+          </div>
+          <div class="d-flex align-items-center justify-content-end flex-fill">
+            <ng-container *ngTemplateOutlet="searchWithInstrument"></ng-container>
+          </div>
+        </div>
+        <div class="d-flex justify-content-between align-items-center  mt-2 mb-2">
+          <div class="btn-group newcompny-tabs ui">
+            <span class="custom-align-start" *ngIf="isDefault">
+              <button *ngFor="let tab of headerTabs" fragment="management_tab" type="button" class="btn"
+                (click)="headerTabFucntion(tab.id)" [ngClass]="{
+                active: tab.id == tabactive
+              }">
+                {{tab.instrument_type ?? tab.region_name}}
+              </button>
+            </span>
+            <span *ngIf="!isDefault">
+              {{ defaultName }}
+              <i class="fa fa-pencil ml-3" (click)="createEditTemplate(selectedTemplate,true)"></i>
+              <i class="fa fa-trash ml-3" (click)="deleteTemplate(selectedTemplate)"></i>
+            </span>
+          </div>
+          <div class="d-flex table-result">
+            Table Results: <span *ngFor="let page of parentTablPaginationArray" class="cursor-pointer" [ngClass]="{
+          pageActive: page.value == pageActiveFixedIncome
+        }" (click)="onPaginationClicked(page.value,'fixed-income')"> {{page.value}} <span class="color-yellow">|</span>
+            </span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row py-4 background-with-border">
+      <div class="col-6 mb-4" *ngFor="let data of tableData[0]?.body;let i= index">
+        <div class="row d-flex justify-content-between align-items-end mb-3">
+          <div class="col-4 px-0">
+            <span class="title-text">
+              {{ data.custom ?? data.region ?? data.instrument }}
+            </span>
+          </div>
+          <div class="col-7 px-0">
+            <div class="row">
+              <div class="col-3 font-12 px-0">
+                <span class="color-yellow">Total:</span><span>{{data?.additionalValues[0]?.total != 'null' ?
+                  (data?.additionalValues[0]?.total ?? '-') : '-'}}</span>
+              </div>
+              <div class="col-8 font-12 px-0 text-center">
+                <span>
+                  <span class="color-yellow">Advanced:</span> <span>
+                    {{data?.additionalValues[0]?.advance != 'null' ?
+                    (data?.additionalValues[0]?.advance ?? '-') : '-'}} |
+                  </span>
+                  <span class="color-yellow">Decline:</span> <span>
+                    {{data?.additionalValues[0]?.decline != 'null' ?
+                    (data?.additionalValues[0]?.decline ?? '-') : '-'}}
+                  </span>
+                </span>
+              </div>
+              <div class="col-1 px-0 text-end">
+                <i class="fa fa-external-link"
+                  (click)="expandTableMethod(data.values ?? data.value, data.custom ?? data.region ?? data.instrument)"></i>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-12 px-0">
+                <div class="progress">
+                  <div class="progress-bar bg-success" role="progressbar"
+                    [ngStyle]="{'width': true ? calculateSuccessRate(data?.additionalValues[0]) : '' }">
+                  </div>
+                  <div class="progress-bar bg-danger" role="progressbar"
+                    [ngStyle]="{'width': true ? calculateFailureRate(data?.additionalValues[0]) : '' }">
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <app-fixed-income-table [tableDataHeader]="tableDataHeader" [tableData]='data.values ?? data.value'
+          [totalResultCount]="pageActiveFixedIncome">
+        </app-fixed-income-table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- This template for when clicking the expand icon of the table -->
+<ng-template #expandTableTemplate>
+  <div class="header">
+    <div class="fixed-income container-fluid ">
+      <div class="d-flex mt-2 justify-content-between">
+        <div class="d-flex  align-items-center justify-content-start flex-fill">
+          <span> <i class="fa fa-arrow-circle-left" (click)="goBack()"></i> </span>
+          <span class="fixed-income-title "> {{ detailTitle }}</span>
+          <span class="fixed-income-template font-weight-bold ml-4 ">Viewing 1- {{pageActiveExpandTable}} of
+            {{expandDataTable?.length}}
+            ​</span>
+          <span class="d-flex justify-content-between align-items-center  mt-2 mb-2 ml-4">
+            <div class="d-flex table-result ">
+              Views Per Page: <span *ngFor="let page of childTablPaginationArray" class="cursor-pointer" [ngClass]="{
+            pageActive: page.value == pageActiveExpandTable
+          }" (click)="onPaginationClicked(page.value,'expand-table')"> {{page.value}} <span
+                  class="color-yellow">|</span> </span>
+            </div>
+          </span>
+        </div>
+        <div class="d-flex align-items-center justify-content-end flex-fill">
+          <span class="mr-3"> <i class="fa fa-pencil" (click)="openColumnEditModel('instrument')"></i> </span>
+          <ng-container *ngTemplateOutlet="searchWithInstrument"></ng-container>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="row py-4">
+    <div class="col-12 mb-4">
+      <fixed-income-table-drag-drop [tableDataHeader]="dragDropHeader" [expandDataTable]="expandDataTable"
+        [pagination]="true" [totalResultCount]="pageActiveExpandTable" (columnUpdated)="refreshTableData($event)">
+      </fixed-income-table-drag-drop>
+    </div>
+  </div>
+</ng-template>
+
+<!-- This template for re-use the common things -->
+<ng-template #searchWithInstrument>
+  <button class="btn font-weight-bold">ADVANCE SEARCH</button>
+  <ng-select2 [data]="instrumentLists" [value]="selectedinstrument" class="cusSelect2 cusSelect2_14rem ml-2"
+    placeholder="Select Instrument" (valueChanged)="valueChangeHandler('instrument', $event)"></ng-select2>
+</ng-template>
+
+<!-- after select instrument need to render this template -->
+<ng-template #instrumentAvailable>
+  <div class="fixed-income mx-2 mb-4">
+    <div class="header mb-3">
+      <div class="fixed-income container-fluid ">
+        <div class="d-flex mt-2 justify-content-between">
+          <div class="d-flex  align-items-center justify-content-start flex-fill">
+            <span class="fixed-income-title ">
+              {{comparableUnique.body[0]?.instrument_name != 'null' ?
+              (comparableUnique.body[0]?.instrument_name ?? '-') : '-'}}
+              {{comparableUnique.body[0]?.currency != 'null' ?
+              (comparableUnique.body[0]?.currency ?? '-') : '-'}} | {{comparableUnique.body[0]?.industry != 'null' ?
+              (comparableUnique.body[0]?.industry ?? '-') : '-'}} | {{comparableUnique.body[0]?.issuer_name != 'null' ?
+              (comparableUnique.body[0]?.issuer_name ?? '-') : '-'}} | {{comparableUnique.body[0]?.country != 'null' ?
+              (comparableUnique.body[0]?.country ?? '-') : '-'}} </span>
+          </div>
+          <div class="d-flex align-items-center justify-content-end flex-fill">
+            <ng-container *ngTemplateOutlet="searchWithInstrument"></ng-container>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row py-4">
+      <div class="col-6 mb-4">
+        <div class="row d-flex justify-content-between align-items-end mb-3">
+          <div class="col-12">
+            <div class="mb-3">
+              <div class="row d-flex justify-content-between mb-2">
+                <div class="col-4 px-0">
+                  <span class="fs12">
+                    <span class="color-yellow">Last Trade Price:</span>
+                    {{comparableUnique.body[0]?.last_price != 'null' ?
+                    (comparableUnique.body[0]?.last_price ?? '-') : '-'}}
+                  </span>
+                </div>
+                <div class="col-4">
+                  <span class="fs12">
+                    <span class="color-yellow">Bid Price:</span>
+                    {{comparableUnique.body[0]?.bid_price != 'null' ?
+                    (comparableUnique.body[0]?.bid_price ?? '-') : '-'}}
+                  </span>
+                </div>
+                <div class="col-4">
+                  <span class="fs12">
+                    <span class="color-yellow">Ask Price:</span>
+                    {{comparableUnique.body[0]?.ask_price != 'null' ?
+                    (comparableUnique.body[0]?.ask_price ?? '-') : '-'}}
+                  </span>
+                </div>
+              </div>
+              <div class="row d-flex justify-content-between mb-2">
+                <div class="col-4 px-0">
+                  <span class="fs12">
+                    <span class="color-yellow">Mid Price:</span>
+                    {{comparableUnique.body[0]?.mid_spread != 'null' ?
+                    (comparableUnique.body[0]?.mid_spread ?? '-') : '-'}}
+                  </span>
+                </div>
+                <div class="col-4">
+                  <span class="fs12">
+                    <span class="color-yellow">Time:</span>
+                    {{comparableUnique.body[0]?.time != 'null' ?
+                    (comparableUnique.body[0]?.time ?? '-') : '-'}}
+                  </span>
+                </div>
+                <div class="col-4">
+                  <span class="fs12">
+                    <span class="color-yellow">Previous Close:</span>
+                    {{comparableUnique.body[0]?.previous_close != 'null' ?
+                    (comparableUnique.body[0]?.previous_close ?? '-') : '-'}}
+                  </span>
+                </div>
+              </div>
+              <div class="row d-flex justify-content-between mb-2">
+                <div class="col-4 px-0">
+                  <span class="fs12">
+                    <span class="color-yellow">Day's Range:</span>
+                    {{comparableUnique.body[0]?.days_range != 'null' ?
+                    (comparableUnique.body[0]?.days_range ?? '-') : '-'}}
+                  </span>
+                </div>
+                <div class="col-4">
+                  <span class="fs12">
+                    <span class="color-yellow">Openning Price:</span>
+                    {{comparableUnique.body[0]?.last_price != 'null' ?
+                    (comparableUnique.body[0]?.last_price ?? '-') : '-'}}
+                  </span>
+                </div>
+                <div class="col-4">
+                  <span class="fs12">
+                    <span class="color-yellow">1 Day Change:</span>
+                    {{comparableUnique.body[0]?.one_day_change != 'null' ?
+                    (comparableUnique.body[0]?.one_day_change ?? '-') : '-'}}
+                  </span>
+                </div>
+              </div>
+            </div>
+            <div>
+              <div class="d-flex justify-content-between px-0 py-2">
+                <div class="input">
+                  <input type="text" class="price-input" placeholder="current Price">
+                </div>
+                <div class="add-icon">
+                  <i class="fa fa-plus color-yellow" (click)="auth.expandEstimateModal = true"></i>
+                </div>
+              </div>
+              <div class="chart">
+                <div id="tradingview_bac65"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-6">
+        <div class="yield-section mb-4">
+          <h5 class="color-yellow">YIELD</h5>
+          <div class="yield-data">
+            <div class="w-100 fs13">
+              <div class="row bg-odd">
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Bid Yield</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.bid_yield != 'null' ?
+                      (comparableUnique.body[0]?.bid_yield ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Mid Yield</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.yield_to_maturity != 'null' ?
+                      (comparableUnique.body[0]?.yield_to_maturity ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Ask Yield</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.ask_yield != 'null' ?
+                      (comparableUnique.body[0]?.ask_yield ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Bullet Yield (%)</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.bullet_yield != 'null' ?
+                      (comparableUnique.body[0]?.bullet_yield ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Benchmark Yield (%)</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.bench_mark_yield != 'null' ?
+                      (comparableUnique.body[0]?.bench_mark_yield ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="spread-section mb-4">
+          <h5 class="color-yellow">SPREAD​</h5>
+          <div class="spread-data">
+            <div class="w-100 fs13">
+              <div class="row bg-odd">
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Bid Spread​</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.bid_spread != 'null' ?
+                      (comparableUnique.body[0]?.bid_spread ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Mid Spread​</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.mid_spread != 'null' ?
+                      (comparableUnique.body[0]?.mid_spread ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Ask Spread​</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.ask_spread != 'null' ?
+                      (comparableUnique.body[0]?.ask_spread ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Trade OAS Spread (bps)​</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.trade_oas_spread != 'null' ?
+                      (comparableUnique.body[0]?.trade_oas_spread ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Bid OAS Spread (bps)​</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.bid_oas_spread != 'null' ?
+                      (comparableUnique.body[0]?.bid_oas_spread ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Bid G Spread (bps)​</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.bid_g_spread != 'null' ?
+                      (comparableUnique.body[0]?.bid_g_spread ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="row bg-odd">
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Bid I Spread (bps)​</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.bid_i_spread != 'null' ?
+                      (comparableUnique.body[0]?.bid_i_spread ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Bid Z Spread (bps)​</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.bid_z_spread != 'null' ?
+                      (comparableUnique.body[0]?.bid_z_spread ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Bid Asset Swap Spread (bps)​​</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.bid_asset_swap_spread != 'null' ?
+                      (comparableUnique.body[0]?.bid_asset_swap_spread ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="duration-convexity-section mb-4">
+          <h5 class="color-yellow">DURATION & CONVEXITY</h5>
+          <div class="yield-data">
+            <div class="w-100 fs13">
+              <div class="row bg-odd">
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Duration (Years)</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.modified_duration != 'null' ?
+                      (comparableUnique.body[0]?.modified_duration ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Effective Duration (Years)</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.effective_duration != 'null' ?
+                      (comparableUnique.body[0]?.effective_duration ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+                <div class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Macaulay Duration (Years)</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.macaulay_duration != 'null' ?
+                      (comparableUnique.body[0]?.macaulay_duration ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div class="row">
+                <td class="col-4">
+                  <div class="d-flex justify-content-between">
+                    <span class="color-yellow">Convexity</span>
+                    <span class="value">
+                      {{comparableUnique.body[0]?.convexity != 'null' ?
+                      (comparableUnique.body[0]?.convexity ?? '-') : '-'}}
+                    </span>
+                  </div>
+                </td>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="header mb-3">
+        <div class="fixed-income container-fluid px-0">
+          <div class="d-flex justify-content-between">
+            <div class="d-flex  align-items-center justify-content-start flex-fill position-relative">
+              <span class="fixed-income-title ">COMPARABLE INSTRUMENTS</span>
+              <button class="btn edit-btn ml-5" (click)="isEdit = true">Edit <i class="ml-2 fa fa-edit"></i></button>
+              <i class="ml-3 fa fa-refresh" (click)="editComparableReset()"></i>
+              <span class="ml-4" *ngIf="isEdit">
+                <ng-select2 [data]="editInstrumentLists" [value]="selectedEditInstrument"
+                  class="cusSelect2 cusSelect2_10rem ml-2" placeholder="Select Instrument"
+                  (valueChanged)=" valueChangeHandler('editComparableList', $event)"></ng-select2>
+                <span> <i class="fa fa-close ml-3" (click)="isEdit=false"></i> </span>
+              </span>
+              <!-- <div class="d-flex position-absolute top-100 table-result ">
+                Number of Comparable: <span *ngFor="let page of parentTablPaginationArray" class="cursor-pointer"
+                  [ngClass]="{
+                  pageActive: page.value == pageActiveComparable
+                }" (click)="onPaginationClicked(page.value,'Comparable')"> {{page.value}} <span
+                    class="color-yellow">|</span> </span>
+              </div> -->
+            </div>
+            <div class="d-flex align-items-center justify-content-end flex-fill">
+              <span> <i class="fa fa-pencil" (click)="openColumnEditModel('comparable')"></i> </span>
+            </div>
+          </div>
+          <div class="mt-5">
+            <app-fixed-income-table [isEdit]="isEdit" [isDetailName]="true"
+              [tableDataHeader]="comparableUnique.headers[0]" [tableData]="comparableUnique.body"
+              (removeEditComparableData)="removeEditComparableData($event)">
+            </app-fixed-income-table>
+          </div>
+        </div>
+      </div>
+      <div class="col-12 mt-3">
+        <app-fixed-income-table [tableData]="tableData" [totalResultCount]="pageActiveComparable">
+        </app-fixed-income-table>
+      </div>
+      <div class="col-6 mt-4">
+        <h5 class="color-yellow mb-0">YIELD</h5>
+        <app-fixed-income-table [tableDataHeader]="detailsDataHeader" [tableData]="comparableUnique.yield">
+        </app-fixed-income-table>
+      </div>
+      <div class="col-6 mt-4">
+        <h5 class="color-yellow mb-0">INTEREST</h5>
+        <app-fixed-income-table [tableDataHeader]="detailsDataHeader" [tableData]="comparableUnique.interest">
+        </app-fixed-income-table>
+      </div>
+      <div class="col-6 mt-4">
+        <h5 class="color-yellow mb-0">DURATION & CONVEXITY</h5>
+        <app-fixed-income-table [tableDataHeader]="detailsDataHeader"
+          [tableData]="comparableUnique.durationAndConvexity"></app-fixed-income-table>
+      </div>
+      <div class="col-6 mt-4">
+        <h5 class="color-yellow mb-0">SPREAD</h5>
+        <app-fixed-income-table [tableDataHeader]="detailsDataHeader" [tableData]="comparableUnique.spread">
+        </app-fixed-income-table>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-6 mt-4">
+        <h5 class="color-yellow mb-1">INSTRUMENT DETAILS</h5>
+        <div class="instrument-details">
+          <table class="w-100 fs13">
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Instrument Name</span>
+                  <span class="value"> {{ allInstrumentCharacteristics?.instrument_name ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Bond Ticker</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.bond_ticker ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Asset Type</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.asset_type ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Instrument Status</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.instrument_status ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Exchange Code</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.exchange_code ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Trading Currency</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.trading_currency ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Quatation Basics</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.quotation_basis ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Evolution Quatation Basics</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.evaluation_quotation_basis ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Issue Default</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.issue_default ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Outstanding Amount (Million)</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.outstanding_amount ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="col-6 mt-4">
+        <h5 class="color-yellow mb-1">ISSUER DETAILS​</h5>
+        <div class="instrument-details">
+          <table class="w-100 fs13">
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Issuer Name</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.issuer_name ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Organization Status</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.organization_status ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Organization Type</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.organization_name ?? '-'}}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Organization Country</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.organization_country ?? '-'}}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">SIC Code</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.SIC_code ?? '-'}}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">SIC Description</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.SIC_description ?? '-'}}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">NAICS Code</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.NAICS_code ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">NAICS Description</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.NAICS_description ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="col-12 mt-4">
+        <h5 class="color-yellow mb-1">ISSUE DETAILS</h5>
+        <div class="instrument-details">
+          <table class="w-100 fs13">
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Issuer Amount</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.issue_amount ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Issue Date</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.issue_date ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Maturity Date</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.maturity_date ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Maturity Type</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.maturity_type ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Debt Type</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.debt_type ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Issue Currency</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.issue_currency ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Debt Rank</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.debt_rank ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Overallotment​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.over_allotment ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Primary Exchange Code​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.primary_exchange_code ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Country of Quotation​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.country_of_quotation ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Issue Price % Par</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.issue_price_percent_parameter ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Maturity Redemption % Par</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.maturity_redemption_percent_parameter ?? '-'
+                    }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Issue Price Type</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.issue_price_type ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Issue Coupon Rate​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.issue_coupon_rate ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Coupon Summary​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.coupon_summary ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Coupon Type​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.coupon_type ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Trading Restriction ​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.trading_restriction ?? '-' }}​</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Registration Type</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.resignation_type ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Federal Tax​ ​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.federal_tax ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Interest Payment Terms​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.interest_payment_terms ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Settlement Date​ ​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.settlement_date ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Deferred Interest ​​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.delerred_interest ?? '-' }}​</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Minimum Denomination Amount​ ​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.minimum_denomination_amount ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Available Denomination​ ​​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.available_denomination ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Bond Form Type​ ​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.bond_form_type ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Secured By​ ​​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.security_by ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="col-12 mt-4">
+        <h5 class="color-yellow mb-1">AGENT, TRUSTEE & ADVISOR DETAILS​​</h5>
+        <div class="instrument-details">
+          <table class="w-100 fs13">
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Clearing Agent​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.clearing_agent ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Paying Agent​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.paying_agent ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Trustee​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.trustee ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Registration</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.registrator ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Lead Manager​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.lead_manager ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Book Running​</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.book_running ?? '-'}}​</span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="col-6 mt-4">
+        <h5 class="color-yellow mb-1">GUARANTOR DETAILS​​</h5>
+        <div class="instrument-details">
+          <table class="w-100 fs13">
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Guarantor Name</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.guarantor_name ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Guarantor Type</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.guarantor_type ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Guarantor Country</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.guarantor_country ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Guarantee Type</span>
+                  <span class="value">Needed</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Guarantor Expriration Date</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.guarenty_experition_date ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Guaranted %</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.guarentee_percentage ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="col-6 mt-4">
+        <h5 class="color-yellow mb-1">ISSUE MODIFICATION DETAILS​</h5>
+        <div class="instrument-details">
+          <table class="w-100 fs13">
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Issue Modification Date</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.issue_modification_date ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Issue Modification Reason</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.issue_modification_region ?? '-'}}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Original Amount Outstanding(Million)</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.original_amount_standing ?? '-'}}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Modification Amount Outstanding(Million)</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.modified_amount_standing ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Modification Source</span>
+                  <span class="value">{{ allInstrumentCharacteristics?.modification_source ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div class="col-12 mt-4">
+        <div class="d-flex justify-content-between">
+          <h5 class="color-yellow mb-1">INSTRUMENT CHARACTERISTICS</h5>
+          <i class="fa fa-external-link" (click)="auth.expandopenPopupModal = true"></i>
+        </div>
+        <div class="instrument-details">
+          <table class="w-100 fs13">
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Interest Maturity Indicator</span>
+                  <span class="value"> {{ modelInstrumentData?.interest_at_maturity_indicator ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Call Indicator</span>
+                  <span class="value"> {{ modelInstrumentData?.call_indicator ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Accrued Indicator</span>
+                  <span class="value"> {{ modelInstrumentData?.accreting_indicator ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Contingent Interest Indicator</span>
+                  <span class="value"> {{ modelInstrumentData?.contingent_interest_indicator ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Accrued Interest Indicator</span>
+                  <span class="value">{{ modelInstrumentData?.accrued_interest_indicator ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Credit Sensitive Indicator</span>
+                  <span class="value">{{ modelInstrumentData?.interest_at_maturity_indicator ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Capitalized Indicator</span>
+                  <span class="value">{{ modelInstrumentData?.capitalized_indicator ?? '-' }}</span>
+                </div>
+              </td>
+              <td class="pr-2">
+                <div class="d-flex justify-content-between">
+                  <span class="color-yellow">Defeasance Indicator</span>
+                  <span class="value">{{ modelInstrumentData?.defeasance_indicator ?? '-' }}</span>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- Template Model -->
+<app-template-model *ngIf="auth.closeInsidePopup" [templateId]="editTemplateId"
+  (savedTemplate)="TemplateRefresh($event)">
+</app-template-model>
+<!-- add column and modify Model -->
+<app-add-modify-column-model [type]="type" [existingHeader]="existingHeader" [isDetail]="isDetail"
+  (metricsUpdated)="refreshMetricsData($event)" *ngIf="auth.openPopupModal">
+</app-add-modify-column-model>
+<!-- instrument charectristic Model -->
+<app-instrument-char-model [modelInstrumentData]="modelInstrumentData" *ngIf="auth.expandopenPopupModal">
+</app-instrument-char-model>
+
+<app-add-comparable-model *ngIf="auth.expandEstimateModal"></app-add-comparable-model>

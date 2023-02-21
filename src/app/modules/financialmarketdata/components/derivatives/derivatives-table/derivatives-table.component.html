@@ -1,0 +1,94 @@
+<div class="derivativeTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th colspan="3" class="main-heading">CALLS</th>
+        <th rowspan="2">Strike Price</th>
+        <th colspan="3" class="main-heading">PUTS</th>
+      </tr>
+      <tr>
+        <th *ngIf="showSettlementPrice === false">
+          Last Traded Price ({{ derivativesCurrency }})
+        </th>
+        <th *ngIf="showSettlementPrice === true">
+          Settlement Price ({{ derivativesCurrency }})
+        </th>
+        <th>Volume</th>
+        <th>Open Interest</th>
+        <th *ngIf="showSettlementPrice === false">
+          Last Traded Price ({{ derivativesCurrency }})
+        </th>
+        <th *ngIf="showSettlementPrice === true">
+          Settlement Price ({{ derivativesCurrency }})
+        </th>
+        <th>Volume</th>
+        <th>Open Interest</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let data of tableData.value">
+        <td *ngIf="showSettlementPrice === false">
+          {{
+            data.call_last_trade
+              ? util.standardFormat(data.call_last_trade, 2, "")
+              : "-"
+          }}
+        </td>
+        <td *ngIf="showSettlementPrice === true">
+          {{
+            data.call_latest_settlement
+              ? util.standardFormat(data.call_latest_settlement, 2, "")
+              : "-"
+          }}
+        </td>
+        <td>
+          {{
+            data.call_total_volume
+              ? util.standardFormat(data.call_total_volume, 2, "")
+              : "-"
+          }}
+        </td>
+        <td>
+          {{
+            data.call_open_interest
+              ? util.standardFormat(data.call_open_interest, 2, "")
+              : "-"
+          }}
+        </td>
+        <td>
+          {{ data.strike ? util.standardFormat(data.strike, 2, "") : "-" }}
+        </td>
+        <td *ngIf="showSettlementPrice === false">
+          {{
+            data.put_last_trade
+              ? util.standardFormat(data.put_last_trade, 2, "")
+              : "-"
+          }}
+        </td>
+        <td *ngIf="showSettlementPrice === true">
+          {{
+            data.put_latest_settlement
+              ? util.standardFormat(data.put_latest_settlement, 2, "")
+              : "-"
+          }}
+        </td>
+        <td>
+          {{
+            data.put_total_volume
+              ? util.standardFormat(data.put_total_volume, 2, "")
+              : "-"
+          }}
+        </td>
+        <td>
+          {{
+            data.put_open_interest
+              ? util.standardFormat(data.put_open_interest, 2, "")
+              : "-"
+          }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br />

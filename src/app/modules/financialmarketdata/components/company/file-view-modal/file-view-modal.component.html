@@ -1,0 +1,35 @@
+<div class="modal" id="myModal">
+  <div class="modal-dialog" style="max-width: 98%; height: 600px">
+    <div class="modal-content">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        autocomplete="new-search"
+        (click)="tableDialogClose()"
+      >
+        ×
+      </button>
+      <div class="modal-header">
+        <div class="float-left data_heading">
+          <span>{{ data_heading }}</span>
+        </div>
+      </div>
+      <div class="modal-body">
+        <div class="pdf-container">
+          <div class="Iframe-Master-CC-and-Rs">
+            <div class="embed-responsive" style="padding-bottom: 90%">
+              <embed
+                id="embed-iframe"
+                src=""
+                type="application/pdf"
+                width="100%"
+                height="100%"
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

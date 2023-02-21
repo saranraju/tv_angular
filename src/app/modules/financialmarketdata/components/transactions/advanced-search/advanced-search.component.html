@@ -1,0 +1,157 @@
+<div class="modal p-3">
+  <div class="close cursor-pointer" (click)="transactionsAdvancedSearchClose()">
+    <i class="fa fa-times"></i>
+  </div>
+  <!-- Modal Content -->
+  <div class="modal-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 my-3 modal-title-container">
+          <h2 class="modal-title">Advanced Search</h2>
+          <i class="refresh-icon">
+            <img src="assets/img/refresh.png" alt="refresh" />
+          </i>
+          <i class="excel-icon">
+            <img
+              class="cursor-pointer img-fluid ms-1 pt-1"
+              src="/assets/img/excelDownload.png"
+              alt="excelDownload"
+            />
+          </i>
+        </div>
+      </div>
+      <!-- Dropdowns -->
+      <div class="row mt-4">
+        <div class="col-2">
+          <ng-select2
+            [data]="selectCountryData"
+            [value]="selectedCountry"
+            (valueChanged)="valueChangedHandler('Country', $event)"
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Select Country'"
+          ></ng-select2>
+        </div>
+        <div class="col-2">
+          <ng-select2
+            [data]="selectIndustryData"
+            [value]="selectedIndustry"
+            (valueChanged)="valueChangedHandler('Industry', $event)"
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Select Industry'"
+          ></ng-select2>
+        </div>
+        <div class="col-2">
+          <ng-select2
+            [data]="selectFinTypeData"
+            [value]="selectedFinType"
+            (valueChanged)="valueChangedHandler('Financing Type', $event)"
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Select Financing Type'"
+          ></ng-select2>
+        </div>
+        <div class="col-2">
+          <ng-select2
+            [data]="selectAdvisorData"
+            [value]="selectedAdvisor"
+            (valueChanged)="valueChangedHandler('Advisor', $event)"
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Select Advisor'"
+          ></ng-select2>
+        </div>
+        <div class="col-2">
+          <ng-select2
+            [data]="selectCompanyData"
+            [value]="selectedCompany"
+            (valueChanged)="valueChangedHandler('Company', $event)"
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Search Company'"
+          ></ng-select2>
+        </div>
+        <div class="col-2 period-container">
+          <div class="period-dropdown-select" (click)="handlePeriodClick()">
+            {{ periodValue }}
+          </div>
+          <div class="period-dropdown-container" *ngIf="isPeriodSelected">
+            <div class="date-picker-container">
+              <div class="from-date-container">
+                <label for="from">From :</label>
+                <input
+                  class="date-input-from"
+                  type="date"
+                  id="from"
+                  name="from"
+                  value="2019-03-07"
+                  (change)="handleFromDatePickerChange($event)"
+                />
+              </div>
+              <div class="to-date-container">
+                <label for="to">To :</label>
+                <input
+                  class="date-input-to"
+                  type="date"
+                  id="to"
+                  name="to"
+                  value="2022-03-06"
+                  (change)="handleToDatePickerChange($event)"
+                />
+              </div>
+              <div class="go-btn-container">
+                <button class="go-btn" type="button" (click)="handleGoBtn()">
+                  Go
+                </button>
+              </div>
+            </div>
+            <div class="period-list-container">
+              <ul class="period-list">
+                <li (click)="handlePeriodsValues($event)">
+                  <a>Last 3 Months</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>Last 12 Months</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>Last 3 Years</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>Last 5 Years</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>Last 10 Years</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>Last 20 Years</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)"><a>2021</a></li>
+                <li (click)="handlePeriodsValues($event)"><a>2020</a></li>
+                <li (click)="handlePeriodsValues($event)"><a>2019</a></li>
+                <li (click)="handlePeriodsValues($event)"><a>2018</a></li>
+                <li (click)="handlePeriodsValues($event)"><a>2017</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row my-4 d-flex justify-content-between">
+        <div class="col-3">
+          <label for="amt" class="fund-amt">Funding Amount</label>
+          <input type="text" name="amt" id="amt" class="ms-3 amt-input" />
+        </div>
+        <div class="col-2">
+          <ng-select2
+            [data]="selectCurrencyData"
+            [value]="selectedCurrency"
+            (valueChanged)="valueChangedHandler('Currency', $event)"
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Select Currency'"
+          ></ng-select2>
+        </div>
+      </div>
+      <!-- Table -->
+      <div class="row mt-4">
+        <div class="col-12">
+          <app-table [table_data]="funds_details_table_data"></app-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

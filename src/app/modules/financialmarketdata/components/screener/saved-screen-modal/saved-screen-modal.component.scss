@@ -1,0 +1,51 @@
+.modal {
+  display: block;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.8);
+  transition: opacity 500ms;
+}
+
+/* Modal Content */
+.modal-content {
+  background: #00071e !important;
+  padding: 0px 10px !important;
+  width: 30% !important;
+  height: 285px !important;
+  overflow-y: auto;
+  margin-top: 10rem;
+}
+
+.modal-title {
+  font-size: 17px;
+  color: #ffc000;
+  display: inline;
+  padding-left: 8rem;
+}
+
+.fa-times {
+  color: #ffc000;
+}
+
+.delete-icon {
+  color: #000;
+  font-size: 17px;
+  display: none;
+}
+
+.saved-screen-list {
+  list-style: none;
+  background-color: #fbe5c6;
+  color: #000;
+  font-size: 14px;
+  padding: 0.6rem;
+  height: 210px;
+  overflow-y: auto;
+}
+
+.saved-screen-list-item:hover {
+  background-color: #ccc;
+}
+
+.saved-screen-list-item:hover .delete-icon {
+  display: block;
+}

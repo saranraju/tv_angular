@@ -1,0 +1,245 @@
+<div class="container-fluid mb-5">
+  <div class="row">
+    <div class="col-12 p-0">
+      <h5 class="text-primary my-3">{{ selectedCountryObj?.countryName }}</h5>
+      <div class="d-flex justify-content-between align-items-center">
+        <div id="economyStep2">
+          <ng-select2
+            *ngIf="indicatorListDataAvail"
+            [data]="selectEconomyData"
+            [value]="selectedEconomy"
+            class="cusSelect2 cusSelect2_16rem"
+            [placeholder]="'Select Economy'"
+            (valueChanged)="onEconomyChanged($event)"
+          ></ng-select2>
+          <span *ngIf="indicatorListDataAvail" class="unitLabel ms-2">%</span>
+        </div>
+        <img
+          *ngIf="indicatorListDataAvail"
+          src="/assets/img/excelDownload.png"
+          (click)="
+            auth.exploreUser
+              ? (auth.openUnavailableExploreModal = true)
+              : onExcelDownload()
+          "
+          class="cursor-pointer img-fluid"
+        />
+        <ng-select2
+          id="economyStep1"
+          class="cusSelect2 cusSelect2_20rem"
+          [data]="countryData"
+          [value]="selectedCountry"
+          [placeholder]="'Select Country'"
+          (valueChanged)="onCountryChanged($event)"
+        ></ng-select2>
+      </div>
+    </div>
+    <div class="col-6 p-0 mt-4">
+      <div id="chartdiv" class="commodityChart mt-5"></div>
+    </div>
+
+    <div class="col-6 mt-4">
+      <div class="row">
+        <div class="text-end px-0 mb-3">
+          <input
+            id="economyStep3"
+            type="text"
+            class="exchange-input-filter"
+            (keyup)="applyFilterExchangeRate($event)"
+            matInput
+            placeholder="Search For Currency"
+          />
+        </div>
+        <div class="col-6 px-1">
+          <h4 class="text-primary">
+            <span class="fs16 fw600">Country Risk Profile</span>
+          </h4>
+          <app-economy-country-exchange-table
+            [table_data]="country_risk_profile_data"
+            type="countryRiskProfile"
+            mh="11rem"
+          >
+          </app-economy-country-exchange-table>
+        </div>
+        <div class="col-6 px-1">
+          <h4 class="text-primary">
+            <span class="fs16 fw600">Exchange Rate</span
+            ><span class="fs14 fw400">
+              (as on {{ country_exchange_object?.period }})</span
+            >
+          </h4>
+          <app-economy-country-exchange-table
+            *ngIf="
+              country_exchange_data.length
+                ? country_exchange_data.length
+                : country_exchange_data
+            "
+            [table_data]="country_exchange_data"
+            [selectedCountry]="selectedCountryObj"
+            [country_exchange_object]="country_exchange_object"
+            [country_code]="selectedCountryObj"
+            [exchangeTable]="true"
+            (sortType)="handleSortType($event)"
+            mh="10rem"
+          >
+          </app-economy-country-exchange-table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 mt-3 position-relative mb-2">
+      <div class="tableCol6Border">
+        <p class="text-primary fw600 mb-1">National Accounts</p>
+        <app-expand-table
+          *ngIf="national_accounts.length"
+          [tableData]="national_accounts"
+          [selectedCountry]="selectedCountryObj"
+          [table_header]="exponse_table_data"
+          [childData]="childData"
+          padding="true"
+          mh="320px"
+        >
+        </app-expand-table>
+      </div>
+    </div>
+    <div class="col-6 newsSection mt-3 mb-2">
+      <p class="text-primary fw600 mb-1">
+        News
+        <a>
+          <img
+            *ngIf="news_list[0]?.emptyTitle !== '-'"
+            src="/assets/img/resize-icon.png"
+            (click)="auth.openPopupModal = true"
+            class="px-1 cursor-pointer img-fluid"
+          />
+        </a>
+      </p>
+      <!-- new detail modal -->
+      <div *ngIf="auth.openPopupModal">
+        <app-news-modal [news_detail]="news_list"></app-news-modal>
+      </div>
+      <!-- news detail model ended -->
+      <div class="newsTable">
+        <table class="w-100">
+          <tbody>
+            <tr *ngFor="let news of news_list; i">
+              <td
+                *ngIf="news.title"
+                (click)="dialogPopup(news)"
+                class="w-75 cursor-pointer"
+              >
+                {{ news.title }}
+              </td>
+              <td *ngIf="news.emptyTitle" class="w-75">
+                {{ news.emptyTitle }}
+              </td>
+              <td *ngIf="news.period" class="text-white w-25 text-end">
+                {{ news.period | date : "yyyy-MM-dd" }}
+              </td>
+              <td *ngIf="news.emptyPriod" class="text-white w-25 text-end">
+                {{ news.emptyPriod }}
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- news single click  Poppup  Model -->
+    <div *ngIf="auth?.closeInsidePopup && single_news_detail">
+      <app-news-dialog-popup
+        [popupDetail]="single_news_detail"
+      ></app-news-dialog-popup>
+    </div>
+    <div class="col-6 mb-2 mt-4 position-relative">
+      <div class="tableCol6Border tableCol6Border1">
+        <p class="text-primary fw600 mb-1">Price Index</p>
+        <app-expand-table
+          *ngIf="price_index.length"
+          [tableData]="price_index"
+          [table_header]="exponse_table_data"
+          [selectedCountry]="selectedCountryObj"
+          [childData]="childData"
+          padding="true"
+          mh="9rem"
+        ></app-expand-table>
+      </div>
+    </div>
+    <div class="col-6 mb-2 mt-4 position-relative">
+      <div class="tableCol6Border">
+        <p class="text-primary fw600 mb-1">Money Market</p>
+        <app-expand-table
+          *ngIf="money_market.length"
+          [tableData]="money_market"
+          [table_header]="exponse_table_data"
+          [selectedCountry]="selectedCountryObj"
+          [childData]="childData"
+          padding="true"
+          mh="9rem"
+        ></app-expand-table>
+      </div>
+    </div>
+    <div class="col-6 mb-2 mt-2 position-relative">
+      <div class="tableCol6Border">
+        <p class="text-primary fw600 mb-1">Industrial Productivity</p>
+        <app-expand-table
+          *ngIf="industrial_productivity.length"
+          [tableData]="industrial_productivity"
+          [selectedCountry]="selectedCountryObj"
+          [table_header]="exponse_table_data"
+          [childData]="childData"
+          padding="true"
+          mh="15rem"
+        >
+        </app-expand-table>
+      </div>
+    </div>
+    <div class="col-6 mb-2 mt-2 position-relative">
+      <div class="tableCol6Border tableCol6Border1">
+        <p class="text-primary fw600 mb-1">Consumer</p>
+        <app-expand-table
+          *ngIf="consumer.length"
+          [tableData]="consumer"
+          [table_header]="exponse_table_data"
+          [selectedCountry]="selectedCountryObj"
+          [childData]="childData"
+          padding="true"
+          mh="15rem"
+        >
+        </app-expand-table>
+      </div>
+    </div>
+    <div class="col-6 mt-2 position-relative">
+      <div class="tableCol6Border">
+        <p class="text-primary fw600 mb-1"><b>Labor and Wages</b></p>
+        <app-expand-table
+          *ngIf="labour_and_wages.length"
+          [tableData]="labour_and_wages"
+          [selectedCountry]="selectedCountryObj"
+          [table_header]="exponse_table_data"
+          [childData]="childData"
+          padding="true"
+          mh="14rem"
+        >
+        </app-expand-table>
+      </div>
+    </div>
+    <div class="col-6 mt-2 position-relative">
+      <div class="tableCol6Border tableCol6Border1">
+        <p class="text-primary fw600 mb-1">Other Indicators</p>
+        <app-expand-table
+          *ngIf="other_indicator.length"
+          [tableData]="other_indicator"
+          [selectedCountry]="selectedCountryObj"
+          [table_header]="exponse_table_data"
+          [childData]="childData"
+          padding="true"
+          mh="14rem"
+        >
+        </app-expand-table>
+      </div>
+    </div>
+  </div>
+</div>
+
+<br />

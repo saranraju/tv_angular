@@ -1,0 +1,93 @@
+<div class="container-fluid px-0 my-2 padding-bottom">
+  <div class="row">
+    <div class="col-12 px-0 news-card-container">
+      <div class="row news-list-title-container align-items-center">
+        <div class="col-10">
+          <span class="news-list-title">{{ listTitle }}</span>
+        </div>
+        <div
+          *ngIf="hideContent != true"
+          class="col-2 d-flex justify-content-center"
+        >
+          <i
+            class="fa fa-external-link"
+            (click)="handleExpandListClick($event)"
+          ></i>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <ul
+            [ngClass]="
+              type == 'latest-related'
+                ? 'news-list-container-large'
+                : 'news-list-container'
+            "
+          >
+            <div class="loader" *ngIf="loading; else loading_content">
+              <svg class="circular" viewBox="25 25 50 50" style="height: 10px">
+                <circle
+                  class="path"
+                  cx="50"
+                  cy="50"
+                  r="20"
+                  fill="none"
+                  stroke-width="2"
+                  stroke-miterlimit="10"
+                />
+              </svg>
+              <img
+                style="
+                  position: absolute;
+                  margin: auto;
+                  top: -8px;
+                  bottom: 0;
+                  left: 0;
+                  right: 0;
+                  width: 4rem;
+                "
+                class="loader_img rounded mx-auto d-block"
+                src="../assets/img/televisory-loader.gif"
+              />
+            </div>
+            <ng-template #loading_content>
+              <span class="no-data-container" *ngIf="newsListData.length < 1">
+                <p>No data Found</p>
+              </span>
+              <li
+                *ngFor="
+                  let newsData of newsListData
+                    | paginate
+                      : {
+                          id: listTitle,
+                          itemsPerPage: itemsPerPage ?? 10,
+                          currentPage: currentPageSelected,
+                          totalItems: tableLength
+                        }
+                "
+                class="news-list-item"
+                (click)="handleNewsItemClick(newsData)"
+              >
+                <p class="news-text" [innerHTML]="newsData.news"></p>
+                <p class="news-source-text">
+                  {{ newsData?.source }} ({{ newsData?.time?.split(".")[0] }}
+                  UTC)
+                </p>
+              </li>
+            </ng-template>
+          </ul>
+          <div *ngIf="newsListData.length > 1" class="text-center">
+            <pagination-controls
+              [id]="listTitle"
+              class="funding-details-pagination"
+              [previousLabel]="labels.previousLabel"
+              [nextLabel]="labels.nextLabel"
+              [maxSize]="paginationLabelSize"
+              (pageChange)="onPageChange($event)"
+            ></pagination-controls>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

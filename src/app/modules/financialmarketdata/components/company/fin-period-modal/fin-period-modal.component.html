@@ -1,0 +1,125 @@
+<div class="backdrop">
+  <div
+    id="alertbox"
+    class="modal sevendayfreetrialpopup-rtda sevendayfreetrialpopup-cm in"
+    tabindex="-1"
+    role="dialog"
+    style="
+      display: block;
+      padding-left: 4px;
+      background-color: rgba(0, 0, 0, 0.5);
+    "
+  >
+    <div class="modal-dialog modal-lg" style="top: 20%">
+      <form
+        [formGroup]="periodForm"
+        (ngSubmit)="onDownloadClicked(periodForm.valid, periodForm.value)"
+      >
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              <span class="text-primary">Select period</span>
+            </h5>
+            <button
+              type="button"
+              (click)="auth.openFinPeriodModal = false"
+              class="close"
+              data-dismiss="modal"
+              aria-label="Close"
+            >
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <!--end of modal header-->
+          <!-- <div *ngIf="duplicate_Values" class="modal-body text-center">
+                {{ data_type + " selected already" }}
+              </div> -->
+          <!-- <div class="modal-body text-center"></div> -->
+          <div class="modal-body text-center">
+            <div class="row">
+              <div class="col-sm-6">
+                <div class="lable-container">
+                  <label class="labeltext">From Period</label>
+                </div>
+                <div class="position-relative">
+                  <!-- <ngx-datepicker id="startDateRef" formControlName="startDate"
+                    [(ngModel)]="period == 'yearly' ? yearlyfromPeriod : querterlyfromPeriod" [options]="options">
+                  </ngx-datepicker>
+                  <i class="fa fa-calendar cus-calender position-absolute" (click)="startDatetoggle($event)"></i> -->
+                  <mat-form-field appearance="outline">
+                    <input
+                      formControlName="startDate"
+                      matInput
+                      [matDatepicker]="date"
+                      [min]="minDate"
+                      [max]="toPeriod"
+                      [(ngModel)]="fromFinDate"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="date"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker
+                      [startAt]="fromFinDate"
+                      #date
+                    ></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-sm-6">
+                <div class="lable-container">
+                  <label class="labeltext">To Period</label>
+                </div>
+                <div class="position-relative">
+                  <!-- <ngx-datepicker
+                    id="endDateRef"
+                    formControlName="endDate"
+                    [(ngModel)]="toPeriod"
+                    [options]="options"
+                  >
+                  </ngx-datepicker>
+                  <i
+                    class="fa fa-calendar cus-calender position-absolute"
+                    (click)="endDatetoggle($event)"
+                  ></i> -->
+                  <mat-form-field appearance="outline">
+                    <input
+                      formControlName="endDate"
+                      matInput
+                      [matDatepicker]="picker"
+                      [(ngModel)]="toPeriod"
+                      [min]="fromFinDate"
+                      [max]="toPeriod"
+                    />
+                    <mat-datepicker-toggle
+                      matSuffix
+                      [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker
+                      [startAt]="toPeriod"
+                      #picker
+                    ></mat-datepicker>
+                  </mat-form-field>
+                </div>
+              </div>
+
+              <div class="col-sm-12">
+                <div id="periodErrorMsg"></div>
+              </div>
+            </div>
+          </div>
+          <!--end of modal body-->
+          <div class="modal-footer">
+            <div>
+              <button type="submit" class="btn bluebtn-dd btn-color">
+                Download Excel
+              </button>
+            </div>
+          </div>
+          <!--end of modal footer-->
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

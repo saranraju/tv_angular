@@ -1,0 +1,88 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <ng-container *ngFor="let header of header_data; let i = index">
+          <th>
+            {{ header }}
+          </th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="column == 1">
+        <ng-container *ngIf="table_data.length > 0">
+          <tr *ngFor="let content of table_data; let i = index">
+            <ng-container *ngIf="i < 5">
+              <td>{{ content.companyId }}</td>
+              <!-- -->
+              <td *ngIf="content.total % 1 == 0; else floatValue">
+                {{ content.total }}%
+              </td>
+              <ng-template #floatValue>
+                <td>{{ this.util.standardFormat(content.total, 2, "") }}%</td>
+              </ng-template>
+            </ng-container>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="table_data.length == 0">
+          <tr style="height: fit-content">
+            <td colspan="2" class="text-center filltable" style="color: #fff">
+              No Data Available
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+      <ng-container *ngIf="column == 2 || column == 3">
+        <ng-container *ngIf="table_data.length > 0">
+          <tr *ngFor="let content of [0, 1, 2, 3, 4]; let i = index">
+            <ng-container *ngIf="i < 5">
+              <td>
+                {{
+                  table_data && table_data[content]?.companyName
+                    ? table_data[content]?.companyName
+                    : "-"
+                }}
+              </td>
+              <!-- <td>{{ this.util.standardFormat(content.percent, 2, "") }}%</td> -->
+              <td
+                *ngIf="
+                  table_data && table_data[content]?.percent % 1 == 0;
+                  else floatValue
+                "
+              >
+                {{
+                  table_data && table_data[content]?.percent
+                    ? table_data && table_data[content]?.percent + "%"
+                    : "-"
+                }}
+              </td>
+              <ng-template #floatValue>
+                <td>
+                  {{
+                    table_data && table_data[content]?.percent
+                      ? this.util.standardFormat(
+                          table_data && table_data[content]?.percent,
+                          2,
+                          ""
+                        )
+                      : "-"
+                  }}%
+                </td>
+              </ng-template>
+            </ng-container>
+          </tr>
+        </ng-container>
+        <ng-container *ngIf="table_data.length == 0">
+          <tr style="height: fit-content">
+            <td colspan="2" class="text-center filltable" style="color: #fff">
+              No Data Available
+            </td>
+          </tr>
+        </ng-container>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<br />

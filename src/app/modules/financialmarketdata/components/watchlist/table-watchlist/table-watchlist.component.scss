@@ -1,0 +1,273 @@
+.edit_column_span
+{
+  margin-left: 1%;
+}
+.Portfolio_btn_class{
+  margin-top: 2%;
+  background-color: #00071e;
+  color: #ffc000;
+  border:groove;
+  border-color: #ffc000;
+  width: 12%;
+}
+.fa-long-arrow-down{
+  color: #ffc000;
+}
+.fa-long-arrow-up{
+  color: #ffc000;
+}
+.companysnapclass{
+  cursor: pointer;
+  font-size: medium;
+}
+.newsclass{
+  cursor: pointer;
+  font-size: medium;
+}
+.alertOnNews{
+  font-size: small;
+  color: #ffc000;
+  position: absolute;
+  left: -40%;
+  top: 0;
+}
+/* The switch - the box around th
+e slider */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 60px;
+  height: 34px;
+}
+
+/* Hide default HTML checkbox */
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* The slider */
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: -2px;
+  left: -1px;
+  right: -2px;
+  bottom: -2px;
+  background-color: #ccc;
+  margin: 8px;
+  transition: 0.4s;
+}
+.watchlist-tabs {
+  margin-top: 2px;
+  text-align: center;
+
+  .btn {
+    border-top-right-radius: 4px;
+    border-bottom-right-radius: 4px;
+    background: 0;
+    border: 1px solid #ffc000;
+    color: #ffc000;
+    font-size: 13px;
+    padding: 6px 10px;
+    flex: none;
+  }
+
+  .active {
+    color: #333 !important;
+    background: #ffc000;
+  }
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 21px;
+  width: 19px;
+  left: 2px;
+  bottom: 0px;
+  background-color: white;
+  transition: 0.4s;
+}
+
+input:checked + .slider {
+  background-color: #2196F3;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196F3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
+}
+
+/* Rounded sliders */
+.slider.round {
+  border-radius: 34px;
+}
+
+.slider.round:before {
+  border-radius: 50%;
+}
+
+
+.excel_icon{
+margin-left: 5%;
+}
+.reported_currency_class{
+  font-size: small;
+  color: #ffc000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.fa-pencil{
+  color: #ffc000;
+  margin-left: 1%;
+  font-size: larger;
+  cursor: pointer;
+}
+
+.watchlists{
+  font-size: small; 
+  background-color: #ffc000;
+  margin-bottom: 1%;
+}
+.company-watchlist {
+  font-size: 1.33rem;
+  color: #ffc000;
+  margin-bottom: 2%;
+  margin-top: -2%;
+  // margin-left: 2%;
+}
+.watchlist-table {
+    table {
+      font-weight: 400;
+      font-size: 12px;
+      width: max-content;
+  // margin-left: 1%;
+      tbody {
+        display: block;
+        overflow-y: auto;
+        // border-bottom: 1px solid #528dc3;
+      }
+      .fixedheight {
+        height: 100%;
+      }
+  
+      thead,
+      tbody tr {
+        display: table;
+        width: 100%;
+        table-layout: fixed;
+      }
+      .fixedheight {
+        height: 450px;
+        tr {
+          height: 85px;
+        }
+      }
+  
+      th {
+        font-weight: 600;
+        border-top: 1px solid #528dc3;
+        border-bottom: 1px solid #528dc3;
+        color: #ffc000;
+        font-size: 12px !important;
+        background-color: #00071e !important;
+        padding: 3px 5px;
+      }
+  
+      tr:nth-child(odd) {
+        background-color: #122543;
+      }
+  
+      td {
+        padding: 7px 7px;
+        font-size: 12px !important;
+      }
+  
+      td:first-child {
+        color: #ffc000;
+      }
+    }
+    .rumoured-icon {
+      border-radius: 25px;
+      padding: 0px 5px;
+      background-color: #ffc000;
+      color: black;
+    }
+    .border-btm {
+      border-bottom: 1px solid #528dc3;
+    }
+    .hover-header {
+      // text-decoration: none;
+      cursor: pointer;
+    }
+    // .hover-header:hover {
+    //   text-decoration: underline;
+    // }
+  }
+  
+
+
+  .tooltip {
+    position: relative;
+    display: inline-block;
+    border-bottom: 1px dotted black;
+  }
+  
+  // .tooltip .tooltiptext {
+  //   visibility: hidden;
+  //   width: 120px;
+  //   background-color: black;
+  //   color: #fff;
+  //   text-align: center;
+  //   border-radius: 6px;
+  //   padding: 5px 0;
+    
+  //   /* Position the tooltip */
+  //   position: absolute;
+  //   z-index: 1;
+  //   top: -5px;
+  //   left: 105%;
+  // }
+  
+  .custom-tooltip {
+    &:hover {
+      .c-tooltip {
+        display: block;
+        border: solid;
+        border-color: #4a80b3;
+         border-bottom-color: #4a80b3;
+      }
+    }
+    .c-tooltip {
+      display: none;
+      position: fixed;
+      background:#070d17;
+      // color: #231d1d;
+      padding: 10px;
+      font-size: 12px;
+      top: 20%;
+height: 50%;
+z-index: 10;
+      border-radius: 5px;
+      width: 50%;
+      margin-left: 2%;
+    }
+  
+  }
+  .commodityChart {
+    width: 100%;
+    height: 300px;
+    max-width: 100%;
+  }
+  .fa-line-chart{
+    color: #ffc000;
+
+  }

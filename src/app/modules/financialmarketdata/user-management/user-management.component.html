@@ -1,0 +1,831 @@
+<app-user-management-header></app-user-management-header>
+<div class="section">
+  <div class="section-bg">
+    <div class="container">
+      <div class="row" id="home">
+        <div class="col-12" style="margin-top: 60px">
+          <h3 class="title">Global Financial Markets Database</h3>
+          <h4 class="sub-title">
+            For Funds & Investors, Financial Institutions, Family Offices,
+            Accountants & Advisors and Corporations
+          </h4>
+        </div>
+        <div class="col-12">
+          <div class="text-center">
+            <h5 class="fs20 fw600">Comprehensive Data at the Lowest* Price</h5>
+            <p class="">
+              *Financial Market Data - Global Subscription at $ 5,000/Annum Only
+            </p>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="row mt-3">
+            <div class="col-4 mb-3" *ngFor="let section of section_list">
+              <div
+                class="d-flex justify-content-between custom-tooltip position-relative"
+              >
+                <div *ngIf="!section.imgPresent" class="circle-btm">
+                  <span class="icon-circle"
+                    ><img
+                      [ngStyle]="{
+                        'background-position-x': '0',
+                        'background-position-y': section?.pos
+                      }"
+                      class="homepagecapitalmarket-img"
+                      alt=""
+                      [src]="section.img"
+                    />
+                  </span>
+                </div>
+                <div *ngIf="section.imgPresent" class="circle-btm">
+                  <span class="icon-circle"
+                    ><img
+                      style="height: 32px; width: 32px"
+                      alt=""
+                      [src]="section.imgPresent ? section.img : ''"
+                    />
+                  </span>
+                </div>
+                <div class="px-2 text-center">
+                  <p class="fs12 line-height">
+                    <b class="circle-heading">{{ section?.header }}</b
+                    >{{ section?.sub_header }}
+                  </p>
+                </div>
+                <div class="c-tooltip">{{ section?.tooltip }}</div>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="">
+                <p class="fs14">
+                  <i>
+                    With smart functionalities like Idea Screener, Interactive
+                    Charting and Excel Plug-in
+                  </i>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-6">
+          <div class="video-min-height">
+            <video
+              width="100%"
+              loop
+              muted
+              autoplay
+              oncanplay="this.play()"
+              onloadedmetadata="this.muted = true"
+            >
+              <source
+                src="https://www.televisory.com/TelevisoryV2-portlet/videos/equibase-video-new.mp4"
+                type="video/mp4"
+              />
+              Your browser does not support HTML5 video.
+            </video>
+          </div>
+          <div class="explorebtnwhole">
+            <a
+              class="explore-eq cursor-pointer"
+              rel="noreferrer"
+              title="Explore Financial Market Data for 30 minutes"
+              (click)="exploreClick()"
+              >Explore <i class="fa fa-chevron-right"></i>
+            </a>
+          </div>
+          <div class="home-banner-btn">
+            <a
+              [routerLink]="['/demo-request', 'financial']"
+              target="_blank"
+              rel="noreferrer"
+              class="btn-get-started demo-eq"
+              >DEMO REQUEST</a
+            >
+            <a
+              [routerLink]="['/free-trail']"
+              target="_blank"
+              rel="noreferrer"
+              class="btn-get-started trial-eq"
+              >FREE TRIAL</a
+            >
+            <a
+              [routerLink]="['/subscribe']"
+              target="_blank"
+              rel="noreferrer"
+              class="btn-get-started demo-eq home-s-btn"
+              >SUBSCRIBE</a
+            >
+
+            <p><i>No Credit card required for trial</i></p>
+          </div>
+        </div>
+      </div>
+      <div class="row" id="aboutUS">
+        <div class="col-12" style="margin-top: 50px">
+          <h3 class="title">About Us - Information Empowerment</h3>
+        </div>
+        <div class="col-12 mt-4">
+          <p class="line-height">
+            Televisory is a web-based information platform on diverse asset
+            classes covering Financial, Fixed Income, Transactions, Commodities
+            and Economic Data.
+          </p>
+          <p class="line-height">
+            We assist Funds &amp; Investors, Financial Institutions, Family
+            Offices, Accountants &amp; Advisors and Corporations for better
+            decision making and improved productivity.
+          </p>
+          <p class="line-height">
+            Our goal is to provide this at the lowest cost, without the need for
+            specific hardware. Our web-based platform can be used anywhere,
+            anytime. We not only provide data, but also enable online analytics
+            as well as the ability to download this data.
+          </p>
+          <p class="line-height">
+            Televisory is founded by Shiv Dave and it is headquartered in
+            Singapore and has a development center in India.
+          </p>
+        </div>
+      </div>
+      <div class="row" id="product">
+        <div class="col-12" style="margin-top: 40px">
+          <h3 class="title">Other Products</h3>
+        </div>
+        <div class="col-12 mt-3">
+          <div class="d-flex justify-content-between">
+            <div
+              id="realTimeData"
+              class="product-width"
+              [ngClass]="{
+                activeProduct: sectionProductTab == 'realTimeData'
+              }"
+            >
+              <h3
+                class="fs17 fw600 product product-heading"
+                (click)="productSection('realTimeData')"
+              >
+                REAL TIME DATA <br />ANALYTICS (RTDA)
+              </h3>
+            </div>
+            <div
+              class="product-width"
+              id="corporateLone"
+              [ngClass]="{
+                activeProduct: sectionProductTab == 'corporateLone'
+              }"
+            >
+              <h3
+                (click)="productSection('corporateLone')"
+                class="fs17 fw600 product product-heading"
+              >
+                CORPORATE LOAN <br />
+                APPLICATION
+              </h3>
+            </div>
+            <div
+              class="product-width"
+              id="creditWorkLoan"
+              [ngClass]="{
+                activeProduct: sectionProductTab == 'creditWorkLoan'
+              }"
+            >
+              <h3
+                (click)="productSection('creditWorkLoan')"
+                class="fs17 fw600 product product-heading"
+              >
+                CREDIT WORKFLOW <br />
+                MANAGER (CWM)
+              </h3>
+            </div>
+            <div
+              class="product-width"
+              id="benchMark"
+              [ngClass]="{
+                activeProduct: sectionProductTab == 'benchMark'
+              }"
+            >
+              <h3
+                (click)="productSection('benchMark')"
+                class="fs17 fw600 product product-heading"
+              >
+                BENCHMARKING
+              </h3>
+            </div>
+            <div
+              class="product-width"
+              id="research"
+              [ngClass]="{
+                activeProduct: sectionProductTab == 'research'
+              }"
+            >
+              <h3
+                (click)="productSection('research')"
+                class="fs17 fw600 product product-heading"
+              >
+                CUSTOMIZED RESEARCH
+              </h3>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="col-12 px-0"
+            *ngIf="this.sectionProductTab == 'realTimeData'"
+          >
+            <div class="row">
+              <div class="col-6 px-0">
+                <h3 class="product-sub-heading">
+                  Real Time Data Analytics (RTDA)
+                </h3>
+                <p class="product-sub-para">
+                  Televisory's unique online Operational and Financial Data
+                  Analysis across 21 sectors and over 275 Distinct Industries
+                </p>
+                <div class="row mt-3">
+                  <div
+                    class="col-4 mb-3 px-0"
+                    *ngFor="let section of section_product_list"
+                  >
+                    <div class="d-flex custom-tooltip position-relative">
+                      <div class="circle-btm">
+                        <span class="icon-circle"
+                          ><img
+                            [ngStyle]="{
+                              'background-position-x': '0',
+                              'background-position-y': section?.pos
+                            }"
+                            class="homepagecapitalmarket-img"
+                            alt=""
+                            [src]="section.img"
+                          />
+                        </span>
+                      </div>
+                      <div class="">
+                        <p class="fs12 line-height px-4">
+                          <b class="circle-heading fw400">{{
+                            section?.header
+                          }}</b
+                          >{{ section?.sub_header }}
+                        </p>
+                      </div>
+                      <div class="c-tooltip">{{ section?.tootip }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 mt-2">
+                <div class="video-min-height">
+                  <video
+                    width="100%"
+                    loop
+                    muted
+                    autoplay
+                    oncanplay="this.play()"
+                    onloadedmetadata="this.muted = true"
+                  >
+                    <source
+                      src="https://www.televisory.com/TelevisoryV2-portlet/videos/rtda-video-new.mp4"
+                      type="video/mp4"
+                    />
+                    Your browser does not support HTML5 video.
+                  </video>
+                </div>
+                <div class="explorebtnwhole">
+                  <a
+                    class="explore-eq"
+                    href="https://dataanalytics.televisory.com/rtda-demo?_ga=2.19462449.885894724.1657085251-1036538086.1657085251"
+                    target="_blank"
+                    rel="noreferrer"
+                    title="Explore Financial Market Data for 30 minutes"
+                    >Explore <i class="fa fa-chevron-right"></i>
+                  </a>
+                </div>
+                <div class="home-banner-btn">
+                  <a
+                    href="https://dataanalytics.televisory.com/demorequest?requestType=RTDA&_ga=2.221126161.885894724.1657085251-1036538086.1657085251"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="btn-get-started demo-eq"
+                    >DEMO REQUEST</a
+                  >
+                  <a
+                    href="https://dataanalytics.televisory.com/demoisignup?requestType=RTDA&_ga=2.217651359.885894724.1657085251-1036538086.1657085251"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="btn-get-started trial-eq"
+                    >FREE TRIAL</a
+                  >
+                  <a
+                    href="https://dataanalytics.televisory.com/rtda-signup?_ga=2.259594755.885894724.1657085251-1036538086.1657085251"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="btn-get-started demo-eq home-s-btn"
+                    >SUBSCRIBE</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12" *ngIf="this.sectionProductTab == 'corporateLone'">
+            <div class="row">
+              <div class="col-6">
+                <h3 class="product-sub-heading">Corporate Loan Application</h3>
+                <p class="product-sub-para">
+                  Our "Corporate Loan Application" module enables corporates to
+                  apply for credit facilities to multiple banks at one go in a
+                  fully digital and hassle free environment.
+                </p>
+                <ul class="corporateloanul">
+                  <li>Easy and simple 4 step application process</li>
+                  <li>
+                    Eliminate efforts duplication in application to multiple
+                    banks
+                  </li>
+                  <li>
+                    Detailed credit assessment reports increases chances of loan
+                    sanction
+                  </li>
+                  <li>Real time updates on application status</li>
+                  <li>
+                    Download your detailed benchmarking report with industry
+                    peers
+                  </li>
+                  <li>Fully digital and secure environment</li>
+                </ul>
+              </div>
+              <div class="col-6">
+                <div class="video-min-height">
+                  <video
+                    width="100%"
+                    loop
+                    muted
+                    autoplay
+                    oncanplay="this.play()"
+                    onloadedmetadata="this.muted = true"
+                  >
+                    <source
+                      src="https://www.televisory.com/TelevisoryV2-portlet/videos/lo-laptop.mp4"
+                      type="video/mp4"
+                    />
+                    Your browser does not support HTML5 video.
+                  </video>
+                </div>
+                <div class="explorebtnwhole">
+                  <a
+                    class="explore-eq"
+                    href="https://dataanalytics.televisory.com/corporate-credit-application-signup?_ga=2.259594755.885894724.1657085251-1036538086.1657085251"
+                    target="_blank"
+                    rel="noreferrer"
+                    title="Explore Financial Market Data for 30 minutes"
+                    >Apply Now <i class="fa fa-chevron-right"></i>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="col-12 px-0"
+            *ngIf="this.sectionProductTab == 'creditWorkLoan'"
+          >
+            <div class="row">
+              <div class="col-6 px-0">
+                <h3 class="product-sub-heading">
+                  Customizable Risk Analysis & Monitoring
+                </h3>
+                <p class="product-sub-para">
+                  Supports lenders across the credit lifecycle of loans through
+                  modules like Early Warning Signals (EWS), Debt Sizing, Obligor
+                  Grading and Sensitivity Analysis, Default probabilities,
+                  pricing and monitoring
+                </p>
+                <p class="product-sub-para">
+                  CWM helps improved decision-making and enhances productivity
+                </p>
+                <div class="row mt-3">
+                  <div
+                    class="col-4 mb-3 px-0"
+                    *ngFor="let section of section_creditWork_list"
+                  >
+                    <div class="d-flex custom-tooltip">
+                      <div class="circle-btm">
+                        <span class="icon-circle"
+                          ><img
+                            [ngStyle]="{
+                              'background-position-x': '0',
+                              'background-position-y': section?.pos
+                            }"
+                            class="homepagecapitalmarket-img"
+                            alt=""
+                            [src]="section.img"
+                          />
+                        </span>
+                      </div>
+                      <div class="">
+                        <p class="fs12 line-height px-4">
+                          <b class="circle-heading fw400">{{
+                            section?.header
+                          }}</b
+                          >{{ section?.sub_header }}
+                        </p>
+                      </div>
+                      <div class="c-tooltip">{{ section?.tooltip }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 mt-2">
+                <div class="video-min-height">
+                  <video
+                    width="100%"
+                    loop
+                    muted
+                    autoplay
+                    oncanplay="this.play()"
+                    onloadedmetadata="this.muted = true"
+                  >
+                    <source
+                      src="https://www.televisory.com/TelevisoryV2-portlet/videos/CWM-video.mp4"
+                      type="video/mp4"
+                    />
+                    Your browser does not support HTML5 video.
+                  </video>
+                </div>
+                <div class="explorebtnwhole">
+                  <a
+                    class="explore-eq"
+                    href="https://dataanalytics.televisory.com/c/portal/login?token=KsxNOznzJMFnT%2F%2BHrhwPZxPHDJ6cSeGshAOtNWzRm5I%3D&_ga=2.15678015.885894724.1657085251-1036538086.1657085251"
+                    target="_blank"
+                    rel="noreferrer"
+                    title="Explore Financial Market Data for 30 minutes"
+                    >Explore <i class="fa fa-chevron-right"></i>
+                  </a>
+                </div>
+                <div class="home-banner-btn">
+                  <a
+                    href="https://dataanalytics.televisory.com/demorequest?requestType=CWM&_ga=2.15678015.885894724.1657085251-1036538086.1657085251"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="btn-get-started demo-eq"
+                    >DEMO REQUEST</a
+                  >
+                  <a
+                    href="https://dataanalytics.televisory.com/demoisignup?requestType=cwm&_ga=2.187102369.885894724.1657085251-1036538086.1657085251"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="btn-get-started trial-eq"
+                    >FREE TRIAL</a
+                  >
+                  <a
+                    href="https://dataanalytics.televisory.com/signup?_ga=2.187102369.885894724.1657085251-1036538086.1657085251"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="btn-get-started demo-eq home-s-btn"
+                    >SUBSCRIBE</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div
+            class="col-12 px-0"
+            *ngIf="this.sectionProductTab == 'benchMark'"
+          >
+            <div class="row">
+              <div class="col-6 px-0">
+                <h3 class="product-sub-heading">Benchmarking</h3>
+                <p class="product-sub-para">
+                  Benchmark your operational and financial performance to the
+                  best in your industry or with those you compete with-anywhere
+                  in the world
+                </p>
+                <p class="product-sub-para">
+                  Benchmarking tool helps you stay ahead of the competition
+                </p>
+                <div class="row mt-3">
+                  <div
+                    class="col-4 mb-3 px-0"
+                    *ngFor="let section of section_bench_list"
+                  >
+                    <div class="d-flex custom-tooltip">
+                      <div class="circle-btm">
+                        <span class="icon-circle"
+                          ><img
+                            [ngStyle]="{
+                              'background-position-x': '0',
+                              'background-position-y': section?.pos
+                            }"
+                            class="homepagecapitalmarket-img"
+                            alt=""
+                            [src]="section.img"
+                          />
+                        </span>
+                      </div>
+                      <div class="">
+                        <p class="fs12 line-height px-4">
+                          <b class="circle-heading fw400">{{
+                            section?.header
+                          }}</b
+                          >{{ section?.sub_header }}
+                        </p>
+                      </div>
+                      <div class="c-tooltip">{{ section?.tooltip }}</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 mt-2">
+                <div class="video-min-height">
+                  <video
+                    width="100%"
+                    loop
+                    muted
+                    autoplay
+                    oncanplay="this.play()"
+                    onloadedmetadata="this.muted = true"
+                  >
+                    <source
+                      src="https://www.televisory.com/TelevisoryV2-portlet/videos/benchmarking-video.mp4"
+                      type="video/mp4"
+                    />
+                    Your browser does not support HTML5 video.
+                  </video>
+                </div>
+                <div class="home-banner-btn">
+                  <a
+                    href="https://dataanalytics.televisory.com/demorequest?requestType=Benchmark&_ga=2.23477683.885894724.1657085251-1036538086.1657085251"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="btn-get-started demo-eq"
+                    >DEMO REQUEST</a
+                  >
+                  <a
+                    href="https://benchmark.televisory.com/signup?_ga=2.23477683.885894724.1657085251-1036538086.1657085251"
+                    target="_blank"
+                    rel="noreferrer"
+                    class="btn-get-started demo-eq home-s-btn"
+                    >SUBSCRIBE</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-12 px-0" *ngIf="this.sectionProductTab == 'research'">
+            <div class="row">
+              <div class="col-6 px-0">
+                <h3 class="product-sub-heading">Customized Research</h3>
+                <p class="product-sub-para">
+                  Our team of experts prepare customized research to suit your
+                  specific needs
+                </p>
+                <p class="product-sub-para">
+                  Our research covers a range of 275 Distinct Industries around
+                  the world
+                </p>
+                <div class="row mt-3">
+                  <div
+                    class="col-6 mb-3 px-0"
+                    *ngFor="let section of section_customize_list"
+                  >
+                    <div class="d-flex">
+                      <div class="leftside-icons-lt custome-img-size">
+                        <span class="customize-box"
+                          ><img
+                            class="customize-img"
+                            src="{{ section.img }}"
+                            alt=""
+                          />
+                        </span>
+                      </div>
+                      <div class="">
+                        <p class="fs12 line-height px-4">
+                          <b class="circle-heading fw400">{{
+                            section?.header
+                          }}</b
+                          >{{ section?.sub_header }}
+                        </p>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-6 mt-2">
+                <div class="video-min-height">
+                  <video
+                    width="100%"
+                    loop
+                    muted
+                    autoplay
+                    oncanplay="this.play()"
+                    onloadedmetadata="this.muted = true"
+                  >
+                    <source
+                      src="https://www.televisory.com/TelevisoryV2-portlet/videos/customisedresearch-laptop.mp4"
+                      type="video/mp4"
+                    />
+                    Your browser does not support HTML5 video.
+                  </video>
+                </div>
+                <div class="explorebtnwhole">
+                  <a
+                    class="explore-eq"
+                    href="https://www.televisory.com/custom-reports"
+                    target="_blank"
+                    rel="noreferrer"
+                    title="Explore Financial Market Data for 30 minutes"
+                    >Explore <i class="fa fa-chevron-right"></i>
+                  </a>
+                </div>
+                <div class="home-banner-btn">
+                  <a
+                    target="_blank"
+                    rel="noreferrer"
+                    class="btn-get-started demo-eq home-s-btn"
+                    (click)="handleGetSamples()"
+                    >GET SAMPLES</a
+                  >
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="row" id="contact">
+        <div class="col-12 mt-5" style="margin-top: 50px">
+          <div class="container">
+            <div class="row">
+              <div class="col-3">
+                <h6 class="footer-product-header">Company</h6>
+                <ul class="contactUS">
+                  <li
+                    [ngClass]="{
+                      active_color: sectionTab == 'home'
+                    }"
+                    class="cursor-pointer product_active_page"
+                    (click)="navigateToSection('home')"
+                  >
+                    <a>Home</a>
+                  </li>
+                  <li
+                    [ngClass]="{
+                      active_color: sectionTab == 'aboutUS'
+                    }"
+                    class="cursor-pointer product_active_page"
+                    (click)="navigateToSection('aboutUS')"
+                  >
+                    <a>About Us</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-3">
+                <h6 class="contactUS-header">Products</h6>
+                <ul class="contactUS">
+                  <li
+                    [ngClass]="{
+                      active_color: sectionTab == 'product'
+                    }"
+                    class="cursor-pointer product_active"
+                    (click)="navigateToSection('product')"
+                  >
+                    <a>Financial Market Data</a>
+                  </li>
+                  <li
+                    (click)="productSection('realTimeData', 'realTimeData')"
+                    class="cursor-pointer product_active"
+                    [ngClass]="{
+                      active_color: sectionTab == 'realTimeData'
+                    }"
+                  >
+                    <a>Real Time Data Analytics (RTDA)</a>
+                  </li>
+                  <li
+                    [ngClass]="{
+                      active_color: sectionTab == 'corporateLone'
+                    }"
+                    (click)="productSection('corporateLone', 'corporateLone')"
+                    class="cursor-pointer product_active"
+                  >
+                    <a>Corporate Loan Application</a>
+                  </li>
+                  <li
+                    [ngClass]="{
+                      active_color: sectionTab == 'creditWorkLoan'
+                    }"
+                    (click)="productSection('creditWorkLoan', 'creditWorkLoan')"
+                    class="cursor-pointer product_active"
+                  >
+                    <a>Credit Workflow Manager (CWM)</a>
+                  </li>
+                  <li
+                    [ngClass]="{
+                      active_color: sectionTab == 'benchMark'
+                    }"
+                    (click)="productSection('benchMark', 'benchMark')"
+                    class="cursor-pointer product_active"
+                  >
+                    <a>Benchmarking</a>
+                  </li>
+                  <li
+                    [ngClass]="{
+                      active_color: sectionTab == 'research'
+                    }"
+                    (click)="productSection('research', 'research')"
+                    class="cursor-pointer product_active"
+                  >
+                    <a>Customized Research</a>
+                  </li>
+                </ul>
+              </div>
+              <div class="col-3">
+                <h6 class="contactUS-header">
+                  <a class="faqclass" href="https://www.televisory.com/faq"
+                    >FAQs</a
+                  >
+                </h6>
+              </div>
+              <div class="col-3">
+                <h6 class="contactUS-header">Contact Us</h6>
+                <ul class="contactUS">
+                  <li><i class="fa fa-phone"></i> +1 888-239-3621 (US)</li>
+                  <li>
+                    <i class="fa fa-envelope"></i>
+                    <a
+                      class="px-2 text-decoration-none"
+                      href="mailto:sd@televisory.com"
+                      >sd@televisory.com</a
+                    >
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-12">
+          <ul class="contact-us-social float-end">
+            <li>
+              <a href="https://www.facebook.com/televisory/" target="_blank">
+                <i class="social-icon fa fa-facebook"></i>
+              </a>
+            </li>
+            <li>
+              <a
+                href="https://www.linkedin.com/company/televisory"
+                target="_blank"
+              >
+                <i class="social-icon fa fa-linkedin"></i>
+              </a>
+            </li>
+            <li>
+              <a href="https://twitter.com/Televisory_fin" target="_blank">
+                <i class="social-icon fa fa-twitter"></i>
+              </a>
+            </li>
+            <li></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <br />
+    <br />
+  </div>
+
+  <footer class="container-fluid telFooter">
+    <div class="row py-2">
+      <div class="col-sm-4">
+        <p class="mb-0 px-3">
+          Copyright © 2022 Televisory <span class="px-1">|</span> All Rights
+          Reserved
+        </p>
+      </div>
+      <div class="col-sm-8">
+        <ul class="mb-0 text-white">
+          <li class="">
+            <a href="https://televisory.com/terms-of-use">Terms of Use</a>
+          </li>
+          <li class="">
+            <a href="https://televisory.com/terms-of-access">Terms of Access</a>
+          </li>
+          <li class="">
+            <a href="https://televisory.com/policy">Privacy Policy</a>
+          </li>
+          <li class="">
+            <a href="https://televisory.com/sitemap">Site map </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<app-form-alert-model
+  *ngIf="auth.closeInsidePopup"
+  [alertmsg]="'You have used your 30 minutes explore.'"
+></app-form-alert-model>

@@ -1,0 +1,48 @@
+.inside-popup {
+  .modal {
+    display: block;
+    background: rgba(0, 0, 0, 0.8);
+    transition: opacity 500ms;
+    border-radius: 5px;
+    padding: 53px 72px;
+  }
+
+  /* Modal Content */
+  .modal-content {
+    background: #00071e !important;
+    width: 100% !important;
+  }
+
+  .bg-heading {
+    background: #fbe5c6 !important;
+  }
+
+  .inside-Popup-close {
+    padding: 0px 10px;
+    font-size: 16px;
+    color: black;
+    text-shadow: 0 1px 0 white;
+    opacity: 0.2;
+  }
+
+  .inside-Popup-close:hover {
+    color: #000000;
+    text-decoration: none;
+    opacity: 0.5;
+  }
+
+  .close {
+    color: #ffff;
+    float: right;
+    font-size: 17px;
+  }
+
+  .line-height {
+    font-size: 17px;
+    margin-bottom: 0;
+    margin-top: 6px;
+    line-height: 21px;
+    text-align: justify;
+    color: #ffc000 !important;
+  }
+}

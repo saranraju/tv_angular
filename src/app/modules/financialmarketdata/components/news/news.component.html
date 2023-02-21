@@ -1,0 +1,339 @@
+<!-- Dropdowns and Advance Search -->
+<div
+  *ngIf="hideNewsList !== true"
+  class="container-fluid pe-2 my-2 padding-bottom"
+>
+  <div class="row">
+    <div class="col-7 px-0">
+      <div class="row">
+        <div class="col-3 ps-0">
+          <span class="custom_ngselect">
+            <ng-select2
+              class="cusSelect2 cusSelect2Normal"
+              [placeholder]="'Select Country'"
+              [data]="selectCountryData"
+              [value]="selectedCountryData"
+              (valueChanged)="onNewsCountryChange($event)"
+            ></ng-select2>
+            <span class="close_icon">
+              <i
+                *ngIf="selectedCountryData"
+                class="fa fa-times"
+                aria-hidden="true"
+                (click)="handleCountryReset()"
+              ></i>
+            </span>
+          </span>
+        </div>
+        <div class="col-4 ps-0 d-none">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal"
+            [placeholder]="'Select Publisher'"
+          ></ng-select2>
+        </div>
+      </div>
+    </div>
+    <!-- <div class="col-5 px-0 d-flex justify-content-end">
+      <button
+        type="button"
+        [routerLink]="['/financialmarketdata/screener']"
+        class="news-advanced-search-btn"
+      >
+        Advance Search
+      </button>
+    </div> -->
+  </div>
+  <!-- News List Cards -->
+  <div class="row mt-3 news-list-card-container">
+    <div class="col-4">
+      <app-news-card-list
+        listTitle="Company News"
+        [tableLength]="CompanyListLength"
+        [newsListData]="companyNewsListData"
+        (pageChanged)="onPageChanged($event)"
+        (hideNewsDetails)="handleNewsItemClick($event)"
+        (onNewsClickedEmit)="handleNewsItemClick($event)"
+        (newsListType)="handleExpandListClickType($event)"
+        [loading]="companyNewsLoading"
+        [paginationLabelSize]="9"
+      ></app-news-card-list>
+    </div>
+    <div class="col-4 px-0">
+      <app-news-card-list
+        listTitle="Economy News"
+        [tableLength]="EconomyListLength"
+        [newsListData]="economyNewsListData"
+        (pageChanged)="onPageChanged($event)"
+        (hideNewsDetails)="handleNewsItemClick($event)"
+        (onNewsClickedEmit)="handleNewsItemClick($event)"
+        (newsListType)="handleExpandListClickType($event)"
+        [loading]="economyNewsLoading"
+        [paginationLabelSize]="9"
+      ></app-news-card-list>
+    </div>
+    <div class="col-4">
+      <app-news-card-list
+        listTitle="Industry News"
+        [tableLength]="IndustryListLength"
+        [newsListData]="industryNewsListData"
+        (pageChanged)="onPageChanged($event)"
+        (hideNewsDetails)="handleNewsItemClick($event)"
+        (newsListType)="handleExpandListClickType($event)"
+        [loading]="industryNewsLoading"
+        [paginationLabelSize]="9"
+      ></app-news-card-list>
+    </div>
+    <div class="col-4">
+      <app-news-card-list
+        listTitle="Commodity News"
+        [tableLength]="ComodityListLength"
+        [newsListData]="commodityNewsListData"
+        (pageChanged)="onPageChanged($event)"
+        (hideNewsDetails)="handleNewsItemClick($event)"
+        (newsListType)="handleExpandListClickType($event)"
+        [loading]="commodityNewsLoading"
+        [paginationLabelSize]="9"
+      ></app-news-card-list>
+    </div>
+    <div class="col-4 px-0">
+      <app-news-card-list
+        listTitle="Forex News"
+        [tableLength]="ForexListLength"
+        [newsListData]="forexNewsListData"
+        (pageChanged)="onPageChanged($event)"
+        (hideNewsDetails)="handleNewsItemClick($event)"
+        (newsListType)="handleExpandListClickType($event)"
+        [loading]="forexNewsLoading"
+        [paginationLabelSize]="9"
+      ></app-news-card-list>
+    </div>
+    <div class="col-4">
+      <app-news-card-list
+        listTitle="General News"
+        [tableLength]="generalListLength"
+        [newsListData]="generalNewsListData"
+        (hideNewsDetails)="handleNewsItemClick($event)"
+        (pageChanged)="onPageChanged($event)"
+        (newsListType)="handleExpandListClickType($event)"
+        [loading]="generalNewsLoading"
+        [paginationLabelSize]="9"
+      ></app-news-card-list>
+    </div>
+  </div>
+</div>
+
+<!-- Company News Details-->
+<app-news-details
+  *ngIf="showCompanyNews"
+  newsType="Company News"
+  [newsDetailsTableData]="companyNewsDetailsTableData"
+  [latestNews]="latestNews"
+  [latestNewsTotalLength]="latestNewsListLength"
+  [tableLength]="CompanyListLength"
+  [selectCountryData]="selectCountryData"
+  [selectNewsCategoryData]="selectNewsCategoryData"
+  (countrySelectedDetail)="onChangeNewsDetails($event)"
+  (onNewsClickedEmit)="handleNewsItemClick($event)"
+  [news_details_loading]="companyNewsLoading"
+  [latest_news_loading]="latestNewsLoading"
+  [selectedCountry]="selectedCountryData"
+></app-news-details>
+
+<!-- Economy News Details -->
+<app-news-details
+  *ngIf="showEconomyNews"
+  newsType="Economy News"
+  [newsDetailsTableData]="economyNewsDetailsTableData"
+  [tableLength]="EconomyListLength"
+  [latestNews]="latestNews"
+  [latestNewsTotalLength]="latestNewsListLength"
+  [selectCountryData]="selectCountryData"
+  [selectNewsCategoryData]="selectNewsCategoryData"
+  (countrySelectedDetail)="onChangeNewsDetails($event)"
+  (onNewsClickedEmit)="handleNewsItemClick($event)"
+  [news_details_loading]="economyNewsLoading"
+  [latest_news_loading]="latestNewsLoading"
+  [selectedCountry]="selectedCountryData"
+></app-news-details>
+
+<!-- Industry News Details-->
+<app-news-details
+  *ngIf="showIndustryNews"
+  newsType="Industry News"
+  [newsDetailsTableData]="industryNewsDetailsTableData"
+  [latestNews]="latestNews"
+  [latestNewsTotalLength]="latestNewsListLength"
+  [selectCountryData]="selectCountryData"
+  [industryListDropdown]="industryListDropdown"
+  [tableLength]="IndustryListLength"
+  [selectNewsCategoryData]="selectNewsCategoryData"
+  (countrySelectedDetail)="onChangeNewsDetails($event)"
+  (onNewsClickedEmit)="handleNewsItemClick($event)"
+  [news_details_loading]="industryNewsLoading"
+  [latest_news_loading]="latestNewsLoading"
+  [selectedCountry]="selectedCountryData"
+></app-news-details>
+
+<!-- Commodity News Details -->
+<app-news-details
+  *ngIf="showCommodityNews"
+  newsType="Commodity News"
+  [newsDetailsTableData]="commodityNewsDetailsTableData"
+  [tableLength]="ComodityListLength"
+  [selectCountryData]="selectCountryData"
+  [commodityListDropdown]="commodityListDropdown"
+  [latestNews]="latestNews"
+  [latestNewsTotalLength]="latestNewsListLength"
+  (countrySelectedDetail)="onChangeNewsDetails($event)"
+  (onNewsClickedEmit)="handleNewsItemClick($event)"
+  [news_details_loading]="commodityNewsLoading"
+  [latest_news_loading]="latestNewsLoading"
+  [selectedCountry]="selectedCountryData"
+></app-news-details>
+
+<!-- Forex News Details-->
+<app-news-details
+  *ngIf="showForexNews"
+  newsType="Forex News"
+  [newsDetailsTableData]="forexNewsDetailsTableData"
+  [latestNews]="latestNews"
+  [latestNewsTotalLength]="latestNewsListLength"
+  [tableLength]="ForexListLength"
+  [selectCountryData]="selectCountryData"
+  [selectNewsCategoryData]="selectNewsCategoryData"
+  (countrySelectedDetail)="onChangeNewsDetails($event)"
+  (onNewsClickedEmit)="handleNewsItemClick($event)"
+  [news_details_loading]="forexNewsLoading"
+  [latest_news_loading]="latestNewsLoading"
+  [selectedCountry]="selectedCountryData"
+></app-news-details>
+
+<!-- General News Details -->
+<app-news-details
+  *ngIf="showGeneralNews"
+  newsType="General News"
+  [newsDetailsTableData]="generalNewsDetailsTableData"
+  [latestNews]="latestNews"
+  [latestNewsTotalLength]="latestNewsListLength"
+  [selectCountryData]="selectCountryData"
+  [tableLength]="generalListLength"
+  [selectNewsCategoryData]="selectNewsCategoryData"
+  (countrySelectedDetail)="onChangeNewsDetails($event)"
+  (onNewsClickedEmit)="handleNewsItemClick($event)"
+  [news_details_loading]="generalNewsLoading"
+  [latest_news_loading]="latestNewsLoading"
+  [selectedCountry]="selectedCountryData"
+></app-news-details>
+
+<!-- News Description -->
+<div *ngIf="showNewsItemDetails === true" class="container-fluid px-0">
+  <div class="row my-2">
+    <!-- <div class="col-12 d-flex justify-content-end">
+      <button
+        type="button"
+        [routerLink]="['/financialmarketdata/screener']"
+        class="news-advanced-search-btn"
+      >
+        Advance Search
+      </button>
+    </div> -->
+  </div>
+  <div class="row mb-2">
+    <div class="col-6 px-0">
+      <div class="row">
+        <div class="col-12">
+          <h2 class="news-title" [innerHTML]="newsInfo?.newsHeadline"></h2>
+          <div class="mt-3 d-flex justify-content-end">
+            <span class="title-color"
+              >Release Time:
+              <span class="value-color">
+                {{ newsInfo?.newsDateTimeStory?.split(".")[0] }} UTC
+              </span></span
+            >
+          </div>
+          <!-- <div class="row">
+            <div class="col-12 px-0 text-center">
+              <span class="title-color"
+                >News Link:
+                <a
+                  [href]="newsInfo?.newsLink"
+                  target="_blank"
+                  class="news-link"
+                >
+                  {{ newsInfo?.newsLink }}
+                </a>
+              </span>
+            </div>
+          </div> -->
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12 my-2 p-3 news-content">
+          <p [innerHTML]="newsInfo?.newsStoryText"></p>
+          <hr />
+          <p class="style-italic" [innerHTML]="newsInfo?.newsCopyright"></p>
+        </div>
+      </div>
+    </div>
+    <div class="col-6">
+      <div class="row news-list-both-container">
+        <div class="col-6 px-2 related-news-header-container">
+          <!-- <div class="row">
+            <div class="col-12 py-2">
+              <span class="related-news-title">Related News</span>
+            </div>
+          </div> -->
+          <app-news-card-list
+            listTitle="Related News"
+            [tableLength]="relatedNewsListLength"
+            [hideContent]="true"
+            [newsListData]="relatedNews"
+            (pageChanged)="onChangeNewsDetails($event)"
+            (hideNewsDetails)="handleNewsItemClick($event)"
+            [loading]="relatedNewsLoading"
+            [paginationLabelSize]="5"
+            type="latest-related"
+          ></app-news-card-list>
+          <!-- <div class="row">
+            <ul class="news-list-container">
+              <li *ngFor="let news of relatedNews" class="news-list-item">
+                <p class="news-text" [innerHTML]="news.news"></p>
+              </li>
+            </ul>
+          </div> -->
+        </div>
+        <div class="col-6 px-2 latest-news-header-container">
+          <!-- <div class="row align-items-center">
+            <div class="col-6 py-2">
+              <span class="latest-news-title">Latest News</span>
+            </div>
+            <div class="col-6 px-0 d-none">
+              <ng-select2
+                class="cusSelect2 cusSelect2Normal"
+                [placeholder]="'World'"
+              ></ng-select2>
+            </div>
+          </div> -->
+          <!-- <div class="row"> -->
+          <app-news-card-list
+            listTitle="Latest News"
+            [tableLength]="latestNewsListLength"
+            [hideContent]="true"
+            [newsListData]="latestNews"
+            (pageChanged)="onChangeNewsDetails($event)"
+            (hideNewsDetails)="handleNewsItemClick($event)"
+            [loading]="latestNewsLoading"
+            [paginationLabelSize]="5"
+            type="latest-related"
+          ></app-news-card-list>
+          <!-- <ul class="news-list-container">
+              <li *ngFor="let news of latestNews" class="news-list-item">
+                <p class="news-text">{{ news.news }}</p>
+              </li>
+            </ul> -->
+          <!-- </div> -->
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

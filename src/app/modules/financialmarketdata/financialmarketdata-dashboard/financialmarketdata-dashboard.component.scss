@@ -1,0 +1,11 @@
+.adminSection {
+  height: calc(100vh - 114.6px);
+  overflow: auto;
+  width: 99%;
+}
+
+@media screen and (max-width: 995px), screen and (max-height: 650px) {
+  .adminSection {
+    height: calc(100vh - 250px);
+  }
+}

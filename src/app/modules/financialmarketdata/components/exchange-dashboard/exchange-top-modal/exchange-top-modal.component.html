@@ -1,0 +1,256 @@
+<div class="backdrop">
+  <div
+    id="alertbox"
+    class="modal sevendayfreetrialpopup-rtda sevendayfreetrialpopup-cm in"
+    tabindex="-1"
+    role="dialog"
+    style="
+      display: block;
+      padding-left: 4px;
+      background-color: rgba(0, 0, 0, 0.5);
+    "
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="row">
+          <div class="col-12 mt-1">
+            <h5 class="modal-title text-center" id="exampleModalLongTitle">
+              {{ title }}
+              <span>
+                <button
+                  type="button"
+                  (click)="auth.openPopupModal = false"
+                  class="close float-end"
+                  data-dismiss="modal"
+                  aria-label="Close"
+                >
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </span>
+            </h5>
+          </div>
+          <div class="d-flex justify-content-around mt-2">
+            <div>
+              <p class="fs16">
+                <span class="text-primary">Exchange Name:</span>
+                <span>Bombay Stock Exchange</span>
+              </p>
+            </div>
+            <div>
+              <p class="fs16">
+                <span class="text-primary">Time:</span>
+                <span>DD-MM-YYYY | HH:MM:SS</span>
+              </p>
+            </div>
+            <div>
+              <img
+                src="/assets/img/refresh.png"
+                class="cursor-pointer text-primary img-fluid"
+              />
+            </div>
+          </div>
+          <div class="custom-slider">
+            <label class="label text-primary mt-3 mr-3"
+              >Market Capitalization (INR Million)</label
+            >
+            <input class="graphValue mr-3" type="text" placeholder="min" />
+            <ngx-slider
+              [(value)]="value"
+              [(highValue)]="maxValue"
+              [options]="options"
+            ></ngx-slider>
+            <input class="graphValue mx-3" type="text" placeholder="max" />
+          </div>
+        </div>
+        <!--end of modal header-->
+
+        <div class="modal-body text-center">
+          <div class="commodityTable">
+            <table class="w-100 scroll">
+              <thead>
+                <tr>
+                  <th
+                    *ngFor="let header of table_data.header; let i = index"
+                    [ngStyle]="{
+                      width: header?.width,
+                      'text-align': header?.align
+                    }"
+                  >
+                    {{ header.label }}
+                  </th>
+                </tr>
+              </thead>
+              <div id="parent-table">
+                <tbody
+                  *ngFor="
+                    let content of table_data.data
+                      | paginate
+                        : { itemsPerPage: 12, currentPage: currentPageDet };
+                    let i = index
+                  "
+                >
+                  <tr>
+                    <td
+                      *ngFor="let header of table_data.header"
+                      [ngStyle]="{
+                        width: header?.width,
+                        'text-align': header?.align,
+                        color: header?.color,
+                        height: content?.height,
+                        cursor: header?.pointer && 'pointer'
+                      }"
+                    >
+                      <i
+                        *ngIf="header?.plusIcon === true"
+                        [ngClass]="
+                          selectedPlus_icon && index === i
+                            ? ' fa-minus'
+                            : ' fa-plus'
+                        "
+                        (click)="handleExpandTableClick(content, i)"
+                        class="fa fa-solid"
+                        style="cursor: pointer"
+                      ></i>
+                      <span *ngIf="content[header.key]">
+                        {{
+                          header?.formattedNum
+                            ? util?.standardFormat(content[header.key], 2, "")
+                            : content[header.key]
+                        }}
+                      </span>
+                    </td>
+                  </tr>
+                  <tr *ngIf="index === i && hideChildContent">
+                    <div
+                      class="container-fluid my-3"
+                      style="background: #00071e"
+                    >
+                      <div class="row">
+                        <div class="col-6 px-0">
+                          <div class="container-fluid px-0">
+                            <div class="d-flex justify-content-between">
+                              <div class="align-items-center d-flex">
+                                <p class="fs15 mb-0">
+                                  <span class="text-primary"
+                                    >Intraday H/L :
+                                  </span>
+                                  <span>XX.XX/XX.XX</span>
+                                </p>
+                              </div>
+                              <div>
+                                <div
+                                  class="align-items-center d-flex graphFilterSection my-4"
+                                >
+                                  <div>
+                                    <ul id="commodityStep2" class="mb-0 p-0">
+                                      <li
+                                        [ngClass]="{
+                                          activeDateFilter:
+                                            util.selectedDatetype === '1W'
+                                        }"
+                                      >
+                                        1W
+                                      </li>
+                                      <li
+                                        [ngClass]="{
+                                          activeDateFilter:
+                                            util.selectedDatetype === '3M'
+                                        }"
+                                      >
+                                        3M
+                                      </li>
+                                      <li
+                                        [ngClass]="{
+                                          activeDateFilter:
+                                            util.selectedDatetype === '6M'
+                                        }"
+                                      >
+                                        6M
+                                      </li>
+                                      <li
+                                        [ngClass]="{
+                                          activeDateFilter:
+                                            util.selectedDatetype === '1Y'
+                                        }"
+                                      >
+                                        1Y
+                                      </li>
+                                      <li
+                                        [ngClass]="{
+                                          activeDateFilter:
+                                            util.selectedDatetype === '5Y'
+                                        }"
+                                      >
+                                        5Y
+                                      </li>
+                                      <li
+                                        [ngClass]="{
+                                          activeDateFilter:
+                                            util.selectedDatetype === '10Y'
+                                        }"
+                                      >
+                                        10Y
+                                      </li>
+                                      <li
+                                        [ngClass]="{
+                                          activeDateFilter:
+                                            util.selectedDatetype === 'MAX'
+                                        }"
+                                      >
+                                        MAX
+                                      </li>
+                                    </ul>
+                                  </div>
+                                </div>
+                              </div>
+                            </div>
+                            <div class="row">
+                              <div
+                                class="col-12 px-0 tradingview-cds-container"
+                              >
+                                <div id="tradingview-cds-table"></div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                        <div class="col-5 px-0 mt-lg-4 mx-auto">
+                          <p class="fs15 text-primary text-start">
+                            <b>Market Quote</b>
+                          </p>
+                          <div style="margin-top: 2rem">
+                            <app-ipo-table
+                              [ipo_table_data]="market_quote_table_data"
+                            ></app-ipo-table>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </tr>
+                </tbody>
+              </div>
+
+              <div *ngIf="!table_data.data?.length">
+                <span class="text-center mb-3 funding-detail-no-data"
+                  >No Data Available</span
+                >
+              </div>
+              <tfoot *ngIf="table_data.data?.length">
+                <div class="container-fluid px-0 text-center mt-1">
+                  <pagination-controls
+                    (pageChange)="currentPageDet = $event"
+                    [previousLabel]="labels.previousLabel"
+                    [nextLabel]="labels.nextLabel"
+                    [maxSize]="11"
+                    class="funding-details-pagination"
+                    (click)="handlePaginateClick()"
+                  ></pagination-controls>
+                </div>
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <!--end of modal body-->
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,85 @@
+<div class="backdrop">
+  <div
+    id="alertbox"
+    class="modal sevendayfreetrialpopup-rtda sevendayfreetrialpopup-cm in"
+    tabindex="-1"
+    role="dialog"
+    style="
+      display: block;
+      padding-left: 4px;
+      background-color: rgba(0, 0, 0, 0.5);
+    "
+  >
+    <div class="modal-dialog modal-lg" style="top: 25%">
+      <div class="modal-content">
+        <div class="modal-header text-center">
+          <h5 class="modal-title text-center" id="exampleModalLongTitle">
+            Custom FX Matrix
+          </h5>
+          <button
+            type="button"
+            (click)="auth.expandopendfxmatrix = false"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!--end of modal header-->
+
+        <div class="modal-body text-center">
+          <div class="input-section mb-1">
+            <label class="mr-2" for="templateName ">Matrix Name</label>
+            <input
+              type="text"
+              required
+              id="templateName"
+              placeholder="Matrix Name"
+              [(ngModel)]="customMatrixName"
+            />
+          </div>
+          <div class="currency-container">
+            <div class="left-container">
+              <p class="container-title">Available currency</p>
+              <div
+                *ngFor="let currency of currency_data; index as i"
+                class="currency"
+                (click)="onCurrencySelected(currency, i)"
+              >
+                <p class="label">{{ currency.label && currency.label }}</p>
+                <i
+                  *ngIf="currency.selected"
+                  class="fa fa-check"
+                  aria-hidden="true"
+                ></i>
+              </div>
+            </div>
+            <div class="right-container">
+              <p class="container-title">Selected currency</p>
+              <div
+                *ngFor="let currency of selected_currencies; index as i"
+                class="currency"
+                (click)="removeFromList(currency, i)"
+              >
+                <p class="label">{{ currency.label && currency.label }}</p>
+              </div>
+            </div>
+          </div>
+          <div class="info">
+            <p>*Select upto 7 currencies</p>
+          </div>
+          <div class="footer">
+            <button
+              [disabled]="!customMatrixName ? true : null || disableSaveBtn"
+              (click)="onSelectedCurrency(); auth.expandopendfxmatrix = false"
+              class="button"
+            >
+              Save
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

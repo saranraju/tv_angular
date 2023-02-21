@@ -1,0 +1,97 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <th [ngStyle]="{ width: exchangeTable ? '' : '9rem' }">
+        {{ exchangeTable ? "Currency" : "Indicator" }}
+      </th>
+      <th
+        class="text-end pe-1"
+        [ngStyle]="{ width: exchangeTable ? '5.5rem' : '3.5rem' }"
+      >
+        {{ exchangeTable ? "Currency Code" : "Period" }}
+      </th>
+      <th>
+        <div class="d-flex justify-content-end">
+          <span *ngIf="!ascNumberSort">{{
+            country_exchange_object
+              ? "Currency" +
+                "/" +
+                (country_exchange_object?.sourceCurrencyCode
+                  ? country_exchange_object?.sourceCurrencyCode
+                  : "")
+              : "Value"
+          }}</span>
+          <span *ngIf="ascNumberSort">{{
+            country_exchange_object
+              ? (country_exchange_object?.sourceCurrencyCode
+                  ? country_exchange_object?.sourceCurrencyCode
+                  : "") +
+                "/" +
+                "Currency"
+              : "Value"
+          }}</span>
+          <span *ngIf="exchangeTable"
+            ><img
+              (click)="sortCurrency()"
+              class="sort-icon cursor-pointer"
+              src="/assets/img/exchange-icon.png"
+          /></span>
+        </div>
+      </th>
+    </thead>
+    <tbody [ngStyle]="{ 'max-height': mh }">
+      <div class="trParent" *ngFor="let data of table_data">
+        <tr *ngIf="type == 'countryRiskProfile'">
+          <td style="width: '9rem'">
+            {{ data.agency }}
+          </td>
+          <td class="text-end" style="width: '3.5rem'">
+            <span *ngIf="data.date || data.date == null">
+              {{
+                data.date == "-" || data.date == null
+                  ? "-"
+                  : (data.date | date: "MMM-yy")
+              }}</span
+            >
+          </td>
+          <td>
+            {{ data.rating ? data.rating : "-" }}
+
+            <span *ngIf="data.rating != '-' && data.rating != ''">
+              {{ data.unit == "percent" ? "%" : "(unchanged)" }}
+            </span>
+            <span *ngIf="data.rating == '-' || data.rating == ''"></span>
+          </td>
+        </tr>
+      </div>
+      <div *ngIf="type == 'countryRiskProfile' && table_data.length == 0">
+        <tr *ngFor="let data of country_risk_profile_data_ref">
+          <td style="width: '9rem'">{{ data }}</td>
+          <td class="text-end" style="width: '3.5rem'">
+            <span>-</span>
+          </td>
+          <td>-</td>
+        </tr>
+      </div>
+
+      <div *ngIf="exchangeTable">
+        <tr *ngFor="let data of currency_code_filter">
+          <td
+            style="width: ''; cursor: pointer"
+            (click)="redirectToInteractiveAnalysis(data)"
+          >
+            {{ data.targetCurrencyName }}
+          </td>
+          <td class="text-center" style="width: '5.5rem'">
+            {{ data.targetCurrencyCode ? data.targetCurrencyCode : "-" }}
+          </td>
+          <td>
+            {{ util.standardFormat(data.data, 2, "") }}
+          </td>
+        </tr>
+      </div>
+    </tbody>
+  </table>
+</div>
+
+<br />

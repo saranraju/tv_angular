@@ -1,0 +1,99 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <!-- <th
+          *ngFor="let header of table_header.title; let i = index"
+          [ngStyle]="{
+            cursor: header?.pointer && 'pointer',
+            width: header?.width,
+            display: header?.display,
+            'align-items': header?.alignItems
+          }"
+          (click)="sortByKey(i)"
+          [attr.colspan]="header?.colspan"
+          [attr.rowspan]="header?.rowspan"
+        >
+          {{ header.label }}
+        </th> -->
+        <th
+          *ngFor="let header of headeroftable; let i = index"
+          (click)="sortByKey(header.key, i, header.shorting)"
+        >
+          {{ header.name }}
+          <i
+            *ngIf="i != iconIndex && header?.shorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort"
+          ></i>
+          <i
+            *ngIf="i == iconIndex && shortDown && header?.shorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-down"
+          ></i>
+          <i
+            *ngIf="i == iconIndex && !shortDown && header?.shorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-up"
+          ></i>
+        </th>
+      </tr>
+    </thead>
+    <tbody style="max-height: 400px">
+      <tr *ngFor="let content of table_data">
+        <td>
+          <a
+            class="company_style"
+            [routerLink]="['/financialmarketdata/company']"
+            [queryParams]="{
+              comp_id: content.id,
+              entity_id: content.factSetEntityId,
+              company_name: content.name,
+              currency: content.reportingCurrency,
+              security_id: content.securityId,
+              companyCountry: content.countryCode,
+              entity_type: content.entityType
+            }"
+            target="_blank"
+            >{{ content.name ?? "-" }}</a
+          >
+        </td>
+        <td>{{ content.latestAnnUpdate ?? "-" | date: "MMM-yyyy" }}</td>
+        <td>{{ content.ticsIndustryName ?? "-" }}</td>
+        <td>
+          {{
+            content?.netWorth
+              ? this.util.formatNumberWithCommasCustom(content?.netWorth, 2, "")
+              : "-"
+          }}
+        </td>
+        <td>
+          {{
+            content?.revenue
+              ? this.util.formatNumberWithCommasCustom(content?.revenue, 2, "")
+              : "-"
+          }}
+        </td>
+        <td *ngIf="content.debtEquity != null">
+          {{
+            content?.debtEquity
+              ? this.util.formatNumberWithCommasCustom(
+                  content?.debtEquity,
+                  2,
+                  ""
+                )
+              : "-"
+          }}
+        </td>
+        <td *ngIf="content.debtEquity == null">-</td>
+        <td *ngIf="content.pat != null">
+          {{
+            content?.pat
+              ? this.util.formatNumberWithCommasCustom(content.pat, 2, "")
+              : "-"
+          }}
+        </td>
+        <td *ngIf="content.pat == null">-</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br />

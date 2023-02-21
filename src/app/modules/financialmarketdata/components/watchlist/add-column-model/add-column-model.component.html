@@ -1,0 +1,35 @@
+<!-- The Modal -->
+<div id="myModal" [ngStyle]="{ display: displayStyle }" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close"><i class="fa fa-close" (click)="closePopup()"></i></span>
+      <span>Add/Modify Parameters</span>
+    </div>
+    <div [formGroup]="orderForm">
+      <div formArrayName="items" *ngFor="let item of orderForm.get('items').controls; let i = index;">
+        <div [formGroupName]="i">
+          <div class="modal-body">
+            <div class="row combine_class">
+              <div class="col"><i class="fa fa-close close_icon" (click)="close(i)"></i>{{Column_Name}}</div>
+              <div class="col">
+                <ng-select2 class="selector_class" placeholder="Select column" formControlName="column_name"
+                  [value]="DataValue.id" [data]="DataValue" [options]="optionvalue"
+                  (valueChanged)="onvaluechange($event)">
+                </ng-select2>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+      <div class="row Add_parameter_class">
+        <div>
+          <i class="fa fa-plus"></i><button class="add_parameter_btn" (click)="addItem()">Add Parameters</button>
+        </div>
+      </div>
+      <div class="row save_button_div">
+        <div><button (click)="onSubmit()" class="savechanges_btn">Save Changes</button></div>
+      </div>
+    </div>
+  </div>

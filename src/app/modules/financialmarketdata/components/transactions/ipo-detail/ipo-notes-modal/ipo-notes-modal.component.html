@@ -1,0 +1,26 @@
+<div class="modal p-3">
+  <div class="close cursor-pointer" (click)="ipoModalClose()">
+    <i class="fa fa-times"></i>
+  </div>
+  <div class="modal-content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-12 my-3 modal-title-container">
+          <h4 class="text-center text-primary">
+            IPO Notes
+            <span class="float-end"
+              ><img
+                class="cursor-pointer img-fluid"
+                src="/assets/img/excelDownload.png"
+                alt="excelDownload"
+                (click)="downloadNotes()"
+            /></span>
+          </h4>
+        </div>
+        <div class="col-12">
+          <p class="text-primary fs13" [innerHTML]="notesData"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

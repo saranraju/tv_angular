@@ -1,0 +1,49 @@
+<div class="modal p-2">
+  <div class="modal-dialog-style">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        (click)="tableDialogClose()"
+        autocomplete="new-search"
+      >
+        ×
+      </button>
+      <div class="commodityTable">
+        <table class="w-100 scroll">
+          <thead>
+            <tr>
+              <th
+                *ngFor="let header of table_data.title"
+                [ngStyle]="{ width: header?.width }"
+                [ngClass]="{ 'text-end': header?.align === 'right' }"
+              >
+                {{ header.label }}
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let content of table_data.value">
+              <td
+                *ngFor="let header of table_data.title"
+                [ngStyle]="{ width: header?.width }"
+                [ngClass]="{ 'text-end': header?.align === 'right' }"
+              >
+                <ng-container *ngIf="header?.formattedNum">
+                  {{ this.util.standardFormat(content[header.key], 2, "") }}
+                </ng-container>
+                <ng-container *ngIf="!header?.formattedNum">
+                  {{ content[header.key] }}
+                </ng-container>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <br />
+    </div>
+  </div>
+</div>

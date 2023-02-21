@@ -1,0 +1,60 @@
+.modal {
+  display: block;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.8);
+  transition: opacity 500ms;
+}
+
+.modal-dialog-style {
+  width: 95%;
+  margin: 1.75rem auto;
+}
+
+.modal-header {
+  background: #00071e;
+  color: #fff;
+  padding: 8px 10px;
+}
+
+/* Modal Content */
+.modal-content {
+  background: #fff;
+  width: 100% !important;
+}
+
+.modal-body {
+  max-height: 85vh;
+  overflow: auto;
+}
+
+.data_heading {
+  background: 0;
+  color: white;
+  font-size: 17px;
+  font-weight: bold;
+}
+
+.close {
+  position: absolute;
+  top: -33px;
+  right: 0;
+  color: white;
+  opacity: 1;
+  background: 0;
+  border: 0;
+  font-size: 20px;
+}
+
+.Iframe-Master-CC-and-Rs {
+  width: 100%;
+}
+.close {
+  position: absolute;
+  top: -33px;
+  right: 0;
+  color: white;
+  opacity: 1;
+  background: 0;
+  border: 0;
+  font-size: 20px;
+}

@@ -1,0 +1,37 @@
+<div class="modal p-2">
+  <div class="modal-dialog-style">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        (click)="tableDialogClose()"
+        autocomplete="new-search"
+      >
+        ×
+      </button>
+      <div class="modal-title-container">
+        <span class="modal_title">Company Profile - {{ companyName }}</span>
+        <a [title]="downloadTitle" id="embed-iframe-pdf-1" class="pdf-o">
+          <!-- <i title="Download Company Profile PDF" class="fa fa-file-pdf-o"> </i> -->
+          Download PDF
+        </a>
+      </div>
+      <div class="modal-horizontal-line"></div>
+      <div class="pdf-container">
+        <div class="Iframe-Master-CC-and-Rs">
+          <div class="embed-responsive" style="padding-bottom: 90%">
+            <embed
+              id="embed-iframe-pdf"
+              src=""
+              type="application/pdf"
+              width="100%"
+              height="100%"
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

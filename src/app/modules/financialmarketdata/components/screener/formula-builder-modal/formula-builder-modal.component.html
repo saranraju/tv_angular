@@ -1,0 +1,64 @@
+<div class="modal p-3">
+  <!-- Modal Content -->
+  <div class="modal-content mx-auto">
+    <div class="container-fluid">
+      <div class="row my-4">
+        <h1 class="formula-builder-title text-center">Formula Builder</h1>
+      </div>
+      <div class="row">
+        <div class="col-6">
+          <input
+            class="formula-name-input"
+            type="text"
+            #formulaname
+            placeholder="Formula Name"
+          />
+        </div>
+        <div class="col-6">
+          <ng-select2
+            class="cusSelect2 cusSelect2Normal formula-unit"
+            [data]="selectFormulaUnitData"
+            [value]="selectedFormulaUnit"
+            [placeholder]="'Formula Unit'"
+          ></ng-select2>
+        </div>
+      </div>
+      <div class="row mt-3">
+        <div class="col-12">
+          <div class="container">
+            
+              <mat-form-field class="example-40-width" >
+                <input type="hidden" [formControl]="hiddenCtrl" ngModel>
+                <input type="text"  placeholder="Input Formula Query" #fbuild name="fbuild"
+                  matInput [formControl]="myControl" [matAutocomplete]="auto"
+                   ngModel>
+                <mat-autocomplete autoActiveFirstOption #auto="matAutocomplete"  name="expressionBuild" 
+                 [displayWith]="displayFn.bind(this)">
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option">
+                    {{option}}
+                  </mat-option>
+                </mat-autocomplete>
+              </mat-form-field>
+            
+            </div>
+        </div>
+      </div>
+      <div class="row mt-3 justify-content-end me-2 pe-1">
+        <button
+          (click)="handleCancelBtnClick()"
+          type="button"
+          class="footer-btn active ms-4"
+        >
+          Cancel
+        </button>
+        <button
+          (click)="onSubmit(formulaname.value)"
+          type="button"
+          class="footer-btn active ms-4"
+        >
+          Save
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

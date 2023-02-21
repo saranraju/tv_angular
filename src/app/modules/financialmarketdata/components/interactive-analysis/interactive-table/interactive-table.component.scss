@@ -1,0 +1,111 @@
+.commodityTable {
+  .scroll {
+    overflow: auto;
+  }
+  table {
+    font-weight: 400;
+    font-size: 13px;
+
+    tbody {
+      display: block;
+      overflow-y: auto;
+      overflow-x: hidden;
+      border-bottom: 1px solid #528dc3;
+    }
+
+    thead,
+    tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    th {
+      font-weight: 600;
+      border-top: 1px solid #528dc3;
+      border-bottom: 1px solid #528dc3;
+      color: #ffc000;
+      font-size: 12px;
+      background-color: #00071e !important;
+      padding: 3px 0px;
+      width: 4rem;
+    }
+
+    tr:nth-child(odd) {
+      background-color: #122543;
+    }
+
+    th:first-child,td:first-child {
+      text-align: start;
+    }
+
+    th,td {
+      text-align: end;
+      width: 10rem;
+    }
+
+    td {
+      width: 15rem;
+      padding: 3px 5px;
+      font-size: 12px;
+    }
+
+    td:first-child {
+      color: #ffc000;
+    }
+
+    td:last-child {
+      text-align: end;
+    }
+  }
+}
+
+input[type="radio"] {
+  appearance: none;
+  margin-left: 2rem;
+  font: inherit;
+  color: #ffc000;
+  width: 1.18em;
+  height: 1.18em;
+  border: 0.15em solid #ffc000;
+  border-radius: 50%;
+  display: grid;
+  place-content: center;
+}
+
+input[type="radio"]::before {
+  content: "";
+  width: 0.65em;
+  height: 0.65em;
+  border-radius: 50%;
+  transform: scale(0);
+  transition: 120ms transform ease-in-out;
+  box-shadow: inset 1em 1em #ffc000;
+}
+
+input[type="radio"]:checked::before {
+  transform: scale(1);
+}
+
+.pointer {
+  cursor: pointer;
+}
+
+.hover-effect:hover {
+  color: #23527c;
+}
+
+.custom-tt {
+  text-align: center;
+  color: #ffc000;
+}
+
+.mb-00 {
+  margin-bottom: 0rem !important;
+  font-weight: bolder;
+}
+
+th,
+td {
+  padding: 4px 5px 4px 0px !important;
+}

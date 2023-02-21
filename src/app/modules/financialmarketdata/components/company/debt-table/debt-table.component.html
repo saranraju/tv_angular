@@ -1,0 +1,80 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th rowspan="2" style="width: 175px">Instrument Type</th>
+        <th rowspan="2" style="width: 200px">Instrument Description</th>
+        <th rowspan="2">Issue Date</th>
+        <th rowspan="2">Maturity Date</th>
+        <th rowspan="2">Coupon Type</th>
+        <th rowspan="2">Coupon Index</th>
+        <th style="width: 8rem" colspan="2" class="text-center">Coupon Rate</th>
+        <th rowspan="2" class="text-end">Coupon Spread</th>
+        <th rowspan="2" class="text-end">
+          Issue Amount<br />
+          <span *ngIf="table_data.length != 0"> ({{ currency }} Million) </span>
+        </th>
+        <th rowspan="2" class="text-end">
+          Outstanding Amount<br />
+          <span *ngIf="table_data.length != 0"> ({{ currency }} Million) </span>
+        </th>
+      </tr>
+      <tr>
+        <th style="width: 4rem" class="text-center">Min</th>
+        <th style="width: 4rem" class="text-center">Max</th>
+      </tr>
+    </thead>
+    <tbody>
+      <ng-container *ngIf="table_data.length > 0">
+        <tr *ngFor="let content of table_data; let i = index">
+          <ng-container *ngIf="i < 10">
+            <td style="width: 175px">{{ content.instrumentType }}</td>
+            <td style="width: 200px">{{ content.instrumentDescription }}</td>
+            <td>{{ content.issueDate }}</td>
+            <td>{{ content.maturityDate }}</td>
+            <td>{{ content.couponType }}</td>
+            <td>
+              {{ content.couponIndex ? content.couponIndex : "-" }}
+            </td>
+            <td style="width: 4rem" class="text-center">
+              {{
+                content.couponRateMin === null
+                  ? "-"
+                  : this.util.standardFormat(content.couponRateMin, 2, "") + "%"
+              }}
+            </td>
+            <td style="width: 4rem" class="text-center">
+              {{ content.couponRateMax ? content.couponRateMax : "-" }}
+            </td>
+            <td class="text-center">
+              {{ content.couponSpread ? content.couponSpread : "-" }}
+            </td>
+            <td class="text-end">
+              {{
+                content.issueAmount
+                  ? this.util.standardFormat(content.issueAmount, 2, "")
+                  : "-"
+              }}
+            </td>
+            <td class="text-end">
+              {{
+                content.outstandingAmount
+                  ? this.util.standardFormat(content.outstandingAmount, 2, "")
+                  : "-"
+              }}
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="table_data.length == 0">
+        <tr style="height: 14rem">
+          <td colspan="11" class="text-center" style="color: #fff">
+            No Data Available
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<br />

@@ -1,0 +1,264 @@
+<div class="container-fluid pb-5">
+  <!-- Dropdowns -->
+  <div class="row mt-3">
+    <div class="col-md-3 ps-0">
+      <ng-select2
+        id="screenerStep1"
+        class="cusSelect2 cusSelect2Normal"
+        [placeholder]="'Select Sector'"
+        [data]="sectorData"
+        [value]="selectedSector"
+        (valueChanged)="onValueChanged('Sector', $event)"
+      ></ng-select2>
+    </div>
+    <div class="col-md-3">
+      <ng-select2
+        id="screenerStep2"
+        class="cusSelect2 cusSelect2Normal"
+        [placeholder]="'Select Industry'"
+        [data]="industryData"
+        [value]="selectedIndustry"
+        (valueChanged)="onValueChanged('Industry', $event)"
+      >
+      </ng-select2>
+    </div>
+    <div class="col-md-3">
+      <ng-select2
+        class="cusSelect2 cusSelect2Normal"
+        [data]="countryData"
+        [options]="ngselectoptions"
+        [placeholder]="'Select Country'"
+        (valueChanged)="onValueChanged('Country', $event)"
+      ></ng-select2>
+    </div>
+    <div class="col-md-3 pe-0">
+      <ng-select2
+        class="cusSelect2 cusSelect2Normal"
+        [data]="currencyData"
+        [value]="selectedCurrency"
+        class="cusSelect2 cusSelect2_16rem mb-n14px"
+        [placeholder]="'Select Currency'"
+        (valueChanged)="onValueChanged('Currency', $event)"
+      ></ng-select2>
+    </div>
+  </div>
+  <!-- Metric Sections -->
+  <div class="row mt-3" style="height: 174px">
+    <div class="col-6 ps-0">
+      <div class="col-12 metric-container px-0">
+        <div class="row">
+          <div class="col-12 px-0">
+            <h3 class="m-0 metric-title">Add Metric :</h3>
+          </div>
+        </div>
+        <div
+          class="row"
+          style="position: relative; display: flex; justify-content: start"
+        >
+          <div class="col-5 px-0">
+            <ul class="m-0 metric-list">
+              <li
+                class="metric-list-item"
+                [ngClass]="{
+                  activeMetricTab: metricType === 'Financials'
+                }"
+                (click)="metricChange('Financials')"
+              >
+                Financials
+              </li>
+              <li
+                class="metric-list-item"
+                [ngClass]="{
+                  activeMetricTab: metricType === 'Fundamental Ratios'
+                }"
+                (click)="metricChange('Fundamental Ratios')"
+              >
+                Fundamental Ratios
+              </li>
+              <li
+                class="metric-list-item"
+                [ngClass]="{ activeMetricTab: metricType === 'Price & Volume' }"
+                (click)="metricChange('Price & Volume')"
+              >
+                Price & Volume
+              </li>
+              <li
+                class="metric-list-item"
+                [ngClass]="{
+                  activeMetricTab: metricType === 'Valuation Ratios'
+                }"
+                (click)="metricChange('Valuation Ratios')"
+              >
+                Valuation Ratios
+              </li>
+            </ul>
+          </div>
+          <div class="col-5 px-0 dataBlock">
+            <div class="warning" *ngIf="warning">
+              {{ warning }}
+            </div>
+            <div
+              class="addMetricData"
+              *ngIf="metricSubTypes[metricType] && selectedIndustry"
+            >
+              <div
+                style="cursor: pointer"
+                [class.disabled]="isFieldSelected[item.text]"
+                (click)="addTable(item.text)"
+                *ngFor="let item of metricSubTypes[metricType]"
+              >
+                {{ item.text }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 ps-3 pe-0" style="height: 100%">
+      <div class="col-12 metric-container px-0" style="height: 100%">
+        <div class="row">
+          <div class="col-12 px-0">
+            <h3 class="m-0 metric-title">Edit Metric :</h3>
+            <div
+              style="margin-top: 4px; overflow-y: scroll; max-height: 144px"
+              *ngIf="clickedMetric"
+            >
+              <div *ngFor="let item of Object.keys(isFieldSelected)">
+                <div class="addedMetric">{{ isFieldSelected[item].label }}</div>
+                <div
+                  class="custom-slider ps-1"
+                  *ngIf="
+                    highValueData == 0 || getFucntion(isFieldSelected, item)
+                  "
+                >
+                  <input
+                    class="graphValue"
+                    type="text"
+                    id="minDigitInput{{ isFieldSelected[item].label }}"
+                    value="{{
+                      util.numberWithCommas(isFieldSelected[item].min)
+                    }}"
+                    (keyup)="
+                      onInputValueChange($event, 'min', item, isFieldSelected)
+                    "
+                  />
+                  <ngx-slider
+                    [id]="isFieldSelected[item].key"
+                    [(value)]="isFieldSelected[item].min"
+                    [highValue]="isFieldSelected[item].max"
+                    (highValueChange)="onHighValueChanged($event, item)"
+                    [options]="getOptions(item)"
+                    (valueChange)="getValueData($event, isFieldSelected[item])"
+                    [manualRefresh]="manualRefresh"
+                  >
+                  </ngx-slider>
+                  <input
+                    class="graphValue"
+                    type="text"
+                    id="maxDigitInput{{ isFieldSelected[item].label }}"
+                    value="{{
+                      util.numberWithCommas(isFieldSelected[item].max)
+                    }}"
+                    (keyup)="
+                      onInputValueChange($event, 'max', item, isFieldSelected)
+                    "
+                  />
+                  <div (click)="removeMatric(item)">
+                    <img
+                      class="closeImg"
+                      src="../../../../../assets/img/close.svg"
+                      alt="close"
+                    />
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Result Table Title -->
+  <div class="row mt-3 pt-1 result-container">
+    <div class="col-12 px-0">
+      <p style="display: inline; margin-left: 13px">
+        <span class="result-table-title"
+          >Screener Result ({{
+            filter ? finalScrenerData?.value?.length : resultPages
+          }})</span
+        >
+        |
+        <span (click)="clearall()" class="table-clear-all">Clear All</span>
+      </p>
+      <img
+        (click)="
+          auth.exploreUser
+            ? (auth.openUnavailableExploreModal = true)
+            : auth.userType === 'demo'
+            ? (this.auth.freeTrialAlert = true)
+            : exportexcel()
+        "
+        class="img-fluid excel-img"
+        src="/assets/img/excelDownload.png"
+        alt="excelDownload"
+        [ngClass]="{
+          disableExcelIcon: screener_data.value.length === 0
+        }"
+      />
+    </div>
+  </div>
+  <!-- Result Table -->
+  <div class="row my-3 result-table-height">
+    <app-table
+      [tabValue]="tabValue"
+      [table_data]="finalScrenerData"
+      mh="216px"
+      [isLoading]="isLoading"
+      [selectedIndustry]="selectedIndustry"
+      [selectedCurrency]="selectedCurrency"
+    ></app-table>
+  </div>
+  <!-- Result Entries -->
+  <div class="row">
+    <div class="col-12">
+      <p class="result-entries">
+        Showing {{ finalScrenerData?.value?.length > 0 ? 1 : 0 }} to
+        {{ finalScrenerData?.value ? finalScrenerData?.value?.length : 0 }}
+        of
+        {{ finalScrenerData?.value ? finalScrenerData?.value?.length : 0 }}
+        entries
+        <span *ngIf="filter">
+          (filtered from {{ resultPages }} total entries)
+        </span>
+      </p>
+    </div>
+  </div>
+</div>
+
+<!-- modal Box -->
+<div
+  *ngIf="errorMessage == true"
+  class="modal"
+  tabindex="-1"
+  role="dialog"
+  style="
+    display: block;
+    padding-left: 4px;
+    background-color: rgba(0, 0, 0, 0.5);
+  "
+>
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header d-flex justify-content-end">
+        <i
+          (click)="closePopup()"
+          class="cross fa fa-times"
+          aria-hidden="true"
+        ></i>
+      </div>
+      <div class="modal-body">
+        <p>Data is not available for this metric</p>
+      </div>
+    </div>
+  </div>
+</div>

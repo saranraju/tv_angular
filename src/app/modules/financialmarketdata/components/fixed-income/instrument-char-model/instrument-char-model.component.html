@@ -1,0 +1,266 @@
+<div class="backdrop">
+  <div id="alertbox" class="modal sevendayfreetrialpopup-rtda  sevendayfreetrialpopup-cm in" tabindex="-1" role="dialog"
+    style="display: block; padding-left: 4px;background-color: rgba(0, 0, 0, 0.5);">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle">INSTRUMENT CHARACTERISTICS​</h5>
+          <button type="button" (click)="auth.expandopenPopupModal =false" class="close" data-dismiss="modal"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!--end of modal header-->
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12 mt-4 px-0">
+              <div class="instrument-details">
+                <table class="w-100 fs13">
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Interest Maturity Indicator</span>
+                        <span class="value"> {{ modelInstrumentData?.interest_at_maturity_indicator }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Call Indicator</span>
+                        <span class="value"> {{ modelInstrumentData?.call_indicator }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Accrued Indicator</span>
+                        <span class="value"> {{ modelInstrumentData?.accreting_indicator }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Contingent Interest Indicator</span>
+                        <span class="value"> {{ modelInstrumentData?.contingent_interest_indicator }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Accrued Interest Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.accrued_interest_indicator }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Credit Sensitive Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.interest_at_maturity_indicator }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Capitalized Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.capitalized_indicator }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Defeasance Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.defeasance_indicator }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Compound Interest Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.compound_interest_indicator }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Deferrable Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.deferrable_indicator }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Convertible Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.convertible_indicator }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Other Tax Excempt Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.other_tax_excempt_indicator }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Coupon Inflation Protected</span>
+                        <span class="value">{{ modelInstrumentData?.coupon_inflation_protected }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow"> PIK Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.pik_indicator }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Default Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.coupon_inflation_protected }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Put Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.put_indicator }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">DTC Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.dtc_indicator }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Range Bond Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.range_bond_indicator }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Gross Up Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.gross_up_indicator }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Sink Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.sink_indicator }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">OID Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.oid_indicator }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Tender Exchange Offer Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.tender_exchange_offer_indicator }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Strippable Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.strippable_indicator }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Tips Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.tips_indicator }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Warrants Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.warrants_indicator }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Protect Coupon Against Deflation</span>
+                        <span class="value">{{ modelInstrumentData?.protect_coupon_against_deflation }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Agency Discount Note Ind Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.agency_discount_note_ind_indicator }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Protect Principal Against Deflation</span>
+                        <span class="value">{{ modelInstrumentData?.protect_principal_against_deflation }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Sukuk Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.sukuk_indicator }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Church Bond</span>
+                        <span class="value">{{ modelInstrumentData?.church_bond }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Brady Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.brady_indicator }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">Credit Sensitive Indicator</span>
+                        <span class="value">{{ modelInstrumentData?.credit_sensitive_indicator }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">created At</span>
+                        <span class="value">{{ modelInstrumentData?.created_at }}</span>
+                      </div>
+                    </td>
+                    <td class="pr-2">
+                      <div class="d-flex justify-content-between">
+                        <span class="color-yellow">updated At</span>
+                        <span class="value">{{ modelInstrumentData?.updated_at }}</span>
+                      </div>
+                    </td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--end of modal body-->
+      </div>
+    </div>
+  </div>
+</div>

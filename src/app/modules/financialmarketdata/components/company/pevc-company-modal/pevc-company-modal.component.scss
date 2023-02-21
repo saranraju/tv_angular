@@ -1,0 +1,46 @@
+.modal {
+  display: block;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.8);
+  transition: opacity 500ms;
+}
+
+/* Modal Content */
+.modal-content {
+  background: #00071e !important;
+  padding: 0px 10px !important;
+  width: 100% !important;
+  height: 85% !important;
+  overflow-y: auto;
+}
+
+.modal-title {
+  font-size: 18px;
+  text-align: center;
+  color: #ffc000;
+  text-transform: uppercase;
+}
+
+.close {
+  color: #ffff;
+  float: right;
+  font-size: 17px;
+}
+
+.pevc-search {
+  width: 100% !important;
+  background: #fbe5c6;
+  font-size: 13px !important;
+  border: 1px solid #ffc000 !important;
+  border-radius: 5px !important;
+  padding: 6px 8px 4px;
+}
+
+.icon-search {
+  color: #1f396d;
+  cursor: pointer;
+  position: absolute;
+  right: 25px;
+  top: 8px;
+  font-size: 15px;
+}

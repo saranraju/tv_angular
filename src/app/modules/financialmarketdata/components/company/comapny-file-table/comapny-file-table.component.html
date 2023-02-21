@@ -1,0 +1,45 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <ng-container *ngFor="let header of header_data; let i = index">
+          <th>
+            {{ header }}
+          </th>
+        </ng-container>
+      </tr>
+    </thead>
+    <tbody [ngStyle]="{ 'max-height': mh }">
+      <ng-container *ngIf="table_data.length > 0">
+        <tr *ngFor="let content of table_data; let i = index">
+          <ng-container>
+            <td>{{ content.storyTime }}<br />{{ content.storyDate }}</td>
+            <td>{{ content.formType }}</td>
+            <td
+              class="last_tyle"
+              (click)="downloadProfile(content.key, content.headline, content)"
+            >
+              {{ content.headline }}
+            </td>
+          </ng-container>
+        </tr>
+      </ng-container>
+      <ng-container *ngIf="table_data.length == 0">
+        <tr style="height: 100px">
+          <td colspan="2" class="text-center" style="color: #fff">
+            No Data Available
+          </td>
+        </tr>
+      </ng-container>
+    </tbody>
+  </table>
+</div>
+
+<br />
+
+<ng-container *ngIf="auth.expandViewPdf">
+  <app-file-view-modal
+    [view_pdf]="view_pdf"
+    [data_heading]="data_heading"
+  ></app-file-view-modal>
+</ng-container>

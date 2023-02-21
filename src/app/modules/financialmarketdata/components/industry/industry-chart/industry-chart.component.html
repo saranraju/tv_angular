@@ -1,0 +1,52 @@
+<div class="row graphColumn">
+  <div class="col-4 px-1">
+    <div class="graphIndText">
+      Market Capitalization
+      <span>{{ this.l_graph_currency || this.l_graph_unit ? "(" : "" }}</span
+      ><span>{{ this.l_graph_currency ? this.l_graph_currency : "" }}</span
+      ><span>{{
+        this.l_graph_unit ? " " + this.l_graph_unit?.charAt(0) : ""
+      }}</span
+      ><span>{{ this.l_graph_currency || this.l_graph_unit ? ")" : "" }}</span>
+    </div>
+    <div id="chartdiv" class="industryChart"></div>
+  </div>
+  <div class="col-4 px-1">
+    <div class="graphIndText">
+      Sales/Revenue
+      <span>{{ this.l_graph_currency || this.l_graph_unit ? "(" : "" }}</span
+      ><span>{{ this.l_graph_currency ? this.l_graph_currency : "" }}</span
+      ><span>{{
+        this.l_graph_unit ? " " + this.l_graph_unit?.charAt(0) : ""
+      }}</span
+      ><span>{{ this.l_graph_currency || this.l_graph_unit ? ")" : "" }}</span>
+    </div>
+    <div id="chartdiv2" class="industryChart"></div>
+  </div>
+  <div class="col-4 px-1">
+    <div class="graphIndText">
+      Net Income
+      <span>{{ this.l_graph_currency || this.l_graph_unit ? "(" : "" }}</span
+      ><span>{{ this.l_graph_currency ? this.l_graph_currency : "" }}</span
+      ><span>{{
+        this.l_graph_unit ? " " + this.l_graph_unit?.charAt(0) : ""
+      }}</span
+      ><span>{{ this.l_graph_currency || this.l_graph_unit ? ")" : "" }}</span>
+    </div>
+    <div id="chartdiv3" class="industryChart"></div>
+  </div>
+  <!-- </div>
+<div class="col-12 graphColumn"> -->
+  <div class="col-4">
+    <div class="graphIndText">Return on Equity (%)</div>
+    <div id="chartdiv4" class="industryChart"></div>
+  </div>
+  <div class="col-4">
+    <div class="graphIndText">Return on Assets (%)</div>
+    <div id="chartdiv5" class="industryChart"></div>
+  </div>
+  <div class="col-4">
+    <div class="graphIndText">PBT Margin (%)</div>
+    <div id="chartdiv6" class="industryChart"></div>
+  </div>
+</div>

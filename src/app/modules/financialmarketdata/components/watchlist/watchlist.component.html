@@ -1,0 +1,84 @@
+<div class="customSize">
+  <app-sidebar-watchlist></app-sidebar-watchlist>
+  <div class="row">
+    <!-- <div class="col-1">
+  <button
+  type="button"
+  class="open-sidebar-btn"
+  style="border-radius: 12px"
+  (click)="handleMenuClick()"
+>
+  <i class="fa fa-chevron-right"></i>
+</button>
+</div> -->
+    <!-- <div class="col-11"></div> -->
+    <div class="section">
+      <div class="container">
+        <div class="col-12" class="paragraph" *ngIf="nowatchlist">
+          <p>
+            Create Watchlists to stay updated & informed <br />
+            about your Investments & Interests <br /><br />
+          </p>
+          <p class="para1">You can add:<br /><br /></p>
+          <p>
+            Company, Economy, Commodity, Fixed <br />Income and Derivatives
+            securities<br />to your watchlist
+          </p>
+          <div class="col-md-12 text-center">
+            <button
+              type="button"
+              class="btn btn-warning create-btn"
+              (click)="createwatchlist()"
+            >
+              Create Watchlist
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="row mt-2 justify-content-end">
+        <div class="col-md-2">
+          <div *ngIf="showbar" class="input-group" style="z-index: 1">
+            <ng-select2
+              [data]="currencydata"
+              [placeholder]="'Select Currency'"
+              [value]="selectedcurrecny"
+              (valueChanged)="onCurrencySelect($event)"
+              [options]="options"
+            >
+            </ng-select2>
+          </div>
+        </div>
+      </div>
+
+      <app-news-model></app-news-model>
+      <app-import-watchlist-model></app-import-watchlist-model>
+      <app-table-model-watchlist></app-table-model-watchlist>
+      <app-delete-watchlist></app-delete-watchlist>
+      <app-watchlist-model></app-watchlist-model>
+    </div>
+  </div>
+  <div *ngIf="showWatchlist">
+    <div class="row table1">
+      <div class="col">
+        <app-table-watchlist> </app-table-watchlist>
+      </div>
+    </div>
+    <div class="row table2">
+      <div class="col">
+        <app-portfolio-analysis-table></app-portfolio-analysis-table>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="showportfoliotables" class="row">
+    <div class="col">
+      <app-both-portfolio></app-both-portfolio>
+    </div>
+  </div>
+  <div class="custom_cls_1">
+    <button type="button" class="open-sidebar-btn" (click)="handleMenuClick()">
+      <i class="fa fa-chevron-right"></i>
+    </button>
+  </div>
+</div>

@@ -1,0 +1,68 @@
+<div class="pt-0 pb-4 mt-3" *ngIf="!auth.openTermsModal">
+  <div
+    class="top-section mb-3 d-flex justify-content-between align-items-center"
+  >
+    <h5>Exchange Dashboard</h5>
+    <div class="d-flex flex-column">
+      <!-- <div class="d-flex justify-content-end">
+        <label class="d-flex align-items-center">
+          <input
+            type="radio"
+            name="type"
+            value="public Company"
+            [checked]="true"
+          />
+          <span class="label-span ml-2">public Company</span>
+        </label>
+        <label class="d-flex align-items-center ml-3">
+          <input type="radio" name="type" value="Private Company" />
+          <span class="label-span ml-2">Private Company</span>
+        </label>
+      </div> -->
+      <div class="end-section">
+        <span class="label text-primary">Currency</span>
+        <ng-select2
+          class="cusSelect2 cusSelect2_5rem ml-2"
+          placeholder="Select Currency"
+        ></ng-select2>
+        <ng-select2
+          class="cusSelect2 cusSelect2_10rem ml-2"
+          placeholder="Select Company"
+        ></ng-select2>
+      </div>
+    </div>
+  </div>
+  <div class="body-section mb2">
+    <div class="d-flex align-items-center justify-content-between">
+      <ng-select2
+        class="cusSelect2 cusSelect2_20rem ml-2"
+        placeholder="Select Exchange"
+      ></ng-select2>
+      <div class="custom-slider">
+        <label class="label mt-3 mr-3"
+          >Market Capitalization (INR Million)</label
+        >
+        <input class="graphValue mr-3" type="text" placeholder="min" />
+        <ngx-slider
+          [(value)]="value"
+          [(highValue)]="maxValue"
+          [options]="options"
+        ></ngx-slider>
+        <input class="graphValue mx-3" type="text" placeholder="max" />
+      </div>
+    </div>
+  </div>
+  <div class="table-section">
+    <app-exchange-expandable-table
+      (exchange_detail)="exchangeDetailFn($event)"
+      [tableData]="tableData"
+      [pagination]="true"
+      [totalResultCount]="15"
+    ></app-exchange-expandable-table>
+  </div>
+</div>
+
+<!-- Exchange Detail -->
+<div *ngIf="auth.openTermsModal">
+  <app-exchange-dashboard-detail></app-exchange-dashboard-detail>
+</div>

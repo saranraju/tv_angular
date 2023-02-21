@@ -1,0 +1,95 @@
+.text-primary {
+  color: #ffc000 !important;
+}
+
+.bond-summer-info {
+  p {
+    font-size: 12px;
+
+    b {
+      font-weight: 400;
+    }
+  }
+}
+
+.cds-editcomparable {
+  width: 170px;
+  position: absolute;
+  top: -31px;
+  left: 0;
+}
+
+.cds-editcomparable i,
+.reset i {
+  position: absolute;
+  top: 5px;
+  cursor: pointer;
+  right: -22px;
+}
+
+.editbtn-cds {
+  position: absolute;
+  top: 0;
+  left: 200px;
+}
+
+.editbtn-cds {
+  background: #fbe5c6;
+  color: #333;
+  width: 56px;
+  font-size: 12px;
+  padding: 2px 4px 1px 4px;
+  border: 1px solid #ffc000;
+  border-radius: 3px;
+  font-style: normal;
+  cursor: pointer;
+}
+
+.editbtn-cds i {
+  padding-left: 4px;
+  padding-top: 4px;
+  line-height: 10px;
+  float: right;
+  position: absolute;
+  right: 3px;
+  top: 1px;
+}
+
+.reset {
+  position: absolute;
+  left: 270px;
+  top: 0;
+}
+
+.reset {
+  background: #fbe5c6;
+  color: #333;
+  width: 56px;
+  font-size: 12px;
+  padding: 2px 4px 1px 4px;
+  border: 1px solid #ffc000;
+  border-radius: 3px;
+  font-style: normal;
+  cursor: pointer;
+}
+
+.reset i {
+  position: absolute;
+  top: 5px;
+  cursor: pointer;
+  right: 3px;
+}
+
+.bondsChart {
+  width: 100%;
+  height: 300px;
+  max-width: 100%;
+}
+
+.tableCol6Border.space13::after {
+  width: calc(100% - 13px);
+}
+
+.tableCol6Border.space24::after {
+  width: calc(100% - 24px);
+}

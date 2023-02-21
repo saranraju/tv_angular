@@ -1,0 +1,137 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th
+          *ngFor="let header of table_header.title; let i = index"
+          [ngStyle]="{
+            cursor: header?.pointer && 'pointer',
+            width: header?.width,
+            display: header?.display,
+            'align-items': header?.alignItems
+          }"
+          (click)="sortByKey(i, header?.field)"
+          [attr.colspan]="header?.colspan"
+          [attr.rowspan]="header?.rowspan"
+        >
+          {{ header.label }}
+          <span>
+            <i
+              *ngIf="i != iconIndex && header?.shorting"
+              class="shortIconColor icon-position-switch position-relative ms-1 fa fa-solid fa-sort"
+              [ngStyle]="{ left: header?.left }"
+            ></i>
+            <i
+              *ngIf="i == iconIndex && shortDown && header?.shorting"
+              class="shortIconColor icon-position-switch ms-1 position-relative fa fa-solid fa-sort-down"
+              [ngStyle]="{ left: header?.left }"
+            ></i>
+            <i
+              *ngIf="i == iconIndex && !shortDown && header?.shorting"
+              [ngStyle]="{ left: header?.left }"
+              class="shortIconColor icon-position-switch position-relative ms-1 fa fa-solid fa-sort-up"
+            ></i>
+          </span>
+        </th>
+      </tr>
+    </thead>
+    <tbody [ngStyle]="{ 'max-height': mh }">
+      <tr *ngFor="let content of table_data">
+        <td (click)="compartableSelectedRow(content)">
+          <a class="underline">
+            {{
+              !type
+                ? content.description +
+                  " | " +
+                  content.maturity_date +
+                  " | " +
+                  content.industry_lvl_1_desc?.toUpperCase() +
+                  " | " +
+                  content.maturity_type +
+                  "Bonds"
+                : content?.cdsDataDetails?.entityName +
+                  " | " +
+                  content.maturity_date +
+                  " | " +
+                  content?.cdsDataDetails?.currency +
+                  "|" +
+                  content?.cdsDataDetails?.restructuringType +
+                  "|" +
+                  content?.cdsDataDetails?.seniority?.toUpperCase()
+            }}
+          </a>
+        </td>
+        <td>
+          {{
+            !type
+              ? content.industry_lvl_1_desc
+              : content?.cdsDataDetails?.tenor + " Y"
+          }}
+        </td>
+        <td>
+          {{
+            !type
+              ? content.country_name ?? "-"
+              : content?.cdsDataDetails?.currency
+          }}
+        </td>
+        <td>
+          {{
+            !type
+              ? content.iso_currency_code
+                ? content.iso_currency_code
+                : "-"
+              : content.par_spread_mid
+              ? util?.standardFormat(content?.par_spread_mid, 2, "")
+              : "-"
+          }}
+        </td>
+        <td>
+          {{
+            !type
+              ? content.effective_duration
+                ? util?.standardFormat(content.effective_duration, 2, "")
+                : "-"
+              : content.quote_spread_bid
+              ? util?.standardFormat(content?.quote_spread_bid, 2, "")
+              : "-"
+          }}
+        </td>
+        <td>
+          {{
+            !type
+              ? content.yield_to_maturity
+                ? util?.standardFormat(content.yield_to_maturity, 2, "")
+                : "-"
+              : content.up_front_bid
+              ? util?.standardFormat(content?.up_front_bid, 2, "")
+              : "-"
+          }}
+        </td>
+        <td>
+          {{
+            !type
+              ? content.modified_duration
+                ? util?.standardFormat(content.modified_duration, 2, "")
+                : "-"
+              : content.hazard_rate
+              ? util?.standardFormat(content?.hazard_rate, 2, "")
+              : "-"
+          }}
+        </td>
+        <td *ngIf="type">
+          {{
+            content.cum_probability_of_default
+              ? util?.standardFormat(content?.cum_probability_of_default, 2, "")
+              : "-"
+          }}
+        </td>
+        <td *ngIf="type">
+          {{ content?.sector }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br />

@@ -1,0 +1,42 @@
+.modal-content {
+    pointer-events: auto;
+    width: 65%;
+    height: 350px;
+    margin-left: 22%;
+    background-color: rgb(92, 91, 91);
+    position: absolute;
+    z-index: 1;
+  }
+  .impfile-btn {
+    background-color: #fec000;
+    width: 67px;
+    margin-top: 5%;
+    outline: #fec000;
+    border-radius: 2px;
+    font-size: small;
+    font-weight: bold;
+    padding: 5px 0px;
+    border-color: #fec000;
+    border: none;
+    margin-left: 125px;
+  }
+  .importfile {
+    width: 90%;
+    margin-left: 15px;
+    font-size: small;
+  }
+  .imp-p {
+    color: #fec000;
+    margin-left: 5px;
+    margin-top: 6px;
+    font-size: 14px;
+  }
+  .note {
+    text-align: center;
+    margin-top: 136px;
+    font-size: 13px;
+  }
+  .fa-times{
+    position: absolute;
+    margin-top: 6px;
+  }

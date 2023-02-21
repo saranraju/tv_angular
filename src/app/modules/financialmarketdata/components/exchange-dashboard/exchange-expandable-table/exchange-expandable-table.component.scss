@@ -1,0 +1,129 @@
+table {
+  font-weight: 400;
+  tbody {
+    display: block;
+    overflow-y: auto;
+    // border-bottom: 1px solid #528dc3;
+  }
+
+  thead,
+  tbody tr {
+    display: table;
+    width: 100%;
+    table-layout: fixed;
+  }
+
+  th {
+    font-weight: 600;
+    text-align: center;
+    color: #ffc000;
+    font-size: 12px !important;
+    background-color: #00071e !important;
+    padding: 7px 5px;
+  }
+
+  td {
+    text-align: center;
+    padding: 7px 5px;
+    font-size: 12px !important;
+  }
+  tbody:nth-child(odd) {
+    tr {
+      background-color: #122543;
+    }
+  }
+  .background_accordin {
+    background-color: #00071e !important;
+    font-size: 13px !important;
+  }
+
+  td:first-child {
+    color: #ffc000;
+  }
+}
+
+.fa {
+  font-size: 1rem;
+  color: #ffc000;
+}
+
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+th:first-child,
+td:first-child {
+  text-align: start !important;
+  .flex-center {
+    justify-content: start;
+  }
+}
+
+.headerBorder {
+  border-top: 1px solid #528dc3;
+  border-bottom: 1px solid #528dc3;
+}
+
+.bottomBorder {
+  border-bottom: 1px solid #528dc3;
+}
+
+.cus-pagination {
+  font-family: "Lucida Sans" !important;
+  font-size: 12px;
+  color: #ffc000 !important;
+}
+
+.search_result {
+  cursor: pointer;
+  word-wrap: break-word;
+  margin: 0px 10px;
+
+  &:hover {
+    background-color: #ebd4b4;
+  }
+}
+
+::ng-deep iframe {
+  min-height: 25rem !important;
+}
+
+.diffbtn {
+  background: transparent;
+  font-size: 13px;
+  color: #fec134;
+  padding: 5px 7px;
+  border: 1px solid #fec134;
+}
+
+.active {
+  background: #fec134;
+  color: black;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.inside-table {
+  h5 {
+    font-size: 15px;
+    color: #fec134;
+    margin: 0;
+  }
+  .fa {
+    color: white;
+  }
+}
+
+.cdk-drop-list-dragging .cdk-drag {
+  transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+
+.cdk-drag-preview {
+  box-sizing: border-box;
+  border-radius: 4px;
+  box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
+    0 8px 10px 1px rgba(0, 0, 0, 0.14), 0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  padding: 4px;
+}

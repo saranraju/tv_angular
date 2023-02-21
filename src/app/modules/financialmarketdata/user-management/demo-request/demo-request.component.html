@@ -1,0 +1,257 @@
+<div class="demo-request-page-container">
+  <app-user-management-header></app-user-management-header>
+  <section class="demo-request-container">
+    <div class="container-fluid">
+      <div class="row text-center">
+        <div class="col-12 mt-4">
+          <h2 class="demo-request-title">Online Demo Request</h2>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-12">
+          <form
+            [formGroup]="demoForm"
+            (ngSubmit)="demoAccess(demoForm.valid, demoForm.value)"
+            class="demo-request-form-container"
+          >
+            <div class="row">
+              <div class="col-12 px-0">
+                <!-- Product Type -->
+                <div class="row mt-1 d-flex align-items-start">
+                  <div class="col-4 px-0">
+                    <label for="product-type">Product Type *</label>
+                  </div>
+                  <div class="col-8 px-0">
+                    <div class="row">
+                      <div class="col-6 px-0 custom-width-check">
+                        <div class="form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            formControlName="creditWorkflow"
+                          />
+                          <label class="form-check-label"
+                            >Credit Workflow Manager</label
+                          >
+                        </div>
+                      </div>
+                      <div class="col-6 px-0 custom-width-check-1">
+                        <div class="form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            formControlName="financialMarket"
+                            [checked]="true"
+                          />
+                          <label class="form-check-label"
+                            >Financial Market Data</label
+                          >
+                        </div>
+                      </div>
+                    </div>
+                    <div class="row">
+                      <div class="col-6 px-0 custom-width-check">
+                        <div class="form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            formControlName="realTimeData"
+                          />
+                          <label class="form-check-label"
+                            >Real Time Data Analytics</label
+                          >
+                        </div>
+                      </div>
+                      <div class="col-6 px-0 custom-width-check-1">
+                        <div class="form-check form-check-inline">
+                          <input
+                            class="form-check-input"
+                            type="checkbox"
+                            formControlName="benchmark"
+                          />
+                          <label class="form-check-label">Benchmark</label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Name -->
+                <div class="row my-3 d-flex align-items-center">
+                  <div class="col-4 px-0">
+                    <label for="name">Name *</label>
+                  </div>
+                  <div class="col-8 px-0">
+                    <input
+                      class="form-control form-control-sm shadow-none"
+                      type="text"
+                      formControlName="userName"
+                    />
+                  </div>
+                </div>
+                <!-- Organisation Name -->
+                <div class="row my-3 d-flex align-items-center">
+                  <div class="col-4 px-0">
+                    <label for="org-name">Organisation Name *</label>
+                  </div>
+                  <div class="col-8 px-0">
+                    <input
+                      class="form-control form-control-sm shadow-none"
+                      type="text"
+                      formControlName="orgName"
+                    />
+                  </div>
+                </div>
+                <!-- Phone Number -->
+                <div class="row my-3 d-flex align-items-center">
+                  <div class="col-4 px-0">
+                    <label for="phone-number">Phone Number *</label>
+                  </div>
+                  <div class="col-3 ps-0">
+                    <ng-select2
+                      class="countryCodeSelect cusSelect2 cusSelect2Normal"
+                      [data]="countryCodeData"
+                      [placeholder]="'Country Code'"
+                      formControlName="countryCode"
+                    ></ng-select2>
+                  </div>
+                  <div class="col-5 pe-0">
+                    <input
+                      class="form-control form-control-sm shadow-none"
+                      type="text"
+                      formControlName="phoneNumber"
+                    />
+                  </div>
+                </div>
+                <!-- Email Address -->
+                <div class="row my-3 d-flex align-items-center">
+                  <div class="col-4 px-0">
+                    <label for="email">Email Address *</label>
+                  </div>
+                  <div class="col-8 px-0">
+                    <input
+                      class="form-control form-control-sm shadow-none"
+                      type="email"
+                      formControlName="userEmail"
+                    />
+                  </div>
+                </div>
+                <!-- Country -->
+                <div class="row my-3 d-flex align-items-center">
+                  <div class="col-4 ps-0">
+                    <label for="product-type"
+                      >Country (For country specific time-slot) *</label
+                    >
+                  </div>
+                  <div class="col-8 px-0">
+                    <ng-select2
+                      class="countryCodeSelect cusSelect2 cusSelect2Normal"
+                      [data]="countryData"
+                      [placeholder]="'Select Country'"
+                      formControlName="country"
+                    ></ng-select2>
+                  </div>
+                </div>
+                <!-- Date -->
+                <div class="row my-3 d-flex align-items-center">
+                  <div class="col-4 px-0">
+                    <label for="product-type">Date *</label>
+                  </div>
+                  <div class="col-8 px-0">
+                    <input
+                      class="form-control form-control-sm shadow-none"
+                      type="date"
+                      [min]="currentDate"
+                      formControlName="date"
+                    />
+                  </div>
+                </div>
+                <!-- Zipcode -->
+                <div class="row my-3 d-flex align-items-center">
+                  <div class="col-4 px-0">
+                    <label for="zip-code">Zipcode *</label>
+                  </div>
+                  <div class="col-8 px-0">
+                    <input
+                      class="form-control form-control-sm shadow-none"
+                      type="text"
+                      placeholder="Zip Code"
+                      formControlName="zipCode"
+                    />
+                  </div>
+                </div>
+                <!-- Timeslot -->
+                <div class="row mt-3 d-flex align-items-center">
+                  <div class="col-4 px-0">
+                    <label for="zip-code">Time Slot *</label>
+                  </div>
+                  <div class="col-8 px-0">
+                    <ng-select2
+                      class="countryCodeSelect cusSelect2 cusSelect2Normal"
+                      [data]="timeSlotData"
+                      [placeholder]="'Select Time Slot'"
+                      formControlName="timeSlot"
+                    ></ng-select2>
+                  </div>
+                </div>
+                <!-- * message -->
+                <div class="row mt-2 d-flex align-items-center">
+                  <div class="col-4 px-0"></div>
+                  <div class="col-8 px-0">
+                    <p>Items marked with * are mandatory</p>
+                  </div>
+                </div>
+                <!-- Buttons -->
+                <div class="row mb-3 d-flex align-items-center">
+                  <div class="col-4 px-0"></div>
+                  <div class="col-8 px-0">
+                    <button type="submit" class="form-btn">Request Demo</button>
+                    <button
+                      type="button"
+                      [routerLink]="['/']"
+                      class="form-btn ms-2"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer class="container-fluid telFooter">
+    <div class="row">
+      <div class="col-sm-4">
+        <p class="mb-0 px-3">
+          Copyright © 2022 Televisory <span class="px-1">|</span> All Rights
+          Reserved
+        </p>
+      </div>
+      <div class="col-sm-8">
+        <ul class="mb-0 text-white">
+          <li class="">
+            <a href="https://televisory.com/terms-of-use">Terms of Use</a>
+          </li>
+          <li class="">
+            <a href="https://televisory.com/terms-of-access">Terms of Access</a>
+          </li>
+          <li class="">
+            <a href="https://televisory.com/policy">Privacy Policy</a>
+          </li>
+          <li class="">
+            <a href="https://televisory.com/sitemap">Site map </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</div>
+
+<app-form-alert-model
+  *ngIf="auth.closeInsidePopup"
+  [alertmsg]="alertmsg"
+  [type]="demotype"
+></app-form-alert-model>

@@ -1,0 +1,137 @@
+<!-- The Modal -->
+<div id="myModal" [ngStyle]="{ display: displayStyle }" class="modal">
+  <!-- Modal content -->
+  <div class="modal-content">
+    <div class="modal-header">
+      <span class="close"
+        ><i class="fa fa-close" (click)="closePopup()"></i
+      ></span>
+      <span>Confirm and edit tickers</span>
+    </div>
+    <div class="modal-body mt-4">
+      <div class="row table-row-class">
+        <div class="col">
+          <div class="watchlist-table">
+            <table class="w-100 scroll">
+              <thead>
+                <tr cdkDropList cdkDropListOrientation="horizontal">
+                  <th
+                    cdkDrag
+                    cdkDragHandle
+                    *ngFor="let header of table_data.title; let i = index"
+                    [ngStyle]="{
+                      width: header?.width,
+                      'text-align': header.headerAlign
+                        ? header?.headerAlign
+                        : header?.align,
+                      cursor: header?.pointer && 'pointer',
+                      display: 'header?.header_none'
+                    }"
+                  >
+                    {{ header.label }}
+                    <span *ngIf="header?.checkbox">
+                      <label class="container">
+                        <input
+                          type="checkbox"
+                          val="checked"
+                          (change)="onHeaderChecked($event)"
+                          #headerCheckBox
+                        />
+                        <span class="checkmark"></span>
+                      </label>
+                    </span>
+                    <!-- <i
+                          *ngIf="i != iconIndex && header?.shorting"
+                          class="ms-1 fa fa-sort"
+                        ></i>
+                        <i
+                          *ngIf="i == iconIndex && shortDown && header?.shorting"
+                          class="ms-1 fa fa-solid fa-long-arrow-down"
+                        ></i>
+                        <i
+                          *ngIf="i == iconIndex && !shortDown && header?.shorting"
+                          class="ms-1 fa fa-solid fa-long-arrow-up"
+                        ></i> -->
+                  </th>
+                </tr>
+              </thead>
+              <tbody
+                [ngStyle]="{ 'max-height': mh }"
+                [ngClass]="
+                  fixedHeight === 'ipo'
+                    ? 'fixedheight'
+                    : !display_none
+                    ? 'border-btm'
+                    : ''
+                "
+              >
+                <tr
+                  *ngFor="
+                    let content of table_data.value
+                      | paginate
+                        : {
+                            itemsPerPage: itemsPerPage,
+                            currentPage: currentPageSelected
+                          }
+                  "
+                >
+                  <td
+                    *ngFor="
+                      let header of table_data.title;
+                      let i = index;
+                      let last = last
+                    "
+                    [title]="titlevalue"
+                  >
+                    {{
+                      header.formattedNum
+                        ? util?.standardFormat(content[header.key], 2, "")
+                        : content[header.key]
+                    }}
+                    <span *ngIf="header?.checkbox">
+                      <label class="container">
+                        <input
+                          type="checkbox"
+                          [checked]="false"
+                          #allCheckBox
+                          (change)="Onuncheck($event)"
+                        />
+                        <span class="checkmark"></span>
+                      </label>
+                    </span>
+                  </td>
+                </tr>
+                <tr *ngIf="!table_data.value?.length">
+                  <p class="text-center my-2">No Data Available</p>
+                </tr>
+              </tbody>
+              <tfoot>
+                <!-- <div class="container-fluid px-0 text-center mt-1">
+                        <pagination-controls> </pagination-controls>
+                      </div> -->
+              </tfoot>
+            </table>
+          </div>
+        </div>
+        <div class="row mt-2">
+          <div class="col-2"><button class="delete_btn">Delete</button></div>
+          <div class="col-9">
+            <span class="switch_text">
+              <label class="switch">
+                <input type="checkbox" />
+                <span class="slider round"></span>
+              </label>
+              Show only unvalidated entries</span
+            >
+          </div>
+          <div class="col-1">
+            <button class="import_btn" (click)="importData()">Import</button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <span> </span>
+      </div>
+    </div>
+  </div>
+</div>

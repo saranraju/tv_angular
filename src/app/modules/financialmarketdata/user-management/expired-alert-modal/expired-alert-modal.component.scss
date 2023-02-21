@@ -1,0 +1,65 @@
+.modal-dialog {
+  background: #00071e;
+  transition: opacity 500ms;
+  transform: translate(0, 0);
+  width: 560px;
+  border-radius: 10px;
+}
+
+.modal-content {
+  background: #00071e;
+  color: black;
+}
+
+.modal-header {
+  border-bottom: none !important;
+}
+
+.text-primary {
+  color: #ffc000 !important;
+}
+.modal-body {
+  position: relative;
+  padding: 15px;
+  color: #665f5f;
+}
+
+.modal-footer {
+  padding: 15px;
+  text-align: right;
+  border-top: 1px solid #e5e5e5;
+}
+
+.content-body {
+  font-size: 20px;
+  color: #ffc000;
+  text-align: center;
+  margin-bottom: 30px;
+  font-weight: normal;
+  margin-top: 30px;
+}
+
+.close {
+  color: white !important;
+  font-size: 21px;
+  font-weight: bold;
+  line-height: 1;
+  text-shadow: 0 1px 0 white;
+}
+
+button.close {
+  padding: 0;
+  cursor: pointer;
+  background: transparent;
+  border: 0;
+  color: black;
+  margin-right: 0.1rem;
+}
+
+.trail-equibase-pop {
+  text-decoration: underline !important;
+}
+
+.trail-equibase-pop:hover {
+  color: #ffc000 !important;
+}

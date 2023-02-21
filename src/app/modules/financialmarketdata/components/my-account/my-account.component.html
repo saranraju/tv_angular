@@ -1,0 +1,175 @@
+<div class="container-fluid my-acc-container">
+  <div *ngIf="message" class="alert alert-secondary" role="alert">
+    {{ message }}
+  </div>
+  <div class="row d-flex justify-content-between">
+    <div class="col-8 ps-0 your-transaction-container">
+      <div class="row">
+        <div class="col-12">
+          <h2 class="your-transaction-title">Your Transaction</h2>
+        </div>
+      </div>
+      <div class="row my-2">
+        <div class="col-12 ps-3 my-acc-table">
+          <table>
+            <thead class="mb-1">
+              <th
+                *ngFor="let header of table_data.title; let i = index"
+                [ngStyle]="{
+                  width: header?.width
+                }"
+                (click)="sortByKey(header.key, i, header.sorting)"
+              >
+                {{ header.label }}
+                <span>
+                  <i
+                    *ngIf="i != iconIndex && header?.sorting"
+                    class="sort-icon fa fa-solid fa-sort"
+                  ></i>
+                  <i
+                    *ngIf="i == iconIndex && shortDown && header?.sorting"
+                    class="sort-icon fa fa-solid fa-sort-down"
+                  ></i>
+                  <i
+                    *ngIf="i == iconIndex && !shortDown && header?.sorting"
+                    class="sort-icon fa fa-solid fa-sort-up"
+                  ></i>
+                </span>
+              </th>
+            </thead>
+            <tbody style="color: #000">
+              <tr
+                *ngFor="
+                  let content of table_data.value
+                    | paginate
+                      : {
+                          itemsPerPage: 1,
+                          currentPage: selectedPage,
+                          id: 'first'
+                        }
+                "
+              >
+                <td
+                  *ngFor="let header of table_data.title"
+                  [ngStyle]="{
+                    width: header?.width,
+                    color: header?.color
+                  }"
+                >
+                  {{ content[header.key] }}
+                </td>
+              </tr>
+            </tbody>
+            <tfoot *ngIf="table_data.value?.length">
+              <div class="container-fluid px-0 text-center mt-1">
+                <pagination-controls
+                  id="first"
+                  (pageChange)="selectedPage = $event"
+                  [previousLabel]="labels.previousLabel"
+                  [nextLabel]="labels.nextLabel"
+                  class="my-acc-pagination"
+                ></pagination-controls>
+              </div>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+    <!-- Mobile View -->
+    <div class="col-12 your-transaction-container-mobile">
+      <div class="row">
+        <div class="col-12 ps-0">
+          <h2 class="your-transaction-title">Your Transaction</h2>
+        </div>
+      </div>
+      <div class="row ms-2 mt-1 transaction-list-container">
+        <div class="col-6 py-2">
+          <ul class="transaction-list">
+            <li
+              class="transaction-list-item transaction-list-label-item"
+              *ngFor="let header of table_data.title"
+            >
+              {{ header.label }}
+            </li>
+          </ul>
+        </div>
+        <div class="col-6 py-2">
+          <ul
+            class="transaction-list"
+            *ngFor="
+              let content of table_data.value
+                | paginate
+                  : {
+                      itemsPerPage: 1,
+                      currentPage: selectedPage,
+                      id: 'second'
+                    }
+            "
+          >
+            <li
+              class="transaction-list-item"
+              *ngFor="let header of table_data.title"
+            >
+              {{ content[header.key] }}
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="row" *ngIf="table_data.value?.length">
+        <div class="container-fluid px-0 text-center mt-1">
+          <pagination-controls
+            id="second"
+            (pageChange)="selectedPage = $event"
+            [previousLabel]="labels.previousLabel"
+            [nextLabel]="labels.nextLabel"
+            class="my-acc-pagination"
+          ></pagination-controls>
+        </div>
+      </div>
+    </div>
+    <div class="col-4 change-pass-container">
+      <form
+        [formGroup]="myAccForm"
+        (ngSubmit)="myAccAccess(myAccForm.valid, myAccForm.value)"
+      >
+        <div class="row">
+          <h2 class="your-transaction-title ps-0">Change Password</h2>
+        </div>
+        <div class="row my-2">
+          <div class="col-12">
+            <input
+              class="form-control shadow-none"
+              type="password"
+              placeholder="New Password"
+              formControlName="password"
+            />
+          </div>
+        </div>
+        <div class="row mt-3">
+          <div class="col-12">
+            <input
+              class="form-control shadow-none"
+              type="password"
+              placeholder="Confirm Password"
+              formControlName="rePassword"
+            />
+          </div>
+        </div>
+        <div class="row mt-1">
+          <p class="pass-condition">
+            Choose a Password of minimum 6 characters including both alphabets
+            and number
+          </p>
+        </div>
+        <div class="row mb-2">
+          <button class="save-btn" type="submit">Save</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<app-form-alert-model
+  *ngIf="auth.closeInsidePopup"
+  [alertmsg]="alertmsg"
+></app-form-alert-model>

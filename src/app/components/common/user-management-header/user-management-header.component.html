@@ -1,0 +1,158 @@
+<div *ngIf="mobileOverlay" class="mobile-body-overlay"></div>
+<header class="header-section">
+  <div class="row bg-white py-1">
+    <div class="col-3 d-flex justify-content-between align-items-center">
+      <img
+        [routerLink]="['/']"
+        src="../../../../assets/img/logo.png"
+        alt="Logo"
+        class="logo cursor-pointer img-fluid"
+      />
+      <span class="fa fa-bars menu-icon"></span>
+    </div>
+    <div class="col-9 d-flex align-items-center justify-content-end">
+      <span class="responsive-menu">
+        <i
+          id="mobile-menu"
+          class="fa fa-bars responsive-menu"
+          (click)="onClickResponsiveMenu()"
+          aria-hidden="true"
+        ></i>
+      </span>
+      <ul id="menu" class="user-dropdown-menu mb-0">
+        <i
+          class="fa fa-times close-icon"
+          (click)="onClickResponsiveMenu()"
+          aria-hidden="true"
+        ></i>
+        <li
+          (click)="navigateToSection('home')"
+          [ngClass]="{
+            active: sectionTab == 'home'
+          }"
+        >
+          <a (click)="sectionActive('home')">Home</a>
+        </li>
+        <li
+          (click)="navigateToSection('aboutUS')"
+          [ngClass]="{
+            active: sectionTab == 'aboutUS'
+          }"
+        >
+          <a (click)="sectionActive('aboutUS')">About Us</a>
+        </li>
+        <li
+          (click)="navigateToSection('product')"
+          [ngClass]="{
+            active: sectionTab == 'product'
+          }"
+        >
+          <a (click)="sectionActive('product')">Products</a>
+        </li>
+        <li
+          (click)="navigateToSection('contact')"
+          [ngClass]="{
+            active: sectionTab == 'contact'
+          }"
+        >
+          <a (click)="sectionActive('contact')">Contacts Us</a>
+        </li>
+        <li
+          [ngClass]="{
+            active: sectionTab == 'login'
+          }"
+        >
+          <a
+            (click)="isOpen = !isOpen"
+            cdkOverlayOrigin
+            #trigger="cdkOverlayOrigin"
+          >
+            Login
+            <ng-template
+              cdkConnectedOverlay
+              [cdkConnectedOverlayOrigin]="trigger"
+              [cdkConnectedOverlayOpen]="isOpen"
+            >
+              <ul class="dropdown">
+                <span>
+                  <span>
+                    <h4>Login <i class="fa fa-lock" aria-hidden="true"></i></h4>
+                    <b></b>
+                    <h3>Select Your Services</h3>
+                    <a
+                      class="cursor-pointer text-decoration-none text-white"
+                      (click)="navigateHomeRoute()"
+                      >Financial Market Data</a
+                    >
+                    <a
+                      class="cursor-pointer text-decoration-none text-white"
+                      href="https://dataanalytics.televisory.com/login?serviceType=RTDA"
+                      target="_blank"
+                      >Real Time Data Analytics</a
+                    >
+                    <a
+                      class="cursor-pointer text-decoration-none text-white"
+                      href="https://dataanalytics.televisory.com/login?serviceType=loan"
+                      target="_blank"
+                      >Corporate Loan Application</a
+                    >
+                    <a
+                      class="cursor-pointer text-decoration-none text-white"
+                      href="https://dataanalytics.televisory.com/login?serviceType=cwm"
+                      target="_blank"
+                      >Credit Workflow Manager</a
+                    >
+                    <a
+                      class="cursor-pointer text-decoration-none text-white"
+                      href="https://benchmark.televisory.com/login"
+                      target="_blank"
+                      >Benchmark</a
+                    >
+                  </span>
+                  <b></b>
+
+                  <span>
+                    <h4>
+                      Sign Up <i class="fa fa-user" aria-hidden="true"></i>
+                    </h4>
+                    <b></b>
+                    <h3>Select Your Services</h3>
+                    <a
+                      class="diff text-white cursor-pointe text-decoration-none"
+                      [routerLink]="['/subscribe']"
+                      >Financial Market Data</a
+                    >
+                    <a
+                      href="https://dataanalytics.televisory.com/rtda-signup?_ga=2.187439592.1331394272.1657086657-1459082898.1657086657"
+                      target="_blank"
+                      class="diff text-white cursor-pointe text-decoration-none"
+                      >Real Time Data Analytics</a
+                    >
+                    <a
+                      href="https://dataanalytics.televisory.com/corporate-credit-application-signup"
+                      target="_blank"
+                      class="diff text-white cursor-pointe text-decoration-none"
+                      >Corporate Loan Application</a
+                    >
+                    <a
+                      href="https://dataanalytics.televisory.com/signup"
+                      target="_blank"
+                      class="diff text-white cursor-pointe text-decoration-none"
+                      >Credit Workflow Manager</a
+                    >
+                    <a
+                      href="https://benchmark.televisory.com/signup"
+                      target="_blank"
+                      class="diff text-white cursor-pointe text-decoration-none"
+                      >Benchmark</a
+                    >
+                  </span>
+                </span>
+              </ul>
+            </ng-template>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>

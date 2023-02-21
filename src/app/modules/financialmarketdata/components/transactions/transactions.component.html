@@ -1,0 +1,1208 @@
+<!-- Tabs -->
+<div class="container-fluid px-0 tab-container">
+  <div class="row">
+    <div class="col-12 py-1">
+      <div class="align-items-center d-flex graphFilterSection mt-2 mb-3">
+        <ul class="mb-0 p-0">
+          <li
+            class="transaction-btn"
+            [ngClass]="{
+              activeDateFilter:
+                util.selectedDatetype === 'Mergers & Acquisitions'
+            }"
+            (click)="dateChange('Mergers & Acquisitions')"
+          >
+            Mergers & Acquisitions
+          </li>
+          <li
+            id="PEVCTab"
+            class="transaction-btn"
+            [ngClass]="{
+              activeDateFilter:
+                util.selectedDatetype === 'Private Equity & Venture Capital'
+            }"
+            (click)="dateChange('Private Equity & Venture Capital')"
+          >
+            Private Equity & Venture Capital
+          </li>
+          <li
+            class="transaction-btn position-relative"
+            (mouseover)="showBubble = true"
+            (mouseout)="showBubble = false"
+          >
+            Initial Public Offerings
+            <div
+              class="mb-2 align-self-center bubble-container"
+              *ngIf="showBubble"
+            >
+              <div class="text-center bubble">Coming Soon</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Mergers & Acquisitions -->
+<div
+  class="container-fluid px-0 mna-container padding-bottom"
+  *ngIf="util.selectedDatetype === 'Mergers & Acquisitions'"
+>
+  <!-- Dropdowns -->
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-md-3 ps-0">
+        <ng-select2
+          [data]="selectCountryData"
+          [value]="selectedCountry"
+          (valueChanged)="valueChangedHandler('Country', $event)"
+          class="cusSelect2 cusSelect2Normal"
+          [placeholder]="'Select Country'"
+        ></ng-select2>
+      </div>
+      <div class="col-md-3">
+        <ng-select2
+          [data]="selectIndustryData"
+          [value]="selectedIndustry"
+          (valueChanged)="valueChangedHandler('Industry', $event)"
+          class="cusSelect2 cusSelect2Normal"
+          [placeholder]="'Select Industry'"
+        ></ng-select2>
+      </div>
+      <div class="col-md-3 period-container">
+        <div
+          class="period-dropdown-select"
+          (click)="handleMNAPeriodClick(); $event.stopPropagation()"
+        >
+          {{ periodValueMNA }}
+        </div>
+        <ng-container *ngIf="showMNADropdown">
+          <div
+            class="period-dropdown-container"
+            *ngIf="isPeriodSelectedMNA"
+            (click)="$event.stopPropagation()"
+          >
+            <div class="date-picker-container">
+              <div class="from-date-container">
+                <label for="from">From :</label>
+                <!-- <input
+                  class="date-input-from remove-cal-icon"
+                  type="date"
+                  id="from"
+                  name="from"
+                  [value]="fromDate"
+                  [min]="minDate"
+                  [max]="maxDate"
+                  (change)="handleFromDatePickerMNAChange($event)"
+                /> -->
+                <mat-form-field appearance="outline">
+                  <input
+                    [value]="fromDate"
+                    [min]="minDate"
+                    [max]="maxDate"
+                    matInput
+                    (dateChange)="handleFromDatePickerMNAChange($event)"
+                    [matDatepicker]="picker"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="picker">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="to-date-container">
+                <label for="to">To :</label>
+                <!-- <input
+                  class="date-input-to remove-cal-icon"
+                  type="date"
+                  id="to"
+                  name="to"
+                  [value]="toDate"
+                  [min]="minDate"
+                  [max]="maxDate"
+                  (change)="handleToDatePickerMNAChange($event)"
+                /> -->
+                <mat-form-field appearance="outline">
+                  <input
+                    matInput
+                    [matDatepicker]="date"
+                    [value]="toDate"
+                    [min]="minDate"
+                    [max]="maxDate"
+                    (dateChange)="handleToDatePickerMNAChange($event)"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="date"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #date></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="go-btn-container">
+                <button class="go-btn" type="button" (click)="handleGoBtnMNA()">
+                  Go
+                </button>
+              </div>
+            </div>
+            <div class="period-list-container">
+              <ul class="period-list">
+                <li (click)="handlePeriodsValuesMNA($event)">
+                  <a>Last 3 Months</a>
+                </li>
+                <li (click)="handlePeriodsValuesMNA($event)">
+                  <a>Last 12 Months</a>
+                </li>
+                <li (click)="handlePeriodsValuesMNA($event)">
+                  <a>Last 3 Years</a>
+                </li>
+                <li (click)="handlePeriodsValuesMNA($event)">
+                  <a>Last 5 Years</a>
+                </li>
+                <li (click)="handlePeriodsValuesMNA($event)">
+                  <a>Last 10 Years</a>
+                </li>
+                <li (click)="handlePeriodsValuesMNA($event)">
+                  <a>Last 20 Years</a>
+                </li>
+                <li (click)="handlePeriodsValuesMNA($event)">
+                  <a>{{ last5Years[0] }}</a>
+                </li>
+                <li (click)="handlePeriodsValuesMNA($event)">
+                  <a>{{ last5Years[1] }}</a>
+                </li>
+                <li (click)="handlePeriodsValuesMNA($event)">
+                  <a>{{ last5Years[2] }}</a>
+                </li>
+                <li (click)="handlePeriodsValuesMNA($event)">
+                  <a>{{ last5Years[3] }}</a>
+                </li>
+                <li (click)="handlePeriodsValuesMNA($event)">
+                  <a>{{ last5Years[4] }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="col-md-3 pe-0">
+        <ng-select2
+          [data]="selectCurrencyData"
+          [value]="selectedCurrency"
+          (valueChanged)="valueChangedHandler('Currency', $event)"
+          class="cusSelect2 cusSelect2Normal"
+          [placeholder]="'Select Currency'"
+        ></ng-select2>
+      </div>
+    </div>
+  </div>
+  <!-- Transaction Top Deals Table -->
+  <div class="container-fluid mt-4">
+    <div class="row">
+      <div class="col-7 px-0 position-relative">
+        <div class="container-fluid px-0">
+          <div class="my-2">
+            <div class="d-flex justify-content-between align-items-center">
+              <h3 class="table-heading">Top Deal Makers</h3>
+              <img
+                class="cursor-pointer img-fluid"
+                [ngClass]="{
+                  disableExcelIcon: transactions_table_data.value?.length === 0
+                }"
+                src="/assets/img/excelDownload.png"
+                alt="excelDownload"
+                (click)="
+                  auth.exploreUser
+                    ? (auth.openUnavailableExploreModal = true)
+                    : handleMNATopDealMakersExcelDownload()
+                "
+              />
+            </div>
+          </div>
+        </div>
+        <div>
+          <app-table
+            [table_data]="transactions_table_data"
+            [tabValue]="'transactions'"
+            [transactionsMNAPeriod]="periodValueMNA"
+            (entity_id)="handleEntityId($event)"
+            (topDealSortParam)="handleTopDealSortParam($event)"
+          ></app-table>
+        </div>
+        <div class="container-fluid px-0 pagination-container">
+          <span (click)="handlePrevClick()">
+            <img
+              class="prev-icon"
+              src="../../../../../assets/img/next.svg"
+              alt="previous-page"
+              [ngClass]="currentPage < 2 ? 'hide-prev' : ''"
+            />
+          </span>
+          <span class="pagination" *ngFor="let i of pageNumbers">
+            <a
+              class="pagination-item"
+              [ngClass]="currentPage === i ? 'active-page' : ''"
+              (click)="handlePagination(i)"
+              >{{ i }}</a
+            >
+          </span>
+          <span (click)="handleNextClick()">
+            <img
+              class="next-icon"
+              src="../../../../../assets/img/next.svg"
+              alt="next-page"
+              [ngClass]="
+                currentPage === pageNumbers?.length || pageNumbers?.length === 0
+                  ? 'hide-next'
+                  : ''
+              "
+            />
+          </span>
+        </div>
+        <div class="container-fluid px-0">
+          <div class="d-flex align-items-center">
+            <div class="container-fluid px-0 w-100">
+              <div>
+                <table *ngIf="pageNumbers?.length > 0">
+                  <div class="total-main-heading-container">TOTAL</div>
+                  <tbody>
+                    <tr class="total-table-heading">
+                      <th class="total-heading">Total</th>
+                      <th>{{ transactionsTopDealMakersData?.totalDeals }}</th>
+                      <th>
+                        {{
+                          util?.standardFormat(
+                            transactionsTopDealMakersData?.totalValue,
+                            2,
+                            ""
+                          )
+                        }}
+                      </th>
+                      <th>
+                        {{
+                          util?.standardFormat(
+                            transactionsTopDealMakersData?.avgValue,
+                            2,
+                            ""
+                          )
+                        }}
+                      </th>
+                      <th>
+                        {{
+                          util?.standardFormat(
+                            transactionsTopDealMakersData?.maxValue,
+                            2,
+                            ""
+                          )
+                        }}
+                      </th>
+                    </tr>
+                    <tr class="total-table-body">
+                      <td class="total-heading">
+                        Total of
+                        {{
+                          transactionsTopDealMakersData.topDealList[0]?.country
+                        }}
+                        -
+                        {{
+                          selectedIndustry === "All"
+                            ? "Industry-All"
+                            : transactionsTopDealMakersData.topDealList[0]
+                                ?.industryName
+                        }}
+                      </td>
+                      <td>
+                        {{
+                          transactionsTopDealMakersData.topDealTotal?.totalDeals
+                        }}
+                      </td>
+                      <td>
+                        {{
+                          util?.standardFormat(
+                            transactionsTopDealMakersData.topDealTotal
+                              ?.totalValue,
+                            2,
+                            ""
+                          )
+                        }}
+                      </td>
+                      <td>
+                        {{
+                          util?.standardFormat(
+                            transactionsTopDealMakersData.topDealTotal
+                              ?.avgValue,
+                            2,
+                            ""
+                          )
+                        }}
+                      </td>
+                      <td>
+                        {{
+                          util?.standardFormat(
+                            transactionsTopDealMakersData.topDealTotal
+                              ?.maxValue,
+                            2,
+                            ""
+                          )
+                        }}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Bar Chart -->
+      <div class="col-5">
+        <div
+          id="transaction-bar-chart"
+          class="mt-5 transaction-bar-chart"
+        ></div>
+      </div>
+    </div>
+  </div>
+  <!-- Entity history table-->
+  <div class="container-fluid mt-4 px-0">
+    <div class="row">
+      <div class="col-8">
+        <h4 class="history-table-heading pt-2">
+          Deals History - {{ entityName }}
+        </h4>
+      </div>
+      <div class="col-4 align-self-center">
+        <div class="row justify-content-end">
+          <div class="col-11">
+            <ng-select2
+              [data]="selectCompanyData"
+              [value]="selectedCompany"
+              id="companyDropdownMNA"
+              (click)="handleMNACompanyClick()"
+              (valueChanged)="valueChangedHandler('Search Company', $event)"
+              class="cusSelect2 cusSelect2Normal"
+              [placeholder]="'Search Company'"
+            ></ng-select2>
+          </div>
+          <div class="col-1">
+            <img
+              class="cursor-pointer img-fluid pt-1 deals-history-excel"
+              [ngClass]="{
+                disableExcelIcon:
+                  transactions_history_table_data.value?.length === 0
+              }"
+              src="/assets/img/excelDownload.png"
+              alt="excelDownload"
+              (click)="
+                auth.exploreUser
+                  ? (auth.openUnavailableExploreModal = true)
+                  : handleMNAHistoryExcelDownload()
+              "
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row mt-4">
+      <div class="col-12 position-relative">
+        <div>
+          <app-table
+            [table_data]="transactions_history_table_data"
+            [tabValue]="'transactions'"
+            [transactionsMNAPeriod]="periodValueMNA"
+            (history_data)="handleHistoryData($event)"
+            [compType]="'transac-comp'"
+            mh="470px"
+          ></app-table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Private Equity & Venture Capital -->
+<div
+  class="container-fluid px-0 pevc-container padding-bottom"
+  *ngIf="util.selectedDatetype === 'Private Equity & Venture Capital'"
+>
+  <div class="container-fluid px-0">
+    <!-- Fund summary heading -->
+    <div class="row">
+      <div class="col-9">
+        <h4 class="section-title">VC/PE Funding Summary</h4>
+      </div>
+      <div class="col-3">
+        <ng-select2
+          [data]="selectPEVCCurrencyData"
+          [value]="selectedPEVCCurrency"
+          (valueChanged)="valueChangedPEVCHandler('Currency', $event)"
+          class="cusSelect2 cusSelect2Normal"
+          [placeholder]="'Select Currency'"
+        ></ng-select2>
+      </div>
+    </div>
+    <!-- Dropdowns -->
+    <div class="row mt-3">
+      <div class="col-3">
+        <ng-select2
+          [data]="selectPEVCCountryData"
+          [value]="selectedPEVCCountry"
+          (valueChanged)="valueChangedPEVCHandler('Country', $event)"
+          class="cusSelect2 cusSelect2Normal"
+          [placeholder]="'Select Country'"
+        ></ng-select2>
+      </div>
+      <div class="col-3 d-none">
+        <ng-select2
+          [data]="selectPEVCSectorData"
+          [value]="selectedPEVCSector"
+          (valueChanged)="valueChangedPEVCHandler('Sector', $event)"
+          class="cusSelect2 cusSelect2Normal"
+          [placeholder]="'Select Sector'"
+        ></ng-select2>
+      </div>
+      <div class="col-3 period-container">
+        <div
+          class="period-dropdown-select"
+          (click)="handlePeriodClick(); $event.stopPropagation()"
+        >
+          {{ periodValue }}
+        </div>
+        <ng-container *ngIf="showPEVCDropdown">
+          <div
+            class="period-dropdown-container"
+            *ngIf="isPeriodSelected"
+            (click)="$event.stopPropagation()"
+          >
+            <div class="date-picker-container">
+              <div class="from-date-container">
+                <label for="from">From :</label>
+                <!-- <input
+                  class="date-input-from remove-cal-icon"
+                  type="date"
+                  id="from"
+                  name="from"
+                  [value]="fromDate"
+                  [min]="minDate"
+                  [max]="maxDate"
+                  (change)="handleFromDatePickerChange($event)"
+                /> -->
+                <mat-form-field appearance="outline">
+                  <input
+                    [value]="fromDatePEVC"
+                    [min]="minDate"
+                    [max]="maxDate"
+                    matInput
+                    (dateChange)="handleFromDatePickerChange($event)"
+                    [matDatepicker]="picker"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="picker">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="to-date-container">
+                <label for="to">To :</label>
+                <!-- <input
+                  class="date-input-to remove-cal-icon"
+                  type="date"
+                  id="to"
+                  name="to"
+                  [value]="toDate"
+                  [min]="minDate"
+                  [max]="maxDate"
+                  (change)="handleToDatePickerChange($event)"
+                /> -->
+                <mat-form-field appearance="outline">
+                  <input
+                    matInput
+                    [matDatepicker]="date"
+                    [value]="toDatePEVC"
+                    [min]="minDate"
+                    [max]="maxDate"
+                    (dateChange)="handleToDatePickerChange($event)"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="date"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #date></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="go-btn-container">
+                <button class="go-btn" type="button" (click)="handleGoBtn()">
+                  Go
+                </button>
+              </div>
+            </div>
+            <div class="period-list-container">
+              <ul class="period-list">
+                <li (click)="handlePeriodsValues($event)">
+                  <a>Last 3 Months</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>Last 12 Months</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>Last 3 Years</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>Last 5 Years</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>Last 10 Years</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>Last 20 Years</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>{{ last5Years[0] }}</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>{{ last5Years[1] }}</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>{{ last5Years[2] }}</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>{{ last5Years[3] }}</a>
+                </li>
+                <li (click)="handlePeriodsValues($event)">
+                  <a>{{ last5Years[4] }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="col-3">
+        <img
+          class="cursor-pointer img-fluid ms-1 pt-1"
+          [ngClass]="{
+            disableExcelIcon: funds_table_data.value?.length === 0
+          }"
+          src="/assets/img/excelDownload.png"
+          alt="excelDownload"
+          (click)="
+            auth.exploreUser
+              ? (auth.openUnavailableExploreModal = true)
+              : handlePEVCFundingSummaryExcelDownload()
+          "
+        />
+      </div>
+    </div>
+    <!-- Chart and Table -->
+    <div class="row mt-4">
+      <div class="col-4 text-center">
+        <h4 *ngIf="selectedPEVCCountry !== 'Global'" class="section-title">
+          {{ selectedPEVCCountry }} VC/PE Funding By
+          {{ sectorIndvidualSelected ? "Industry" : "Sector" }}
+        </h4>
+        <h4 *ngIf="selectedPEVCCountry === 'Global'" class="section-title">
+          VC/PE Funding By Country
+        </h4>
+        <div
+          *ngIf="selectedPEVCCountry !== 'Global'"
+          id="fundsPieChartDiv"
+          class="commodityChart"
+        ></div>
+        <div
+          *ngIf="selectedPEVCCountry === 'Global'"
+          id="fundsCountryPieChartDiv"
+          class="commodityChartCountry"
+        ></div>
+      </div>
+      <div class="col-4 text-center">
+        <h4 *ngIf="selectedPEVCCountry !== 'Global'" class="section-title">
+          Global VC/PE Funding By
+          {{ sectorIndvidualSelected ? "Industry" : "Sector" }}
+        </h4>
+        <h4 *ngIf="selectedPEVCCountry === 'Global'" class="section-title">
+          VC/PE Funding By {{ sectorIndvidualSelected ? "Industry" : "Sector" }}
+        </h4>
+        <div id="globalFundsPieChartDiv" class="commodityChart"></div>
+      </div>
+      <div class="col-4 position-relative text-center custom-top-fund-title">
+        <h4 class="section-title mb-3">Top Funded Companies</h4>
+        <div>
+          <app-table
+            [table_data]="funds_table_data"
+            (selectedRow)="handleSelectedRow($event)"
+          ></app-table>
+        </div>
+      </div>
+      <!-- <div class="col-1 text-end">
+        <i class="cursor-pointer">
+          <img
+            src="assets/img/resize-icon.png"
+            alt="resize"
+            (click)="auth.openPopupModal = true"
+          />
+        </i>
+      </div> -->
+    </div>
+    <!-- Fund details heading -->
+    <div class="row mt-1">
+      <div class="col-8">
+        <h4 class="section-title">VC/PE Funding Details</h4>
+      </div>
+      <div class="col-4 custom-company-dropdown">
+        <ng-select2
+          [data]="selectDetCompanyData"
+          [value]="selectedDetCompany"
+          id="companyDropdownPEVC"
+          (click)="handlePEVCCompanyClick()"
+          (valueChanged)="valueChangedHandlerDet('Company', $event)"
+          class="cusSelect2 cusSelect2Normal"
+          [placeholder]="'Search Company'"
+        ></ng-select2>
+        <!-- <h5
+          class="advanced-search mt-2 text-end cursor-pointer"
+          (click)="auth.openAdvancedSearch = true"
+        >
+          Advanced Search
+        </h5> -->
+      </div>
+    </div>
+    <!-- Dropdowns -->
+    <div class="row mt-4">
+      <div class="col-2 custom-dropdown">
+        <ng-select2
+          [data]="selectDetCountryData"
+          [value]="selectedDetCountry"
+          (valueChanged)="valueChangedHandlerDet('Country', $event)"
+          class="cusSelect2 cusSelect2Normal"
+          [placeholder]="'Select Country'"
+        ></ng-select2>
+      </div>
+      <div class="col-2 period-container custom-dropdown">
+        <div
+          class="period-dropdown-select"
+          (click)="handlePeriodClickDet(); $event.stopPropagation()"
+        >
+          {{ periodValueDet }}
+        </div>
+        <ng-container *ngIf="showPEVCDetDropdown">
+          <div
+            class="period-dropdown-container-det"
+            *ngIf="isDetPeriodSelected"
+            (click)="$event.stopPropagation()"
+          >
+            <div class="date-picker-container">
+              <div class="from-date-container">
+                <label for="from">From :</label>
+                <!-- <input
+                  class="date-input-from remove-cal-icon"
+                  type="date"
+                  id="from"
+                  name="from"
+                  [value]="fromDate"
+                  [min]="minDate"
+                  [max]="maxDate"
+                  (change)="handleFromDatePickerDetChange($event)"
+                /> -->
+                <mat-form-field appearance="outline">
+                  <input
+                    [value]="fromDateDet"
+                    [min]="minDate"
+                    [max]="maxDate"
+                    matInput
+                    (dateChange)="handleFromDatePickerDetChange($event)"
+                    [matDatepicker]="picker"
+                  />
+                  <mat-datepicker-toggle matSuffix [for]="picker">
+                  </mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="to-date-container">
+                <label for="to">To :</label>
+                <!-- <input
+                  class="date-input-to remove-cal-icon"
+                  type="date"
+                  id="to"
+                  name="to"
+                  [value]="toDate"
+                  [min]="minDate"
+                  [max]="maxDate"
+                  (change)="handleToDatePickerDetChange($event)"
+                /> -->
+                <mat-form-field appearance="outline">
+                  <input
+                    matInput
+                    [matDatepicker]="date"
+                    [value]="toDateDet"
+                    [min]="minDate"
+                    [max]="maxDate"
+                    (dateChange)="handleToDatePickerDetChange($event)"
+                  />
+                  <mat-datepicker-toggle
+                    matSuffix
+                    [for]="date"
+                  ></mat-datepicker-toggle>
+                  <mat-datepicker #date></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div class="go-btn-container">
+                <button class="go-btn" type="button" (click)="handleDetGoBtn()">
+                  Go
+                </button>
+              </div>
+            </div>
+            <div class="period-list-container">
+              <ul class="period-list">
+                <li (click)="handlePeriodsValuesDet($event)">
+                  <a>Last 3 Months</a>
+                </li>
+                <li (click)="handlePeriodsValuesDet($event)">
+                  <a>Last 12 Months</a>
+                </li>
+                <li (click)="handlePeriodsValuesDet($event)">
+                  <a>Last 3 Years</a>
+                </li>
+                <li (click)="handlePeriodsValuesDet($event)">
+                  <a>Last 5 Years</a>
+                </li>
+                <li (click)="handlePeriodsValuesDet($event)">
+                  <a>Last 10 Years</a>
+                </li>
+                <li (click)="handlePeriodsValuesDet($event)">
+                  <a>Last 20 Years</a>
+                </li>
+                <li (click)="handlePeriodsValuesDet($event)">
+                  <a>{{ last5Years[0] }}</a>
+                </li>
+                <li (click)="handlePeriodsValuesDet($event)">
+                  <a>{{ last5Years[1] }}</a>
+                </li>
+                <li (click)="handlePeriodsValuesDet($event)">
+                  <a>{{ last5Years[2] }}</a>
+                </li>
+                <li (click)="handlePeriodsValuesDet($event)">
+                  <a>{{ last5Years[3] }}</a>
+                </li>
+                <li (click)="handlePeriodsValuesDet($event)">
+                  <a>{{ last5Years[4] }}</a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </ng-container>
+      </div>
+      <div class="col-2 custom-dropdown">
+        <ng-select2
+          [data]="selectDetIndustryData"
+          [value]="selectedDetIndustry"
+          (valueChanged)="valueChangedHandlerDet('Industry', $event)"
+          class="cusSelect2 cusSelect2Normal"
+          [placeholder]="'Select Industry'"
+        ></ng-select2>
+      </div>
+      <div class="col-2 custom-dropdown">
+        <ng-select2
+          [data]="selectDetFinTypeData"
+          [value]="selectedDetFinType"
+          (valueChanged)="valueChangedHandlerDet('Financing Type', $event)"
+          class="cusSelect2 cusSelect2Normal"
+          [placeholder]="'Select Financing Type'"
+        ></ng-select2>
+      </div>
+      <div class="col-1 text-end custom-excel-icon pe-5">
+        <img
+          class="cursor-pointer img-fluid ms-1 pt-1"
+          src="/assets/img/excelDownload.png"
+          alt="excelDownload"
+          [ngClass]="{
+            disableExcelIcon: funds_details_table_data.value?.length === 0
+          }"
+          (click)="
+            auth.exploreUser
+              ? (auth.openUnavailableExploreModal = true)
+              : handleFundingDetExcelClick()
+          "
+        />
+      </div>
+    </div>
+    <!-- Table -->
+    <div class="row mt-4">
+      <div class="col-12">
+        <app-expand-table-transactions
+          [table_data]="funds_details_table_data"
+          [startDateDet]="startDateDet"
+          [endDateDet]="endDateDet"
+          [currentPageDet]="currentPageDet"
+          [selectedPEVCCurrency]="selectedPEVCCurrency"
+          (fundingRoundHeaderData)="handleFundingRoundHeaderData($event)"
+          (fundingRoundData)="handleFundingRoundData($event)"
+          (selectedRowDetData)="handleSelectedRowDet($event)"
+        >
+        </app-expand-table-transactions>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Initial Public Offerings -->
+<div
+  class="container-fluid px-0 ipo-container padding-bottom"
+  *ngIf="util.selectedDatetype === 'Initial Public Offerings' && !ipo_detail"
+>
+  <!-- Dropdowns & Advanced Search -->
+  <div class="row d-flex justify-content-between align-items-center">
+    <div class="col-3 d-flex align-items-center">
+      <ng-select2
+        class="cusSelect2 sSelect2Normalcur"
+        [data]="countryListIpo"
+        [(ngModel)]="ipoSelectedCountry"
+        [options]="IpoNgSelectoptions"
+        [placeholder]="'Global'"
+        (valueChanged)="onValueChangedIpo('country', $event)"
+      ></ng-select2>
+      <i
+        *ngIf="ipoGlobalListLength != 0"
+        class="fa fa-times ml-1 cursor-pointer"
+        aria-hidden="true"
+        (click)="clearSelection()"
+      ></i>
+    </div>
+    <div class="col-6">
+      <div class="container-fluid">
+        <div class="row d-flex justify-content-between align-items-center">
+          <div class="d-flex justify-content-between">
+            <span class="custom_ngselect">
+              <ng-select2
+                class="cusSelect2 cusSelect2_5rem"
+                [placeholder]="'Search Currency'"
+                [value]="ipoSelectedCurrency"
+                [data]="currencyData"
+                id="currencyDropDown"
+                (valueChanged)="onValueChangedIpo('currency', $event)"
+              ></ng-select2>
+              <span class="close_icon">
+                <i
+                  *ngIf="ipoSelectedCurrency !== ''"
+                  class="fa fa-times"
+                  aria-hidden="true"
+                  (click)="onRemoveCurrency()"
+                ></i>
+              </span>
+            </span>
+
+            <ng-select2
+              class="cusSelect2 sSelect2Normalcur"
+              [placeholder]="'Search Company'"
+              id="ipoSearcCompany"
+              [value]="ipoSelectedCompany"
+              [data]="company_name"
+              (valueChanged)="rumouredTableDataHandler('comapny', $event)"
+            ></ng-select2>
+            <!-- Advance Search Feature -->
+            <!-- <div class="advanced-search-container">
+              <span (click)="auth.openPopupModal = true">Advanced Search</span>
+            </div> -->
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Upcoming & Subscription IPOs -->
+  <div class="row mt-4">
+    <div class="col-6 px-0">
+      <div class="container-fluid px-0">
+        <div class="row my-2 justify-content-between align-items-center">
+          <div class="col-4">
+            <span class="upcoming-ipo-title">Upcoming IPOs</span>
+          </div>
+          <div class="col-5">
+            <div class="container-fluid px-0">
+              <div class="row d-flex justify-content-end align-items-center">
+                <div class="col-2">
+                  <img
+                    class="cursor-pointer img-fluid image_custom"
+                    src="/assets/img/excelDownload.png"
+                    alt="excelDownload"
+                    (click)="onDownloadExcel('upcoming-sheet')"
+                  />
+                </div>
+                <div class="col-2">
+                  <i class="cursor-pointer">
+                    <img
+                      src="assets/img/resize-icon.png"
+                      alt="resize"
+                      (click)="
+                        auth.openIPOModal = true;
+                        handleIPOExpandClick('upcoming-ipo-list', $event)
+                      "
+                    />
+                  </i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <app-ipo-table
+            type="ipo-navigate-comp"
+            fixedHeight="ipo"
+            (rumoured_data)="rumouredTableDataHandler('', $event)"
+            [ipo_table_data]="upcoming_ipo_table_data"
+          ></app-ipo-table>
+        </div>
+      </div>
+    </div>
+    <div class="col-6 px-0">
+      <div class="container-fluid px-0">
+        <div class="row my-2 justify-content-between align-items-center">
+          <div class="col-6">
+            <span class="upcoming-ipo-title">IPOs Open For Subscription</span>
+          </div>
+          <div class="col-5">
+            <div class="container-fluid px-0">
+              <div class="row d-flex justify-content-end align-items-center">
+                <div class="col-2">
+                  <img
+                    class="cursor-pointer img-fluid image_custom"
+                    src="/assets/img/excelDownload.png"
+                    alt="excelDownload"
+                    (click)="onDownloadExcel('open-for-subscription-sheet')"
+                  />
+                </div>
+                <div class="col-2">
+                  <i class="cursor-pointer">
+                    <img
+                      src="assets/img/resize-icon.png"
+                      alt="resize"
+                      (click)="
+                        auth.openIPOModal = true;
+                        handleIPOExpandClick(
+                          'open-for-subscription-ipo-list',
+                          $event
+                        )
+                      "
+                    />
+                  </i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <app-ipo-table
+            type="ipo-navigate-comp"
+            fixedHeight="ipo"
+            (rumoured_data)="rumouredTableDataHandler('', $event)"
+            [ipo_table_data]="subscription_ipo_table_data"
+          ></app-ipo-table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Historical IPOs & Funding Sector Pie Chart -->
+  <div class="row mt-2 d-flex justify-content-between align-items-center mt-5">
+    <div class="col-6 px-0">
+      <div class="container-fluid px-0">
+        <div class="row my-2 justify-content-between align-items-center">
+          <div class="col-4">
+            <span class="upcoming-ipo-title">Historical IPOs</span>
+          </div>
+          <div class="col-5">
+            <div class="container-fluid px-0">
+              <div class="row d-flex justify-content-end align-items-center">
+                <div class="col-2">
+                  <img
+                    class="cursor-pointer img-fluid image_custom"
+                    src="/assets/img/excelDownload.png"
+                    alt="excelDownload"
+                    (click)="onDownloadExcel('historical-sheet')"
+                  />
+                </div>
+                <div class="col-2">
+                  <i class="cursor-pointer">
+                    <img
+                      src="assets/img/resize-icon.png"
+                      alt="resize"
+                      (click)="
+                        auth.openIPOModal = true;
+                        handleIPOExpandClick('historical-ipo-list', $event)
+                      "
+                    />
+                  </i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <app-ipo-table
+            type="ipo-navigate-comp"
+            fixedHeight="ipo"
+            (rumoured_data)="rumouredTableDataHandler('', $event)"
+            [ipo_table_data]="historical_ipo_table_data"
+          ></app-ipo-table>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-6 px-0">
+      <div class="d-flex mb-5">
+        <span
+          class="ipo-pie-chart-title ipo-right-chart-title"
+          *ngIf="industrChart; else defualt"
+        >
+          <i
+            class="fa fa-arrow-left pr-5"
+            (click)="onReturntoDefualtChart()"
+            aria-hidden="true"
+          ></i>
+          IPO Funding -
+          {{ industrChart }}
+        </span>
+        <ng-template #defualt>
+          <span class="ipo-pie-chart-title ipo-right-chart-title">
+            IPO Funding By Sector
+          </span>
+        </ng-template>
+        <div class="ipo-left-chart">
+          <ng-select2
+            class="cusSelect2 cusSelect2_5rem"
+            [placeholder]="'Last 12 Months'"
+            [value]="selectedPeriodData"
+            [data]="pieChartPeriodData"
+            id="pieChartPeriodNGSelect"
+            (valueChanged)="onIpoChartDataChanged('ipo-chart', $event)"
+          ></ng-select2>
+        </div>
+      </div>
+      <div class="text-center">
+        <div
+          *ngIf="pieChartDataArray.length !== 0"
+          id="fundingSectorPieChart"
+          class="commodityChart"
+        ></div>
+        <div *ngIf="pieChartDataArray.length == 0">No Data Available</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal -->
+<!-- <div *ngIf="auth.openPopupModal">
+  <app-transactions-modal
+    [topFundedCompaniesData]="topFundedCompaniesData"
+    [selectedPEVCPeriod]="periodValue"
+    [modalPageNumbers]="modalPageNumbers"
+    [currency]="selectedPEVCCurrency"
+    [country]="selectedPEVCCountry"
+    [startDate]="startDatePEVC"
+    [endDate]="endDatePEVC"
+    (pageEntries)="handlePageEntries($event)"
+    (modalClickEntity)="handleModalEntityClick($event)"
+  ></app-transactions-modal>
+</div> -->
+
+<!-- Advanced Search -->
+<!-- <div *ngIf="auth.openAdvancedSearch">
+  <app-advanced-search></app-advanced-search>
+</div> -->
+
+<!-- Terms Modal -->
+<div *ngIf="auth.openTermsModal">
+  <app-terms-modal
+    [dealItem]="dealItem"
+    [terms_synopsis_table]="terms_synopsis_table"
+    [dealTerms]="dealTerms"
+    [selectedCurrency]="selectedCurrency"
+    [showRevenueLTM]="showRevenueLTM"
+    [showEbitdaLTM]="showEbitdaLTM"
+    [showPriceShare]="showPriceShare"
+    [showStockPriceShare]="showStockPriceShare"
+    [showOneDayPrem]="showOneDayPrem"
+    [showEVREV]="showEVREV"
+    [showEVEBITDA]="showEVEBITDA"
+    (termsSynopsisExcelClick)="handleTermsSynopsisExcelClick($event)"
+  ></app-terms-modal>
+</div>
+
+<!-- Round modal -->
+<div *ngIf="auth.openRoundModal">
+  <app-round-modal
+    [fundingRoundHeaderData]="fundingRoundHeaderData"
+    [round_table]="round_table"
+    [selectedRowDetData]="selectedRowDetData"
+    [startDateDet]="startDateDet"
+    [endDateDet]="endDateDet"
+    [selectedPEVCCurrency]="selectedPEVCCurrency"
+  ></app-round-modal>
+</div>
+
+<!-- Chart Modal -->
+<div *ngIf="openChartModal">
+  <app-chart-modal
+    [chartModalTitle]="chartModalTitle"
+    [fundingSectorChartData]="fundingSectorChartData"
+    [selectedPEVCCurrency]="selectedPEVCCurrency"
+    [chartDataAvailableGlobalSectorPEVC]="chartDataAvailableGlobalSectorPEVC"
+    (closeChartModal)="handleChartModalCloseClick($event)"
+  ></app-chart-modal>
+</div>
+
+<!-- Other Chart Modal -->
+<div *ngIf="openOtherChartModal">
+  <app-other-chart-modal
+    [chartModalTitle]="chartModalTitle"
+    [fundingSectorChartOtherData]="fundingSectorChartOtherData"
+    [selectedPEVCCurrency]="selectedPEVCCurrency"
+    (closeOtherChartModal)="handleOtherChartModalCloseClick($event)"
+    (otherChartSliceClicked)="handleOtherChartSliceClicked($event)"
+    [sectorIndvidualSelected]="sectorIndvidualSelected"
+  ></app-other-chart-modal>
+</div>
+
+<!-- IPO Modal -->
+<div *ngIf="auth.openIPOModal">
+  <app-ipo-modal
+    [upcoming_ipo_modal_table_data]="upcoming_ipo_modal_table_data"
+    (rumoured_data)="rumouredTableDataHandler('', $event)"
+    [subscription_ipo_modal_table_data]="subscription_ipo_modal_table_data"
+    [historical_ipo_modal_table_data]="historical_ipo_modal_table_data"
+    [modalTypeIPO]="modalTypeIPO"
+    [countryData]="countryListIpo"
+    [exchnageData]="exchnageData"
+    [securityType]="securityType"
+    [company_name]="company_name"
+    [periodData]="pieChartPeriodData"
+    [ipoSelectedCurrency]="ipoSelectedCurrency"
+    [industrydata]="industrisDataIPo"
+    [statusList]="statusList"
+    [ngSelectMultipleOption]="IpoNgSelectoptions"
+    [apiType]="api_type"
+    [upcommingDataLength]="upcommingDataLength"
+    [openSubsDataLength]="openSubsDataLength"
+    [selectedCountryInput]="Iposelection.cntry_inc"
+    [historicalDataLength]="historicalDataLength"
+    [downloadType]="download_type"
+  ></app-ipo-modal>
+</div>
+
+<!-- IPO Detail -->
+<div *ngIf="ipo_detail">
+  <app-ipo-detail
+    (back_button)="backBtnFn($event)"
+    [company_name]="company_name"
+    [ipoDetailsevent]="ipoDetailsevent"
+  >
+  </app-ipo-detail>
+</div>
+
+<!-- Advance Search Modal -->
+<div *ngIf="auth.openPopupModal">
+  <app-ipo-advance-search
+    [currencyData]="currencyData"
+    [exchnageData]="exchnageData"
+    [securityType]="securityType"
+    [periodData]="pieChartPeriodData"
+    [countryData]="countryListIpo"
+    [advisorList]="advisorList"
+    [statusList]="statusList"
+    [ngSelectMultipleOption]="IpoNgSelectoptions"
+  ></app-ipo-advance-search>
+</div>

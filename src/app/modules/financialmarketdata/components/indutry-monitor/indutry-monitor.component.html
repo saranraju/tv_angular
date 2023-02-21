@@ -1,0 +1,359 @@
+<div class="row">
+  <div class="col-12 text-center">
+    <p class="text-primary fw600 fs17 mt-3 mb-1">
+      {{ "industry Monitor" | uppercase }}
+    </p>
+    <p class="text-primary fw400 mb-0 paragraph-section">
+      Get instant quarterly and annually insights on 124 industries operating in
+      20 Sectors in more than 150 countries
+    </p>
+    <p class="text-primary paragraph-section fw400 mb-0">
+      Select Below to download
+    </p>
+  </div>
+</div>
+<div class="container-fluid d-flex justify-content-between">
+  <div class="">
+    <ng-select2
+      id="industryMonitorStep1"
+      class="cusSelect2 cusSelect2_14rem"
+      [data]="SectorData"
+      [value]="SectorValue"
+      [placeholder]="'Select Sectors'"
+      (valueChanged)="onValueChanged('Sector', $event)"
+    ></ng-select2>
+  </div>
+  <div class="">
+    <ng-select2
+      class="cusSelect2 cusSelect2_14rem btn-sel"
+      [placeholder]="'Select Industry'"
+      [data]="IndustryList"
+      [value]="industryValue"
+      (valueChanged)="onValueChanged('industry', $event)"
+    ></ng-select2>
+  </div>
+  <div class="">
+    <ng-select2
+      class="cusSelect2 cusSelect2_14rem"
+      [placeholder]="'Select Country'"
+      [data]="CountryList"
+      [value]="countryValue"
+      (valueChanged)="onValueChanged('country', $event)"
+    ></ng-select2>
+  </div>
+
+  <div class="dropdown mb20 selectperiodbtn">
+    <button
+      (click)="selectPeriod(); $event.stopPropagation()"
+      class="cusSelect2 cusSelect2_14rem btn btn-default btn-sel"
+      type="button"
+      data-toggle="true"
+      id="dropdownbutton"
+      autocomplete="new-search"
+    >
+      {{ btnperiod }}
+    </button>
+    <span
+      class="select2-selection__arrow"
+      role="presentation"
+      (click)="selectPeriod(); $event.stopPropagation()"
+      ><b
+        role="presentation"
+        (click)="selectPeriod(); $event.stopPropagation()"
+      ></b
+    ></span>
+    <div *ngIf="show" (click)="$event.stopPropagation()">
+      <ul
+        *ngIf="SelectMonth"
+        class="dropdown-menu periodChange periodChange-one d-block quqr-month"
+      >
+        <li *ngFor="let el of monthsOfYear" (click)="selectQuartordate(el)">
+          {{ el.period | date : "MMM - y" }}
+        </li>
+      </ul>
+      <ul
+        *ngIf="SelectQuqrtor"
+        class="dropdown-menu periodChange periodChange-one d-block quqr-year"
+      >
+        <li *ngFor="let el of QuartarlyDates" (click)="selectQuartordate(el)">
+          {{ el.period | date : "MMM - y" }}
+        </li>
+      </ul>
+      <ul
+        *ngIf="SelectYear"
+        class="dropdown-menu periodChange periodChange-one d-block quqr-year"
+      >
+        <li
+          *ngFor="let el of yearsList"
+          [ngClass]="{
+            'item-active': selectedyear2 == el
+          }"
+          (click)="selectmonth(el)"
+        >
+          {{ el }}
+          <i class="fa fa-caret-right caret-left-quqr" aria-hidden="true"></i>
+        </li>
+        <!-- <li [ngClass]="{
+            'item-active': selectedyear2 == '2021'
+          }" (click)="selectmonth('2021')">
+          2021
+          <i class="fa fa-caret-right caret-left-quqr" aria-hidden="true"></i>
+        </li>
+        <li  [ngClass]="{
+            'item-active': selectedyear2 == '2020'
+          }" (click)="selectmonth('2020')">
+          2020
+          <i class="fa fa-caret-right caret-left-quqr" aria-hidden="true"></i>
+        </li>
+        <li [ngClass]="{
+            'item-active': selectedyear2 == '2019'
+          }" (click)="selectmonth('2019')">
+          2019
+          <i class="fa fa-caret-right caret-left-quqr" aria-hidden="true"></i>
+        </li>
+        <li  [ngClass]="{
+            'item-active': selectedyear2 == '2018'
+          }" (click)="selectmonth('2018')">
+          2018
+          <i class="fa fa-caret-right caret-left-quqr" aria-hidden="true"></i>
+        </li>
+        <li  [ngClass]="{
+            'item-active': selectedyear2 == '2017'
+          }" (click)="selectmonth('2017')">
+          2017
+          <i class="fa fa-caret-right caret-left-quqr" aria-hidden="true"></i>
+        </li>
+        <li  [ngClass]="{
+            'item-active': selectedyear2 == '2016'
+          }" (click)="selectmonth('2016')">
+          2016
+          <i class="fa fa-caret-right caret-left-quqr" aria-hidden="true"></i>
+        </li> -->
+      </ul>
+      <ul
+        *ngIf="selectPeriodvalue"
+        class="dropdown-menu periodChange periodChange-one sub-menu-for d-block"
+      >
+        <li
+          *ngIf="val"
+          class="d-flex align-items-center"
+          [ngClass]="{
+            'item-active': selectedPeriod2 == 'quartarly'
+          }"
+          (click)="showQuqr('quartarly')"
+        >
+          <span> Quarter </span>
+          <i class="fa fa-caret-right caret-left-quqr" aria-hidden="true"></i>
+        </li>
+        <li
+          class="d-flex align-items-center"
+          (click)="showYear('yearly')"
+          [ngClass]="{
+            'item-active': selectedPeriod2 == 'yearly'
+          }"
+        >
+          <span> Year </span>
+          <i class="fa fa-caret-right caret-left-year" aria-hidden="true"></i>
+        </li>
+      </ul>
+    </div>
+  </div>
+  <div class="">
+    <ng-select2
+      class="cusSelect2 cusSelect2_14rem"
+      [placeholder]="'Select Currency'"
+      [data]="CurrencyList"
+      [value]="Currencydefault"
+      (valueChanged)="onValueChanged('currency', $event)"
+    ></ng-select2>
+  </div>
+  <div class="cursor-pointer">
+    <i class="fa fa-refresh text-primary" (click)="clear()"></i>
+  </div>
+</div>
+<div class="row">
+  <div class="col-12 text-center mt-3">
+    <button
+      type="button"
+      class="btn btn-warning indstry-btn"
+      (click)="onSubmit()"
+    >
+      Submit
+    </button>
+  </div>
+  <div class="col-6">
+    <div class="section-border">
+      <p class="fs18 text-primary title-border">Sector/Industry Coverage</p>
+      <div class="section-scroll">
+        <div class="col-6 px-3">
+          <app-expand-table
+            *ngIf="monitor_table_data1?.length"
+            [tableData]="monitor_table_data1"
+            type="industry-monitor"
+            none_css="none"
+            fontsize="13px"
+            [industry_monitor]="industry"
+            (sendChildValue)="changeLayout($event, 'asiafo')"
+          >
+          </app-expand-table>
+        </div>
+        <div class="col-6 px-3">
+          <app-expand-table
+            *ngIf="monitor_table_data2?.length"
+            [tableData]="monitor_table_data2"
+            type="industry-monitor"
+            none_css="none"
+            fontsize="13px"
+            [industry_monitor]="industry"
+            (sendChildValue)="changeLayout($event, 'asiafo')"
+          >
+          </app-expand-table>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-6">
+    <div class="section-border">
+      <p class="fs17 text-primary title-border">Country Coverage</p>
+      <div class="section-scroll">
+        <div class="col-6 px-3">
+          <div class="asiaformat accrodin_body">
+            <app-expand-table
+              *ngIf="formatDataasia?.length"
+              [tableData]="formatDataasia"
+              type="industry-monitor"
+              none_css="none"
+              fontsize="13px"
+              [industry_accordin]="industry"
+              [industry_monitor]="industry"
+              (sendChildValue)="changeLayout($event, 'asiaformat')"
+              (selectedRegion)="handleRegionSelected($event, 'asiaformat')"
+              accor="asiaformat"
+              [selectedReg]="selectedAsia"
+            >
+            </app-expand-table>
+          </div>
+          <div class="Europeformat accrodin_body">
+            <app-expand-table
+              *ngIf="formatDataEurope?.length"
+              [tableData]="formatDataEurope"
+              type="industry-monitor"
+              none_css="none"
+              fontsize="13px"
+              (sendChildValue)="changeLayout($event, 'Europeformat')"
+              (selectedRegion)="handleRegionSelected($event, 'Europeformat')"
+              [industry_accordin]="industry"
+              [industry_monitor]="industry"
+              accor="Europeformat"
+              [selectedReg]="selectedEurope"
+            >
+            </app-expand-table>
+          </div>
+          <div class="middleeast accrodin_body">
+            <app-expand-table
+              *ngIf="formatDataMiddle_East?.length"
+              [tableData]="formatDataMiddle_East"
+              type="industry-monitor"
+              none_css="none"
+              fontsize="13px"
+              [industry_accordin]="industry"
+              [industry_monitor]="industry"
+              (sendChildValue)="changeLayout($event, 'middleeast')"
+              (selectedRegion)="handleRegionSelected($event, 'middleeast')"
+              accor="middleeast"
+              [selectedReg]="selectedMiddle"
+            >
+            </app-expand-table>
+          </div>
+        </div>
+        <div class="col-6 px-3">
+          <div class="northAmerica accrodin_body">
+            <app-expand-table
+              *ngIf="formatDataNorth_America?.length"
+              [tableData]="formatDataSouth_America"
+              type="industry-monitor"
+              none_css="none"
+              fontsize="13px"
+              [industry_accordin]="industry"
+              [industry_monitor]="industry"
+              (sendChildValue)="changeLayout($event, 'northAmerica')"
+              (selectedRegion)="handleRegionSelected($event, 'northAmerica')"
+              accor="northAmerica"
+              [selectedReg]="selectedNorthAmerica"
+            >
+            </app-expand-table>
+          </div>
+          <div class="southAmerica">
+            <app-expand-table
+              *ngIf="formatDataNorth_America?.length"
+              [tableData]="formatDataNorth_America"
+              type="industry-monitor"
+              none_css="none"
+              fontsize="13px"
+              [industry_accordin]="industry"
+              [industry_monitor]="industry"
+              (sendChildValue)="changeLayout($event, 'southAmerica')"
+              (selectedRegion)="handleRegionSelected($event, 'southAmerica')"
+              accor="southAmerica"
+              [selectedReg]="selectedSouthAmerica"
+            >
+            </app-expand-table>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div
+      class="modal fade"
+      id="SubmitIssue"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered modal-pos" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel"></h5>
+            <button
+              type="button"
+              class="close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            >
+              <span>X</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p class="text-center" [innerHTML]="ErrorMessage"></p>
+          </div>
+          <div>
+            <div *ngIf="modalFooter" class="modal-footer">
+              <div class="d-flex w-100 justify-content-between">
+                <button
+                  type="button"
+                  data-bs-dismiss="modal"
+                  aria-label="Close"
+                  class="modal_button"
+                >
+                  Change Selection
+                </button>
+                <button
+                  class="modal_button"
+                  data-bs-dismiss="modal"
+                  (click)="
+                    this.continueToDownload = true;
+                    onSubmit();
+                    this.continueToDownload = false
+                  "
+                  data-dismiss="modal"
+                >
+                  Continue
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

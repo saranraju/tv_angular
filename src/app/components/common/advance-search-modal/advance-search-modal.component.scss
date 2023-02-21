@@ -1,0 +1,34 @@
+.modal {
+  display: block;
+  z-index: 1;
+  background: rgba(0, 0, 0, 0.8);
+  transition: opacity 500ms;
+}
+
+/* Modal Content */
+.modal-content {
+  background: #00071e !important;
+  padding: 0px 10px !important;
+  width: 100% !important;
+}
+
+.text-primary {
+  color: #ffc000 !important;
+}
+
+.popup-header {
+  font-size: 18px;
+  color: #ffc000;
+}
+
+.close {
+  color: #ffff;
+  float: right;
+  font-size: 17px;
+}
+
+.align-center {
+  display: flex;
+  margin-right: 10px;
+  align-items: center;
+}

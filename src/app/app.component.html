@@ -1,0 +1,26 @@
+<div class="loader" *ngIf="showLoader">
+  <svg class="circular" viewBox="25 25 50 50">
+    <circle
+      class="path"
+      cx="50"
+      cy="50"
+      r="20"
+      fill="none"
+      stroke-width="2"
+      stroke-miterlimit="10"
+    /></svg
+  ><img
+    style="
+      position: absolute;
+      margin: auto;
+      top: -8px;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      width: 10rem;
+    "
+    class="loader_img rounded mx-auto d-block"
+    src="../assets/img/televisory-loader.gif"
+  />
+</div>
+<router-outlet></router-outlet>

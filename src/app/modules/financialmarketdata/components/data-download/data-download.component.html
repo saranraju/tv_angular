@@ -1,0 +1,405 @@
+<div class="root">
+  <div class="data-download-content">
+    <div class="row">
+      <div class="custom-col-3-5 bg-lightpink">
+        <!-- <ng-template *ngFor="let data of data_download" [ngTemplateOutlet]="nodeTemplateRef"
+          [ngTemplateOutletContext]="{ node: data }">
+        </ng-template> -->
+        <div class="node font-13">
+          <p id="dataDownloadStep1" (click)="show_plus_icon($event)" class="pointer custom-bg-transparent"
+            #companycheck>
+            <i [ngClass]="show_icon ? 'icon-collapse' : 'icon-expand'" (click)="iconClick('iconCheck')">
+            </i>
+            Company
+          </p>
+          <div class="node__children display-none">
+            <p #exchange (click)="show_plus_icon($event)" class="pointer custom-bg-transparent">
+              <i (click)="iconClick('exchange')" [ngClass]="show_icon ? 'icon-collapse' : 'icon-expand'">
+              </i>
+              Exchange
+            </p>
+            <div class="node__children display-none">
+              <div class="position-relative">
+                <input type="text" class="search-bar" (input)="searchChildNode($event, 'exchange')"
+                  placeholder="Search And Add Exchange" style="width: 92%" />
+                <i class="fa fa-search icon-search"></i>
+                <div *ngFor="let exchange of exchange_list; let i = index">
+                  <p #subexchange (click)="show_plus_icon($event, 'Exchange', exchange)"
+                    class="pointer custom-bg-transparent">
+                    <i (click)="iconClick('subexchange')" [ngClass]="show_icon ? 'icon-collapse' : 'icon-expand'">
+                    </i>
+                    {{ exchange.exchangeName }}
+                  </p>
+                  <div class="node__children display-none">
+                    <p #companyOne (click)="show_plus_icon($event, 'sub_exchange', exchange)"
+                      class="pointer custom-bg-transparent">
+                      <i (click)="iconClick('companyOne')" [ngClass]="show_icon ? 'icon-collapse' : 'icon-expand'">
+                      </i>
+                      Company
+                    </p>
+                    <div class="node__children display-none" class="position-relative">
+                      <input *ngIf="show_search_filter" style="width: 88%" type="text" class="search-bar"
+                        (input)="exchangeCompanySearch($event, exchange)" placeholder="Search And Add Company" />
+                      <i *ngIf="show_search_filter" class="fa fa-search icon-search"></i>
+                      <div *ngIf="exchange.exchangeCode === eCode && show_search_filter">
+                        <div *ngFor="
+                        let sub_exchange of sub_exchange_list;
+                        let i = index
+                      ">
+                      <p (click)="
+                          show_plus_icon(
+                            $event,
+                            'sub_exchange_company',
+                            sub_exchange
+                          )
+                        " class="pointer custom-bg-transparent">
+                        <i [ngClass]="
+                            show_icon ? 'icon-collapse' : 'icon-expand'
+                          ">
+                        </i>
+                        {{ sub_exchange.properName }}
+                      </p>
+                      <div class="node__children display-none" (click)="show_plus_icon($event)">
+                        <p (dblclick)="forSecondLevel()" (click)="
+                            selectElement(sub_exchange, $event, 'Exchange')
+                          " class="pointer custom-bg-transparent">Financial</p>
+                        <p (dblclick)="forSecondLevel()" (click)="
+                            selectElement(sub_exchange, $event, 'Exchange')
+                          " class="pointer custom-bg-transparent">Share Price</p>
+                        <p (dblclick)="forSecondLevel()" (click)="
+                            selectElement(sub_exchange, $event, 'Exchange')
+                          " class="pointer custom-bg-transparent">Beta</p>
+                      </div>
+                    </div>
+                    </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <p (click)="show_plus_icon($event)" #companyThree class="pointer custom-bg-transparent">
+              <i (click)="iconClick('companyThree')" [ngClass]="show_icon ? 'icon-collapse' : 'icon-expand'">
+              </i>
+              Company
+            </p>
+            <div class="node__children display-none">
+              <div class="position-relative">
+                <input type="text" class="search-bar" style="width: 92%" (input)="getCompanySearchDataHandler($event)"
+                  placeholder="Search And Add Company" />
+                <i class="fa fa-search icon-search"></i>
+                <div *ngFor="let company of company_list; let i = index">
+                  <p (click)="show_plus_icon($event)" #companyTwo class="pointer custom-bg-transparent">
+                    <i (click)="iconClick('companyTwo')" [ngClass]="show_icon ? 'icon-collapse' : 'icon-expand'">
+                    </i>
+                    {{ company.name }}
+                    <span *ngIf="company.exchangeName">({{ company.exchangeName }})</span>
+                  </p>
+                  <div class="node__children display-none" (click)="show_plus_icon($event)">
+                    <p (dblclick)="forSecondLevel()" (click)="selectElement(company, $event, 'Company_two')"  class="pointer custom-bg-transparent">
+                      Financial</p>
+                    <p (dblclick)="forSecondLevel()" (click)="selectElement(company, $event, 'Company_two')" class="pointer custom-bg-transparent">
+                      Share Price</p>
+                    <p (dblclick)="forSecondLevel()" (click)="selectElement(company, $event, 'Company_two')" class="pointer custom-bg-transparent">
+                      Beta</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="node font-13">
+          <p (click)="show_plus_icon($event)" #economycheck class="pointer custom-bg-transparent">
+            <i (click)="iconClick('economycheck')" [ngClass]="show_icon ? 'icon-collapse' : 'icon-expand'">
+            </i>
+            Economy
+          </p>
+          <div class="node__children display-none">
+            <!-- <div class="position-relative">
+              <input type="search" class="search-bar" (input)="searchChildNode($event)" placeholder="search value.." />
+              <i class="fa fa-search icon-search"></i>
+            </div> -->
+            <p (click)="show_plus_icon($event)" #macrocheck class="pointer custom-bg-transparent">
+              <i (click)="iconClick('macrocheck')" [ngClass]="show_icon ? 'icon-collapse' : 'icon-expand'">
+              </i>
+              Macro Indicator
+            </p>
+            <div class="node__children display-none">
+              <div class="position-relative">
+                <input type="text" class="search-bar" (input)="searchChildNode($event, 'macro')"
+                  placeholder="Search and Add Macro Indicator" />
+                <i class="fa fa-search icon-search"></i>
+                <div *ngFor="let indicator of Unique_macroIndicator; let i = index">
+                  <p class="pointer custom-bg-transparent" (dblclick)="forSecondLevel()" (click)="
+                      selectElement(indicator, $event, 'Macro Indicator')
+                    ">
+                    {{ indicator.category }}
+                  </p>
+                </div>
+              </div>
+            </div>
+            <p (click)="show_plus_icon($event)" #countrycheck class="pointer custom-bg-transparent">
+              <i (click)="iconClick('countrycheck')" [ngClass]="show_icon ? 'icon-collapse' : 'icon-expand'">
+              </i>
+              Country
+            </p>
+            <div class="node__children display-none">
+              <div class="position-relative">
+                <input type="text" class="search-bar" (input)="searchChildNode($event, 'country')"
+                  placeholder="Search and Add Country" />
+                <i class="fa fa-search icon-search"></i>
+                <div *ngFor="let country of country_list; let i = index">
+                  <p class="pointer custom-bg-transparent" (dblclick)="forSecondLevel()" (click)="selectElement(country, $event, 'Country_one')">
+                    {{ country.countryName }}
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="node font-13">
+          <p (click)="show_plus_icon($event)" #comoditycheck class="pointer custom-bg-transparent">
+            <i (click)="iconClick('comoditycheck')" [ngClass]="show_icon ? 'icon-collapse' : 'icon-expand'"></i>
+            Commodity
+          </p>
+          <div class="node__children display-none">
+            <div class="position-relative">
+              <input type="text" class="search-bar" style="width: 95%" (input)="searchChildNode($event, 'commodity')"
+                placeholder="Search Commodity" />
+              <i class="fa fa-search icon-search"></i>
+              <div *ngFor="let commodity of commodity_list; let i = index">
+                <p class="pointer custom-bg-transparent" (dblclick)="forSecondLevel()" (click)="selectElement(commodity, $event, 'Commodity')">
+                  {{ commodity.name }}
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="custom-col-0-5">
+        <div class="arrow-in-between">
+          <i class="fa fa-angle-double-right" data-toggle="modal" data-target="#alertbox" #alertbox
+            (click)="forSecondLevel()"></i>
+        </div>
+      </div>
+
+      <div class="custom-col-3-5 bg-lightpink">
+        <div class="row font-13" *ngFor="let item of SecondDivData; let i = index">
+          <div class="col-11 for-plus">
+            <i class="fa fa-plus pointer" (click)="expandCollapse($event, i)">
+              <!-- {{ item.name?"Commodity"+" - " + item.name:item.countryName }} -->
+              {{ secondArrayOfData(item) }}
+            </i>
+          </div>
+          <div class="col-1">
+            <i class="fa fa-close pointer" (click)="removeSecondLevel(item, i)"></i>
+          </div>
+          <div class="col-12 for-expand display-none">
+            <div class="mt-2">
+              <div class="">
+                <input *ngIf="item.data_type == 'Macro Indicator' || item.data_type == 'Country_one'" type="search"
+                  class="search-bar" (input)="searchChildNode($event)" [placeholder]="
+                    item.data_type == 'Macro Indicator'
+                      ? 'Search and Add Country'
+                      : 'Search and Add Macro Indicator'
+                  " style="width: 92%" />
+                <i *ngIf="
+                    item.data_type == 'Macro Indicator' ||
+                    item.data_type == 'Country_one'
+                  " class="fa fa-search icon-search"></i>
+                <div class="checkbox" *ngFor="let data of item.optionData; let ind = index">
+                  <div class="display-flex">
+                    <label>
+                      <input type="checkbox" [value]="data.checked" [(ngModel)]="data.checked" [checked]="data.checked"
+                        (change)="changeSelection($event, item, data, i, ind)" />
+                      <!-- {{ data.name }} -->
+                      <span *ngIf="item.data_type == 'Exchange' || item.data_type == 'Company_two'" class="px-1">{{
+                        data.name }}</span>
+                      <span class="px-1" *ngIf="item.data_type != 'Exchange' || item.data_type != 'Company_two'">
+                        {{ data.category ? data.category : data.countryName }}</span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <hr />
+        </div>
+      </div>
+
+      <div class="custom-col-0-5">
+        <div class="arrow-in-between">
+          <i class="fa fa-angle-double-right" (click)="forThirdLevel('third_click')"></i>
+        </div>
+      </div>
+
+      <div class="custom-col-3-5 bg-lightpink">
+        <!-- <div *ngIf="commodityArrayList?.length > 1" class="col-6">{{commodityArrayList[0].data_type + "-"
+          + "Mulitiple"}}</div> -->
+        <div class="row align-center font-13" *ngIf="commodityArrayList?.length > 1; else equalOne">
+          <div class="col-6">
+            {{ commodityArrayList[0].data_type + "-" + "Mulitiple" }}
+          </div>
+          <div class="col-3 mb-5">
+            <ng-select2 [data]="CommodityperiodData" [value]="selectedCommodityperiodData" (valueChanged)="
+                valueChangedHandler($event, 0, 'CommodityMultipe')
+              " class="cusSelect2 cusSelect2_5rem" placeholder="Select Periodically">
+            </ng-select2>
+          </div>
+          <div class="col-3">
+            <i class="fa fa-close pointer for-end" (click)="removeThirdLevel('', 0, 'commodity')"></i>
+          </div>
+          <hr />
+        </div>
+        <ng-template #equalOne>
+          <div>
+            <div class="row align-center font-13" *ngFor="let item of commodityArrayList; let i = index">
+              <div class="col-6">
+                <div>
+                  <p *ngIf="item.data_type == 'Commodity'">
+                    {{ item.data_type + "-" + item.name }}
+                  </p>
+                </div>
+              </div>
+              <div class="col-3 mb-5" *ngIf="item.data_type == 'Commodity'">
+                <ng-select2 [data]="item.periodData" [value]="item.selectedPeriosData"
+                  (valueChanged)="valueChangedHandler($event, i, '', item)" class="cusSelect2 cusSelect2_5rem"
+                  placeholder="Select Periodically">
+                </ng-select2>
+              </div>
+              <div class="col-3" *ngIf="item.data_type == 'Commodity'">
+                <i class="fa fa-close pointer for-end" (click)="removeThirdLevel(item, i, 'commodity')"></i>
+              </div>
+              <hr />
+            </div>
+          </div>
+        </ng-template>
+        <ng-container *ngFor="
+            let item of thirdDivData;
+            let i = index;
+          ">
+
+          <div class="row align-center font-13" *ngIf="item.checkedValues?.length">
+            <!-- <div class="col-6">{{ThirdArrayOfData(item,i)}}</div> -->
+            <div class="col-6" *ngIf="item.data_type != 'Commodity'">
+              <ng-container [ngTemplateOutlet]="item.checkedValues?.length == 1  ? signleOne : mulitipleOne"
+                [ngTemplateOutletContext]="{ item: item }"></ng-container>
+            </div>
+            <div class="col-3 mb-5" *ngIf="item.data_type != 'Commodity'">
+              <ng-select2 [data]="item.periodData" [value]="item.periodData?.selectedPeriosData"
+                (valueChanged)="valueChangedHandler($event, i, '', item)" class="cusSelect2 cusSelect2_5rem"
+                placeholder="Select Periodically">
+              </ng-select2>
+            </div>
+            <div class="col-3" *ngIf="item.data_type != 'Commodity'">
+              <i class="fa fa-close pointer for-end" (click)="removeThirdLevel(item, i, 'third')"></i>
+            </div>
+            <hr *ngIf="item.data_type != 'Commodity'" />
+          </div>
+
+          <!-- Macro And Country -->
+          <div class="row align-center font-13" *ngFor="let data of item.optionData; let j = index">
+            <!-- <div class="col-6">{{ThirdArrayOfData(item,i)}}</div> -->
+            <div class="col-6"
+              *ngIf="(item.data_type == 'Macro Indicator' || item.data_type == 'Country_one') && data.checked">
+              <div>
+                <!-- <p *ngIf="item.data_type == 'Macro Indicator'">{{item?.category + '-' + data.countryName}}</p> -->
+                <p *ngIf="item.data_type == 'Country_one'">{{item?.countryName + '-' + data.category}}</p>
+                <!-- <p
+                  *ngIf="(item.data_type == 'Company_two' || item.data_type == 'Exchange') && data.checked && item.optionData?.length >1;else mulitipleOne">
+                  {{item.name +
+                  item.exchange_company_value_type }} <span> - Mulitiple</span></p>
+                <ng-template #mulitipleOne>
+                  <p>
+                    {{item.name +
+                    item.exchange_company_value_type }} <span> - {{data.category?data.category:data.name}}</span></p>
+                </ng-template> -->
+                <!-- <p *ngIf="item.data_type == 'Company_two' || item.data_type == 'Exchange' ">
+                  {{updateCompany(j,item,data,i)}}</p> -->
+              </div>
+            </div>
+            <!-- <div class="col-3 mb-5"
+              *ngIf="item.data_type == 'Macro Indicator'  && data.checked">
+              <ng-select2 [data]="item.periodData" [value]="item.period?.selectedPeriosData"
+                (valueChanged)="valueChangedHandler($event, i, '', item)" class="cusSelect2 cusSelect2_5rem"
+                placeholder="Select Periodically">
+              </ng-select2>
+            </div> -->
+            <div class="col-3 mb-5"
+              *ngIf="item.data_type == 'Country_one' && data.checked">
+              <ng-select2 [data]="data.periodicity" [value]="item.period?.selectedPeriosData"
+                (valueChanged)="valueChangedHandler($event, i, '', item)" class="cusSelect2 cusSelect2_5rem"
+                placeholder="Select Periodically">
+              </ng-select2>
+            </div>
+            <div class="col-3"
+              *ngIf="(item.data_type == 'Macro Indicato' || item.data_type == 'Country_one')  && data.checked">
+              <i class="fa fa-close pointer for-end" (click)="removeThirdLevel(item, i, 'third', data)"></i>
+            </div>
+            <hr *ngIf="(item.data_type == 'Macro Indicato' || item.data_type == 'Country_one')  && data.checked" />
+          </div>
+        </ng-container>
+      </div>
+    </div>
+    <div class="btn-section">
+      <button class="refresh-btn" (click)="RefreshData()">Refresh</button>
+      <button class="period-btn" (click)="SelectPeriod('period')">
+        Select Period
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- alert Popup Modal -->
+<app-alert-modal *ngIf="auth.closeInsidePopup" [downloadData]="downloadLoadValue" [PeriodData]="selectedPeriosData"
+  [data_type]="data_type" [third_column_data]="thirdDivData" [commodityArrayList]="commodityArrayList"
+  [duplicate_Values]="duplicate_Values" [alertbox]="alertbox"></app-alert-modal>
+
+<!-- select every each priodicity -->
+
+<div class="backdrop" *ngIf="auth.openPopupModal">
+  <div id="alertbox" class="modal sevendayfreetrialpopup-rtda sevendayfreetrialpopup-cm in" tabindex="-1" role="dialog"
+    style="
+      display: block;
+      padding-left: 4px;
+      background-color: rgba(0, 0, 0, 0.5);
+    ">
+    <div class="modal-dialog modal-lg" style="top: 20%">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+          <button type="button" (click)="auth.openPopupModal = false" class="close" data-dismiss="modal"
+            aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!--end of modal header-->
+        <div class="modal-body text-center">
+          <span>{{ErrorMessage}}</span><br>
+          <span>{{NextErrorMessage}}</span>
+        </div>
+        <!--end of modal body-->
+        <!--end of modal footer-->
+      </div>
+    </div>
+  </div>
+</div>
+
+<ng-template #signleOne let-item='item'>
+  <p *ngIf="item.data_type === 'Macro Indicator'">
+    {{item.exchange_company_value_type }} <span> - {{item.checkedValues[0].countryName}}</span>
+  </p>
+  <p *ngIf="item.data_type !== 'Macro Indicator'">
+    {{item.name + ' - ' +
+      item.exchange_company_value_type }} <span> - {{item.checkedValues[0].value}}</span>
+  </p>
+</ng-template>
+
+<ng-template #mulitipleOne let-item='item'>
+  <p *ngIf="item.data_type === 'Macro Indicator'">
+    {{item.exchange_company_value_type}} <span> - Multiple Countries</span>
+  </p>
+  <p *ngIf="item.data_type !== 'Macro Indicator'">
+    {{item.name + ' - ' +
+    item.exchange_company_value_type }} <span> - Multiple</span></p>
+</ng-template>

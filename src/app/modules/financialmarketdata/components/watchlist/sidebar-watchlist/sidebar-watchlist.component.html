@@ -1,0 +1,466 @@
+<!-- Sidebar -->
+<div class="sidebar-container" [ngClass]="showSideBar ? 'show-sidebar' : ''">
+  <!-- <div class="container-fluid stocktitle-whole" id="topcc"> -->
+  <div class="row">
+    <div
+      class="newcompny-tabs"
+      role="group"
+      id="list-example"
+      aria-label="Basic example"
+    >
+      <button
+        type="button"
+        fragment="company_tab"
+        class="btn summary-btn"
+        (click)="navigateToSection('company_tab')"
+        [ngClass]="{
+          active: selectedParentSet == 'company_tab'
+        }"
+      >
+        Company
+      </button>
+      <button
+        type="button"
+        fragment="income_tab"
+        class="btn summary-btn"
+        (click)="navigateToSection('income_tab')"
+        [ngClass]="{
+          active: selectedParentSet == 'income_tab'
+        }"
+      >
+        Fixed Income
+      </button>
+      <button
+        type="button"
+        fragment="derivatives_tab"
+        class="btn summary-btn"
+        (click)="navigateToSection('derivatives_tab')"
+        [ngClass]="{
+          active: selectedParentSet == 'derivatives_tab'
+        }"
+      >
+        Derivatives
+      </button>
+      <button
+        type="button"
+        fragment="commodity_tab"
+        class="btn summary-btn"
+        (click)="navigateToSection('commodity_tab')"
+        [ngClass]="{
+          active: selectedParentSet == 'commodity_tab'
+        }"
+      >
+        Commodity
+      </button>
+      <button
+        type="button"
+        fragment="economy_tab"
+        class="btn summary-btn"
+        (click)="navigateToSection('economy_tab')"
+        [ngClass]="{
+          active: selectedParentSet == 'economy_tab'
+        }"
+      >
+        Economy
+      </button>
+    </div>
+  </div>
+  <div class="container">
+    <div class="row">
+      <button
+        style="margin-left: 6%"
+        class="col-5 watchlist_class"
+        (click)="createnew_watchlist()"
+      >
+        Create Watchlist
+      </button>
+      <button
+        style="margin-left: 3%"
+        class="col-5 watchlist_class"
+        (click)="createnew_portfolio()"
+      >
+        Create Portfolio
+      </button>
+    </div>
+    <div class="row">
+      <button style="margin-left: 6%" class="col-5 watchlist_class">
+        My Watchlist <i class="fa fa-plus"></i>
+      </button>
+      <button style="margin-left: 3%" class="col-5 watchlist_class">
+        My Portfolio <i class="fa fa-plus"></i>
+      </button>
+    </div>
+  </div>
+  <div class="container-fluid style_container">
+    <div class="company_content">
+      <div class="row">
+        <div class="col-11">
+          <!--Company Tab-->
+          <div
+            id="company_tab"
+            class="pt-2 row"
+            [style.display]="isVisiblecompany ? 'block' : 'none'"
+            (mouseenter)="highlightTab('company_tab')"
+          >
+            <div *ngIf="companyflag">
+              <p class="para2">Watchlist Name:</p>
+              <div class="row">
+                <div class="col watchlistinput_class">
+                  <input
+                    type="text"
+                    class="form-control border-end-0 border"
+                    id="watchlist_name"
+                    value=""
+                    (input)="watchlistNameChange($event)"
+                  />
+                  <i
+                    class="fa fa-trash trash-icon-class"
+                    (click)="deletewatchlist()"
+                  ></i>
+                </div>
+              </div>
+              <div class="col-md-12 text-center import-btn">
+                <button
+                  type="button"
+                  class="btn Import-btn-class btn-warning"
+                  (click)="openPopup('watchlist')"
+                >
+                  Import from file
+                </button>
+              </div>
+              <p class="para3">Or</p>
+              <p class="para2">Add Company:</p>
+              <div class="company-select">
+                <ng-select2
+                  [data]="CompanyName"
+                  [placeholder]="'Select Company'"
+                  value=""
+                  id="companySearch"
+                  (valueChanged)="onCompanySelect($event)"
+                  [options]="options"
+                  (click)="onCompanyDropdownClick()"
+                >
+                </ng-select2>
+              </div>
+              <div class="selected-items" *ngIf="showcontainer">
+                <div
+                  class="row cus-margin"
+                  *ngFor="let data of selectedCompany; let i = index"
+                >
+                  <div class="col-1 display-flex mt-2">
+                    <i
+                      class="fa fa-close"
+                      (click)="removeCompanyData(data, 'company')"
+                    ></i>
+                  </div>
+                  <div class="col-10 mt-2">
+                    {{ data }}
+                  </div>
+                </div>
+              </div>
+              <div class="text-center" *ngIf="showcontainer">
+                <button type="button" class="btn btn-warning cancel-btn">
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-warning save-btn"
+                  (click)="savebuttonclick('company')"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+            <div class="row bothImportButtons" *ngIf="newPortfolio">
+              <div class="col-md-6 text-center import-btn">
+                <button
+                  type="button"
+                  class="btn Import-btn-class btn-warning"
+                  (click)="openPopup('Portfolio')"
+                >
+                  Import from file
+                </button>
+              </div>
+              <div class="col-md-6 text-center import-btn">
+                <button
+                  type="button"
+                  class="btn Import-btn-class2 btn-warning"
+                  (click)="openPopup('import_watchlist')"
+                >
+                  Import from Watchlist
+                </button>
+              </div>
+            </div>
+          </div>
+          <!--FIxed Income Tab-->
+          <div
+            id="income_tab"
+            class="pt-2 row"
+            [style.display]="isVisiblefixedincome ? 'block' : 'none'"
+            (mouseenter)="highlightTab('income_tab')"
+          >
+            <div *ngIf="fixed_incomeflag">
+              <p class="para2">Watchlist Name:</p>
+              <div class="row">
+                <div class="col watchlistinput_class">
+                  <input
+                    type="text"
+                    class="form-control border-end-0 border"
+                    id="watch_name"
+                    value=""
+                    (input)="watchlistNameChange($event)"
+                  />
+                  <i class="fa fa-trash trash-icon-class"></i>
+                </div>
+              </div>
+              <div class="col-md-12 text-center import-btn">
+                <button
+                  type="button"
+                  (click)="openPopup()"
+                  class="btn Import-btn-class btn-warning"
+                >
+                  Import from file
+                </button>
+              </div>
+              <p class="para3">Or</p>
+
+              <p class="para2">Add Fixed Income:</p>
+              <div class="company-select">
+                <ng-select2
+                  [data]="CompanyName"
+                  [placeholder]="'Select Company'"
+                  value=""
+                  (valueChanged)="onCompanySelect($event)"
+                  [options]="options"
+                >
+                </ng-select2>
+              </div>
+              <div class="selected-items" *ngIf="showcontainer">
+                <div
+                  class="row cus-margin"
+                  *ngFor="let data of selectedCompany; let i = index"
+                >
+                  <div class="col-1 display-flex mt-2">
+                    <i
+                      class="fa fa-close"
+                      (click)="removeCompanyData(data, 'fixedincome')"
+                    ></i>
+                  </div>
+                  <div class="col-10 mt-2">
+                    {{ data }}
+                  </div>
+                </div>
+              </div>
+              <div class="text-center">
+                <button type="button" class="btn btn-warning cancel-btn">
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-warning save-btn"
+                  (click)="savebuttonclick('fixedIncome')"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+          <!--Derivatives Tab-->
+          <div
+            id="derivatives_tab"
+            class="pt-2 row"
+            [style.display]="isVisiblederivatives ? 'block' : 'none'"
+            (mouseenter)="highlightTab('derivatives_tab')"
+          >
+            <div *ngIf="derivativesflag">
+              <p class="para2">Watchlist Name:</p>
+              <div class="row">
+                <div class="col watchlistinput_class">
+                  <input
+                    type="text"
+                    class="form-control border-end-0 border"
+                    id="watch_name"
+                  />
+                  <i class="fa fa-trash trash-icon-class"></i>
+                </div>
+              </div>
+              <p class="para4">Add Derivatives:</p>
+              <div class="company-select">
+                <ng-select2
+                  [data]="CompanyName"
+                  [placeholder]="'Select Company'"
+                  value=""
+                  (valueChanged)="onCompanySelect($event)"
+                  [options]="options"
+                >
+                </ng-select2>
+              </div>
+              <div class="selected-items" *ngIf="showcontainer">
+                <div
+                  class="row cus-margin"
+                  *ngFor="let data of selectedCompany; let i = index"
+                >
+                  <div class="col-1 display-flex mt-2">
+                    <i
+                      class="fa fa-close"
+                      (click)="removeCompanyData(data)"
+                    ></i>
+                  </div>
+                  <div class="col-10 mt-2">
+                    {{ data }}
+                  </div>
+                </div>
+              </div>
+              <div class="text-center">
+                <button type="button" class="btn btn-warning cancel-btn">
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-warning save-btn"
+                  (click)="savebuttonclick('Derivatives')"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+          <!--Commodity Tab-->
+          <div
+            id="commodity_tab"
+            class="pt-2 row"
+            [style.display]="isVisiblecommodity ? 'block' : 'none'"
+            (mouseenter)="highlightTab('commodity_tab')"
+          >
+            <div *ngIf="commodityflag">
+              <p class="para2">Watchlist Name:</p>
+              <div class="row">
+                <div class="col watchlistinput_class">
+                  <input
+                    type="text"
+                    class="form-control border-end-0 border"
+                    id="watch_name"
+                  />
+                  <i class="fa fa-trash trash-icon-class"></i>
+                </div>
+              </div>
+              <p class="para4">Add Commodity:</p>
+              <div class="company-select">
+                <ng-select2
+                  [data]="CompanyName"
+                  [placeholder]="'Select Company'"
+                  value=""
+                  (valueChanged)="onCompanySelect($event)"
+                  [options]="options"
+                >
+                </ng-select2>
+              </div>
+              <div class="selected-items" *ngIf="showcontainer">
+                <div
+                  class="row cus-margin"
+                  *ngFor="let data of selectedCompany; let i = index"
+                >
+                  <div class="col-1 display-flex mt-2">
+                    <i
+                      class="fa fa-close"
+                      (click)="removeCompanyData(data)"
+                    ></i>
+                  </div>
+                  <div class="col-10 mt-2">
+                    {{ data }}
+                  </div>
+                </div>
+              </div>
+              <div class="text-center">
+                <button type="button" class="btn btn-warning cancel-btn">
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-warning save-btn"
+                  (click)="savebuttonclick('commodity')"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+          <!--Economy Tab-->
+          <div
+            id="economy_tab"
+            class="pt-2 row"
+            [style.display]="isVisibleeconomy ? 'block' : 'none'"
+            (mouseenter)="highlightTab('economy_tab')"
+          >
+            <div *ngIf="economyflag">
+              <p class="para2">Watchlist Name:</p>
+              <div class="row">
+                <div class="col watchlistinput_class">
+                  <input
+                    type="text"
+                    class="form-control border-end-0 border"
+                    id="watch_name"
+                  />
+                  <i class="fa fa-trash trash-icon-class"></i>
+                </div>
+              </div>
+
+              <p class="para4">Add Indicator:</p>
+              <div class="input-group">
+                <input
+                  class="form-control border-end-0 border select-company"
+                  type="text"
+                  placeholder="+Select Indicator"
+                  id="example-search-input"
+                />
+              </div>
+              <div class="company-select mt-2">
+                <ng-select2
+                  [data]="CompanyName"
+                  [placeholder]="'Select Company'"
+                  value=""
+                  (valueChanged)="onCompanySelect($event)"
+                  [options]="options"
+                >
+                </ng-select2>
+              </div>
+              <div class="selected-items" *ngIf="showcontainer">
+                <div
+                  class="row cus-margin"
+                  *ngFor="let data of selectedCompany; let i = index"
+                >
+                  <div class="col-1 display-flex mt-2">
+                    <i
+                      class="fa fa-close"
+                      (click)="removeCompanyData(data)"
+                    ></i>
+                  </div>
+                  <div class="col-10 mt-2">
+                    {{ data }}
+                  </div>
+                </div>
+              </div>
+              <div class="text-center">
+                <button type="button" class="btn btn-warning cancel-btn">
+                  Cancel
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-warning save-btn"
+                  (click)="savebuttonclick('Economy')"
+                >
+                  Save
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-1 custom_cls">
+          <button type="button" class="side-btn" (click)="handleMenuClick()">
+            <i class="fa fa-chevron-left"></i>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

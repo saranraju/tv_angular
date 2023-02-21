@@ -1,0 +1,509 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th
+          *ngFor="let header of table_header?.title; let i = index"
+          [ngStyle]="{
+            width: header?.width,
+            'text-align': header?.align,
+            'max-width': header?.max_width,
+            cursor: header?.pointer && 'pointer'
+          }"
+          [attr.colspan]="header?.colspan"
+          [attr.rowspan]="header?.rowspan"
+        >
+          {{ header.label }}
+        </th>
+      </tr>
+    </thead>
+    <div
+      class="ecoTable"
+      [ngClass]="overFlow ? 'overflow-hidden' : 'overflow-auto'"
+      [ngStyle]="{ 'max-height': mh }"
+    >
+      <ng-container *ngIf="!multisel">
+        <tbody
+          [ngClass]="
+            borderBottom
+              ? 'border-bottom-0'
+              : industry_accordin
+              ? selectedReg == true
+                ? 'coustom_according'
+                : ''
+              : padding
+              ? 'economy_padding'
+              : ''
+          "
+          [ngStyle]="{ 'border-bottom': none_css }"
+          *ngFor="let data of tableData; let i = index"
+        >
+          <!-- 'max-ht >320'?'margin-btm':'' -->
+          <tr [ngStyle]="{ background: none_css }">
+            <td
+              [ngStyle]="{
+                width: table_header?.title[0]?.width,
+                'text-align': table_header?.title[0]?.align,
+                'max-width': table_header?.title[0]?.max_width
+              }"
+              class="ps-3 position-relative"
+              [ngClass]="industry_accordin ? 'background_accordin' : ''"
+            >
+              <span
+                *ngIf="
+                  (!industry_monitor &&
+                    childData['child' + data?.telIndicatorId]?.length &&
+                    childData['child' + data?.telIndicatorId]) ||
+                  data.child_table_data?.length
+                "
+                class="icon cusIcon"
+                ><i
+                  *ngIf="!industry_monitor"
+                  [ngClass]="
+                    selectedPlus_icon && index == i ? ' fa-minus' : ' fa-plus'
+                  "
+                  (click)="
+                    show_plus_icon(childData['child' + data?.telIndicatorId], i)
+                  "
+                  class="fa"
+                ></i>
+                <i
+                  *ngIf="industry_monitor"
+                  [ngClass]="
+                    selectedPlus_icon && index == i ? ' fa-minus' : ' fa-plus'
+                  "
+                  (click)="show_plus_icon2(tableData[i].child_table_data, i)"
+                  class="fa"
+                ></i
+              ></span>
+              <ng-container *ngIf="!industry_monitor">
+                <span
+                  (click)="
+                    data.indicatorDataId != null && redirectToInteractive(data)
+                  "
+                  *ngIf="data.telCategory"
+                  class="td-first-child-padding cursor-pointer"
+                  [ngStyle]="{
+                    cursor: data.indicatorDataId != null ? 'pointer' : 'initial'
+                  }"
+                >
+                  {{ data.telCategory }}
+                  <span *ngIf="data.unit">({{ data.unit }})</span>
+                </span>
+              </ng-container>
+              <ng-container *ngIf="industry_monitor">
+                <span
+                  *ngIf="data.category; else tempMinus"
+                  [ngStyle]="{ 'font-size': fontsize }"
+                  class="td-first-child-padding"
+                  (click)="show_plus_icon2(tableData[i].child_table_data, i)"
+                >
+                  {{ data.category }}
+                  <span *ngIf="data.unit">({{ data.unit }})</span>
+                </span>
+              </ng-container>
+              <ng-template #tempMinus>
+                <span>-</span>
+              </ng-template>
+            </td>
+
+            <!-- this is based on economy component -->
+            <td
+              [ngStyle]="{
+                width: table_header?.title[1]?.width,
+                'text-align': table_header?.title[1]?.align,
+                'max-width': table_header?.title[1]?.max_width
+              }"
+              class="text-white"
+              *ngIf="!type"
+            >
+              <span *ngIf="data.period">
+                {{ data.periodType.substring(0, 1) | uppercase }}/{{
+                  data.period | date: "MMM-yy"
+                }}</span
+              >
+              <span *ngIf="!data.period">-</span>
+            </td>
+            <td
+              [ngStyle]="{
+                width: table_header?.title[2]?.width,
+                'text-align': table_header?.title[2]?.align,
+                'max-width': table_header?.title[2]?.max_width
+              }"
+              class="text-white text-end"
+              *ngIf="!type"
+            >
+              {{ data.data ? this.util.standardFormat(data.data, 2, "") : "-" }}
+            </td>
+            <td
+              [ngStyle]="{
+                width: table_header?.title[3]?.width,
+                'text-align': table_header?.title[3]?.align,
+                'max-width': table_header?.title[3]?.max_width
+              }"
+              class="text-end tdBorderRight"
+              *ngIf="!type"
+            >
+              <span
+                *ngIf="data?.yoyChange; else other_content"
+                [ngClass]="data.yoyChange >= 0 ? 'text-success' : 'text-danger'"
+                >{{ this.util.standardFormat(data.yoyChange, 2, "") }} %
+              </span>
+              <ng-template #other_content>-</ng-template>
+            </td>
+            <td
+              [ngStyle]="{
+                width: table_header?.title[4]?.width,
+                'text-align': table_header?.title[4]?.align,
+                'max-width': table_header?.title[4]?.max_width
+              }"
+              *ngIf="!type"
+            >
+              <span class="custom-spacing">
+                {{
+                  data?.forecastQ1
+                    ? data.periodType == "Quarterly" ||
+                      data.periodType == "Monthly" ||
+                      data.periodType == "Weekly" ||
+                      data.periodType == "Daily"
+                      ? util.standardFormat(data.forecastQ1, 2, "") +
+                        " " +
+                        "(Q/" +
+                        (data.q1Date | date: "MMM-yy") +
+                        ")"
+                      : data.periodType == "Yearly"
+                      ? util.standardFormat(data.forecastQ1, 2, "") +
+                        " (Y/" +
+                        (this.nextPeriodHandler(data.period) | date: "yy") +
+                        ")"
+                      : util.standardFormat(data.forecastQ1, 2, "")
+                    : "-"
+                }}
+              </span>
+            </td>
+            <td
+              [ngStyle]="{
+                width: table_header?.title[5]?.width,
+                'text-align': table_header?.title[5]?.align,
+                'max-width': table_header?.title[5]?.max_width
+              }"
+              *ngIf="!type"
+            >
+              <span class="custom-spacing">
+                {{
+                  data?.forecastQ2
+                    ? data.periodType == "Quarterly" ||
+                      data.periodType == "Monthly" ||
+                      data.periodType == "Weekly" ||
+                      data.periodType == "Daily"
+                      ? util.standardFormat(data.forecastQ2, 2, "") +
+                        " " +
+                        "(Q/" +
+                        (data.q2Date | date: "MMM-yy") +
+                        ")"
+                      : data.periodType == "Yearly"
+                      ? util.standardFormat(data.forecastQ2, 2, "") +
+                        " (Y/" +
+                        (this.nextToNextPeriodHandler(data.period)
+                          | date: "yy") +
+                        ")"
+                      : util.standardFormat(data.forecastQ2, 2, "")
+                    : "-"
+                }}
+              </span>
+            </td>
+            <!-- this is based on economy component -->
+          </tr>
+          <td class="p-0" *ngIf="child_table_data?.length && index == i">
+            <tr
+              [ngStyle]="{ background: none_css }"
+              class="child-row"
+              *ngFor="let child of child_table_data"
+            >
+              <td
+                [ngStyle]="{
+                  width: table_header?.title[0]?.width,
+                  'text-align': table_header?.title[0]?.align,
+                  'max-width': table_header?.title[0]?.max_width
+                }"
+                class="ps-4 position-relative"
+                [ngClass]="
+                  industry_monitor
+                    ? 'background_accordin'
+                    : padding
+                    ? 'economy_padding'
+                    : ''
+                "
+              >
+                <span
+                  [ngClass]="type ? 'arrow_icon' : ''"
+                  class="td-first-child-padding"
+                >
+                  {{ child.telCategory }}
+                  <span *ngIf="child.unit">({{ child.unit }})</span>
+                  <span *ngIf="!child.telCategory">-</span>
+                </span>
+              </td>
+              <!-- this is based on economy component -->
+              <td
+                [ngStyle]="{
+                  width: table_header?.title[1]?.width,
+                  'text-align': table_header?.title[1]?.align,
+                  'max-width': table_header?.title[1]?.max_width
+                }"
+                class="text-white"
+                *ngIf="!type"
+              >
+                <span *ngIf="child.period">
+                  {{ child.periodType.substring(0, 1) | uppercase }}/{{
+                    child.period | date: "MMM-yy"
+                  }}
+                </span>
+                <span *ngIf="!child.period">-</span>
+              </td>
+              <td
+                [ngStyle]="{
+                  width: table_header?.title[2]?.width,
+                  'text-align': table_header?.title[2]?.align,
+                  'max-width': table_header?.title[2]?.max_width
+                }"
+                class="text-white text-end"
+                *ngIf="!type"
+              >
+                {{
+                  child.data ? this.util.standardFormat(child.data, 2, "") : "-"
+                }}
+              </td>
+              <td
+                [ngStyle]="{
+                  width: table_header?.title[3]?.width,
+                  'text-align': table_header?.title[3]?.align,
+                  'max-width': table_header?.title[3]?.max_width
+                }"
+                *ngIf="!type"
+                class="text-end tdBorderRight"
+              >
+                <span
+                  *ngIf="child?.yoyChange; else other_content"
+                  [ngClass]="
+                    child.yoyChange >= 0 ? 'text-success' : 'text-danger'
+                  "
+                  >{{ this.util.standardFormat(child.yoyChange, 2, "") }} %
+                </span>
+                <ng-template #other_content>-</ng-template>
+              </td>
+              <td
+                [ngStyle]="{
+                  width: table_header?.title[4]?.width,
+                  'text-align': table_header?.title[4]?.align,
+                  'max-width': table_header?.title[4]?.max_width
+                }"
+                *ngIf="!type"
+              >
+                <span>
+                  <!-- {{
+                  child?.forecastQ1
+                  ? util.standardFormat(child.forecastQ1, 2, "") + "%"
+                  : "-"
+                  }} -->
+                  {{
+                    child?.forecastQ1 && data?.forecastQ2
+                      ? data.periodType == "Quarterly" ||
+                        data.periodType == "Monthly" ||
+                        data.periodType == "Weekly" ||
+                        data.periodType == "Daily"
+                        ? util.standardFormat(child.forecastQ1, 2, "") +
+                          " " +
+                          "(Q/" +
+                          (child.q1Date | date: "MMM-yy") +
+                          ")"
+                        : data.periodType == "Yearly"
+                        ? util.standardFormat(child.forecastQ1, 2, "") +
+                          " (Y/" +
+                          (this.nextPeriodHandler(child.period) | date: "yy") +
+                          ")"
+                        : util.standardFormat(child.forecastQ1, 2, "")
+                      : "-"
+                  }}
+                </span>
+              </td>
+              <td
+                [ngStyle]="{
+                  width: table_header?.title[5]?.width,
+                  'text-align': table_header?.title[5]?.align,
+                  'max-width': table_header?.title[5]?.max_width
+                }"
+                *ngIf="!type"
+              >
+                <span>
+                  <!-- {{
+                  child?.forecastQ2
+                  ? util.standardFormat(child.forecastQ2, 2, "") + "%"
+                  : "-"
+                  }} -->
+                  {{
+                    child?.forecastQ2 && data?.forecastQ2
+                      ? data.periodType == "Quarterly" ||
+                        data.periodType == "Monthly" ||
+                        data.periodType == "Weekly" ||
+                        data.periodType == "Daily"
+                        ? util.standardFormat(child.forecastQ2, 2, "") +
+                          " " +
+                          "(Q/" +
+                          (child.q2Date | date: "MMM-yy") +
+                          ")"
+                        : data.periodType == "Yearly"
+                        ? util.standardFormat(child.forecastQ2, 2, "") +
+                          " (Y/" +
+                          (this.nextToNextPeriodHandler(child.period)
+                            | date: "yy") +
+                          ")"
+                        : util.standardFormat(child.forecastQ2, 2, "")
+                      : "-"
+                  }}
+                </span>
+              </td>
+              <!-- this is based on economy component -->
+            </tr>
+          </td>
+        </tbody>
+      </ng-container>
+      <ng-container *ngIf="multisel">
+        <tbody
+          [ngClass]="borderBottom ? 'border-bottom-0' : ''"
+          [ngStyle]="{ 'border-bottom': none_css }"
+          *ngFor="let data of tableData; let i = index"
+        >
+          <!-- 'max-ht >320'?'margin-btm':'' -->
+          <tr [ngStyle]="{ background: none_css }">
+            <td
+              style="width: 15rem"
+              class="ps-3 position-relative cursor-default coustom_accordin_title"
+            >
+              <span
+                *ngIf="
+                  (!industry_monitor &&
+                    childData['child' + data?.telIndicatorId]?.length &&
+                    childData['child' + data?.telIndicatorId]) ||
+                  data.child_table_data?.length
+                "
+                class="icon cusIcon"
+              >
+                <i
+                  id="btn-plus{{ i }}"
+                  class="fa fa-plus"
+                  *ngIf="industry_monitor && multiselleft"
+                  (click)="show_plus_icon3(tableData[i].child_table_data, i)"
+                ></i>
+                <i
+                  id="btn-plus1{{ i }}"
+                  class="fa fa-plus"
+                  *ngIf="industry_monitor && !multiselleft"
+                  (click)="show_plus_icon4(tableData[i].child_table_data, i)"
+                ></i>
+              </span>
+
+              <ng-container *ngIf="industry_monitor && multiselleft">
+                <span
+                  *ngIf="data.category"
+                  [ngStyle]="{ 'font-size': fontsize }"
+                  class="td-first-child-padding cursor-none"
+                  (click)="show_plus_icon3(tableData[i].child_table_data, i)"
+                >
+                  {{ data.category }}
+                  <span *ngIf="data.unit">({{ data.unit }})</span>
+                </span>
+              </ng-container>
+              <ng-container *ngIf="industry_monitor && !multiselleft">
+                <span
+                  *ngIf="data.category"
+                  [ngStyle]="{ 'font-size': fontsize }"
+                  class="td-first-child-padding"
+                  (click)="show_plus_icon4(tableData[i].child_table_data, i)"
+                >
+                  {{ data.category }}
+                  <span *ngIf="data.unit">({{ data.unit }})</span>
+                </span>
+              </ng-container>
+              <!-- <span>
+                <i id="btn-plus{{i}}" class="fa fa-plus" *ngIf="industry_monitor && multiselleft"
+                  (click)="show_plus_icon3(tableData[i].child_table_data, i)"></i> <i id="btn-plus1{{i}}"
+                  class="fa fa-plus" *ngIf="industry_monitor && !multiselleft"
+                  (click)="show_plus_icon4(tableData[i].child_table_data, i)"></i>
+              </span> -->
+
+              <ng-container *ngIf="industry_monitor && multiselleft">
+                <span
+                  *ngIf="data.category"
+                  [ngStyle]="{ 'font-size': fontsize }"
+                  class="td-first-child-padding"
+                  (click)="show_plus_icon3(tableData[i].child_table_data, i)"
+                >
+                  {{ data.category }}
+                  <span *ngIf="data.unit">({{ data.unit }})</span>
+                </span>
+              </ng-container>
+              <ng-container *ngIf="industry_monitor && !multiselleft">
+                <span
+                  *ngIf="data.category"
+                  [ngStyle]="{ 'font-size': fontsize }"
+                  class="td-first-child-padding"
+                  (click)="show_plus_icon4(tableData[i].child_table_data, i)"
+                >
+                  {{ data.category }}
+                  <span *ngIf="data.unit">({{ data.unit }})</span>
+                </span>
+              </ng-container>
+
+              <span *ngIf="!data.category">-</span>
+            </td>
+          </tr>
+          <td class="p-0 d-none" *ngIf="multiselleft" id="chid{{ i }}">
+            <tr
+              [ngStyle]="{ background: none_css }"
+              class="child-row"
+              *ngFor="let child of data.child_table_data"
+            >
+              <td style="width: 15rem" class="ps-4 position-relative">
+                <span
+                  [ngClass]="type ? 'arrow_icon' : ''"
+                  class="td-first-child-padding"
+                >
+                  {{ child.telCategory }}
+                  <span *ngIf="child.unit">({{ child.unit }})</span>
+                  <span *ngIf="!child.telCategory">-</span>
+                </span>
+              </td>
+              <!-- this is based on economy component -->
+
+              <!-- this is based on economy component -->
+            </tr>
+          </td>
+          <td class="p-0 d-none" *ngIf="!multiselleft" id="chid1{{ i }}">
+            <tr
+              [ngStyle]="{ background: none_css }"
+              class="child-row"
+              *ngFor="let child of data.child_table_data"
+            >
+              <td style="width: 15rem" class="ps-4 position-relative">
+                <span
+                  [ngClass]="type ? 'arrow_icon' : ''"
+                  class="td-first-child-padding"
+                >
+                  {{ child.telCategory }}
+                  <span *ngIf="child.unit">({{ child.unit }})</span>
+                  <span *ngIf="!child.telCategory">-</span>
+                </span>
+              </td>
+              <!-- this is based on economy component -->
+
+              <!-- this is based on economy component -->
+            </tr>
+          </td>
+        </tbody>
+      </ng-container>
+    </div>
+  </table>
+</div>
+
+<br *ngIf="industry_monitor" />

@@ -1,0 +1,222 @@
+.screener-selection-title {
+  font-size: 1.33rem;
+  color: #ffc000;
+}
+
+.btn-group {
+  width: 100%;
+}
+
+.btn {
+  border-top-right-radius: 4px;
+  border-bottom-right-radius: 4px;
+  background: 0;
+  border: 1px solid #ffc000;
+  color: #ffc000;
+  font-size: 13px;
+  padding: 5px;
+  width: 16.75%;
+  flex: none;
+  font-weight: 600;
+}
+
+.active {
+  color: #333 !important;
+  background: #ffc000 !important;
+}
+
+.screener-icons {
+  font-size: 1.5rem;
+  cursor: pointer;
+}
+
+.fa-refresh {
+  color: #ffc000;
+}
+
+.criteria-container {
+  background-color: #fbe5c6;
+  height: 250px;
+  color: #000;
+  padding: 5px 0;
+  overflow-y: auto;
+}
+
+.footer-btn {
+  border-radius: 4px;
+  background: 0;
+  border: 1px solid #ffc000;
+  color: #ffc000;
+  font-size: 13px;
+  padding: 5px;
+  width: 25%;
+  flex: none;
+  text-transform: uppercase;
+  font-weight: 600;
+}
+
+.footer-btn-right {
+  width: 17%;
+}
+
+.criteria-title {
+  font-weight: 600;
+}
+
+.add-criteria-list {
+  list-style: none;
+  padding-left: 0;
+  font-size: 14px;
+}
+
+.add-criteria-sub-list {
+  list-style: none;
+  padding-left: 1rem;
+  font-size: 13px;
+  font-style: italic;
+}
+
+.add-criteria-container {
+  overflow-y: auto;
+}
+
+.slider-input {
+  border: 1px solid #ffc000;
+  width: 30% !important;
+  font-size: 15px;
+}
+
+.results-per-page-text {
+  color: #ffc000;
+  font-size: 14px;
+  width: 15% !important;
+}
+
+// We need to use ::ng-deep to overcome view encapsulation
+::ng-deep {
+  .custom-slider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 25px;
+  }
+
+  .custom-slider .ngx-slider {
+    max-width: 30rem;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-bar {
+    background: transparent;
+    height: 2px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-selection {
+    background: transparent;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-pointer {
+    width: 12px;
+    height: 24px;
+    top: auto;
+    /* to remove the default positioning */
+    bottom: 0;
+    background-color: #ffc000;
+    border-radius: unset;
+    border: 1px solid #d9d9d9;
+    border-radius: 3px;
+    // border-top-left-radius: 3px;
+    // border-top-right-radius: 3px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-tick {
+    top: unset !important;
+    bottom: -4px !important;
+    border-radius: 0px !important;
+    width: 2px !important;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-pointer:after {
+    // display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 3px;
+    gap: 3px;
+    position: initial;
+    z-index: 99;
+    width: 1px;
+    height: 14px;
+    background-color: #d9d9d9;
+    margin: 4px 0 0 3px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-pointer::before {
+    // display: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    grid-gap: 3px;
+    gap: 3px;
+    position: initial;
+    z-index: 99;
+    width: 1px;
+    height: 14px;
+    background-color: #d9d9d9;
+    margin: 6px 0 0 3px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-bubble {
+    bottom: 14px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-limit {
+    font-weight: bold;
+    color: orange;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-tick {
+    width: 1px;
+    height: 1px;
+    margin-left: 4px;
+    border-radius: 50%;
+    background: #ffc000;
+    top: -1px;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-tick.ngx-slider-selected {
+    background: orange;
+  }
+
+  .custom-slider .ngx-slider .ngx-slider-bubble {
+    display: none;
+  }
+
+  // .custom-slider .ngx-slider .ngx-slider-bar-wrapper{
+  //   width: 250px;
+  // }
+
+  .horizontalLine {
+    width: 1px;
+    height: 14px;
+    background-color: #d9d9d9;
+  }
+
+  // .sliderR{
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   gap: 3px;
+  //   position: absolute;
+  //   margin-left: 24.1em;
+  //   z-index: 99;
+  // }
+  // .sliderL{
+  //   display: flex;
+  //   justify-content: center;
+  //   align-items: center;
+  //   gap: 3px;
+  //   position: absolute;
+  //   margin-right: 29.41em;
+  //   z-index: 99;
+  // }
+}

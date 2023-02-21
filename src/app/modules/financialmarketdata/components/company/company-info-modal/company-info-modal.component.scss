@@ -1,0 +1,76 @@
+.modal {
+  display: block;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.8);
+  transition: opacity 500ms;
+}
+
+.modal-dialog-style {
+  width: 95%;
+  margin: 1.75rem auto;
+}
+
+/* Modal Content */
+.modal-content {
+  background: #00071e !important;
+  padding: 0px 10px !important;
+  width: 100% !important;
+}
+
+.close {
+  position: absolute;
+  top: -33px;
+  right: 0;
+  color: white;
+  opacity: 1;
+  background: 0;
+  border: 0;
+  font-size: 20px;
+}
+
+.commodityTable {
+  table {
+    font-weight: 400;
+    font-size: 13px;
+
+    tbody {
+      display: block;
+      overflow-y: auto;
+      border-bottom: 1px solid #528dc3;
+    }
+
+    .remove-border-top {
+      border-top: none !important;
+    }
+
+    .remove-border-bottom {
+      border-bottom: none !important;
+    }
+
+    thead,
+    tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+
+    th {
+      font-weight: 600;
+      border-top: 1px solid #528dc3;
+      border-bottom: 1px solid #528dc3;
+      color: #ffc000;
+      font-size: 17px;
+      background-color: #00071e !important;
+      padding: 8px 10px;
+    }
+
+    td {
+      font-weight: 600;
+      color: white;
+      font-size: 14px;
+      background-color: #00071e !important;
+      padding: 20px 10px;
+      text-align: justify;
+    }
+  }
+}

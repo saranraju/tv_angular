@@ -1,0 +1,315 @@
+<div class="container-fluid col-12 forextab flex-column">
+  <div *ngIf="!clicked">
+    <div class="d-flex justify-content-between align-items-center">
+      <h3 class="tab-header">Forex Dashboard</h3>
+
+      <div class="btn-group newcompny-tabs">
+        <button
+          *ngFor="let button of buttonCategoryTwo"
+          fragment="management_tab"
+          type="button"
+          class="btn"
+          (click)="getAnnualQuarterly(button.id)"
+          [ngClass]="{
+            active: button.id == buttonTwo
+          }"
+        >
+          {{ button.title }}
+        </button>
+      </div>
+
+      <ng-select2
+        id="industryStep"
+        style="opacity: 0"
+        class="cusSelect2 cusSelect2_20rem"
+        [placeholder]="'Search Currency Contract'"
+      >
+      </ng-select2>
+    </div>
+    <div class="d-flex background-with-border mt-2 p-1">
+      <div class="table-right background-with-border">
+        <div class="d-flex header-container">
+          <h4 class="header-title">FX Pairs</h4>
+          <p class="page-ref">
+            {{ "Viewing 1-" + this.pageActive + " of " + tableDataLength }}
+          </p>
+          <div class="d-flex pagination-container">
+            Views per page :
+            <span
+              *ngFor="let page of tablPaginationArray"
+              class="cursor-pointer pagination"
+              [ngClass]="{
+                pageActive: page.id == pageActive
+              }"
+              (click)="onPaginationClicked(page.id)"
+            >
+              {{ page.text }} |</span
+            >
+          </div>
+          <ng-select2
+            *ngIf="buttonTwo == 1"
+            id="industryStep1"
+            class="cusSelect2 cusSelect2_6rem"
+            [placeholder]="'Select Base Currency'"
+            [data]="baseCurrencyData"
+            [value]="selectedCurrency"
+            (valueChanged)="onCurrencyChanged('base', $event)"
+          >
+          </ng-select2>
+          <ng-select2
+            *ngIf="buttonTwo == 2"
+            id="industryStep1"
+            class="cusSelect2 cusSelect2_6rem"
+            [placeholder]="'Select FX Pairs'"
+            [data]="fxPairsData"
+            [value]="selectedFxPairs"
+            (valueChanged)="onCurrencyChanged('pairs', $event)"
+          >
+          </ng-select2>
+          <!-- <i class="fa fa-external-link icon"></i> -->
+        </div>
+        <app-forex-live-table
+          [tableData]="table_data.value"
+          [tableDataHeader]="table_data.title"
+          [tableDataLength]="tableDataLength"
+          [totalResultCount]="pageActive"
+          [homeData]="true"
+          [pagination]="true"
+          [headerBorder]="true"
+          [OTCorEnergy]="'Metals'"
+          [bottomBorder]="true"
+          type="forex"
+          (changePage)="onPageChage($event)"
+          [currentPageSelected]="this.selectedPage"
+          (onForexDataClick)="onDataClicked($event)"
+          [paginateId]="'forex-base-table'"
+          [loadingForexTable]="fxPairsTableLoading"
+        ></app-forex-live-table>
+      </div>
+      <div class="table-left background-with-border ml-1">
+        <div class="d-flex header-container">
+          <h4 class="header-title">FX Matrix</h4>
+          <div>
+            <ng-select2
+              class="cusSelect2 cusSelect2_7rem"
+              [data]="countryLists"
+              [value]="selectedCountry"
+              [placeholder]="'Select Matrix'"
+              (valueChanged)="onCountryChanged($event)"
+            >
+            </ng-select2>
+            <!-- <i class="fa fa-external-link icon ml-1"></i> -->
+          </div>
+        </div>
+        <!-- <app-ipo-table
+          [style.color]="col"
+          [ipo_table_data]="table_data_two"
+          mh="auto"
+        ></app-ipo-table> -->
+        <app-forex-live-table
+          [tableData]="table_data_two.value"
+          [tableDataHeader]="table_data_two.title"
+          [tableDataLength]="table_data_two.title.length"
+          [totalResultCount]="pageActive"
+          [homeData]="true"
+          [headerBorder]="true"
+          [OTCorEnergy]="'Metals'"
+          [loadingForexTable]="fxMatrixTableLoding"
+        ></app-forex-live-table>
+        <div class="chart">
+          <h4 class="header-title my-2">FX View</h4>
+          <div id="chartdiv"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="clicked" class="d-flex justify-content-between">
+    <div
+      *ngIf="forexCompanyData?.description; else loading"
+      class="d-flex flex-column container-right"
+    >
+      <div>
+        <h3 class="stocktitle-whole-forex m-0">
+          <div class="mr-3">
+            <i
+              (click)="backClicked()"
+              class="fa fa-arrow-circle-left arrowIconClass cursor-pointer"
+              aria-hidden="true"
+            ></i>
+          </div>
+          <b>
+            {{ forexCompanyData?.description }}({{
+              forexCompanyData?.symbol?.slice(3)
+            }})
+            <span id="companyStep3"> | </span>
+          </b>
+          <b> {{ forexCompanyData?.instrumentName }} </b>
+        </h3>
+      </div>
+      <div class="d-flex align-items-center justify-content-between mt-1">
+        <h3 class="stocksubtitle-whole m-0">
+          <b>
+            Open :
+            <span id="companyStep3"> {{ forexCompanyData?.open }} </span>
+          </b>
+        </h3>
+        <span class="bar_seperator"> | </span>
+        <h3 class="stocksubtitle-whole m-0">
+          <b>
+            High :
+            <span id="companyStep3"> {{ forexCompanyData?.high }} </span>
+          </b>
+        </h3>
+        <span class="bar_seperator"> | </span>
+        <h3 class="stocksubtitle-whole m-0">
+          <b>
+            Low :
+            <span id="companyStep3">{{ forexCompanyData?.low }} </span>
+          </b>
+        </h3>
+        <span class="bar_seperator"> | </span>
+        <h3 class="stocksubtitle-whole m-0">
+          <b>
+            Previous Close :
+            <span id="companyStep3">
+              {{ forexCompanyData?.previousClose }}
+            </span>
+          </b>
+        </h3>
+      </div>
+      <div class="d-flex align-items-center justify-content-between mt-1">
+        <h3 class="stocksubtitle-whole m-0">
+          <b>
+            1 Day Change :
+            <span id="companyStep3">
+              {{ forexCompanyData?.oneDayChange }}
+            </span>
+          </b>
+        </h3>
+        <span class="bar_seperator"> | </span>
+        <h3 class="stocksubtitle-whole m-0">
+          <b>
+            1 Week Change :
+            <span id="companyStep3"
+              >{{ forexCompanyData?.oneWeekChange }}
+            </span>
+          </b>
+        </h3>
+        <span class="bar_seperator"> | </span>
+        <h3 class="stocksubtitle-whole m-0">
+          <b>
+            1 Month Change :
+            <span id="companyStep3">
+              {{ forexCompanyData?.oneMonthChange }}
+            </span>
+          </b>
+        </h3>
+      </div>
+      <div class="d-flex align-items-center justify-content-between mt-1">
+        <h3 class="tradePrice mt-2 mb-2">
+          <b class="title">Trade Quote</b>
+          <div class="d-flex">
+            <div class="cotainer">
+              <b class="title"> Bid Price </b>
+            </div>
+            <div class="cotainer">
+              <b class="title"> Ask Price </b>
+            </div>
+          </div>
+          <div class="d-flex mt-2">
+            <div class="cotainer bg-color">
+              <span class="price">
+                {{ forwardQuoteBidAndAskPrice?.bidPrice }}
+              </span>
+            </div>
+            <div class="cotainer bg-color">
+              <span class="price">
+                {{ forwardQuoteBidAndAskPrice?.askPrice }}
+              </span>
+            </div>
+          </div>
+        </h3>
+      </div>
+      <div class="chart-container mt-2">
+        <div class="chart-dashboard">
+          <div id="chartdiv"></div>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex flex-column container-left ml-3">
+      <div class="d-flex justify-content-end">
+        <ng-select2
+          id="industryStep1"
+          class="cusSelect2 cusSelect2_20rem"
+          [placeholder]="'Search OTC Currency'"
+          [data]="otcContractData"
+          [value]="selectedOTC"
+          (valueChanged)="onOTCCurrencyChanged($event)"
+        >
+        </ng-select2>
+      </div>
+      <div class="d-flex">
+        <h3 class="stocksubtitle-whole mt-2 mb-2">
+          <b> Forward Price Quote </b>
+        </h3>
+      </div>
+
+      <!-- send perpage(totalResultCount) count(pending) -->
+      <app-forex-live-table
+        [tableData]="forwardPriceQuoteData?.value"
+        [tableDataHeader]="forwardPriceQuoteData?.title"
+        [tableDataLength]="
+          forexCompanyData?.forwardPriceQuoteDTOList?.totalElements
+        "
+        [totalResultCount]="10"
+        [homeData]="true"
+        [pagination]="true"
+        [headerBorder]="true"
+        [bottomBorder]="true"
+        (changePage)="onDescriptionPageChage($event)"
+        type="forex"
+        [currentPageSelected]="this.selectedDescriptionPage"
+        [paginateId]="'forex-pairs-id'"
+        [loadingForexTable]="forwardPriceLoading"
+      ></app-forex-live-table>
+      <!-- <app-ipo-table
+        [ipo_table_data]="forwardPriceQuoteData"
+        [paginate]="true"
+        itemsPerPage="10"
+        mh="auto"
+      ></app-ipo-table> -->
+      <div class="chart-container-bottom">
+        <div id="chartdivFQ" class="commodityChart"></div>
+      </div>
+    </div>
+  </div>
+
+  <ng-template #loading>
+    <div class="d-flex flex-column container-right mt-5">
+      <div class="no-data">
+        <svg class="circular" viewBox="25 25 50 50" style="height: 10px">
+          <circle
+            class="path"
+            cx="50"
+            cy="50"
+            r="20"
+            fill="none"
+            stroke-width="2"
+            stroke-miterlimit="10"
+          />
+        </svg>
+        <img
+          style="width: 4rem"
+          class="loader_img rounded mx-auto d-block"
+          src="../../../../../../assets/img/televisory-loader.gif"
+        />
+      </div>
+    </div>
+  </ng-template>
+  <!-- FxMatrix Model -->
+  <app-fx-matrix-modal
+    [currency_data]="currencyData"
+    *ngIf="auth.expandopendfxmatrix"
+    (onSelectedCurrencyData)="onSelectedCurrencySave($event)"
+  ></app-fx-matrix-modal>
+</div>

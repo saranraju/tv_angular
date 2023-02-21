@@ -1,0 +1,44 @@
+.modal {
+  display: block;
+  z-index: 10;
+  background: rgba(0, 0, 0, 0.8);
+  transition: opacity 500ms;
+}
+
+/* Modal Content */
+.modal-content {
+  background: #00071e !important;
+  padding: 0px 10px !important;
+  width: 100% !important;
+  // height: 90% !important;
+  // overflow-y: auto;
+}
+
+.popup-header {
+  font-size: 18px;
+  color: #ffc000;
+}
+
+.close {
+  color: #ffff;
+  float: right;
+  font-size: 17px;
+}
+
+.modal-title {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: center;
+  color: #ffc000;
+}
+
+.modal-title-container {
+  position: relative;
+}
+::ng-deep.select2-container--default
+  .select2-results
+  > .select2-results__options {
+  max-height: 200px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}

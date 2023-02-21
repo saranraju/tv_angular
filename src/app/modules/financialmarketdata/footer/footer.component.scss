@@ -1,0 +1,33 @@
+footer.telFooter {
+  font-size: 12px;
+  color: #888;
+  position: fixed;
+  bottom: 0;
+  z-index: 2;
+
+  ul {
+    list-style: none;
+    float: right;
+    text-align: center;
+
+    li {
+      display: inline-block;
+
+      a {
+        text-decoration: none;
+        color: #777;
+        padding: 0 10px;
+      }
+    }
+
+    li:after {
+      content: "|";
+      padding: 0 6px;
+      color: #ffc000;
+    }
+
+    li:last-child::after {
+      visibility: hidden;
+    }
+  }
+}

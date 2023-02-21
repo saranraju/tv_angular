@@ -1,0 +1,132 @@
+<table>
+  <thead>
+    <tr
+      cdkDropList
+      cdkDropListOrientation="horizontal"
+      (cdkDropListDropped)="dropCol($event)"
+    >
+      <th
+        cdkDrag
+        cdkDragHandle
+        *ngFor="let col of tableData.header"
+        [ngStyle]="{ width: col.width }"
+      >
+        <b>{{ col.label }}</b>
+      </th>
+    </tr>
+  </thead>
+  <tbody
+    *ngFor="
+      let row of tableData.data
+        | paginate
+          : {
+              itemsPerPage: totalResultCount,
+              currentPage: currentPageSelected
+            };
+      let i = index
+    "
+  >
+    <tr>
+      <td
+        [ngStyle]="{ color: col?.color }"
+        *ngFor="let col of tableData.header; let j = index"
+      >
+        <i
+          *ngIf="j == 0"
+          class="cursor-pointer"
+          [ngClass]="expandedIndex == i ? 'fa fa-minus' : 'fa fa-plus'"
+          (click)="handleExpandTableClick(i)"
+        ></i>
+        <span
+          (click)="exchangeDetail(j)"
+          [ngClass]="{ 'cursor-pointer': j == 0 }"
+          >{{ row[col.field] }}</span
+        >
+      </td>
+    </tr>
+    <div *ngIf="expandedIndex == i">
+      <div class="row">
+        <div class="col-4 px-1 pt-2 pb-3 inside-table">
+          <div class="d-flex justify-content-between align-items-center pb-2">
+            <h5>Top Gainers</h5>
+            <i
+              (click)="topOpenFuntion('gainers')"
+              class="cursor-pointer fa fa-external-link"
+            ></i>
+          </div>
+          <app-fixed-income-table
+            [tableData]="chartTimeData"
+            [totalResultCount]="5"
+            [headerBorder]="true"
+            [bottomBorder]="true"
+          ></app-fixed-income-table>
+        </div>
+        <div class="col-4 px-1 pt-2 pb-3 inside-table">
+          <div class="d-flex justify-content-between align-items-center pb-2">
+            <h5>Top Lossers</h5>
+            <i
+              class="fa fa-external-link"
+              (click)="topOpenFuntion('lossers')"
+            ></i>
+          </div>
+          <app-fixed-income-table
+            [tableData]="chartTimeData"
+            [totalResultCount]="5"
+            [headerBorder]="true"
+            [bottomBorder]="true"
+          ></app-fixed-income-table>
+        </div>
+        <div class="col-4 px-1 pt-2 pb-3 inside-table">
+          <div class="d-flex justify-content-between align-items-center pb-2">
+            <h5>Most Active</h5>
+            <i
+              class="fa fa-external-link"
+              (click)="topOpenFuntion('active')"
+            ></i>
+          </div>
+          <app-fixed-income-table
+            [tableData]="chartTimeData"
+            [totalResultCount]="5"
+            [headerBorder]="true"
+            [bottomBorder]="true"
+          ></app-fixed-income-table>
+        </div>
+      </div>
+    </div>
+  </tbody>
+  <tfoot *ngIf="tableData.data?.length && pagination">
+    <div class="container-fluid px-0 text-center mt-1">
+      <pagination-controls
+        class="cus-pagination"
+        [previousLabel]="labels.previousLabel"
+        [nextLabel]="labels.nextLabel"
+        (pageChange)="currentPageSelected = $event"
+        (click)="handlePaginator()"
+      ></pagination-controls>
+    </div>
+  </tfoot>
+</table>
+
+<!-- Top Gaint Modal -->
+<div *ngIf="auth.openPopupModal && type == 'gainers'">
+  <app-exchange-top-modal
+    title="Top Gainers"
+    [table_data]="top_gains_modal_table_data"
+  ></app-exchange-top-modal>
+</div>
+
+<!-- Top Losser Modal -->
+<div *ngIf="auth.openPopupModal && type == 'lossers'">
+  <app-exchange-top-modal
+    title="Top Lossers"
+    [table_data]="top_gains_modal_table_data"
+  ></app-exchange-top-modal>
+</div>
+
+<!-- Top Losser Modal -->
+<div *ngIf="auth.openPopupModal && type == 'active'">
+  <app-exchange-top-modal
+    title="Top Most Active"
+    [table_data]="top_gains_modal_table_data"
+  ></app-exchange-top-modal>
+</div>

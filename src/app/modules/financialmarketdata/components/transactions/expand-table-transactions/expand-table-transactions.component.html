@@ -1,0 +1,141 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th
+          *ngFor="let header of table_data.title; let i = index"
+          [ngStyle]="{
+            width: header?.width,
+            'text-align': header?.align,
+            cursor: header?.headerPointer && 'pointer'
+          }"
+          (click)="sortByKey(header.key, i, header.shorting)"
+          [attr.colspan]="header?.colspan"
+          [attr.rowspan]="header?.rowspan"
+        >
+          {{ header.label
+          }}<span>{{ header?.currency || header?.unit ? "(" : "" }}</span
+          ><span>{{ header.currency ? header?.currency : "" }}</span
+          ><span>{{ header.unit ? "" + header?.unit?.charAt(0) : "" }}</span
+          ><span>{{ header?.currency || header?.unit ? ")" : "" }}</span>
+          <i
+            *ngIf="i != iconIndex && header?.shorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort"
+          ></i>
+          <i
+            *ngIf="i == iconIndex && shortDown && header?.shorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-down"
+          ></i>
+          <i
+            *ngIf="i == iconIndex && !shortDown && header?.shorting"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-up"
+          ></i>
+        </th>
+      </tr>
+    </thead>
+    <div class="expand-table-border">
+      <tbody
+        [ngStyle]="{ 'max-height': mh }"
+        *ngFor="
+          let content of table_data.value
+            | paginate: { itemsPerPage: 10, currentPage: currentPageDet };
+          let i = index
+        "
+      >
+        <tr>
+          <td
+            *ngFor="let header of table_data.title"
+            [ngStyle]="{
+              width: header?.width,
+              'text-align': header?.align,
+              color: header?.color,
+              height: content?.height
+            }"
+            [ngClass]="{ 'text-end': header?.align === 'right' }"
+            [ngClass]="{ pointer: header?.hover === true }"
+          >
+            <i
+              *ngIf="header?.plusIcon === true"
+              [ngClass]="
+                selectedPlus_icon && index == i ? ' fa-minus' : ' fa-plus'
+              "
+              (click)="handleExpandTableClick(content, i)"
+              class="fa fa-solid"
+              style="cursor: pointer"
+            ></i>
+            <span
+              *ngIf="content[header.key]"
+              [ngClass]="{ 'hover-effect': header?.hover === true }"
+            >
+              {{
+                header.formattedNum
+                  ? util?.standardFormat(content[header.key], 2, "")
+                  : header?.icon === true
+                  ? ""
+                  : content[header.key]
+              }}</span
+            >
+            <span *ngIf="!content[header.key] && !header?.radio">-</span>
+          </td>
+        </tr>
+        <tr *ngIf="fundingInvestmentListData?.length && index == i">
+          <td class="investment-list-container" colspan="7">
+            <tr class="investment-list-header">
+              <td>Description</td>
+              <td>Round Name</td>
+              <td>Issue Type</td>
+              <td>Financing Type</td>
+              <td>Round Date</td>
+              <td>Investment Currency</td>
+              <td>Investment Amount ({{ selectedPEVCCurrency }} Million)</td>
+            </tr>
+            <tr
+              class="investment-list-item-container"
+              *ngFor="let data of fundingInvestmentListData"
+            >
+              <td
+                (click)="
+                  auth.openRoundModal = true; handleFundingRoundClick(data)
+                "
+              >
+                {{ data?.securityName ? data?.securityName : "-" }}
+              </td>
+              <td>{{ data?.round ? data?.round : "-" }}</td>
+              <td>{{ data?.issueType ? data?.issueType : "-" }}</td>
+              <td>{{ data?.financingType ? data?.financingType : "-" }}</td>
+              <td>{{ data?.roundDate ? data?.roundDate : "-" }}</td>
+              <td>
+                {{ data?.investmentCurrency ? data?.investmentCurrency : "-" }}
+              </td>
+              <td>
+                {{
+                  data?.fxInvestmentAmount
+                    ? util?.standardFormat(data?.fxInvestmentAmount, 2, "")
+                    : "-"
+                }}
+              </td>
+            </tr>
+          </td>
+        </tr>
+      </tbody>
+    </div>
+
+    <div *ngIf="!table_data.value?.length">
+      <span class="text-center mb-3 funding-detail-no-data"
+        >No Data Available</span
+      >
+    </div>
+    <tfoot *ngIf="table_data.value?.length">
+      <div class="container-fluid px-0 text-center mt-1">
+        <pagination-controls
+          (pageChange)="currentPageDet = $event"
+          [previousLabel]="labels.previousLabel"
+          [nextLabel]="labels.nextLabel"
+          [maxSize]="11"
+          class="funding-details-pagination"
+          (click)="handlePaginateClick()"
+        ></pagination-controls>
+      </div>
+    </tfoot>
+  </table>
+</div>

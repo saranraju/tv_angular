@@ -1,0 +1,69 @@
+<div class="commodityTable">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th scope="col" style="width: 13rem">
+          {{ type ? type : "Commodity" }}
+        </th>
+        <th scope="col" class="px-1">Date</th>
+        <th scope="col" class="text-end px-1">Price</th>
+        <th scope="col" class="text-end px-1" style="max-width: 2rem">
+          % Daily Change
+        </th>
+        <th scope="col" class="text-end px-1">
+          {{ listFormattedNext4Quarters()[0] }}
+        </th>
+        <th scope="col" class="text-end px-1">% Change</th>
+        <th scope="col" class="text-end px-1">
+          {{ listFormattedNext4Quarters()[1] }}
+        </th>
+        <th scope="col" class="text-end px-1">% Change</th>
+      </tr>
+    </thead>
+    <tbody [ngClass]="borderBottom ? 'border-bottom-0' : ''" [ngStyle]="{ 'max-height': mh }"
+      *ngIf="tableData?.length; else emptyContent">
+      <tr *ngFor="let data of tableData; let i = index">
+        <td style="width: 13rem" id="{{ i == 0 ? idName : '' }}">
+          <span class="align-content-center cursor-pointer" (click)="detailRedirection(data)">{{ data.name }} ({{
+            data.unit }})</span>
+          <img (click)="redirectToInteractive(data)" class="staticGraph float-end cursor-pointer"
+            src="/assets/img/graph.svg" alt="graph" />
+        </td>
+        <td class="text-white">{{ data.closeDate | date: "dd-MMM" }}</td>
+        <td class="text-white text-end">
+          {{ this.util.standardFormat(data.close, 2, "") }}
+        </td>
+        <td class="text-end tdBorderRight" [ngClass]="
+            data.dailyPercentualChange >= 0 ? 'text-success' : 'text-danger'
+          " style="max-width: 2rem">
+          {{ this.util.standardFormat(data.dailyPercentualChange, 2, "") }} %
+        </td>
+        <td class="text-end text-white">
+          {{ this.util.standardFormat(data.forecastQ1, 2, "") }}
+        </td>
+        <td class="text-end" [ngClass]="
+            data.forecastQ1PerChange >= 0 ? 'text-success' : 'text-danger'
+          ">
+          {{ this.util.standardFormat(data.forecastQ1PerChange, 2, "") }} %
+        </td>
+        <td class="text-end text-white">
+          {{ this.util.standardFormat(data.forecastQ2, 2, "") }}
+        </td>
+        <td class="text-end" [ngClass]="
+            data.forecastQ2PerChange >= 0 ? 'text-success' : 'text-danger'
+          ">
+          {{ this.util.standardFormat(data.forecastQ2PerChange, 2, "") }} %
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<ng-template #emptyContent>
+  <tbody class="no-data">
+    <svg class="circular" viewBox="25 25 50 50" style="height: 10px">
+      <circle class="path" cx="50" cy="50" r="20" fill="none" stroke-width="2" stroke-miterlimit="10" />
+    </svg>
+    <img style="width: 4rem;" class="loader_img rounded mx-auto d-block" src="../assets/img/televisory-loader.gif" />
+  </tbody>
+</ng-template>

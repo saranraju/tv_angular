@@ -1,0 +1,376 @@
+<header class="">
+  <div
+    class="row bg-white py-1"
+    id="overlay-header-one"
+    cdkOverlayOrigin
+    #trigger="cdkOverlayOrigin"
+  >
+    <div class="col-3 d-flex justify-content-between align-items-center">
+      <img
+        src="../../../../assets/img/logo.png"
+        alt="Logo"
+        class="logo img-fluid cursor-pointer"
+        (click)="handleLogoClick()"
+      />
+      <span class="fa fa-bars menu-icon" (click)="handleMenuClick()"></span>
+    </div>
+    <div
+      [ngClass]="hideFinancialTabs ? 'hide' : 'show'"
+      class="col-7 d-flex justify-content-between align-items-center search-container"
+    >
+      <input
+        (focus)="onClickInput()"
+        (focusout)="onFocusOut()"
+        (keyup)="searchFunction($event)"
+        type="text"
+        name="search"
+        placeholder="Search"
+        [value]="searchTerm"
+      />
+      <img
+        class="loadingImg"
+        *ngIf="isloading"
+        src="https://dataanalytics.televisory.com/CapitalMarket-theme/img/spinner.gif"
+      />
+      <span class="fa fa-search search-icon"></span>
+    </div>
+    <!-- <div > -->
+    <div
+      class="searchOverlay"
+      *ngIf="
+        company_list.length ||
+        industry_list.length ||
+        country_list.length ||
+        indicator_list.length ||
+        commodity_list.length
+      "
+    >
+      <div *ngIf="showSearcOverlay" class="search-list">
+        <div *ngIf="company_list.length" class="search-item-container">
+          <h6>Company</h6>
+
+          <span *ngFor="let data of company_list" class="search_result">
+            <i
+              *ngIf="data.description"
+              class="fa fa-info-circle infoHover"
+              aria-hidden="true"
+              [title]="data.description"
+              ><span></span
+            ></i>
+            <span (click)="searchedClickedHandler('company', data)">
+              {{ data.name }}-<span *ngIf="data.exchangeCode"
+                >{{ data.exchangeCode }}: {{ data.companyTicker }}
+              </span>
+              <span class="text-capatalize" *ngIf="!data.exchangeCode"
+                >{{ data.entityType }}
+              </span>
+              <span *ngIf="data.ticsIndustryName"
+                >({{ data.ticsIndustryName }})</span
+              >
+            </span>
+          </span>
+        </div>
+        <div *ngIf="country_list.length" class="search-item-container">
+          <h6>Country</h6>
+
+          <span
+            (click)="searchedClickedHandler('country', data)"
+            *ngFor="let data of country_list"
+            class="search_result"
+            >{{ data.countryName }}</span
+          >
+        </div>
+        <div *ngIf="industry_list.length" class="search-item-container">
+          <h6>Industry</h6>
+
+          <span *ngFor="let data of industry_list" class="search_result">
+            <span (click)="searchedClickedHandler('industry', data)">
+              <span>
+                {{ data.ticsIndustryName + "" }}
+              </span>
+              | {{ data.countryName ? data.countryName : "World" }}</span
+            >
+          </span>
+        </div>
+        <div *ngIf="indicator_list.length" class="search-item-container">
+          <h6>Economic Indicators</h6>
+
+          <span *ngFor="let data of indicator_list" class="search_result"
+            ><span (click)="searchedClickedHandler('economyin', data)">
+              {{ data.category }} | {{ data.countryName }} |
+              {{ data.periodType }}
+            </span></span
+          >
+        </div>
+        <div *ngIf="commodity_list.length" class="search-item-container">
+          <h6>Commodity</h6>
+
+          <span *ngFor="let data of commodity_list" class="search_result"
+            ><span (click)="searchedClickedHandler('commodity', data)">
+              {{ data.name }} ({{ data.symbol }})
+            </span></span
+          >
+        </div>
+      </div>
+    </div>
+    <!-- </div> -->
+    <div
+      class="col-2 d-flex justify-content-end align-items-center user-account-container"
+    >
+      <div class="user-icon-container" (click)="handleUserIconClick()">
+        <span class="fa fa-user" *ngIf="!auth.exploreUser"> </span>
+        <span *ngIf="!auth.exploreUser" class="caret"></span>
+        <span *ngIf="auth.exploreUser">
+          <a
+            [routerLink]="['/subscribe']"
+            class="susbcribenowbtntop sub-equibase"
+            >Subscribe</a
+          >
+        </span>
+      </div>
+      <ul class="user-dropdown-menu" *ngIf="userAccountShow">
+        <li>
+          <span>{{ "Welcome, " + this.email }}</span>
+        </li>
+        <li class="user-item">
+          <a href="/financialmarketdata/my-account">My Account</a>
+        </li>
+        <li class="user-item">
+          <a (click)="handleLogoutClick()">Logout</a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>
+
+<!-- Sidebar -->
+<div class="sidebar-container" [ngClass]="showSideBar ? 'show-sidebar' : ''">
+  <ul class="sidebar-menu-list">
+    <li>
+      <a href="https://dataanalytics.televisory.com/compmyaccount"
+        >My Account</a
+      >
+    </li>
+    <li
+      data-bs-toggle="collapse"
+      href="#collapseExample"
+      (click)="handleServicesCollapse()"
+    >
+      <a>Services</a>
+      <span
+        [ngClass]="subMenuCollapse ? 'fa fa-angle-down' : 'fa fa-angle-right'"
+        class="angle-down"
+      ></span>
+    </li>
+    <ul class="collapse show sidebar-submenu-list" id="collapseExample">
+      <li (mouseover)="showBubble = true" (mouseout)="showBubble = false">
+        <a href="https://dataanalytics.televisory.com/rtda"
+          >Real Time Data Analysis</a
+        >
+      </li>
+      <li
+        class="selected-item"
+        (mouseover)="showBubbleFMD = true"
+        (mouseout)="showBubbleFMD = false"
+      >
+        <a [routerLink]="['/financialmarketdata/company']"
+          >Financial Market Data</a
+        >
+      </li>
+    </ul>
+    <li><a href="https://dataanalytics.televisory.com/support">Support</a></li>
+  </ul>
+</div>
+
+<div class="col-2 mb-2 align-self-center bubble-container" *ngIf="showBubble">
+  <div class="text-center bubble">
+    <b>Real Time Data Analysis </b> allows a user to compare companies within an
+    industry across geographies on various parameters over multiple periods.
+    This platform gives user the flexibility to visualize and download data of
+    several companimaes or an entire peer group. Broadly data on two business
+    segments can be found namely Operational Metrics & Financial Metrics.
+  </div>
+</div>
+
+<div
+  class="col-2 mb-2 align-self-center bubble-container-fmd"
+  *ngIf="showBubbleFMD"
+>
+  <div class="text-center bubble-fmd">
+    <b>Financial Market Data</b> is Televisory's Global Financial, Operational,
+    Economic and Commodity Database and Anlaytics Platform, which can be
+    immensely helpful for user's data and analytical needs. It allows
+    Interactive Analysis for better visualization and trend analysis from micro
+    to macro level, Screening for quick filtering of companies and Data Download
+    in addition to provision of system generated Company Profiles and Industry
+    Reports.
+  </div>
+</div>
+
+<div [ngClass]="hideFinancialTabs ? 'hide' : 'show'" class="fixedTabs">
+  <ul class="mb-0 px-3">
+    <a
+      *ngIf="wFlag"
+      [routerLink]="['/financialmarketdata/watchlist']"
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <li class="tab">Watchlist</li>
+    </a>
+    <a
+      [routerLink]="['/financialmarketdata/company']"
+      [routerLinkActive]="['active']"
+      id="custom-company-active"
+      (click)="navigateCompany()"
+    >
+      <li class="tab">Company</li>
+    </a>
+    <a
+      [routerLink]="['/financialmarketdata/bonds']"
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      id="custom-bonds-active"
+    >
+      <li class="tab">Bonds</li>
+    </a>
+    <a
+      *ngIf="hideNewsTab"
+      [routerLink]="['/financialmarketdata/fixed-income']"
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      (click)="navigate()"
+      id="custom-fixed-income-active"
+    >
+      <li class="tab">Fixed Income</li>
+    </a>
+    <a
+      [routerLink]="['/financialmarketdata/cds']"
+      [routerLinkActive]="['active']"
+    >
+      <li class="tab">CDS</li>
+    </a>
+    <a
+      [routerLink]="['/financialmarketdata/derivatives']"
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <li class="tab">Derivatives</li>
+    </a>
+    <a
+      [routerLink]="['/financialmarketdata/transactions']"
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      id="custom-transactions-active"
+    >
+      <li class="tab">Transactions</li>
+    </a>
+    <a
+      [routerLink]="['/financialmarketdata/economy']"
+      [routerLinkActive]="['active']"
+    >
+      <li class="tab">Economy</li>
+    </a>
+    <a
+      [routerLink]="['/financialmarketdata/commodity']"
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      id="custom-commodity-active"
+      (click)="navigateCommodity()"
+    >
+      <li class="tab">Commodity</li>
+    </a>
+    <a
+      *ngIf="hideNewsTab"
+      [routerLink]="['/financialmarketdata/forex']"
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <li class="tab">FOREX</li>
+    </a>
+    <a
+      *ngIf="wFlag"
+      [routerLink]="['/financialmarketdata/news']"
+      [routerLinkActive]="['active']"
+      (click)="navigateNews()"
+    >
+      <li class="tab">News</li>
+    </a>
+    <a
+      [routerLink]="['/financialmarketdata/industry']"
+      [routerLinkActive]="['active']"
+      (click)="onClickedIndustry()"
+    >
+      <li class="tab">Industry</li>
+    </a>
+    <a
+      [routerLink]="['/financialmarketdata/industry-monitor']"
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <li class="tab">Industry Monitor</li>
+    </a>
+    <a
+      (click)="interactiveRefresh()"
+      [routerLink]="['/financialmarketdata/interactive-analysis']"
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+      id="custom-interactive-analysis-active"
+    >
+      <li class="tab">Interactive Analysis</li>
+    </a>
+    <a
+      [routerLink]="['/financialmarketdata/screener']"
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <li class="tab">Screener</li>
+    </a>
+    <a
+      *ngIf="wFlag"
+      [routerLink]="['/financialmarketdata/screener-2']"
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <li class="tab">Screener-2</li>
+    </a>
+    <a
+      [routerLink]="['/financialmarketdata/data-download']"
+      [routerLinkActive]="['active']"
+      [routerLinkActiveOptions]="{ exact: true }"
+    >
+      <li class="tab">Data Download</li>
+    </a>
+  </ul>
+  <div
+    (click)="startTour()"
+    [ngClass]="closeButton ? 'info_icon_disable' : 'info_icon_btm'"
+  >
+    <i
+      class="fa fa-close close-info_icon_btm"
+      (click)="onClickClose()"
+      aria-hidden="true"
+    ></i>
+    <span class="help-cm"
+      ><i
+        data-toggle="tooltip"
+        data-placement="left"
+        title="Return to Tutorial"
+        class="fa fa-info help_icon_info"
+        aria-hidden="true"
+      ></i>
+    </span>
+  </div>
+</div>
+
+<!-- Explore Expired -->
+<div *ngIf="auth.expriedPopup">
+  <app-expired-alert-modal></app-expired-alert-modal>
+</div>
+
+<!-- Explore Unavailable -->
+<div *ngIf="auth.openUnavailableExploreModal">
+  <app-unavailable-explore-modal></app-unavailable-explore-modal>
+</div>
+
+<!-- Free Trial -->
+<app-free-trial-alert *ngIf="auth.freeTrialAlert"></app-free-trial-alert>

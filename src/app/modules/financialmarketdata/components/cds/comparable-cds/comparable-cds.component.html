@@ -1,0 +1,31 @@
+<div class="comparableCDS">
+  <table class="w-100 scroll">
+    <thead>
+      <tr>
+        <th style="width: 19rem">Details</th>
+        <th class="text-end">Par Spread (bps)</th>
+        <th class="text-end">Quote Spread (bps)</th>
+        <th class="text-end" style="width: 6rem">Upfront (bps)</th>
+      </tr>
+    </thead>
+    <tbody [ngStyle]="{ 'max-height': mh }">
+      <tr *ngFor="let data of table_data">
+        <td style="width: 19rem">
+          {{ data.description }} | {{ data.maturityDate }} |
+          {{ data.industryLvl1Desc }} | {{ data.maturityType }} Bond
+        </td>
+        <td class="text-end">
+          {{ data.maturityDate }}
+        </td>
+        <td class="text-end">
+          {{ this.util.standardFormat(data.price, 2, "") }}
+        </td>
+        <td class="text-end" style="width: 6rem">
+          {{ this.util.standardFormat(data.yieldToMaturity, 2, "") }}
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<br />

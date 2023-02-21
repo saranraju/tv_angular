@@ -1,0 +1,298 @@
+<div class="container-fluid col-12 financialtab pb-5">
+  <div class="d-flex justify-content-between align-items-center">
+    <div class="btn-group newcompny-tabs">
+      <button
+        *ngFor="
+          let button of company_type == 'Private'
+            ? privateCompanyHeaderButtons
+            : headerButtons
+        "
+        fragment="management_tab"
+        type="button"
+        class="btn"
+        (click)="headerButtonFuction(button.id, button.title)"
+        [ngClass]="{
+          active: button.id == buttonactive
+        }"
+      >
+        {{ button.title }}
+      </button>
+    </div>
+    <div class="d-flex">
+      <b>Currency : &nbsp;</b>
+      <ng-select2
+        [value]="currency"
+        [data]="currency_data"
+        (valueChanged)="onCurrencyChangeHandler($event)"
+        id="companyStep6"
+        class="cusSelect2 sSelect2Normal"
+      >
+      </ng-select2>
+      <div class="btn-group btn-ml">
+        <!-- <button
+          *ngFor="let button of buttonCategoryOne"
+          [ngClass]="{ active1: button.id == period_finance }"
+          class="btn_link fs13 btn_2"
+          (click)="getSet(button.id, button.title)"
+        >
+          {{ button.title }}
+        </button> -->
+      </div>
+    </div>
+  </div>
+
+  <div class="d-flex justify-content-between">
+    <div class="stocktitle-whole mt-1">
+      <h3 class="fixed_header m-0">
+        <b
+          >{{ companyname }}
+          <span *ngIf="exchange !== 'undefined'"
+            >({{ exchange }}: {{ ticker }})</span
+          >
+          <span id="companyStep3">
+            <span *ngIf="industry !== 'null'">|</span>
+            <a
+              *ngIf="industry !== 'null'"
+              target="_blank"
+              [ngClass]="company_type == 'Private' ? '' : 'cursor-pointer'"
+              (click)="
+                company_type == 'Private' ? '' : redirectToIndustryPage()
+              "
+              >{{ industry }}</a
+            >
+            |
+            <a
+              target="_blank"
+              class="cursor-pointer"
+              (click)="redirectToEconomyPage()"
+              >{{ country }}</a
+            >
+          </span>
+        </b>
+      </h3>
+    </div>
+    <div class="d-flex justify-content-end align-items-center">
+      <div class="btn-group btn-ml" *ngIf="country == 'India'">
+        <!-- <button
+          *ngFor="let button of buttonCategoryThree"
+          [ngClass]="{ active1: button.id == buttonThree }"
+          class="btn_link fs13 btn_2"
+          (click)="getConsolidatedStandalone(button.id, button.title)"
+        >
+          {{ button.title }}
+        </button> -->
+      </div>
+
+      <img
+        id="companyStep14"
+        src="/assets/img/excelDownload.png"
+        class="cursor-pointer img mr-2 ml-2"
+        (click)="
+          auth.exploreUser
+            ? (auth.openUnavailableExploreModal = true)
+            : financialExcell()
+        "
+      />
+      <div class="btn-group btn-ml">
+        <button
+          *ngFor="
+            let button of company_type == 'Private'
+              ? privateCompanyButton
+              : buttonCategoryTwo
+          "
+          [ngClass]="{ active1: button.id == buttonTwo }"
+          class="btn_link fs13 btn_2"
+          (click)="
+            company_type != 'Private' &&
+              getAnnualQuarterly(button.id, button.value)
+          "
+        >
+          {{ button.title }}
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="commodityTable mt-2">
+    <table class="w-100 scroll">
+      <thead>
+        <tr>
+          <th *ngIf="type == 'is_data'">
+            Income Statement ({{ currency }} Million)
+          </th>
+          <th *ngIf="type == 'bi_data'">
+            Balance Sheet ({{ currency }} Million)
+          </th>
+          <th *ngIf="type == 'ci_data'">Cash Flow ({{ currency }} Million)</th>
+          <th *ngIf="type == 'ri_data'">Financial Ratios</th>
+          <th *ngIf="type == 'vi_data'">Valuation Ratios</th>
+          <th *ngIf="this.company_type !== 'Private'">Trend</th>
+          <ng-container *ngFor="let header of periods1; let i = index">
+            <th class="text-end">
+              {{ header | date : "MMM - y" }}
+            </th>
+          </ng-container>
+        </tr>
+      </thead>
+      <tbody style="max-height: 500px">
+        <ng-container *ngFor="let content of tabledata; let i = index">
+          <ng-container *ngIf="!content.section; else heading">
+            <tr>
+              <td
+                [ngClass]="
+                  content?.depth === '0'
+                    ? 'font-bold'
+                    : content?.depth === '2'
+                    ? 'left-padding'
+                    : ''
+                "
+              >
+                {{ content.description }}
+              </td>
+
+              <td
+                *ngIf="this.company_type !== 'Private'"
+                [ngClass]="content.graphflag === '1' ? 'cursor-pointer' : ''"
+              >
+                <div
+                  (click)="redirectToInteractive(content)"
+                  *ngIf="content.graphflag == '1'"
+                  id="{{ content.fieldName }}"
+                  class="chartdivtrend"
+                >
+                  <app-thumbnail-graph
+                    id="{{ i == 0 ? idName : '' }}"
+                    [data]="content"
+                  ></app-thumbnail-graph>
+                </div>
+              </td>
+              <ng-container *ngFor="let header of periods1; let j = index">
+                <td class="text-end">
+                  <ng-container *ngIf="content[header] != null">
+                    {{
+                      this.util.formatNumberWithCommasCustom(
+                        content[header],
+                        2,
+                        ""
+                      )
+                    }}
+                  </ng-container>
+                  <ng-container *ngIf="content[header] == null">
+                    -
+                  </ng-container>
+                </td>
+              </ng-container>
+            </tr>
+          </ng-container>
+          <!-- if section Heading is present -->
+          <ng-template #heading>
+            <tr>
+              <td class="font-bold">{{ content.section }}</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td
+                [ngClass]="
+                  content?.depth === '0'
+                    ? 'font-bold'
+                    : content?.depth === '2'
+                    ? 'left-padding'
+                    : ''
+                "
+              >
+                {{ content.description }}
+              </td>
+
+              <td [ngClass]="content.graphflag === '1' ? 'cursor-pointer' : ''">
+                <div
+                  (click)="redirectToInteractive(content)"
+                  *ngIf="content.graphflag == '1'"
+                  id="{{ content.fieldName }}"
+                  class="chartdivtrend"
+                >
+                  <app-thumbnail-graph
+                    id="{{ i == 0 ? idName : '' }}"
+                    [data]="content"
+                  ></app-thumbnail-graph>
+                </div>
+              </td>
+              <ng-container *ngFor="let header of periods1; let j = index">
+                <td class="text-end">
+                  <ng-container *ngIf="content[header] != null">
+                    {{
+                      this.util.formatNumberWithCommasCustom(
+                        content[header],
+                        2,
+                        ""
+                      )
+                    }}
+                  </ng-container>
+                  <ng-container *ngIf="content[header] == null">
+                    -
+                  </ng-container>
+                </td>
+              </ng-container>
+            </tr>
+          </ng-template>
+        </ng-container>
+        <div *ngIf="!tabledata?.length">
+          <span class="text-center funding-detail-no-data"
+            >No Data Available</span
+          >
+        </div>
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<app-fin-period-modal
+  [period]="period"
+  [fromFinDate]="fromFinDate"
+  *ngIf="auth.openFinPeriodModal"
+  (sectionChange)="onFinancialExcelDownload($event)"
+></app-fin-period-modal>
+
+<app-msg-model
+  *ngIf="auth.closeInsidePopup"
+  [alertmsg]="
+    'Error occured while generating the report, please try again later.'
+  "
+></app-msg-model>
+
+<div class="backdrop" *ngIf="auth.openPopupModalFin">
+  <div
+    id="alertbox"
+    class="modal sevendayfreetrialpopup-rtda sevendayfreetrialpopup-cm in"
+    tabindex="-1"
+    role="dialog"
+    style="
+      display: block;
+      padding-left: 4px;
+      background-color: rgba(0, 0, 0, 0.5);
+    "
+  >
+    <div class="modal-dialog modal-lg" style="top: 20%">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="exampleModalLongTitle"></h5>
+          <button
+            type="button"
+            (click)="auth.openPopupModalFin = false"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!--end of modal header-->
+        <div class="modal-body text-center">
+          <span>{{ errorMessage }}</span
+          ><br />
+          <span>{{ nextErrorMessage }}</span>
+        </div>
+        <!--end of modal body-->
+        <!--end of modal footer-->
+      </div>
+    </div>
+  </div>
+</div>
