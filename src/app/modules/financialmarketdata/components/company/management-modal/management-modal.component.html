@@ -14,7 +14,7 @@
       </tr>
     </thead>
     <tbody [ngStyle]="{ 'max-height': mh }" class="border-0">
-      <tr *ngFor="let content of table_data">
+      <tr *ngFor="let content of table_data; let i = index">
         <!-- <td
           *ngFor="let header of manage_info_data.title"
           [ngStyle]="{
@@ -30,7 +30,11 @@
               : content[header.key]
           }}
         </td> -->
-        <td class="manage_1" (click)="getpersoninfo(content.personId, content)">
+        <td
+          id="{{ i == 0 ? idName : '' }}"
+          class="manage_1"
+          (click)="getpersoninfo(content.personId, content)"
+        >
           {{ content.management }}
         </td>
         <td class="manage_2">{{ content.instrumentType }}</td>

@@ -523,7 +523,7 @@ export class IpoDetailComponent implements OnInit, DoCheck {
         const blob = new Blob([res.body], {
           type: 'application/vnd.ms.excel',
         });
-        const file = new File([blob], '' + `issue-details-sheet.xlsx`, {
+        const file = new File([blob], '' + `issue-details-sheet.xls`, {
           type: 'application/vnd.ms.excel',
         });
         saveAs(file);

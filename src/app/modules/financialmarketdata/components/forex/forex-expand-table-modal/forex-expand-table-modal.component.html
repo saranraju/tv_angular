@@ -1,0 +1,108 @@
+<div class="modal p-2">
+  <div class="modal-dialog-style">
+    <!-- Modal content -->
+    <div class="modal-content">
+      <button
+        type="button"
+        class="close"
+        data-dismiss="modal"
+        (click)="fxmatrixDialogClose()"
+        autocomplete="new-search"
+      >
+        &#x2715;
+      </button>
+
+      <div
+        *ngIf="expandMatrixHeader"
+        class="d-flex header-container"
+        [ngClass]="{
+          'row-height': auth.expandopendfxmatrixTable === true
+        }"
+      >
+        <h4 class="header-title">FX Matrix</h4>
+        <div class="dropdown-container">
+          <div class="d-flex flex-row">
+            <div
+              class="matrix-dropdown-box"
+              (click)="childNodeToggle(1, $event)"
+            >
+              <div
+                class="d-flex justify-content-between align-items-center w-100"
+              >
+                <span> {{ customMatrixDropdownValue }} </span>
+                <div class="down-icon-div">
+                  <i
+                    *ngIf="!activefxMatrixDropDown"
+                    class="fa fa-caret-down"
+                  ></i>
+                  <i *ngIf="activefxMatrixDropDown" class="fa fa-caret-up"></i>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="optionList mh-35 search-filter-data hide"
+            id="matrix-dropdown-div"
+            *ngIf="activefxMatrixDropDown"
+            (click)="$event.stopPropagation()"
+          >
+            <div class="sticky py-1">
+              <input
+                autofocus
+                type="search"
+                class="form-control"
+                (input)="searchMatrixDropdown($event)"
+              />
+            </div>
+            <ul class="custom-ul-style" (click)="childNodeToggle(1, $event)">
+              <ng-container *ngFor="let item of expandcustomMatrixdropdownData">
+                <li
+                  class="custom-li-style"
+                  (click)="onCustomMatrixDropdownChange(item)"
+                >
+                  <span
+                    *ngIf="item.id !== 'custom' && item.id !== 'fxMajor'"
+                    (click)="handleCustomEditCLick(item, $event)"
+                    ><i class="fa fa-pencil"></i
+                  ></span>
+
+                  {{ item.text }}
+                </li>
+              </ng-container>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <app-forex-live-table
+        [tableData]="tableData"
+        [tableDataHeader]="tableDataHeader"
+        [tableDataLength]="tableDataLength"
+        [totalResultCount]="totalResultCount"
+        [homeData]="homeData"
+        [pagination]="pagination"
+        [headerBorder]="headerBorder"
+        [OTCorEnergy]="'Metals'"
+        [bottomBorder]="bottomBorder"
+        [tableType]="tableType"
+        [sort]="sort"
+        type="forex"
+        (changePage)="onPageChange($event)"
+        [currentPageSelected]="this.currentPageSelected"
+        (onForexDataClick)="commodityEmitData($event)"
+        [paginateId]="'forex-base-table'"
+        [loadingForexTable]="loadingForexTable"
+      ></app-forex-live-table>
+
+      <br />
+    </div>
+  </div>
+</div>
+
+<app-fx-matrix-modal
+  [currency_data]="currency_data"
+  *ngIf="auth.opendEditCustomMatrixmodal"
+  [fxMatrixName]="editCustomMatrixName"
+  [editMatrixDataid]="editMatrixDataId"
+  (onSelectedCurrencyData)="onEditSelectedCurrencySave($event)"
+></app-fx-matrix-modal>

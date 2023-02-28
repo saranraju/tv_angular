@@ -35,12 +35,14 @@
               Get
               <a
                 [routerLink]="['/free-trail']"
+                (click)="navigateFreeTrial()"
                 class="trail-equibase-pop text-primary text-decoration-none"
                 >14-Days Free Trial</a
               >
               or
               <a
                 [routerLink]="['/subscribe']"
+                (click)="navigateSubscribe()"
                 class="trail-equibase-pop text-primary text-decoration-none"
                 >Subscribe</a
               >

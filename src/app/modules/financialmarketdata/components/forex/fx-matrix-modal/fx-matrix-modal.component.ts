@@ -3,6 +3,7 @@ import {
   DoCheck,
   EventEmitter,
   Input,
+  OnChanges,
   OnInit,
   Output,
 } from '@angular/core';
@@ -12,17 +13,50 @@ import { AuthService } from 'src/app/services/auth/auth.service';
   templateUrl: './fx-matrix-modal.component.html',
   styleUrls: ['./fx-matrix-modal.component.scss'],
 })
-export class FxMatrixModalComponent implements OnInit, DoCheck {
+export class FxMatrixModalComponent implements OnInit, DoCheck, OnChanges {
   constructor(public auth: AuthService) {}
 
   @Input() currency_data: any;
+  @Input() fxMatrixName: any;
+  @Input() editMatrixDataid: any;
   @Output() onSelectedCurrencyData = new EventEmitter<any>();
+  @Output() confirmDeletion = new EventEmitter<any>();
 
   selected_currencies: any = [];
+
+  ngOnChanges(): void {
+    this.customMatrixName = this.fxMatrixName;
+    if (
+      this.editMatrixDataid &&
+      this.editMatrixDataid['Forex Matrix']?.baseCurrencies.length
+    ) {
+      this.selected_currencies = [];
+      this.editMatrixDataid['Forex Matrix']?.baseCurrencies.forEach(
+        (ele: any) => {
+          this.selected_currencies.push({
+            key: ele,
+            label: ele,
+            selected: true,
+          });
+        }
+      );
+      this.currency_data.forEach((ele: any, i: any) => {
+        if (
+          this.editMatrixDataid['Forex Matrix']?.baseCurrencies.includes(
+            ele.key
+          )
+        ) {
+          ele.selected = true;
+          this.currency_data[i] = ele;
+        }
+      });
+    }
+  }
 
   ngOnInit(): void {}
   fxmatrixDialogClose() {
     this.auth.expandopendfxmatrix = false;
+    this.auth.opendEditCustomMatrixmodal = false;
   }
   disableSaveBtn: any = false;
   ngDoCheck(): void {
@@ -72,11 +106,19 @@ export class FxMatrixModalComponent implements OnInit, DoCheck {
     });
     obj.name = this.customMatrixName;
     obj.currencies = currencyArray;
+    obj.email = localStorage.getItem('email');
 
     this.onSelectedCurrencyData.emit(obj);
-
     this.currency_data.map((el: any) => {
       el.selected = false;
     });
   }
+
+  onDeletedCustomMatrix() {
+    this.auth.showFxMatrixDeletionModal = true;
+  }
+
+  // handleConfirmDeletion(e: any) {
+  //   this.confirmDeletion.emit(e);
+  // }
 }

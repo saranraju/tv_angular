@@ -87,24 +87,23 @@ export class CommodityComponent implements OnInit {
   queryParamSection: any;
   ngOnInit(): void {
     if (
-      Object.keys((this.activateRoute.queryParams as any)?.value).length !== 0
+      Object.keys((this.activateRoute.queryParams as any)?.value).length > 1
     ) {
       this.activateRoute.queryParamMap.subscribe((params: any) => {
-        // if (this.queryParamSection != 'Dashboard') {
-        //   this.socketConnection();
-        // }
-        // // Dashboad section
-        // if (this.queryParamSection == 'Dashboard') {
-        this.selectedCurrency = params.params.currency;
-        this.count_res = 0;
-        this.total_count_res = 4;
-        this.util.loaderService.display(true);
-        this.dashboardRedirectInside(params.params);
-        // JSON.parse(localStorage.getItem('commoditySymbol') as any)
-        // }
-        // if (this.queryParamSection == undefined) {
-        //   this.commodityListHandler(this.selectedCurrency);
-        // }
+        if (this.queryParamSection != 'Dashboard') {
+          this.socketConnection();
+        }
+        // Dashboad section
+        if (this.queryParamSection == 'Dashboard') {
+          this.selectedCurrency = params.params.currency;
+          this.count_res = 0;
+          this.total_count_res = 4;
+          this.util.loaderService.display(true);
+          this.dashboardRedirectInside(params.params);
+        }
+        if (this.queryParamSection == undefined) {
+          this.commodityListHandler(this.selectedCurrency);
+        }
 
         $(document).on('select2:open', () => {
           const inputs: any = document.querySelectorAll(
@@ -121,20 +120,21 @@ export class CommodityComponent implements OnInit {
         });
       });
     } else {
-      // if (this.queryParamSection != 'Dashboard') {
-      //   this.socketConnection();
-      // }
-      // // Dashboad section
-      // if (this.queryParamSection == 'Dashboard') {
-      this.count_res = 0;
-      this.total_count_res = 4;
-      this.util.loaderService.display(true);
-      this.dashboardRedirectInside('');
-      // JSON.parse(localStorage.getItem('commoditySymbol') as any)
-      // }
-      // if (this.queryParamSection == undefined) {
-      //   this.commodityListHandler(this.selectedCurrency);
-      // }
+      if (this.queryParamSection != 'Dashboard') {
+        this.socketConnection();
+      }
+      // Dashboad section
+      if (this.queryParamSection == 'Dashboard') {
+        this.count_res = 0;
+        this.total_count_res = 4;
+        this.util.loaderService.display(true);
+        this.dashboardRedirectInside(
+          JSON.parse(localStorage.getItem('commoditySymbol') as any)
+        );
+      }
+      if (this.queryParamSection == undefined) {
+        this.commodityListHandler(this.selectedCurrency);
+      }
 
       $(document).on('select2:open', () => {
         const inputs: any = document.querySelectorAll(
@@ -149,14 +149,6 @@ export class CommodityComponent implements OnInit {
         );
         search_cursor_point.focus();
       });
-    }
-  }
-
-  doCheckCount: any = false;
-  ngDoCheck(): void {
-    if (this.count_res === 4 && !this.doCheckCount) {
-      this.util.loaderService.showTutorial(true);
-      this.doCheckCount = true;
     }
   }
 
@@ -282,11 +274,6 @@ export class CommodityComponent implements OnInit {
         },
         (err) => {
           console.log('err', err.message);
-          ++this.count_res;
-          this.util.checkCountValue(this.total_count_res, this.count_res);
-          if (err.status === 402) {
-            this.auth.freeTrialAlert = true;
-          }
         }
       );
   }
@@ -307,6 +294,7 @@ export class CommodityComponent implements OnInit {
         queryParams: {
           symbol: this.selectedCommodity,
           currency: '',
+          tabSection: 'Dashboard',
         },
       })
     );
@@ -352,6 +340,7 @@ export class CommodityComponent implements OnInit {
           queryParams: {
             symbol: this.selectedCommodity,
             currency: this.selectedCurrency,
+            tabSection: 'Dashboard',
           },
         })
       );
@@ -378,6 +367,7 @@ export class CommodityComponent implements OnInit {
           queryParams: {
             symbol: this.selectedCommodity,
             currency: this.selectedCurrency,
+            tabSection: 'Dashboard',
           },
         })
       );
@@ -852,22 +842,22 @@ export class CommodityComponent implements OnInit {
   metalListData: any = [];
   typeOfRedirect: any;
 
-   getOtcEnergyData() {
-     this.financialMarketData.getOTCEnergy().subscribe((res: any) => {
-       res.forEach((element: any) => {
-         element['cityId'] = element.cityId | element.regionId;
-       });
-       this.tableDataEnergy = res;
-     });
-   }
-   getOtcMetalsData() {
-    this.financialMarketData.getOTCMetals().subscribe((res: any) => {
-       res.forEach((element: any) => {
-         element['cityId'] = element.cityId | element.regionId;
-      });
-        this.tableDataMetal = res;
-     });
-   }
+  // getOtcEnergyData() {
+  //   this.financialMarketData.getOTCEnergy().subscribe((res: any) => {
+  //     res.forEach((element: any) => {
+  //       element['cityId'] = element.cityId | element.regionId;
+  //     });
+  //     this.tableDataEnergy = res;
+  //   });
+  // }
+  // getOtcMetalsData() {
+  //   this.financialMarketData.getOTCMetals().subscribe((res: any) => {
+  //     res.forEach((element: any) => {
+  //       element['cityId'] = element.cityId | element.regionId;
+  //     });
+  //     // this.tableDataMetal = res;
+  //   });
+  // }
 
   expandDashboard() {
     let temp = { symbol: 'CL1:COM' };
@@ -894,6 +884,7 @@ export class CommodityComponent implements OnInit {
         queryParams: {
           symbol: event.symbol,
           currency: this.selectedCurrency,
+          tabSection: 'Dashboard',
         },
       })
     );

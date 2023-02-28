@@ -474,6 +474,7 @@ export class CompanyComponent implements OnInit {
     this.user_management_expolre_id =
       this.route.snapshot.queryParams['explore'];
     if (this.user_management_expolre_id == 'true') {
+      localStorage.setItem('exploreUserTime', new Date().toString());
       let body = {};
       this.auth.getExploreData(body).subscribe(
         (res) => {
@@ -601,6 +602,14 @@ export class CompanyComponent implements OnInit {
     }
   }
 
+  doCheckCount: any = false;
+  ngDoCheck(): void {
+    if (this.count_res === 25 && !this.doCheckCount) {
+      this.util.loaderService.showTutorial(true);
+      this.doCheckCount = true;
+    }
+  }
+
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     if (event.key === 'Escape') {
@@ -632,6 +641,7 @@ export class CompanyComponent implements OnInit {
     }
   }
   isbenchmarkLoading: any = true;
+  globalMatrixList: any = [];
   benchMarkToInteractiveAnalysis() {
     let companyIds: any = '';
 
@@ -651,6 +661,16 @@ export class CompanyComponent implements OnInit {
                   companyIds += element.id + '&';
                 }
               });
+              localStorage.setItem('globalMatrixList', JSON.stringify([]));
+              this.globalMatrixList.push({
+                name: 'stock',
+                type: 'companyChartCustom',
+                company: true,
+              });
+              localStorage.setItem(
+                'globalMatrixList',
+                JSON.stringify(this.globalMatrixList)
+              );
               const url = this.router.serializeUrl(
                 this.router.createUrlTree(
                   ['financialmarketdata/interactive-analysis'],
@@ -681,7 +701,15 @@ export class CompanyComponent implements OnInit {
           companyIds += element.id + '&';
         }
       });
-
+      this.globalMatrixList.push({
+        name: 'stock',
+        type: 'companyChartCustom',
+        company: true,
+      });
+      localStorage.setItem(
+        'globalMatrixList',
+        JSON.stringify(this.globalMatrixList)
+      );
       const url = this.router.serializeUrl(
         this.router.createUrlTree(
           ['financialmarketdata/interactive-analysis'],
@@ -1316,6 +1344,22 @@ export class CompanyComponent implements OnInit {
   }
   tabInstance: any;
   redirectToInteractive(filterParams: any, content: any) {
+    let prevGlobalMatrixList = [];
+    prevGlobalMatrixList = JSON.parse(
+      localStorage.getItem('globalMatrixList') as any
+    );
+    if (prevGlobalMatrixList == null) prevGlobalMatrixList = [];
+
+    prevGlobalMatrixList.push({
+      name: filterParams,
+      type: 'companyChartCustom',
+      company: true,
+    });
+    localStorage.setItem(
+      'globalMatrixList',
+      JSON.stringify(prevGlobalMatrixList)
+    );
+
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['financialmarketdata/interactive-analysis'], {
         queryParams: {
@@ -3857,6 +3901,7 @@ export class CompanyComponent implements OnInit {
 
   debt_compo_data2: any = [];
   chartDivpie2: any = '';
+  ownershipAsOnDate: any;
   getOwnershipData(id: any) {
     this.debt_compo_data2 = [];
     this.chartDivpie2 = '';
@@ -3865,6 +3910,16 @@ export class CompanyComponent implements OnInit {
       this.util.checkCountValue(this.total_count_res, this.count_res);
 
       this.debt_compo_data2 = res;
+      this.ownershipAsOnDate = res[0].asOnDate;
+      this.ownership_title.push(
+        this.datepipe.transform(this.ownershipAsOnDate, 'dd-MMM-yy')
+      );
+      this.promo_ownership_title.push(
+        this.datepipe.transform(this.ownershipAsOnDate, 'dd-MMM-yy')
+      );
+      this.institue_ownership_title.push(
+        this.datepipe.transform(this.ownershipAsOnDate, 'dd-MMM-yy')
+      );
       this.chartDivpie2 = am4core.create('chartdiv2', am4charts.PieChart);
       // $(document).ready(function () {
       //   $('g[aria-labelledby]').hide();
@@ -3950,7 +4005,7 @@ export class CompanyComponent implements OnInit {
     this.toDaysDate,
     'dd-MMM-yy'
   );
-  ownership_title: any = ['Ownership Details', this.formattedTodaysDate];
+  ownership_title: any = ['Ownership Details'];
   event_title: any = ['Time & Date', 'Events & Transcripts'];
 
   ownership_details_data: any = [];
@@ -3970,10 +4025,7 @@ export class CompanyComponent implements OnInit {
     );
   }
 
-  promo_ownership_title: any = [
-    'Promoters/Insiders Ownership Details',
-    this.formattedTodaysDate,
-  ];
+  promo_ownership_title: any = ['Promoters/Insiders Ownership Details'];
 
   promo_ownership_data: any = [];
   getpromoroownershipData(id: any) {
@@ -3992,10 +4044,7 @@ export class CompanyComponent implements OnInit {
     );
   }
 
-  institue_ownership_title: any = [
-    'Institutional Ownership Details',
-    this.formattedTodaysDate,
-  ];
+  institue_ownership_title: any = ['Institutional Ownership Details'];
   institue_ownership_data: any = [];
   getinstitueownershipData(id: any) {
     this.institue_ownership_data = [];
@@ -5893,10 +5942,10 @@ export class CompanyComponent implements OnInit {
   @HostListener('window:scroll', ['$event'])
   onWindowScroll() {
     let element = document.querySelector('.navbar') as HTMLElement;
-    if (window.pageYOffset > element.clientHeight) {
-      element.classList.add('navbar-inverse');
+    if (window?.pageYOffset > element?.clientHeight) {
+      element?.classList.add('navbar-inverse');
     } else {
-      element.classList.remove('navbar-inverse');
+      element?.classList.remove('navbar-inverse');
     }
   }
 

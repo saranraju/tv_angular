@@ -87,6 +87,11 @@
           }}
         </td>
       </tr>
+      <tr *ngIf="!tableData.value.length">
+        <span class="text-center funding-detail-no-data"
+          >No Data Available</span
+        >
+      </tr>
     </tbody>
   </table>
 </div>

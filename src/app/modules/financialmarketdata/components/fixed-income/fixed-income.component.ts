@@ -279,6 +279,7 @@ export class FixedIncomeComponent implements OnInit, OnDestroy {
       if (this.templateNames[0].text == 'instrument') {
         this.financialDataService.getAllInstrument().subscribe((res: any) => {
           this.headerTabs = res;
+          this.headerTabFucntion(res[0].id);
           this.getInitialInstrumentData();
         });
       } else if (this.templateNames[0].text == 'region') {
@@ -413,7 +414,7 @@ export class FixedIncomeComponent implements OnInit, OnDestroy {
   }
 
   valueChangeHandler(type: any, data: any) {
-    this.tabactive = '';
+    // this.tabactive = '';
     // This one for template dropdown
     if (type === 'template') {
       if (this.isInstrumentRegionCustomID != null)
@@ -435,6 +436,7 @@ export class FixedIncomeComponent implements OnInit, OnDestroy {
           this.isDefault = true;
           this.financialDataService.getAllInstrument().subscribe((res: any) => {
             this.headerTabs = res;
+            this.headerTabFucntion(res[0].id);
             this.getInitialInstrumentData();
           });
         }
@@ -443,6 +445,7 @@ export class FixedIncomeComponent implements OnInit, OnDestroy {
           this.isDefault = true;
           this.financialDataService.getRegion().subscribe((res: any) => {
             this.headerTabs = res;
+            this.headerTabFucntion(res[0].id);
             this.getInitialRegionData();
           });
         }

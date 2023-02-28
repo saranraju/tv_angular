@@ -128,7 +128,7 @@ const routes: Routes = [
       {
         path:
           window.location.origin !==
-            'https://financialmarketdata.televisory.com'
+          'https://financialmarketdata.televisory.com'
             ? 'news'
             : '',
         component: NewsComponent,

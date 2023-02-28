@@ -39,9 +39,22 @@ export class ExpandTableComponent implements OnInit {
   day = this.currentYear.getDate();
   nextYear = new Date(this.year + 1, this.month, this.day);
   constructor(public util: UtilService, private router: Router) {}
-
+  globalMatrixList :any = [] 
   ngOnInit(): void {}
   redirectToInteractive(content: any) {
+    let prevGlobalMatrixList = []
+    prevGlobalMatrixList =  JSON.parse(localStorage.getItem('globalMatrixList') as any)
+   if(prevGlobalMatrixList == null) prevGlobalMatrixList = []
+   prevGlobalMatrixList.push({
+      name: `${content.category} (${content.periodType})`.replace(/[^A-Z0-9]/ig, "_"),
+      type: 'economyChartCustom',
+      countryEco:true,
+    });
+
+    localStorage.setItem(
+      'globalMatrixList',
+      JSON.stringify(prevGlobalMatrixList)
+    );
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['financialmarketdata/interactive-analysis'], {
         queryParams: {

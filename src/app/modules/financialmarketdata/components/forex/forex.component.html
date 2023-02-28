@@ -1,5 +1,5 @@
 <div class="container-fluid col-12 forextab flex-column">
-  <div *ngIf="!clicked">
+  <div *ngIf="clicked == false">
     <div class="d-flex justify-content-between align-items-center">
       <h3 class="tab-header">Forex Dashboard</h3>
 
@@ -17,24 +17,40 @@
           {{ button.title }}
         </button>
       </div>
-
       <ng-select2
         id="industryStep"
-        style="opacity: 0"
         class="cusSelect2 cusSelect2_20rem"
         [placeholder]="'Search Currency Contract'"
+        [data]="otcContractData"
+        [value]="selectedOTC"
+        (valueChanged)="onOTCCurrencyChanged($event, true)"
       >
       </ng-select2>
     </div>
     <div class="d-flex background-with-border mt-2 p-1">
-      <div class="table-right background-with-border">
-        <div class="d-flex header-container">
+      <div
+        [ngClass]="{ 'table-right': !auth.expandopendfxExpandTable }"
+        class="background-with-border"
+      >
+        <div
+          [ngClass]="{
+            'width-50': auth.expandopendfxExpandTable
+          }"
+          class="d-flex header-container"
+        >
           <h4 class="header-title">FX Pairs</h4>
           <p class="page-ref">
-            {{ "Viewing 1-" + this.pageActive + " of " + tableDataLength }}
+            {{
+              "Viewing " +
+                viewStartPage +
+                "-" +
+                viewEndPage +
+                " of " +
+                tableDataLength
+            }}
           </p>
           <div class="d-flex pagination-container">
-            Views per page :
+            Views per page:&nbsp;
             <span
               *ngFor="let page of tablPaginationArray"
               class="cursor-pointer pagination"
@@ -43,30 +59,44 @@
               }"
               (click)="onPaginationClicked(page.id)"
             >
-              {{ page.text }} |</span
-            >
+              {{ page.text
+              }}<span *ngIf="page.text !== '100'">&nbsp;|&nbsp;</span>
+            </span>
           </div>
-          <ng-select2
-            *ngIf="buttonTwo == 1"
-            id="industryStep1"
-            class="cusSelect2 cusSelect2_6rem"
-            [placeholder]="'Select Base Currency'"
-            [data]="baseCurrencyData"
-            [value]="selectedCurrency"
-            (valueChanged)="onCurrencyChanged('base', $event)"
-          >
-          </ng-select2>
-          <ng-select2
-            *ngIf="buttonTwo == 2"
-            id="industryStep1"
-            class="cusSelect2 cusSelect2_6rem"
-            [placeholder]="'Select FX Pairs'"
-            [data]="fxPairsData"
-            [value]="selectedFxPairs"
-            (valueChanged)="onCurrencyChanged('pairs', $event)"
-          >
-          </ng-select2>
-          <!-- <i class="fa fa-external-link icon"></i> -->
+
+          <div>
+            <ng-select2
+              *ngIf="buttonTwo == 1"
+              id="industryStep1"
+              class="cusSelect2 cusSelect2_6rem"
+              [placeholder]="'Select Base Currency'"
+              [data]="baseCurrencyData"
+              [value]="selectedCurrency"
+              (valueChanged)="onCurrencyChanged('base', $event)"
+            >
+            </ng-select2>
+            <ng-select2
+              *ngIf="buttonTwo == 2"
+              id="industryStep1"
+              class="cusSelect2 cusSelect2_6rem"
+              [placeholder]="'Select FX Pairs'"
+              [data]="fxPairsData"
+              [value]="selectedFxPairs"
+              (valueChanged)="onCurrencyChanged('pairs', $event)"
+            >
+            </ng-select2>
+            <i
+              *ngIf="!auth.expandopendfxExpandTable"
+              class="fa fa-external-link icon cursor-pointer"
+              (click)="auth.expandopendfxExpandTable = true"
+            ></i>
+
+            <i
+              *ngIf="auth.expandopendfxExpandTable"
+              class="fa fa-remove icon cursor-pointer"
+              (click)="auth.expandopendfxExpandTable = false"
+            ></i>
+          </div>
         </div>
         <app-forex-live-table
           [tableData]="table_data.value"
@@ -78,6 +108,8 @@
           [headerBorder]="true"
           [OTCorEnergy]="'Metals'"
           [bottomBorder]="true"
+          [tableType]="'fxPairs'"
+          [sort]="true"
           type="forex"
           (changePage)="onPageChage($event)"
           [currentPageSelected]="this.selectedPage"
@@ -86,19 +118,72 @@
           [loadingForexTable]="fxPairsTableLoading"
         ></app-forex-live-table>
       </div>
-      <div class="table-left background-with-border ml-1">
+      <div
+        *ngIf="!auth.expandopendfxExpandTable"
+        class="table-left background-with-border ml-1"
+      >
         <div class="d-flex header-container">
           <h4 class="header-title">FX Matrix</h4>
-          <div>
-            <ng-select2
-              class="cusSelect2 cusSelect2_7rem"
-              [data]="countryLists"
-              [value]="selectedCountry"
-              [placeholder]="'Select Matrix'"
-              (valueChanged)="onCountryChanged($event)"
+          <div class="dropdown-container">
+            <div
+              class="d-flex flex-row justify-content-between align-items-center"
             >
-            </ng-select2>
-            <!-- <i class="fa fa-external-link icon ml-1"></i> -->
+              <div
+                class="matrix-dropdown-box"
+                (click)="childNodeToggle(1, $event)"
+              >
+                <div
+                  class="d-flex justify-content-between align-items-center w-100"
+                >
+                  <span> {{ customMatrixName }} </span>
+                  <div class="down-icon-div">
+                    <i
+                      *ngIf="!activefxMatrixDropDown"
+                      class="fa fa-caret-down"
+                    ></i>
+                    <i
+                      *ngIf="activefxMatrixDropDown"
+                      class="fa fa-caret-up"
+                    ></i>
+                  </div>
+                </div>
+              </div>
+
+              <i
+                class="fa fa-external-link icon cursor-pointer mt-2"
+                (click)="auth.expandopendfxmatrixTable = true"
+              ></i>
+            </div>
+            <div
+              class="optionList mh-35 search-filter-data hide"
+              id="matrix-dropdown-div"
+              *ngIf="activefxMatrixDropDown"
+              (click)="$event.stopPropagation()"
+            >
+              <div class="sticky py-1">
+                <input
+                  autofocus
+                  type="search"
+                  class="form-control"
+                  (input)="searchMatrixDropdown($event)"
+                />
+              </div>
+              <ul class="custom-ul-style" (click)="childNodeToggle(1, $event)">
+                <ng-container *ngFor="let item of countryLists">
+                  <li
+                    class="custom-li-style"
+                    (click)="onCountryChanged(item.id, item.text)"
+                  >
+                    <span
+                      *ngIf="item.id !== 'custom' && item.id !== 'fxMajor'"
+                      (click)="handleCustomEditCLick(item, $event)"
+                      ><i class="fa fa-pencil"></i
+                    ></span>
+                    {{ item.text }}
+                  </li>
+                </ng-container>
+              </ul>
+            </div>
           </div>
         </div>
         <!-- <app-ipo-table
@@ -113,22 +198,34 @@
           [totalResultCount]="pageActive"
           [homeData]="true"
           [headerBorder]="true"
+          [bottomBorder]="true"
+          [height]="true"
+          type="matrix"
           [OTCorEnergy]="'Metals'"
           [loadingForexTable]="fxMatrixTableLoding"
         ></app-forex-live-table>
         <div class="chart">
-          <h4 class="header-title my-2">FX View</h4>
-          <div id="chartdiv"></div>
+          <div class="d-flex header-container">
+            <h4 class="header-title my-2">FX View</h4>
+            <i
+              class="fa fa-external-link icon cursor-pointer"
+              (click)="auth.expandopendfxViewChart = true"
+            ></i>
+          </div>
+          <div id="chartdivFxView" class="fx-view-chart-height"></div>
         </div>
       </div>
     </div>
   </div>
-  <div *ngIf="clicked" class="d-flex justify-content-between">
+  <div
+    *ngIf="clicked && !auth.expandopendFxIceDescChart"
+    class="d-flex justify-content-between"
+  >
     <div
       *ngIf="forexCompanyData?.description; else loading"
       class="d-flex flex-column container-right"
     >
-      <div>
+      <div class="mt-2">
         <h3 class="stocktitle-whole-forex m-0">
           <div class="mr-3">
             <i
@@ -137,16 +234,21 @@
               aria-hidden="true"
             ></i>
           </div>
-          <b>
-            {{ forexCompanyData?.description }}({{
-              forexCompanyData?.symbol?.slice(3)
-            }})
+          <b
+            >{{
+              forexCompanyData?.baseCurrency + forexCompanyData?.valueCurrency
+            }}
+            ({{ forexCompanyData?.symbol }})
             <span id="companyStep3"> | </span>
+            {{ forexCompanyData?.description }}
           </b>
           <b> {{ forexCompanyData?.instrumentName }} </b>
         </h3>
       </div>
-      <div class="d-flex align-items-center justify-content-between mt-1">
+      <div
+        *ngIf="!auth.expandopendFxForwardPremiumChart"
+        class="d-flex align-items-center justify-content-between mt-1 me-5"
+      >
         <h3 class="stocksubtitle-whole m-0">
           <b>
             Open :
@@ -172,12 +274,17 @@
           <b>
             Previous Close :
             <span id="companyStep3">
-              {{ forexCompanyData?.previousClose }}
+              {{ forexCompanyData?.previousClose }} ({{
+                forexCompanyData?.prevTradeDatetime
+              }})
             </span>
           </b>
         </h3>
       </div>
-      <div class="d-flex align-items-center justify-content-between mt-1">
+      <div
+        *ngIf="!auth.expandopendFxForwardPremiumChart"
+        class="d-flex align-items-center justify-content-between mt-1 me-5"
+      >
         <h3 class="stocksubtitle-whole m-0">
           <b>
             1 Day Change :
@@ -205,50 +312,62 @@
           </b>
         </h3>
       </div>
-      <div class="d-flex align-items-center justify-content-between mt-1">
-        <h3 class="tradePrice mt-2 mb-2">
-          <b class="title">Trade Quote</b>
-          <div class="d-flex">
-            <div class="cotainer">
-              <b class="title"> Bid Price </b>
+      <div
+        *ngIf="!auth.expandopendFxForwardPremiumChart"
+        class="position-relative"
+      >
+        <div
+          class="align-items-center justify-content-between mt-1 position-absolute top-0"
+        >
+          <h3 class="tradePrice mt-2 mb-2">
+            <b class="title text-start">Trade Quote</b>
+            <div class="d-flex">
+              <div class="cotainer">
+                <b class="title"> Bid Price </b>
+              </div>
+              <div class="cotainer">
+                <b class="title"> Ask Price </b>
+              </div>
             </div>
-            <div class="cotainer">
-              <b class="title"> Ask Price </b>
+            <div class="d-flex">
+              <div class="cotainer bg-color">
+                <span class="price">
+                  {{ forwardQuoteBidAndAskPrice?.bidPrice }}
+                </span>
+              </div>
+              <div class="cotainer bg-color">
+                <span class="price">
+                  {{ forwardQuoteBidAndAskPrice?.askPrice }}
+                </span>
+              </div>
             </div>
+          </h3>
+        </div>
+
+        <div class="chart-container mt-2">
+          <div class="chart-dashboard h-100">
+            <i
+              class="fa fa-external-link icon ice-desc-expand cursor-pointer"
+              (click)="auth.expandopendFxIceDescChart = true"
+            ></i>
+            <div id="chartdivIceDesc" class="h-100"></div>
           </div>
-          <div class="d-flex mt-2">
-            <div class="cotainer bg-color">
-              <span class="price">
-                {{ forwardQuoteBidAndAskPrice?.bidPrice }}
-              </span>
-            </div>
-            <div class="cotainer bg-color">
-              <span class="price">
-                {{ forwardQuoteBidAndAskPrice?.askPrice }}
-              </span>
-            </div>
-          </div>
-        </h3>
-      </div>
-      <div class="chart-container mt-2">
-        <div class="chart-dashboard">
-          <div id="chartdiv"></div>
         </div>
       </div>
     </div>
-    <div class="d-flex flex-column container-left ml-3">
+    <div class="d-flex flex-column container-left ml-3 mt-2">
       <div class="d-flex justify-content-end">
         <ng-select2
           id="industryStep1"
           class="cusSelect2 cusSelect2_20rem"
           [placeholder]="'Search OTC Currency'"
           [data]="otcContractData"
-          [value]="selectedOTC"
-          (valueChanged)="onOTCCurrencyChanged($event)"
+          [value]="selectedOTCCurrency"
+          (valueChanged)="onOTCCurrencyChanged($event, false)"
         >
         </ng-select2>
       </div>
-      <div class="d-flex">
+      <div *ngIf="!auth.expandopendFxForwardPremiumChart" class="d-flex">
         <h3 class="stocksubtitle-whole mt-2 mb-2">
           <b> Forward Price Quote </b>
         </h3>
@@ -256,6 +375,7 @@
 
       <!-- send perpage(totalResultCount) count(pending) -->
       <app-forex-live-table
+        *ngIf="!auth.expandopendFxForwardPremiumChart"
         [tableData]="forwardPriceQuoteData?.value"
         [tableDataHeader]="forwardPriceQuoteData?.title"
         [tableDataLength]="
@@ -278,8 +398,108 @@
         itemsPerPage="10"
         mh="auto"
       ></app-ipo-table> -->
-      <div class="chart-container-bottom">
-        <div id="chartdivFQ" class="commodityChart"></div>
+      <div
+        [ngClass]="{
+          'fx-fwpm-expand-chart': auth.expandopendFxForwardPremiumChart
+        }"
+        class="chart-container-bottom"
+      >
+        <div class="d-flex header-container">
+          <h4 class="header-title my-2">
+            {{ forexCompanyData?.baseCurrency }}/{{
+              forexCompanyData?.valueCurrency
+            }}
+            Forward Premium
+          </h4>
+          <i
+            *ngIf="!auth.expandopendFxForwardPremiumChart"
+            class="fa fa-external-link icon cursor-pointer"
+            (click)="auth.expandopendFxForwardPremiumChart = true"
+          ></i>
+          <i
+            *ngIf="auth.expandopendFxForwardPremiumChart"
+            class="fa fa-remove icon cursor-pointer"
+            (click)="auth.expandopendFxForwardPremiumChart = false"
+          ></i>
+        </div>
+        <div
+          [ngClass]="{
+            'fx-fwpm-expand-chart-h500': auth.expandopendFxForwardPremiumChart
+          }"
+          id="chartdivFP"
+          class="commodityChart"
+        ></div>
+      </div>
+    </div>
+  </div>
+  <div *ngIf="auth.expandopendFxIceDescChart">
+    <div class="d-flex justify-content-between flex-row mt-2">
+      <h3 class="stocktitle-whole-forex m-0">
+        <div class="mr-3">
+          <i
+            (click)="backClicked()"
+            class="fa fa-arrow-circle-left arrowIconClass cursor-pointer"
+            aria-hidden="true"
+          ></i>
+        </div>
+        <b
+          >{{
+            forexCompanyData?.baseCurrency + forexCompanyData?.valueCurrency
+          }}
+          ({{ forexCompanyData?.symbol }})
+          <span id="companyStep3"> | </span>
+          {{ forexCompanyData?.description }}
+        </b>
+        <b> {{ forexCompanyData?.instrumentName }} </b>
+      </h3>
+      <div class="d-flex flex-column container-left">
+        <ng-select2
+          id="industryStep1"
+          class="cusSelect2 cusSelect2_20rem"
+          [placeholder]="'Search OTC Currency'"
+          [data]="otcContractData"
+          [value]="selectedOTCCurrency"
+          (valueChanged)="onOTCCurrencyChanged($event, false)"
+        >
+        </ng-select2>
+      </div>
+    </div>
+    <div
+      class="align-items-center d-flex flex-row justify-content-between mt-1"
+    >
+      <h3 class="tradePrice mt-2 mb-2">
+        <b class="title text-start">Trade Quote</b>
+        <div class="d-flex">
+          <div class="cotainer">
+            <b class="title"> Bid Price </b>
+          </div>
+          <div class="cotainer">
+            <b class="title"> Ask Price </b>
+          </div>
+        </div>
+        <div class="d-flex">
+          <div class="cotainer bg-color">
+            <span class="price">
+              {{ forwardQuoteBidAndAskPrice?.bidPrice }}
+            </span>
+          </div>
+          <div class="cotainer bg-color">
+            <span class="price">
+              {{ forwardQuoteBidAndAskPrice?.askPrice }}
+            </span>
+          </div>
+        </div>
+      </h3>
+      <i
+        *ngIf="auth.expandopendFxIceDescChart"
+        class="fa fa-remove icon cursor-pointer"
+        (click)="auth.expandopendFxIceDescChart = false"
+      ></i>
+    </div>
+
+    <div class="chart-container mt-2">
+      <div class="chart-dashboard h-100">
+        <div id="chartdivIceDesc" class="h-100"></div>
       </div>
     </div>
   </div>
@@ -306,10 +526,56 @@
       </div>
     </div>
   </ng-template>
+
   <!-- FxMatrix Model -->
   <app-fx-matrix-modal
     [currency_data]="currencyData"
     *ngIf="auth.expandopendfxmatrix"
     (onSelectedCurrencyData)="onSelectedCurrencySave($event)"
   ></app-fx-matrix-modal>
+
+  <app-fx-matrix-modal
+    [currency_data]="currencyData"
+    *ngIf="auth.opendEditCustomMatrixmodal"
+    [fxMatrixName]="editCustomMatrixName"
+    [editMatrixDataid]="editMatrixDataId"
+    (onSelectedCurrencyData)="onEditSelectedCurrencySave($event)"
+  ></app-fx-matrix-modal>
+
+  <!-- FxMatrixTable Expand -->
+  <app-forex-expand-table-modal
+    *ngIf="auth.expandopendfxmatrixTable"
+    [expandMatrixHeader]="true"
+    [tableData]="table_data_two.value"
+    [tableDataHeader]="table_data_two.title"
+    [tableDataLength]="table_data_two.title.length"
+    [totalResultCount]="pageActive"
+    [homeData]="true"
+    [headerBorder]="true"
+    [bottomBorder]="true"
+    [height]="true"
+    [OTCorEnergy]="'Metals'"
+    [loadingForexTable]="fxMatrixTableLoding"
+    [customMatrixdropdownData]="dataRegion"
+    [customMatrixDropdownValue]="customMatrixName"
+    (onCustomeMatrixDropdownChange)="onCountryChanged($event.id, $event.text)"
+    [currency_data]="currencyData"
+    [fxMatrixName]="editCustomMatrixName"
+    [editMatrixDataid]="editMatrixDataId"
+    (onSelectedCurrencyData)="onEditSelectedCurrencySave($event)"
+  ></app-forex-expand-table-modal>
+
+  <!-- FxViewChart expand Modal -->
+  <app-forex-expand-chart-modal
+    *ngIf="auth.expandopendfxViewChart"
+    [expandFxViewChartData]="fxViewChartData"
+  >
+  </app-forex-expand-chart-modal>
+  <!-- FxForwardPremiumChart expand Modal -->
+  <!-- <app-forex-expand-commodity-chart-modal
+    *ngIf="auth.expandopendFxForwardPremiumChart"
+    [expandFxForwardPremiumChart]="forexPriceQuoteGraph"
+    [expandforexCompanyData]="forexCompanyData"
+  >
+  </app-forex-expand-commodity-chart-modal> -->
 </div>

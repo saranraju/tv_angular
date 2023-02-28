@@ -74,11 +74,65 @@ export class HeaderComponent implements OnInit, DoCheck {
                 showButtons: true,
                 exitOnOverlayClick: false,
                 keyboardNavigation: true,
+                scrollToElement: true,
               });
 
               this.onNavigationEndSetIntroTrue(element.json);
               setTimeout(() => {
-                this.introJS.start();
+                this.introJS.start().onbeforechange(() => {
+                  let count: any = 0;
+                  if (this.introJS._currentStep >= 10 && count === 0) {
+                    $('#company_content').attr(
+                      'style',
+                      'position:relative !important;'
+                    );
+                    let dataTe = document.getElementById(
+                      'company_content'
+                    ) as any;
+                    let body = document.querySelector('body') as any;
+                    let adminSectionEle = document.querySelector(
+                      '.adminSection'
+                    ) as any;
+                    let topBtn = document.getElementById(
+                      'scrolltotop-btn'
+                    ) as any;
+                    dataTe.classList.remove('company_content');
+                    dataTe.classList.add('company_content_two');
+                    body.classList.add('body-scroll');
+                    adminSectionEle?.classList.remove('adminSection');
+                    adminSectionEle?.classList.add('adminSectionTutorial');
+                    topBtn?.classList.remove('hide');
+                    topBtn?.classList.add('show');
+                    ++count;
+                  }
+
+                  this.introJS.onbeforeexit(() => {
+                    if (this.url === '/financialmarketdata/company') {
+                      let dataTe = document.getElementById(
+                        'company_content'
+                      ) as any;
+                      let adminSectionEle = document.querySelector(
+                        '.adminSectionTutorial'
+                      ) as any;
+                      let topBtn = document.getElementById(
+                        'scrolltotop-btn'
+                      ) as any;
+                      let body = document.querySelector('body') as any;
+                      dataTe.classList.add('company_content');
+                      dataTe.classList.remove('company_content_two');
+                      adminSectionEle?.classList.add('adminSection');
+                      adminSectionEle?.classList.remove('adminSectionTutorial');
+                      body.classList.remove('body-scroll');
+                      $('#company_content').attr(
+                        'style',
+                        'position:fixed !important;'
+                      );
+
+                      topBtn?.classList.add('hide');
+                      topBtn?.classList.remove('show');
+                    }
+                  });
+                });
               }, 500);
             }
           }
@@ -131,7 +185,7 @@ export class HeaderComponent implements OnInit, DoCheck {
     }
   }
   email: any;
-  wFlag = true;
+  wFlag = false;
   hideNewsTab: any = false;
   ngOnInit(): void {
     this.email = localStorage.getItem('email');
@@ -239,7 +293,42 @@ export class HeaderComponent implements OnInit, DoCheck {
       (res) => {
         ++this.count_res;
         this.util.checkCountValue(this.total_count_res, this.count_res);
+        let companyIntroJson = localStorage.getItem(
+          'companyIntroJson'
+        ) as string;
+        let commodityIntroJson = localStorage.getItem(
+          'commodityIntroJson'
+        ) as string;
+        let economyIntroJson = localStorage.getItem(
+          'economyIntroJson'
+        ) as string;
+        let AnalysisIntroJson = localStorage.getItem(
+          'AnalysisIntroJson'
+        ) as string;
+        let industryIntroJson = localStorage.getItem(
+          'industryIntroJson'
+        ) as string;
+        let indutryMonitorJson = localStorage.getItem(
+          'indutryMonitorJson'
+        ) as string;
+        let screenerIntroJson = localStorage.getItem(
+          'screenerIntroJson'
+        ) as string;
+        let dataDownloadJson = localStorage.getItem(
+          'dataDownloadJson'
+        ) as string;
+
         localStorage.clear();
+
+        localStorage.setItem('companyIntroJson', companyIntroJson);
+        localStorage.setItem('commodityIntroJson', commodityIntroJson);
+        localStorage.setItem('economyIntroJson', economyIntroJson);
+        localStorage.setItem('AnalysisIntroJson', AnalysisIntroJson);
+        localStorage.setItem('industryIntroJson', industryIntroJson);
+        localStorage.setItem('indutryMonitorJson', indutryMonitorJson);
+        localStorage.setItem('screenerIntroJson', screenerIntroJson);
+        localStorage.setItem('dataDownloadJson', dataDownloadJson);
+
         var viewport = document.querySelector('meta[name="viewport"]' as any);
 
         if (viewport) {
@@ -256,8 +345,6 @@ export class HeaderComponent implements OnInit, DoCheck {
 
   startTour() {
     this.urlData.urlData.forEach((element: any) => {
-      console.log('inside');
-
       if (this.url == element.url) {
         this.introJS.setOptions({
           steps: this.intro[element.json],
@@ -266,12 +353,54 @@ export class HeaderComponent implements OnInit, DoCheck {
           exitOnOverlayClick: false,
           keyboardNavigation: true,
           scrollToElement: true,
-          scrollTo: element,
         });
-        this.introJS.start();
+        this.introJS.start().onbeforechange(() => {
+          let count: any = 0;
+          if (this.introJS._currentStep >= 10 && count === 0) {
+            $('#company_content').attr(
+              'style',
+              'position:relative !important;'
+            );
+            let dataTe = document.getElementById('company_content') as any;
+            let body = document.querySelector('body') as any;
+            let adminSectionEle = document.querySelector(
+              '.adminSection'
+            ) as any;
+            let topBtn = document.getElementById('scrolltotop-btn') as any;
+            dataTe.classList.remove('company_content');
+            dataTe.classList.add('company_content_two');
+            body.classList.add('body-scroll');
+            adminSectionEle?.classList.remove('adminSection');
+            adminSectionEle?.classList.add('adminSectionTutorial');
+            topBtn?.classList.remove('hide');
+            topBtn?.classList.add('show');
+            ++count;
+          }
+
+          this.introJS.onbeforeexit(() => {
+            if (this.url === '/financialmarketdata/company') {
+              let dataTe = document.getElementById('company_content') as any;
+              let adminSectionEle = document.querySelector(
+                '.adminSectionTutorial'
+              ) as any;
+              let topBtn = document.getElementById('scrolltotop-btn') as any;
+              let body = document.querySelector('body') as any;
+              dataTe.classList.add('company_content');
+              dataTe.classList.remove('company_content_two');
+              adminSectionEle?.classList.add('adminSection');
+              adminSectionEle?.classList.remove('adminSectionTutorial');
+              body.classList.remove('body-scroll');
+              $('#company_content').attr('style', 'position:fixed !important;');
+
+              topBtn?.classList.add('hide');
+              topBtn?.classList.remove('show');
+            }
+          });
+        });
       }
     });
   }
+
   navigateCompany() {
     window.location.href = '/financialmarketdata/company';
   }
@@ -349,7 +478,7 @@ export class HeaderComponent implements OnInit, DoCheck {
   }
 
   checkIntroCompleted(key: any) {
-    let data = localStorage.getItem(key);
+    let data = JSON.parse(localStorage.getItem(key) as string);
     return data;
   }
 
@@ -484,7 +613,8 @@ export class HeaderComponent implements OnInit, DoCheck {
         this.route.createUrlTree(['/financialmarketdata/commodity'], {
           relativeTo: this.router,
           queryParams: {
-            countryCode: data.countryIsoCode3,
+            symbol: data.symbol,
+            tabSection: 'Dashboard',
           },
           queryParamsHandling: 'merge',
         })

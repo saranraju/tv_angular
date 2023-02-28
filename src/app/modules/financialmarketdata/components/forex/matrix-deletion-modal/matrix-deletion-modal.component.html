@@ -1,0 +1,26 @@
+<div class="modal p-3">
+  <!-- Modal Content -->
+  <div class="modal-content mx-auto">
+    <div class="container-fluid">
+      <div class="row my-3">
+        <h2 class="modal-title text-center px-0">Confirm Deletion</h2>
+      </div>
+      <div class="row justify-content-between mt-4">
+        <button
+          (click)="handleCancelBtnClick()"
+          type="button"
+          class="footer-btn active"
+        >
+          CANCEL
+        </button>
+        <button
+          (click)="handleDeleteBtnClick()"
+          type="button"
+          class="footer-btn active"
+        >
+          DELETE
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

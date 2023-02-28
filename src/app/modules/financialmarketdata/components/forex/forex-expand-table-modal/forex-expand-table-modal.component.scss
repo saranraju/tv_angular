@@ -1,0 +1,260 @@
+.modal {
+  display: block;
+  z-index: 999;
+  background: rgba(0, 0, 0, 0.8);
+  transition: opacity 500ms;
+}
+
+.modal-dialog-style {
+  width: 98%;
+  margin: 10rem auto 1.75rem;
+}
+
+/* Modal Content */
+.modal-content {
+  background: #00071e !important;
+  padding: 0px 10px !important;
+  width: 100% !important;
+}
+
+  .close {
+    position: absolute;
+    top: -33px;
+    right: 0;
+    color: white;
+    opacity: 1;
+    background: 0;
+    border: 0;
+    font-size: 20px;
+  }
+  table {
+    font-weight: 400;
+    tbody {
+      display: block;
+      overflow-y: auto;
+      // border-bottom: 1px solid #528dc3;
+    }
+  
+    thead,
+    tbody tr {
+      display: table;
+      width: 100%;
+      table-layout: fixed;
+    }
+   
+    th {
+      font-weight: 600;
+      text-align: center;
+      color: #ffc000;
+      font-size: 12px !important;
+      background-color: #00071e !important;
+      padding: 7px 5px;
+    }
+  
+    td {
+      text-align: center;
+      padding: 7px 5px;
+      font-size: 12px !important;
+      color: white;
+    }
+  
+    tr:nth-child(odd) {
+      background-color: #122543;
+    }
+  
+    tr:nth-child(even) {
+      background-color: #00071e;
+    }
+  
+    td:first-child {
+      color: #ffc000;
+    }
+  }
+  
+  .flex-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  
+  th:first-child,
+  td:first-child {
+    text-align: start !important;
+    .flex-center {
+      justify-content: start;
+    }
+  }
+  
+  .headerBorder {
+    border-top: 1px solid #528dc3;
+    border-bottom: 1px solid #528dc3;
+  }
+  
+  .bottomBorder {
+    border-bottom: 1px solid #528dc3;
+  }
+  
+  .cus-pagination {
+    font-family: "Lucida Sans" !important;
+    font-size: 12px;
+    color: #ffc000 !important;
+  }
+  
+  .search_result {
+    cursor: pointer;
+    word-wrap: break-word;
+    margin: 0px 10px;
+  
+    &:hover {
+      background-color: #ebd4b4;
+    }
+  }
+  
+  .color-green {
+    color: green;
+  }
+  
+  .color-red {
+    color: red;
+  }
+  
+  .color-yellow {
+    color: #ffc000 !important;
+  }
+  
+  .color-none {
+    color: white !important;
+  }
+  
+  .no-data {
+    font-size: 12px;
+    margin-top: 75px;
+  }
+  
+  .no-data-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .height-table{
+   height:44%;
+  }
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 10px;
+    
+    
+    .header-title {
+      margin: 0px;
+      font-size: 18px;
+    }
+}
+.row-height {
+  height: 3.1rem;
+}
+
+.dropdown-container {
+  position: relative;
+  width: 20%;
+}
+.matrix-dropdown-box {
+  display: flex;
+  align-items: center;
+  border: 1px solid #fec000;
+  background: #fbe5c6;
+  color: #444;
+  border-radius: 4px;
+  font-size: 12px;
+  height: 30px;
+  width: 85%;
+  padding-left: 8px;
+  cursor: pointer;
+
+  .down-icon-div {
+    background-color: #fec000;
+    padding: 4px 7px;
+    color: white;
+  }
+}
+
+.company-section {
+  min-height: 6rem;
+  height: 20vh;
+  overflow-y: auto;
+  font-size: 13px;
+  border-bottom: 1px solid #fec727;
+}
+
+.sticky {
+  position: sticky;
+  top: 0px;
+  background: #fbe5c6;
+}
+
+.optionList {
+  position: absolute;
+  margin-top: -3px;
+  width: 85%;
+  background: #fbe5c6;
+  z-index: 1;
+  // padding-inline-start: 5px;
+  // overflow: scroll;
+  // overflow-x: hidden;
+  border-bottom-left-radius: 4px;
+  border-bottom-right-radius: 4px;
+}
+
+.search-filter-data {
+  .form-control {
+    font-size: 12px;
+    padding: 5px 10px 4px 5px;
+    width: 95%;
+    color: #1f398a;
+    background-color: #fff;
+    border-color: #aeabcb;
+    margin: auto;
+  }
+
+  .form-control:focus {
+    color: #1f398a;
+    background-color: #fff;
+    border-color: #aeabcb;
+    outline: none !important;
+    box-shadow: none;
+  }
+
+  .custom-ul-style {
+    list-style: none;
+    padding-left: 0;
+    color: #000;
+    max-height: 12rem;
+    overflow: auto;
+    margin-bottom: 4px;
+  }
+
+  .custom-li-style {
+    padding: 5px;
+    font-size: 12px;
+    font-weight: 400;
+  }
+
+  .custom-li-style:hover {
+    background-color: #ffc000;
+    cursor: pointer;
+  }
+
+  .fa-pencil {
+    margin-right: 0.3rem;
+  }
+
+  input[type="search"]::-webkit-search-decoration,
+  input[type="search"]::-webkit-search-cancel-button,
+  input[type="search"]::-webkit-search-results-button,
+  input[type="search"]::-webkit-search-results-decoration {
+    display: none;
+  }
+}
+

@@ -1,41 +1,71 @@
 <table>
   <thead [ngClass]="{ headerBorder: headerBorder == true }">
     <tr>
-      <th *ngFor="let col of tableDataHeader; let i = index" [ngStyle]="{ width: col.width }"
-        (click)="sort && sortByKey(col.field, i)">
+      <th
+        *ngFor="let col of tableDataHeader; let i = index"
+        [ngStyle]="{ width: col.width }"
+        (click)="sort && sortByKey(col.field, i)"
+      >
         <span class="flex-center">
-          <span *ngIf="!isDetailName;else detailsTemp"> {{ transformWordFirstLetterToCapital(col.label) }} </span>
+          <span *ngIf="!isDetailName; else detailsTemp">
+            {{ transformWordFirstLetterToCapital(col.label) }}
+          </span>
           <ng-template #detailsTemp>
-            <span>{{transformWordFirstLetterToCapital(col.label) == 'Instrument Name' ? 'Details' :
-              transformWordFirstLetterToCapital(col.label)}}</span>
+            <span>{{
+              transformWordFirstLetterToCapital(col.label) == "Instrument Name"
+                ? "Details"
+                : transformWordFirstLetterToCapital(col.label)
+            }}</span>
           </ng-template>
-          <i *ngIf="sort && i != iconIndex" class="shortIconColor ms-1 fa fa-solid fa-sort"></i>
-          <i *ngIf="sort && i == iconIndex && shortDown" class="shortIconColor ms-1 fa fa-solid fa-sort-down"></i>
-          <i *ngIf="sort && i == iconIndex && !shortDown" class="shortIconColor ms-1 fa fa-solid fa-sort-up"></i>
+          <i
+            *ngIf="sort && i != iconIndex"
+            class="shortIconColor ms-1 fa fa-solid fa-sort"
+          ></i>
+          <i
+            *ngIf="sort && i == iconIndex && shortDown"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-down"
+          ></i>
+          <i
+            *ngIf="sort && i == iconIndex && !shortDown"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-up"
+          ></i>
         </span>
       </th>
     </tr>
   </thead>
   <tbody [ngClass]="{ bottomBorder: bottomBorder == true }">
-    <tr *ngFor="
+    <tr
+      *ngFor="
         let row of tableData
           | paginate
             : {
                 itemsPerPage: totalResultCount ?? 10,
                 currentPage: currentPageSelected
-              };let x = index;
-      ">
-      <td *ngFor="let col of tableDataHeader;let z = index" (click)="commodityEmitData(row)">
-        <i class="fa fa-close mr-1 cursor-pointer" *ngIf="isEdit && z == 0 && x > 0"
-          (click)="removeEditComparable(row)"></i>
-        {{ row[col.field] != 'null' || null ? (row[col.field] ?? '-') : '-' }}
+              };
+        let x = index
+      "
+    >
+      <td
+        *ngFor="let col of tableDataHeader; let z = index"
+        (click)="commodityEmitData(row)"
+      >
+        <i
+          class="fa fa-close mr-1 cursor-pointer"
+          *ngIf="isEdit && z == 0 && x > 0"
+          (click)="removeEditComparable(row)"
+        ></i>
+        {{ row[col.field] != "null" || null ? row[col.field] ?? "-" : "-" }}
       </td>
     </tr>
   </tbody>
   <tfoot *ngIf="tableData?.length && pagination">
     <div class="container-fluid px-0 text-center mt-1">
-      <pagination-controls class="cus-pagination" [previousLabel]="labels.previousLabel" [nextLabel]="labels.nextLabel"
-        (pageChange)="currentPageSelected = $event"></pagination-controls>
+      <pagination-controls
+        class="cus-pagination"
+        [previousLabel]="labels.previousLabel"
+        [nextLabel]="labels.nextLabel"
+        (pageChange)="currentPageSelected = $event"
+      ></pagination-controls>
     </div>
   </tfoot>
 </table>

@@ -27,16 +27,19 @@
           </li>
           <li
             class="transaction-btn position-relative"
-            (mouseover)="showBubble = true"
-            (mouseout)="showBubble = false"
+            [ngClass]="{
+              activeDateFilter:
+                util.selectedDatetype === 'Initial Public Offerings'
+            }"
+            (click)="dateChange('Initial Public Offerings')"
           >
             Initial Public Offerings
-            <div
+            <!-- <div
               class="mb-2 align-self-center bubble-container"
               *ngIf="showBubble"
             >
               <div class="text-center bubble">Coming Soon</div>
-            </div>
+            </div> -->
           </li>
         </ul>
       </div>
@@ -850,6 +853,7 @@
   <div class="row d-flex justify-content-between align-items-center">
     <div class="col-3 d-flex align-items-center">
       <ng-select2
+        id="gloablSelect"
         class="cusSelect2 sSelect2Normalcur"
         [data]="countryListIpo"
         [(ngModel)]="ipoSelectedCountry"

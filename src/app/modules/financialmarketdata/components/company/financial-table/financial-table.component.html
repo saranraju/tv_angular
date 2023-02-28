@@ -14,7 +14,7 @@
         <ng-container *ngFor="let header of header_data; let i = index">
           <ng-container *ngIf="i < 3">
             <th class="text-end">
-              {{ header | date: "MMM - y" }}
+              {{ header | date : "MMM - y" }}
             </th>
           </ng-container>
         </ng-container>
@@ -36,6 +36,7 @@
           </td> -->
           <td
             *ngIf="!isPrivateCompanyActive"
+            id="{{ i == 0 ? idName : '' }}"
             [ngClass]="content?.graphflag === '1' ? 'cursor-pointer' : ''"
           >
             <div
@@ -44,10 +45,7 @@
               id="{{ content?.fieldName }}"
               class="chartdivtrend"
             >
-              <app-thumbnail-graph
-                id="{{ i == 0 ? idName : '' }}"
-                [data]="content"
-              ></app-thumbnail-graph>
+              <app-thumbnail-graph [data]="content"></app-thumbnail-graph>
             </div>
             <!-- <div id="chartdivtrend">
               <div id="sparklines"></div>

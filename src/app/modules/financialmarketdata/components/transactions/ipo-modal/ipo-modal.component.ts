@@ -1,4 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Output,
+  EventEmitter,
+  OnChanges,
+  SimpleChanges,
+} from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { FinancialMarketDataService } from 'src/app/services/financialmarketdata.service';
 import { UtilService } from 'src/app/services/util.service';
@@ -9,7 +17,7 @@ import { saveAs } from 'file-saver';
   templateUrl: './ipo-modal.component.html',
   styleUrls: ['./ipo-modal.component.scss'],
 })
-export class IpoModalComponent implements OnInit {
+export class IpoModalComponent implements OnInit, OnChanges {
   @Input() apiType: any;
   @Input() modalTypeIPO: any;
   @Input() upcoming_ipo_modal_table_data: any;
@@ -42,6 +50,7 @@ export class IpoModalComponent implements OnInit {
   count_res: any = 0;
   total_count_res: any = '';
   sortingAscDec: any = true;
+  companyList: any = [];
   IpoNgSelectoptions = {
     multiple: true,
     // tags: true,
@@ -68,6 +77,9 @@ export class IpoModalComponent implements OnInit {
     }
     this.statusList = data;
   }
+  ngOnChanges(changes: SimpleChanges): void {
+    this.getDropdownFilterdCompanies();
+  }
 
   ipoModalClose() {
     if (
@@ -78,6 +90,8 @@ export class IpoModalComponent implements OnInit {
     ) {
       this.auth.openIPOModal = false;
     } else {
+      this.ipoSelectedCurrency = '';
+      this.selectedCountry = '';
       this.selectExchange = '';
       this.selectedStatus = '';
       this.selectedSecurity = '';
@@ -117,6 +131,7 @@ export class IpoModalComponent implements OnInit {
       if (this.selectedCountry?.length !== e?.length) {
         this.count_res = 0;
         this.total_count_res = 2;
+        this.selectedPage = 1;
         this.util.loaderService.display(true);
         this.selectedCountry = e.filter((n: any) => n);
         this.getFilteredIpoData();
@@ -127,6 +142,7 @@ export class IpoModalComponent implements OnInit {
       if (this.selectExchange?.length !== e?.length) {
         this.count_res = 0;
         this.total_count_res = 2;
+        this.selectedPage = 1;
         this.util.loaderService.display(true);
         this.selectExchange = e.filter((n: any) => n);
         this.getFilteredIpoData();
@@ -137,6 +153,7 @@ export class IpoModalComponent implements OnInit {
       if (this.selectedStatus?.length !== e?.length) {
         this.count_res = 0;
         this.total_count_res = 2;
+        this.selectedPage = 1;
         this.util.loaderService.display(true);
         this.selectedStatus = e.filter((n: any) => n);
         this.getFilteredIpoData();
@@ -150,16 +167,18 @@ export class IpoModalComponent implements OnInit {
         this.util.loaderService.display(true);
         this.selectedSecurity = e.filter((n: any) => n);
         this.getFilteredIpoData();
+        this.selectedPage = 1;
         this.getDropdownFilterdCompanies();
       }
     }
     if (id == 'comName') {
-      if (this.selectedCompany?.length !== e?.length) {
+      if (this.selectedCompany?.toString() !== e?.toString()) {
         this.count_res = 0;
         this.total_count_res = 2;
         this.util.loaderService.display(true);
-        this.selectedCompany = e;
+        this.selectedCompany = e.filter((n: any) => n);
         this.getFilteredIpoData();
+        this.selectedPage = 1;
         this.getDropdownFilterdCompanies();
       }
     }
@@ -170,6 +189,7 @@ export class IpoModalComponent implements OnInit {
         this.util.loaderService.display(true);
         this.selectedIndustry = e;
         this.getFilteredIpoData();
+        this.selectedPage = 1;
         this.getDropdownFilterdCompanies();
       }
     }
@@ -180,6 +200,7 @@ export class IpoModalComponent implements OnInit {
         this.util.loaderService.display(true);
         this.selectedPeriod = e;
         this.getFilteredIpoData();
+        this.selectedPage = 1;
         this.getDropdownFilterdCompanies();
       }
     }
@@ -187,7 +208,7 @@ export class IpoModalComponent implements OnInit {
 
   selectedPage = 1;
   getFilteredIpoData() {
-    console.log(this.selectedCountry);
+    this.companyList = [];
     if (this.apiType == 'upcoming-ipo') {
       this.upcoming_ipo_modal_table_data.value = [];
     } else if (this.apiType == 'open-for-subscription-ipo') {
@@ -224,7 +245,6 @@ export class IpoModalComponent implements OnInit {
       body.column_key = [this.sortingKey];
       body.sorting_order = [this.sortingFunction];
     }
-
     this.financialMarketData
       .getFilteredIpos(this.apiType, this.selectedPage, body)
       .subscribe((res: any) => {
@@ -364,9 +384,11 @@ export class IpoModalComponent implements OnInit {
     //   this.getIpoPagesData(params);
     // } else {
     this.count_res = 0;
-    this.total_count_res = 1;
+    this.total_count_res = 2;
     this.util.loaderService.display(true);
     this.getFilteredIpoData();
+    this.getDropdownFilterdCompanies();
+
     // }
   }
 
@@ -380,13 +402,14 @@ export class IpoModalComponent implements OnInit {
         const blob = new Blob([res.body], {
           type: 'application/vnd.ms.excel',
         });
-        const file = new File([blob], '' + `${params}.xlsx`, {
+        const file = new File([blob], '' + `${params}.xls`, {
           type: 'application/vnd.ms.excel',
         });
         saveAs(file);
       },
       (err) => {
         console.error(err);
+        ++this.count_res;
       }
     );
   }
@@ -519,18 +542,66 @@ export class IpoModalComponent implements OnInit {
     this.auth.closeInsidePopup = true;
   }
   getDropdownFilterdCompanies() {
-    this.financialMarketData.getIpoPageData('companies').subscribe((res) => {
-      ++this.count_res;
-      this.util.checkCountValue(this.total_count_res, this.count_res);
-      var formattedData: any = [];
-      res.forEach((data: any) => {
-        formattedData.push({
-          id: data,
-          text: data,
+    var body: any = {};
+    if (this.ipoSelectedCurrency) {
+      body.currency = [this.ipoSelectedCurrency];
+    }
+    if (this.selectedCountry?.length > 0) {
+      body.cntry_inc = this.selectedCountry;
+    } else {
+      body.cntry_inc = [''];
+    }
+    if (this.selectExchange?.length > 0) {
+      body.mic = this.selectExchange;
+    } else {
+      body.mic = [''];
+    }
+    if (this.selectedStatus?.length > 0) {
+      body.status = this.selectedStatus;
+    } else {
+      body.status = [''];
+    }
+    if (this.selectedSecurity?.length > 0) {
+      body.sec_description = this.selectedSecurity;
+    } else {
+      body.sec_description = [''];
+    }
+    if (this.selectedCompany?.length > 0) {
+      body.issuer_name = this.selectedCompany;
+    } else {
+      body.issuer_name = [''];
+    }
+    if (this.selectedIndustry?.length > 0) {
+      body.industry = this.selectedIndustry;
+    } else {
+      body.industry = [''];
+    }
+    if (this.selectedPeriod !== '') {
+      body.period = [this.selectedPeriod];
+    } else {
+      body.period = [''];
+    }
+    if (this.sortingKey !== '') {
+      body.column_key = [this.sortingKey];
+      body.sorting_order = [this.sortingFunction];
+    }
+    this.financialMarketData.getIpoCompanies('companies', body).subscribe(
+      (res) => {
+        ++this.count_res;
+        this.util.checkCountValue(this.total_count_res, this.count_res);
+        var formattedData: any = [];
+        res.forEach((data: any) => {
+          formattedData.push({
+            id: data?.issuer_name,
+            text: data?.issuer_name,
+          });
         });
-      });
-      this.company_name = formattedData;
-    });
+        this.companyList = formattedData;
+      },
+      (err) => {
+        ++this.count_res;
+      }
+    );
   }
   prevEvent: any;
   sortingFunction: any;

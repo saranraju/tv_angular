@@ -49,8 +49,29 @@ export class CommodityTableComponent implements OnInit {
 
     return quarterList;
   }
-
+  globalMatrixList: any =[]
   redirectToInteractive(content: any) {
+    let prevGlobalMatrixList = []
+    prevGlobalMatrixList =  JSON.parse(localStorage.getItem('globalMatrixList') as any)
+    if(prevGlobalMatrixList == null) prevGlobalMatrixList = []
+    let commodityChartData = prevGlobalMatrixList.filter(
+      (ele: any) => ele.type === 'commodityChartCustom'
+    );
+    if (commodityChartData.length > 0) {
+      this.globalMatrixList = this.globalMatrixList;
+    } else {
+      prevGlobalMatrixList.push({
+        name:content?.fieldName,
+        type: 'commodityChartCustom',
+        commodity:true
+      });
+      localStorage.setItem(
+        'globalMatrixList',
+        JSON.stringify(prevGlobalMatrixList)
+      );
+    }
+
+
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['financialmarketdata/interactive-analysis'], {
         queryParams: {

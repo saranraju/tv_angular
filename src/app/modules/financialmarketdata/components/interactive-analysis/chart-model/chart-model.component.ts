@@ -153,7 +153,7 @@ export class ChartModelComponent implements OnInit {
     valueAxis.numberFormatter.numberFormat = '#.0a';
 
     this.chartModelData.forEach((element: any, index: any) => {
-      if (element[0].periodType === 'Daily') {
+      if (element[0]?.periodType === 'Daily') {
         dateAxis.renderer.minGridDistance = 90;
 
         dateAxis.dateFormats.setKey('day', 'dd-MM-yy');
@@ -172,7 +172,7 @@ export class ChartModelComponent implements OnInit {
         dateAxis.periodChangeDateFormats.setKey('month', 'MMM yyyy');
         dateAxis.periodChangeDateFormats.setKey('week', 'dd MMM');
       }
-      if (element[0].periodType === 'Yearly') {
+      if (element[0]?.periodType === 'Yearly') {
         dateAxis.tooltipDateFormat = 'yyyy';
       }
 

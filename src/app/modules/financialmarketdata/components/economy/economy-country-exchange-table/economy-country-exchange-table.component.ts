@@ -103,6 +103,20 @@ export class EconomyCountryExchangeTableComponent implements OnInit, OnChanges {
   }
 
   redirectToInteractiveAnalysis(args: any) {
+    let prevGlobalMatrixList = []
+    prevGlobalMatrixList =  JSON.parse(localStorage.getItem('globalMatrixList') as any)
+   if(prevGlobalMatrixList == null) prevGlobalMatrixList = []
+   prevGlobalMatrixList.push({
+      name: `${args.targetCurrencyName} (${args.targetCurrencyCode})`.replace(/[^A-Z0-9]/ig, "_").toLowerCase(),
+      type: 'economyChartCustom',
+      countryEco:true,
+    });
+
+    localStorage.setItem(
+      'globalMatrixList',
+      JSON.stringify(prevGlobalMatrixList)
+    );
+
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['financialmarketdata/interactive-analysis'], {
         queryParams: {

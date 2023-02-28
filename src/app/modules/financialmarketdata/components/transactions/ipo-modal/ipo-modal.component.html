@@ -86,7 +86,7 @@
           <ng-select2
             class="cusSelect2 cusSelect2Normal"
             [placeholder]="'Select Company Name'"
-            [data]="company_name"
+            [data]="companyList"
             (valueChanged)="onModalValueChanged('comName', $event)"
             [options]="IpoNgSelectoptions"
             [value]="selectedCompany"
@@ -114,6 +114,7 @@
           (rumoured_data)="rumouredTableDataHandler($event)"
           (sortedDataHandler)="handleSorting($event)"
           (changePage)="onPageChage($event)"
+          [currentPageSelected]="selectedPage"
           (nonotesAvailable)="onNoData($event)"
         ></app-ipo-table>
         <app-ipo-table
@@ -123,6 +124,7 @@
           type="ipo-navigate-comp"
           [ipo_table_data]="subscription_ipo_modal_table_data"
           [paginate]="true"
+          [currentPageSelected]="selectedPage"
           [pageLength]="openSubsDataLength"
           (rumoured_data)="rumouredTableDataHandler($event)"
           (sortedDataHandler)="handleSorting($event)"
@@ -136,6 +138,7 @@
           type="ipo-navigate-comp"
           [ipo_table_data]="historical_ipo_modal_table_data"
           [paginate]="true"
+          [currentPageSelected]="selectedPage"
           [pageLength]="historicalDataLength"
           (rumoured_data)="rumouredTableDataHandler($event)"
           (sortedDataHandler)="handleSorting($event)"

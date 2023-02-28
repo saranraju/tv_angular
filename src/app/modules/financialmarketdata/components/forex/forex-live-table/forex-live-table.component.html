@@ -1,31 +1,40 @@
-<table>
+<table [ngClass]="{ 'height-table': height == true }">
   <thead [ngClass]="{ headerBorder: headerBorder == true }">
     <tr>
       <th
         *ngFor="let col of tableDataHeader; let i = index"
         [ngStyle]="{ width: col.width }"
+        [ngClass]="{
+          'font_16px row-height': auth.expandopendfxmatrixTable === true
+        }"
         (click)="sort && sortByKey(col.field, i)"
       >
         <span class="flex-center">
           <span> {{ col.label }} </span>
           <i
             *ngIf="sort && i != iconIndex"
-            class="shortIconColor ms-1 fa fa-solid fa-sort"
+            class="shortIconColor ms-1 fa fa-solid fa-sort cursor-pointer"
           ></i>
           <i
             *ngIf="sort && i == iconIndex && shortDown"
-            class="shortIconColor ms-1 fa fa-solid fa-sort-down"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-down cursor-pointer"
           ></i>
           <i
             *ngIf="sort && i == iconIndex && !shortDown"
-            class="shortIconColor ms-1 fa fa-solid fa-sort-up"
+            class="shortIconColor ms-1 fa fa-solid fa-sort-up cursor-pointer"
           ></i>
+        </span>
+        <span *ngIf="type == 'forex' || type == 'matrix'">
+          {{ col.label == "" && col.field !== "title" ? "-" : "" }}
         </span>
       </th>
     </tr>
   </thead>
   <tbody
-    [ngClass]="{ bottomBorder: bottomBorder == true }"
+    [ngClass]="{
+      bottomBorder: bottomBorder == true,
+      scrollHeight: sort == true
+    }"
     *ngIf="!loadingForexTable; else loading"
   >
     <tr
@@ -39,12 +48,20 @@
                 id: paginateId
               }
       "
+      [ngClass]="{
+        'row-height': auth.expandopendfxmatrixTable === true
+      }"
     >
       <ng-container *ngIf="homeData; else anotherSection">
         <td
           *ngFor="let col of tableDataHeader; let z = index"
-          (click)="commodityEmitData(z, row)"
-          [ngClass]="{ 'cursor-pointer': z == 0 }"
+          (click)="z == 0 && commodityEmitData(z, row)"
+          [ngClass]="{
+            'cursor-pointer': z == 0 && sort == true,
+            'row-height': auth.expandopendfxExpandTable === true,
+            font_16px: auth.expandopendfxmatrixTable === true
+          }"
+          class="bubble-container"
         >
           <span
             *ngIf="
@@ -79,6 +96,9 @@
             }"
           >
             {{ row[col.field] == "null" ? "-" : row[col.field] ?? "-" }}
+          </span>
+          <span *ngIf="z == 0 && sort == true" class="bubble">
+            {{ row.hoverDesc }}
           </span>
         </td>
       </ng-container>

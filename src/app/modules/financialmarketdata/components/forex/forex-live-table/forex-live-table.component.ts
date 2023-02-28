@@ -7,6 +7,7 @@ import {
   OnInit,
   Output,
 } from '@angular/core';
+import { AuthService } from 'src/app/services/auth/auth.service';
 import { UtilService } from 'src/app/services/util.service';
 @Component({
   selector: 'app-forex-live-table',
@@ -21,7 +22,9 @@ export class ForexLiveTableComponent implements OnInit {
   @Input() totalResultCount: any;
   @Input() headerBorder: any;
   @Input() bottomBorder: any;
+  @Input() height: any;
   @Input() OTCorEnergy: any;
+  @Input() tableType: any;
   @Input() type: any;
   @Input() homeData: any = false;
   @Input() currentPageSelected: any;
@@ -42,14 +45,14 @@ export class ForexLiveTableComponent implements OnInit {
   shortDown: boolean = false;
   shortUp: boolean = false;
 
-  constructor(public util: UtilService) {}
+  constructor(public util: UtilService, public auth: AuthService) {}
 
   ngOnInit(): void {}
 
   sortByKey(key: any, i: any) {
     this.iconIndex = i;
     this.shortDown = !this.shortDown;
-    return this.tableData.data.sort((a: any, b: any) => {
+    return this.tableData.sort((a: any, b: any) => {
       var x = a[key];
       var y = b[key];
       if (this.shortDown == true) {
