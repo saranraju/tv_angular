@@ -12,6 +12,10 @@ body {
   overflow: hidden !important;
 }
 
+.body-scroll {
+  overflow: visible !important;
+}
+
 body {
   margin: 0;
   font-family: "Lucida Sans" !important;
@@ -533,6 +537,13 @@ body {
 
 .select2-container--default .select2-search--dropdown .select2-search__field {
   font-size: 12px;
+}
+
+.select2-container .select2-selection--multiple .select2-selection__rendered {
+  display: inline;
+  list-style: none;
+  padding: 0;
+  // position: absolute;
 }
 
 .select2-search--dropdown {

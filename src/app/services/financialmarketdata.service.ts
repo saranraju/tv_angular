@@ -1666,6 +1666,10 @@ export class FinancialMarketDataService {
     return this.http.get<any>(this.pahseTwoBaseURL + `/ipo/${params}`);
   }
 
+  getIpoCompanies(params: any, body: any) {
+    return this.http.post<any>(this.pahseTwoBaseURL + `/ipo/${params}`, body);
+  }
+
   getAdvanceSearchIpoData(params: any, body: any) {
     return this.http.post<any>(
       this.pahseTwoBaseURL + `/ipo/advance-search/${params}/10`,
@@ -1901,6 +1905,12 @@ export class FinancialMarketDataService {
     return this.http.get(this.forexUrl + `/forex/customForexMatrixList`);
   }
 
+  getEditCustomMatrixData(params: any) {
+    return this.http.get(
+      this.forexUrl + `/forex/customForexMatrix/fxMatrix/${params}`
+    );
+  }
+
   getForextradeQuoteGraph() {
     return this.http.get(this.forexUrl + `/forex/tradeQuoteGraph`);
   }
@@ -1924,6 +1934,17 @@ export class FinancialMarketDataService {
   getForexcustomForexMatrix() {
     return this.http.get(this.forexUrl + `/forex/customForexMatrix/custom1`);
   }
+  putCustomForexMatrix(value: any) {
+    return this.http.put(
+      this.forexUrl + `forex/editCustomForexMatrix/${value.name}`,
+      value
+    );
+  }
+  deleteCustomForexMatrix(id: any) {
+    return this.http.delete<any>(
+      this.forexUrl + `/forex/deleteCustomForexMatrix/${id}`
+    );
+  }
   postForexcustomForexMatrix(value: any) {
     return this.http.post(this.forexUrl + `/forex/customForexMatrix`, value);
   }
@@ -1943,6 +1964,9 @@ export class FinancialMarketDataService {
     return this.http.get(
       this.forexUrl + `/forex/iceDescriptionGraph/${params}`
     );
+  }
+  getSearchByForexPair(params: any) {
+    return this.http.get(this.forexUrl + `/forex/searchByForexPair/${params}`);
   }
 
   // -----------------Forex Api End -----------------

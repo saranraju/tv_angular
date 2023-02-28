@@ -18,6 +18,7 @@ export class ManagementModalComponent implements OnInit, OnChanges {
   @Input() table_data: any;
   @Input() mh: any;
   @Input() companyName: any;
+  @Input() idName: any;
   iconIndex: any = 0;
   shortDown: boolean = false;
   shortUp: boolean = false;

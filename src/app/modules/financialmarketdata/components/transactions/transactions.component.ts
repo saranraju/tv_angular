@@ -1371,6 +1371,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit, OnDestroy {
       this.getAdvisorList();
       this.getstatusList();
       this.getIndustryList();
+      this.pieChartDataArray = [];
       this.financialMarketData.getIpoPageData('pie-chart').subscribe(
         (res: any) => {
           ++this.count_res;
@@ -4034,6 +4035,12 @@ export class TransactionsComponent implements OnInit, AfterViewInit, OnDestroy {
   openSubsDataLength: any;
   historicalDataLength: any;
   getAllIpoData(e: any) {
+    this.upcoming_ipo_modal_table_data.value = [];
+    this.upcoming_ipo_table_data.value = [];
+    this.historical_ipo_table_data.value = [];
+    this.historical_ipo_modal_table_data.value = [];
+    this.subscription_ipo_table_data.value = [];
+    this.subscription_ipo_modal_table_data.value = [];
     this.financialMarketData.getExpandedSectionData(e).subscribe(
       (res: any) => {
         ++this.count_res;
@@ -4277,6 +4284,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit, OnDestroy {
           }
         } else {
           this.clearSelection();
+          $(document).on('select2:open', (e) => {});
         }
       }
     } else if (id === 'currency') {
@@ -4526,7 +4534,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit, OnDestroy {
   }
 
   clearSelection() {
-    if (this.ipoGlobalListLength !== 0) {
+    if (this.ipoGlobalListLength !== 0 || this.selectedCountryStringIPO == '') {
       this.count_res = 0;
       this.total_count_res = 3;
       this.util.loaderService.display(true);
@@ -4546,6 +4554,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit, OnDestroy {
       ].map((ele: any) => {
         this.getAllIpoData(ele);
       });
+      // this.onReturntoDefualtChart();
     }
   }
   statusList: any;
@@ -4646,7 +4655,7 @@ export class TransactionsComponent implements OnInit, AfterViewInit, OnDestroy {
         const blob = new Blob([res.body], {
           type: 'application/vnd.ms.excel',
         });
-        const file = new File([blob], '' + `${id}.xlsx`, {
+        const file = new File([blob], '' + `${id}.xls`, {
           type: 'application/vnd.ms.excel',
         });
         saveAs(file);

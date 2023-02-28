@@ -21,14 +21,14 @@ export const environment = {
   advanceSearch: 'https://financialmarketapi.televisory.com',
   authBaseUrl: 'https://financialmarketapi.televisory.com/QA',
   forexUrl: 'http://52.221.8.139',
-  phase_two_base_url_ipo: 'https://financialmarketapi.televisory.com',
+  phase_two_base_url_ipo: 'http://52.221.8.139:8081',
   // phase_two_base_url: 'https://financialmarketapi.televisory.com',
   phase_two_base_url: 'http://52.221.8.139:8084',
-  phase_two_bonds_base_url: 'https://financialmarketapi.televisory.com',
+  phase_two_bonds_base_url: 'http://52.221.8.139:8081',
   // phase_two_commodity_base_url: 'https://financialmarketapi.televisory.com',
   phase_two_commodity_base_url: 'http://52.221.8.139:8083',
   phase_two_news_base_url: 'https://financialmarketapi.televisory.com',
-  phase_two_pevc_base_url: 'https://financialmarketapi.televisory.com',
+  phase_two_pevc_base_url: 'http://52.221.8.139:8085',
 };
 
 /*

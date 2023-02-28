@@ -93,7 +93,7 @@ export class IntroJsonService {
       position: 'bottom',
     },
     {
-      element: '#companyStep18',
+      element: '#scrolltotop-btn',
       intro: '<p>Click to Go to Top</p>',
       position: 'bottom',
     },

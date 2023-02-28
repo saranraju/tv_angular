@@ -246,13 +246,17 @@
   </div>
   <!-- </div> -->
 </div>
-<div class="container-fluid style_container">
+<div class="container-fluid style_container px-0">
   <!-- <div
     class="mt-3 company_content"
     appSectionScroll
     (sectionChange)="onSectionChange($event)"
   > -->
-  <div *ngIf="!auth.hidePublicCompany" class="company_content">
+  <div
+    *ngIf="!auth.hidePublicCompany"
+    id="company_content"
+    class="company_content"
+  >
     <div
       id="summary_tab"
       class="pt-2 row"
@@ -315,7 +319,6 @@
         <div class="publicprivt-onlyradiobtn">
           <div class="checkbox_class">
             <input
-              class="d-none"
               type="radio"
               name="EntityType"
               value="pevc"
@@ -324,7 +327,7 @@
               (click)="handlePEVCClick()"
               [checked]="!auth.openPopupModalcompanySearch && auth.checkPEVC"
             />
-            <label class="customradiobtn d-none">PE/VC</label>
+            <label class="customradiobtn">PE/VC</label>
             <input
               type="radio"
               name="EntityType"
@@ -1228,7 +1231,6 @@
         <div class="col-6 ps-0 position-relative">
           <div class="maximize-financials">
             <button
-              id="companyStep12"
               class="disabled companyStep13"
               (click)="auth.expandopenPopupfinance1 = true"
               [disabled]="formateSectorData1.length > 0 ? null : true"
@@ -1252,7 +1254,7 @@
           <ng-container *ngIf="defaultIncomeStatement">
             <div class="tableCol6Border">
               <app-financial-table
-                id="companyStep14"
+                idName="companyStep14"
                 [table_data]="defaultIncomeStatement"
                 [header_data]="periods1"
                 type="is_data"
@@ -1270,6 +1272,7 @@
         <div class="col-6 ps-0 position-relative">
           <div class="maximize-financials">
             <button
+              id="companyStep12"
               class="disabled"
               (click)="
                 privateCompany_tab
@@ -1685,6 +1688,7 @@
         <div class="col-12 position-relative ps-0">
           <div>
             <app-manage-table
+              idName="companyStep15"
               [table_data]="manage_data"
               [companyName]="comapny_name"
               mh="313px"
@@ -1781,7 +1785,7 @@
         </div>
         <div class="col-6 mt-1">
           <p class="text-primary fs14">
-            <b>As on {{ toDaysDate | date : "MMM dd,yyyy" }}</b>
+            <b>As on {{ ownershipAsOnDate | date : "MMM dd, yyyy" }}</b>
           </p>
           <div id="chartdiv2" class="commodityChart1"></div>
         </div>
@@ -2046,6 +2050,7 @@
                     <div style="width: 169px; float: right">
                       <!-- <div class="col-md-3 ps-0"> -->
                       <ng-select2
+                        id="companyStep16"
                         [data]="selectMeanData"
                         [value]="selectedmean"
                         (valueChanged)="onValueChanged($event)"
@@ -2246,6 +2251,7 @@
                 <div style="width: 101px; float: right">
                   <!-- <div class="col-md-3 ps-0"> -->
                   <ng-select2
+                    id="companyStep17"
                     [data]="dropfilldata"
                     [value]="compsel_data"
                     (valueChanged)="onValueChangcomp($event)"

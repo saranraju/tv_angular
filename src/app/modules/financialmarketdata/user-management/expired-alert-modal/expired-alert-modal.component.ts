@@ -14,7 +14,10 @@ export class ExpiredAlertModalComponent implements OnInit {
 
   navigateFreeTrial() {
     this.auth.expriedPopup = false;
+    localStorage.removeItem('exploreUserTime');
+    localStorage.removeItem('access_token');
     this.router.navigate(['/free-trail']);
+
     // localStorage.clear();
   }
 

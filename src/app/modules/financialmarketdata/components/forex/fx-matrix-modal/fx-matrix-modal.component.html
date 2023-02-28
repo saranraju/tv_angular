@@ -18,8 +18,11 @@
           </h5>
           <button
             type="button"
-            (click)="auth.expandopendfxmatrix = false"
-            class="close"
+            (click)="
+              auth.expandopendfxmatrix =
+                false || (auth.opendEditCustomMatrixmodal = false)
+            "
+            class="close pe-3"
             data-dismiss="modal"
             aria-label="Close"
           >
@@ -60,9 +63,14 @@
               <div
                 *ngFor="let currency of selected_currencies; index as i"
                 class="currency"
-                (click)="removeFromList(currency, i)"
               >
                 <p class="label">{{ currency.label && currency.label }}</p>
+                <i
+                  *ngIf="currency.selected"
+                  class="fa fa-remove"
+                  aria-hidden="true"
+                  (click)="removeFromList(currency, i)"
+                ></i>
               </div>
             </div>
           </div>
@@ -71,11 +79,18 @@
           </div>
           <div class="footer">
             <button
+              *ngIf="auth.opendEditCustomMatrixmodal"
+              (click)="onDeletedCustomMatrix()"
+              class="button cursor-pointer"
+            >
+              DELETE
+            </button>
+            <button
               [disabled]="!customMatrixName ? true : null || disableSaveBtn"
               (click)="onSelectedCurrency(); auth.expandopendfxmatrix = false"
-              class="button"
+              class="button cursor-pointer"
             >
-              Save
+              SAVE
             </button>
           </div>
         </div>
@@ -83,3 +98,9 @@
     </div>
   </div>
 </div>
+
+<app-matrix-deletion-modal
+  *ngIf="auth.showFxMatrixDeletionModal"
+  [fxMatrixName]="customMatrixName"
+></app-matrix-deletion-modal>
+<!-- (confirmDeletion)="handleConfirmDeletion($event)" -->

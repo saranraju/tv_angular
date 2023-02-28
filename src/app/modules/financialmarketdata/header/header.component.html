@@ -209,14 +209,14 @@
 
 <div [ngClass]="hideFinancialTabs ? 'hide' : 'show'" class="fixedTabs">
   <ul class="mb-0 px-3">
-    <a
+    <!-- <a
       *ngIf="wFlag"
       [routerLink]="['/financialmarketdata/watchlist']"
       [routerLinkActive]="['active']"
       [routerLinkActiveOptions]="{ exact: true }"
     >
       <li class="tab">Watchlist</li>
-    </a>
+    </a> -->
     <a
       [routerLink]="['/financialmarketdata/company']"
       [routerLinkActive]="['active']"
@@ -288,7 +288,6 @@
       <li class="tab">FOREX</li>
     </a>
     <a
-      *ngIf="wFlag"
       [routerLink]="['/financialmarketdata/news']"
       [routerLinkActive]="['active']"
       (click)="navigateNews()"
@@ -325,14 +324,14 @@
     >
       <li class="tab">Screener</li>
     </a>
-    <a
+    <!-- <a
       *ngIf="wFlag"
       [routerLink]="['/financialmarketdata/screener-2']"
       [routerLinkActive]="['active']"
       [routerLinkActiveOptions]="{ exact: true }"
     >
       <li class="tab">Screener-2</li>
-    </a>
+    </a> -->
     <a
       [routerLink]="['/financialmarketdata/data-download']"
       [routerLinkActive]="['active']"

@@ -26,8 +26,20 @@ export class FinancialTableComponent implements OnInit {
   ngOnInit(): void {
     this.header_data.reverse();
   }
-
   redirectToInteractive(content: any) {
+    let prevGlobalMatrixList = []
+     prevGlobalMatrixList =  JSON.parse(localStorage.getItem('globalMatrixList') as any)
+    if(prevGlobalMatrixList == null) prevGlobalMatrixList = []
+    prevGlobalMatrixList.push({
+      name: content.fieldName,
+      type: 'companyChartCustom',
+      company:true
+    });
+    
+    localStorage.setItem(
+      'globalMatrixList',
+      JSON.stringify(prevGlobalMatrixList)
+    );
     const url = this.router.serializeUrl(
       this.router.createUrlTree(['financialmarketdata/interactive-analysis'], {
         queryParams: {

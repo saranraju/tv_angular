@@ -170,6 +170,12 @@
   margin-left: 15px;
 }
 
+.company_content_two {
+  overflow: auto;
+  min-height: 72vh;
+  position: fixed;
+}
+
 .company_content {
   overflow: auto;
   height: 72vh;

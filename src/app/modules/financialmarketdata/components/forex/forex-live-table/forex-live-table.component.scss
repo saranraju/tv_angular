@@ -12,6 +12,9 @@ table {
     width: 100%;
     table-layout: fixed;
   }
+  .font_16px{
+    font-size: 16px !important;
+  }
 
   th {
     font-weight: 600;
@@ -106,4 +109,35 @@ td:first-child {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.height-table{
+ height:44%;
+}
+.scrollHeight{
+  height: 32rem;
+}
+
+.row-height {
+  height: 3.1rem;
+}
+
+.bubble-container {
+  .bubble {
+    display: none;
+  }
+  &:hover {
+    .bubble {
+      display: block;
+    }
+  }
+}
+
+.bubble {
+  position: absolute;
+  left: 5rem;
+  background-color: #aec9f5 !important;
+  color: black;
+  padding: 4px 25px 2px 5px;
+  z-index: 100;
 }

@@ -1,4 +1,4 @@
- <div class="row bg-border mt-3 w-99 mb-5" *ngIf="tabName == 'Details'">
+<div class="row bg-border mt-3 w-99 mb-5" *ngIf="tabName == 'Details'">
   <div class="row">
     <div class="col-6 border-right pl-0">
       <div class="title-section d-flex justify-content-between">
@@ -6,24 +6,43 @@
       </div>
     </div>
     <div class="col-6">
-      <div class="title-section d-flex justify-content-between align-items-center pr-0">
-        <div class=" table-title tableSection">Commodity - EOD Reference Data</div>
+      <div
+        class="title-section d-flex justify-content-between align-items-center pr-0"
+      >
+        <div class="table-title tableSection">
+          Commodity - EOD Reference Data
+        </div>
         <i class="fa fa-external-link" (click)="expandDashboard()"></i>
       </div>
     </div>
   </div>
   <div class="row">
-    <div class="col-6 pl-0 border-right ">
+    <div class="col-6 pl-0 border-right">
       <div class="bg-with-border fix-the-div">
         <h5 class="mt-1 font-weight-bold">OTC - Energy</h5>
-        <commodity-phase-two-table [tableData]="tableDataEnergy" [OTCorEnergy]="'Energy'" [tableDataHeader]="headerData"
-          [headerBorder]="true" [bottomBorder]="true" [homeData]="true" (commodityData)="redirectionToDetails($event)">
+        <commodity-phase-two-table
+          [tableData]="tableDataEnergy"
+          [OTCorEnergy]="'Energy'"
+          [tableDataHeader]="headerData"
+          [headerBorder]="true"
+          [bottomBorder]="true"
+          [homeData]="true"
+          (commodityData)="redirectionToDetails($event)"
+        >
         </commodity-phase-two-table>
         <h5 class="mt-4 font-weight-bold">OTC - Precious Metals</h5>
-        <commodity-phase-two-table [tableData]="tableDataMetal?.content" [tableDataHeader]="headerData"
-          [tableDataLength]="tableDataMetal?.totalElements" [homeData]="true" [pagination]="true" [headerBorder]="true"
-          [OTCorEnergy]="'Metals'" [bottomBorder]="true" (changePage)="onPageChange($event)"
-          (commodityData)="redirectionToDetails($event)">
+        <commodity-phase-two-table
+          [tableData]="tableDataMetal?.content"
+          [tableDataHeader]="headerData"
+          [tableDataLength]="tableDataMetal?.totalElements"
+          [homeData]="true"
+          [pagination]="true"
+          [headerBorder]="true"
+          [OTCorEnergy]="'Metals'"
+          [bottomBorder]="true"
+          (changePage)="onPageChange($event)"
+          (commodityData)="redirectionToDetails($event)"
+        >
         </commodity-phase-two-table>
       </div>
     </div>
@@ -33,8 +52,12 @@
           <h6 class="mb-0 fs15 title"><b>Energy</b></h6>
           <p class="mb-0 pe-5 me-3 fw600 fs13 title">Estimates</p>
         </div>
-        <app-commodity-table [isDetailClick]="true" (detailClick)="dashboardRedirect($event)" [tableData]="energy"
-          mh="217px"></app-commodity-table>
+        <app-commodity-table
+          [isDetailClick]="true"
+          (detailClick)="dashboardRedirect($event)"
+          [tableData]="energy"
+          mh="217px"
+        ></app-commodity-table>
       </div>
 
       <div class="mt-4">
@@ -42,8 +65,12 @@
           <h6 class="mb-0 fs15 title"><b>Agriculture</b></h6>
           <p class="mb-0 pe-5 me-3 fw600 fs13 title">Estimates</p>
         </div>
-        <app-commodity-table [isDetailClick]="true" (detailClick)="dashboardRedirect($event)" [tableData]="agricultural"
-          mh="398px"></app-commodity-table>
+        <app-commodity-table
+          [isDetailClick]="true"
+          (detailClick)="dashboardRedirect($event)"
+          [tableData]="agricultural"
+          mh="398px"
+        ></app-commodity-table>
       </div>
 
       <div class="mt-4">
@@ -51,8 +78,12 @@
           <h6 class="mb-0 fs15 title"><b>Industrial</b></h6>
           <p class="mb-0 pe-5 me-3 fw600 fs13 title">Estimates</p>
         </div>
-        <app-commodity-table [isDetailClick]="true" (detailClick)="dashboardRedirect($event)" [tableData]="industrial"
-          mh="313px"></app-commodity-table>
+        <app-commodity-table
+          [isDetailClick]="true"
+          (detailClick)="dashboardRedirect($event)"
+          [tableData]="industrial"
+          mh="313px"
+        ></app-commodity-table>
       </div>
 
       <div class="mt-4">
@@ -60,8 +91,13 @@
           <h6 class="mb-0 fs15 title"><b>Base Metals</b></h6>
           <p class="mb-0 pe-5 me-3 fw600 fs13 title">Estimates</p>
         </div>
-        <app-commodity-table [isDetailClick]="true" (detailClick)="dashboardRedirect($event)" [tableData]="base_metals"
-          mh="97px" idName="commodityStep3"></app-commodity-table>
+        <app-commodity-table
+          [isDetailClick]="true"
+          (detailClick)="dashboardRedirect($event)"
+          [tableData]="base_metals"
+          mh="97px"
+          idName="commodityStep3"
+        ></app-commodity-table>
       </div>
 
       <div class="mt-4">
@@ -69,8 +105,12 @@
           <h6 class="mb-0 fs15 title"><b>Precious Metals</b></h6>
           <p class="mb-0 pe-5 me-3 fw600 fs13 title">Estimates</p>
         </div>
-        <app-commodity-table [isDetailClick]="true" (detailClick)="dashboardRedirect($event)"
-          [tableData]="precious_metals" mh="121px"></app-commodity-table>
+        <app-commodity-table
+          [isDetailClick]="true"
+          (detailClick)="dashboardRedirect($event)"
+          [tableData]="precious_metals"
+          mh="121px"
+        ></app-commodity-table>
       </div>
 
       <div class="mt-4">
@@ -78,8 +118,13 @@
           <h6 class="mb-0 fs15 title"><b>Livestock</b></h6>
           <p class="mb-0 pe-5 me-3 fw600 fs13 title">Estimates</p>
         </div>
-        <app-commodity-table [isDetailClick]="true" (detailClick)="dashboardRedirect($event)" [tableData]="livestock"
-          borderBottom="none" mh="120"></app-commodity-table>
+        <app-commodity-table
+          [isDetailClick]="true"
+          (detailClick)="dashboardRedirect($event)"
+          [tableData]="livestock"
+          borderBottom="none"
+          mh="120"
+        ></app-commodity-table>
       </div>
 
       <div class="mt-4">
@@ -87,16 +132,21 @@
           <h6 class="mb-0 fs15 title"><b>Indices</b></h6>
           <p class="mb-0 pe-5 me-3 fw600 fs13 title">Estimates</p>
         </div>
-        <app-commodity-table [isDetailClick]="true" (detailClick)="dashboardRedirect($event)" [tableData]="indices"
-          borderBottom="none" mh="120px"></app-commodity-table>
+        <app-commodity-table
+          [isDetailClick]="true"
+          (detailClick)="dashboardRedirect($event)"
+          [tableData]="indices"
+          borderBottom="none"
+          mh="120px"
+        ></app-commodity-table>
       </div>
     </div>
   </div>
-</div> 
-<!-- *ngIf="tabName == 'Dashboard'" -->
-<div>
+</div>
+
+<div *ngIf="tabName == 'Dashboard'">
   <div class="container-fluid">
-    <!-- <h5 class="tableSection">Commodity Dashboard</h5> -->
+    <h5 class="tableSection">Commodity Dashboard</h5>
     <div class="row mt-4">
       <div class="col-8 p-0">
         <div class="d-flex justify-content-between align-items-center">
@@ -111,18 +161,14 @@
             <span class="unitLabel ms-2">{{
               selectedCommodityData?.unit
             }}</span>
-            <!-- <button class="back-to-btn ml-4" (click)="goBack()">
+            <button class="back-to-btn ml-4" (click)="goBack()">
               COMMODITY DASHBOARD
-            </button> -->
+            </button>
           </div>
           <img
             src="/assets/img/excelDownload.png"
             class="cursor-pointer img-fluid"
-            (click)="
-              auth.exploreUser
-                ? (auth.openUnavailableExploreModal = true)
-                : excelDownloadHandler()
-            "
+            (click)="excelDownloadHandler()"
           />
         </div>
       </div>

@@ -38,7 +38,7 @@ export class FooterComponent implements OnInit, DoCheck {
   }
 
   ngDoCheck(): void {
-    if (this.timeLeft <= 0) {
+    if (this.auth.exploreUser && this.timeLeft <= 1000) {
       localStorage.setItem('exploreExpired', 'true');
     }
   }

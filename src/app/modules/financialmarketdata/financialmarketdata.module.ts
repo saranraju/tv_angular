@@ -171,6 +171,10 @@ import { ScreenerTableComponent } from './components/screener/screener-table/scr
 import { BothPortfolioComponent } from './components/watchlist/both-portfolio/both-portfolio.component';
 import { WatchlistModelComponent } from './components/watchlist/watchlist-model/watchlist-model.component';
 import { FreeTrialAlertComponent } from 'src/app/components/common/free-trial-alert/free-trial-alert.component';
+import { ForexExpandTableModalComponent } from './components/forex/forex-expand-table-modal/forex-expand-table-modal.component';
+import { ForexExpandChartModalComponent } from './components/forex/forex-expand-chart-modal/forex-expand-chart-modal.component';
+import { ForexExpandCommodityChartModalComponent } from './components/forex/forex-expand-commodity-chart-modal/forex-expand-commodity-chart-modal.component';
+import { MatrixDeletionModalComponent } from './components/forex/matrix-deletion-modal/matrix-deletion-modal.component';
 @NgModule({
   declarations: [
     FinancialMarketDataDashboardComponent,
@@ -313,6 +317,10 @@ import { FreeTrialAlertComponent } from 'src/app/components/common/free-trial-al
     BothPortfolioComponent,
     WatchlistModelComponent,
     FreeTrialAlertComponent,
+    ForexExpandTableModalComponent,
+    ForexExpandChartModalComponent,
+    ForexExpandCommodityChartModalComponent,
+    MatrixDeletionModalComponent,
   ],
   imports: [
     CommonModule,

@@ -103,8 +103,7 @@ export class DerivativesComponent implements OnInit {
   derivativesAllData: any = [];
   derivativesLatestData: any = [];
   derivativesHistoricalData: any = [];
-  derivativesOptionComparableDataIdentifier: any =
-    '16dO%3AQRTEA%5C23A20%5C12.0';
+  derivativesOptionComparableDataIdentifier: any = '17lO%3ATUI%5CL23%5C18';
   showFuturesTable: any = false;
   selectedNameDer: any;
 
@@ -158,7 +157,7 @@ export class DerivativesComponent implements OnInit {
     this.total_count_res = 2;
     this.util.loaderService.display(true);
 
-    this.getDerivativesAllDataHandler('');
+    this.getDerivativesAllDataHandler('17lO%3ATUI%5CL23%5C18');
     this.getDerivativesOptionComparableDataHandler(
       this.derivativesOptionComparableDataIdentifier
     );
@@ -407,7 +406,7 @@ export class DerivativesComponent implements OnInit {
         this.util.checkCountValue(this.total_count_res, this.count_res);
         this.derivatives_table_data.value = res;
 
-        if (res[0].call_latest_settlement) {
+        if (res[0] && res[0].call_latest_settlement) {
           this.showSettlementPrice = true;
         } else {
           this.showSettlementPrice = false;

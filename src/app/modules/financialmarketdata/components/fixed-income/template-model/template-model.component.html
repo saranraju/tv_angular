@@ -1,12 +1,28 @@
 <div class="backdrop">
-  <div id="alertbox" class="modal sevendayfreetrialpopup-rtda  sevendayfreetrialpopup-cm in" tabindex="-1" role="dialog"
-    style="display: block; padding-left: 4px;background-color: rgba(0, 0, 0, 0.5);">
-    <div class="modal-dialog modal-lg" style="top: 25%;">
+  <div
+    id="alertbox"
+    class="modal sevendayfreetrialpopup-rtda sevendayfreetrialpopup-cm in"
+    tabindex="-1"
+    role="dialog"
+    style="
+      display: block;
+      padding-left: 4px;
+      background-color: rgba(0, 0, 0, 0.5);
+    "
+  >
+    <div class="modal-dialog modal-lg" style="top: 25%">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="exampleModalLongTitle">Create/Modify Template</h5>
-          <button type="button" (click)="auth.closeInsidePopup =false" class="close" data-dismiss="modal"
-            aria-label="Close">
+          <h5 class="modal-title" id="exampleModalLongTitle">
+            Create/Modify Template
+          </h5>
+          <button
+            type="button"
+            (click)="auth.closeInsidePopup = false"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
@@ -14,38 +30,58 @@
 
         <div class="modal-body text-center">
           <div class="input-section mb-1">
-            <label for="templateName">Template Name <span class="color-red">*</span></label>
-            <input type="text" [(ngModel)]="templateName" id="templateName">
+            <label for="templateName"
+              >Template Name <span class="color-red">*</span></label
+            >
+            <input type="text" [(ngModel)]="templateName" id="templateName" />
           </div>
           <form [formGroup]="myForm" (ngSubmit)="onSubmit()">
-            <div class="table-section mb-4" formArrayName="arr"
-              *ngFor="let a of myForm.get('arr').controls; let i = index">
+            <div
+              class="table-section mb-4"
+              formArrayName="arr"
+              *ngFor="let a of myForm.get('arr').controls; let i = index"
+            >
               <div class="table-align" [formGroupName]="i">
-                <span class="lable-table">Table {{ i+1 }}</span>
-                <select id="select-test" class="cus-select" formControlName="region"
-                  (change)="particularRegion($event,i)">
+                <span class="lable-table">Table {{ i + 1 }}</span>
+                <select
+                  id="select-test"
+                  class="cus-select"
+                  formControlName="region"
+                  (change)="particularRegion($event, i)"
+                >
                   <option value="Select Region">Select Region</option>
-                  <option *ngFor="let item of allRegionInstruments" [value]="item.region.id" style="display: block;">
-                    {{item.region.name}}</option>
+                  <option
+                    *ngFor="let item of allRegionInstruments"
+                    [value]="item.region.id"
+                    style="display: block"
+                  >
+                    {{ item.region.name }}
+                  </option>
                 </select>
                 <select class="cus-select" formControlName="instrumentType">
-                  <option value="Select Instrument Type">Select Instrument Type</option>
-                  <option *ngFor="let item of regionsData[i]" [value]="item.id"> {{ item.name }}
+                  <option value="Select Instrument Type">
+                    Select Instrument Type
+                  </option>
+                  <option *ngFor="let item of regionsData[i]" [value]="item.id">
+                    {{ item.name }}
                   </option>
                 </select>
                 <i class="fa fa-trash fs-35" (click)="removeItem(i)"></i>
               </div>
             </div>
-            <div class="add-section" style="margin: 0 2rem;">
+            <div class="add-section" style="margin: 0 2rem">
               <div class="icon position-absolute left-10">
-                <i class="fa fa-plus-circle" aria-hidden="true" (click)="addItem()"></i>
+                <i
+                  class="fa fa-plus-circle"
+                  aria-hidden="true"
+                  (click)="addItem()"
+                ></i>
               </div>
               <div class="for-btn">
                 <button class="btn cus-ye">Save</button>
               </div>
             </div>
           </form>
-
         </div>
         <!--end of modal body-->
       </div>

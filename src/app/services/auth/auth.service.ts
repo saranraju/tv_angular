@@ -33,6 +33,12 @@ export class AuthService {
   expandopenPopupInsiderTransaction: boolean = false;
   managehistoryModal: boolean = false;
   expandopendfxmatrix: boolean = false;
+  opendEditCustomMatrixmodal: boolean = false;
+  expandopendfxmatrixTable: boolean = false;
+  expandopendfxExpandTable: boolean = false;
+  expandopendfxViewChart: boolean = false;
+  expandopendFxIceDescChart: boolean = false;
+  expandopendFxForwardPremiumChart: boolean = false;
   expandEstimateModal: boolean = false;
   openEntityDetailsModal: boolean = false;
   openPopupModalcompanySearch: boolean = false;
@@ -49,6 +55,7 @@ export class AuthService {
   showSavedScreensModal: any = false;
   showSavedScreensModal2: any = false;
   showScreenDeletionModal: any = false;
+  showFxMatrixDeletionModal: any = false;
   openFinPeriodModal: boolean = false;
   showFormulaBuilderModal: any = false;
   showPEVCCompanyModal: any = false;

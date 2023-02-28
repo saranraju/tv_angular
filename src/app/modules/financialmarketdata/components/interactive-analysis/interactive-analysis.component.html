@@ -60,7 +60,7 @@
                   <div class="col-1">
                     <input
                       type="checkbox"
-                      (change)="companyTabData()"
+                      (change)="companyTabData(data, 'company')"
                       [(ngModel)]="data.customLableCheck"
                     />
                   </div>
@@ -225,7 +225,7 @@
                   <div class="col-1">
                     <input
                       type="checkbox"
-                      (change)="industryTabData()"
+                      (change)="industryTabData(data, 'industry')"
                       [(ngModel)]="data.customLableCheck"
                     />
                   </div>
@@ -287,7 +287,7 @@
                   <div class="col-1">
                     <input
                       type="checkbox"
-                      (change)="industryTabData()"
+                      (change)="industryTabData(data, 'country')"
                       [(ngModel)]="data.customLableCheck"
                     />
                   </div>
@@ -351,7 +351,7 @@
                   <div class="col-1">
                     <input
                       type="checkbox"
-                      (change)="industryTabData()"
+                      (change)="industryTabData(data, 'checkbox')"
                       [(ngModel)]="data.customLableCheck"
                     />
                   </div>
@@ -434,7 +434,7 @@
                   <div class="col-1">
                     <input
                       type="checkbox"
-                      (change)="economyTabData(); forexTabData()"
+                      (change)="economyTabData('', 'country'); forexTabData()"
                       [(ngModel)]="data.customLableCheck"
                     />
                   </div>
@@ -501,7 +501,7 @@
                   <div class="col-1">
                     <input
                       type="checkbox"
-                      (change)="economyTabData()"
+                      (change)="economyTabData(data, 'checkbox')"
                       [(ngModel)]="data.customLableCheck"
                     />
                   </div>
@@ -521,7 +521,7 @@
                   <div class="col-1">
                     <input
                       type="checkbox"
-                      (change)="forexTabData()"
+                      (change)="forexTabData(data, 'checkbox')"
                       [(ngModel)]="data.customLableCheck"
                     />
                   </div>
@@ -600,7 +600,7 @@
                   <div class="col-1">
                     <input
                       type="checkbox"
-                      (change)="commodityTabData('1Y')"
+                      (change)="commodityTabData('1Y', data, 'checkbox')"
                       [(ngModel)]="data.customLableCheck"
                     />
                   </div>
@@ -715,19 +715,122 @@
     </div>
     <div class="row">
       <div class="col-12 mt-4 min-height-scroll">
-        <div id="chartdiv" class="analysisChart"></div>
+        <ng-container>
+          <div id="chartdiv" class="analysisChart"></div>
+        </ng-container>
         <div
           [ngStyle]="
             isChartOrTable ? { display: 'block' } : { display: 'none' }
           "
         >
           <div id="chartDivAppend">
-            <div id="companyChartCustom"></div>
+            <ng-container
+              *ngFor="let matrix of globalMatrixList; let i = index"
+            >
+              <div *ngIf="matrix?.type == 'commodityChartCustom'">
+                <div
+                  *ngIf="allCommodityDataTables?.length"
+                  class="align-items-center d-flex jus-end graphFilterSection position-relative"
+                >
+                  <h5 class="font-15 cus-align-tit position-absolute leftfifty">
+                    Commodity (% Daily Change)
+                  </h5>
+                  <div>
+                    <ul class="mb-0 p-0">
+                      <li
+                        [ngClass]="{
+                          activeDateFilter: util.selectedDatetype === '1W'
+                        }"
+                        (click)="dateChange('1W')"
+                      >
+                        1W
+                      </li>
+                      <li
+                        [ngClass]="{
+                          activeDateFilter: util.selectedDatetype === '3M'
+                        }"
+                        (click)="dateChange('3M')"
+                      >
+                        3M
+                      </li>
+                      <li
+                        [ngClass]="{
+                          activeDateFilter: util.selectedDatetype === '6M'
+                        }"
+                        (click)="dateChange('6M')"
+                      >
+                        6M
+                      </li>
+                      <li
+                        [ngClass]="{
+                          activeDateFilter: util.selectedDatetype === '1Y'
+                        }"
+                        (click)="dateChange('1Y')"
+                      >
+                        1Y
+                      </li>
+                      <li
+                        [ngClass]="{
+                          activeDateFilter: util.selectedDatetype === '5Y'
+                        }"
+                        (click)="dateChange('5Y')"
+                      >
+                        5Y
+                      </li>
+                      <li
+                        [ngClass]="{
+                          activeDateFilter: util.selectedDatetype === '10Y'
+                        }"
+                        (click)="dateChange('10Y')"
+                      >
+                        10Y
+                      </li>
+                      <li
+                        [ngClass]="{
+                          activeDateFilter: util.selectedDatetype === 'MAX'
+                        }"
+                        (click)="dateChange('MAX')"
+                      >
+                        MAX
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <div id="commodityChartCustom"></div>
+              </div>
+              <ng-container
+                *ngIf="
+                  matrix.type == 'companyChartCustom' && matrix.company == true
+                "
+              >
+                <div id="{{ matrix.name + matrix.type }}"></div>
+              </ng-container>
+              <ng-container
+                *ngIf="
+                  matrix.type == 'industryChartCustom' &&
+                  matrix.industry == true &&
+                  matrix.indCountry == true
+                "
+              >
+                <div id="{{ matrix.name + matrix.type }}"></div>
+              </ng-container>
+              <ng-container
+                *ngIf="
+                  matrix.type == 'economyChartCustom' &&
+                  matrix.countryEco == true
+                "
+              >
+                <div id="{{ matrix.name + matrix.type }}"></div>
+              </ng-container>
+              <!-- <div id="{{ matrix.name + matrix.type }}"></div> -->
+            </ng-container>
+
+            <!-- <div id="companyChartCustom"></div>
             <div id="companyStockChartCustom"></div>
             <div id="industryChartCustom"></div>
             <div id="economyChartCustom"></div>
-            <div id="forexChartCustom"></div>
-            <div
+            <div id="forexChartCustom"></div> -->
+            <!-- <div
               *ngIf="allCommodityDataTables?.length"
               class="align-items-center d-flex jus-end graphFilterSection position-relative"
             >
@@ -795,7 +898,7 @@
                 </ul>
               </div>
             </div>
-            <div id="commodityChartCustom"></div>
+            <div id="commodityChartCustom"></div> -->
           </div>
         </div>
         <div
@@ -805,12 +908,91 @@
             !isChartOrTable ? { display: 'block' } : { display: 'none' }
           "
         >
-          <div *ngIf="allCompanyDataTables?.length">
+          <ng-container *ngFor="let matrix of globalMatrixList; let i = index">
+            <ng-container
+              *ngIf="
+                matrix?.type == 'companyChartCustom' && matrix?.company == true
+              "
+            >
+              <ng-container *ngFor="let companies of allCompanyDataTables">
+                <ng-container
+                  *ngIf="companies?.id == matrix?.name + matrix?.type"
+                >
+                  <app-interactive-table
+                    id="{{ matrix.name + matrix.type + 'table' }}"
+                    [table_data]="[companies]"
+                  ></app-interactive-table>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngFor="let stock of allCompanyStockDataTables">
+                <ng-container *ngIf="stock?.id == matrix?.name + matrix?.type">
+                  <app-interactive-table
+                    id="{{ matrix.name + matrix.type + 'table' }}"
+                    [table_data]="[stock]"
+                  ></app-interactive-table>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+            <ng-container
+              *ngIf="
+                matrix.type == 'economyChartCustom' && matrix.countryEco == true
+              "
+            >
+              <ng-container *ngFor="let economy of allEconomyDataTables">
+                <ng-container
+                  *ngIf="economy?.id == matrix?.name + matrix?.type"
+                >
+                  <app-interactive-table
+                    id="{{ matrix.name + matrix.type + 'table' }}"
+                    [table_data]="[economy]"
+                  ></app-interactive-table>
+                </ng-container>
+              </ng-container>
+              <ng-container *ngFor="let forex of allForexDataTables">
+                <ng-container *ngIf="forex?.id == matrix?.name + matrix?.type">
+                  <app-interactive-table
+                    id="{{ matrix.name + matrix.type + 'table' }}"
+                    [table_data]="[forex]"
+                  ></app-interactive-table>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+            <ng-container
+              *ngIf="
+                matrix.type == 'industryChartCustom' &&
+                matrix.industry == true &&
+                matrix.indCountry == true
+              "
+            >
+              <ng-container *ngFor="let industry of allIndustryDataTables">
+                <ng-container
+                  *ngIf="industry?.id == matrix?.name + matrix?.type"
+                >
+                  <app-interactive-table
+                    id="{{ matrix.name + matrix.type + 'table' }}"
+                    [table_data]="[industry]"
+                  ></app-interactive-table>
+                </ng-container>
+              </ng-container>
+            </ng-container>
+
+            <ng-container *ngIf="matrix?.type == 'commodityChartCustom'">
+              <div *ngIf="allCommodityDataTables?.length">
+                <div class="for-table-title">Commodity (% Daily Change)</div>
+                <app-interactive-table
+                  [table_data]="allCommodityDataTables"
+                ></app-interactive-table>
+              </div>
+            </ng-container>
+          </ng-container>
+          <!-- <div *ngIf="allCompanyDataTables?.length ">
             <app-interactive-table
               [table_data]="allCompanyDataTables"
             ></app-interactive-table>
-          </div>
-          <div *ngIf="allCompanyStockDataTables?.length">
+          </div> -->
+          <!-- <div *ngIf="allCompanyStockDataTables?.length">
             <app-interactive-table
               [table_data]="allCompanyStockDataTables"
             ></app-interactive-table>
@@ -835,7 +1017,7 @@
             <app-interactive-table
               [table_data]="allCommodityDataTables"
             ></app-interactive-table>
-          </div>
+          </div> -->
         </div>
       </div>
     </div>

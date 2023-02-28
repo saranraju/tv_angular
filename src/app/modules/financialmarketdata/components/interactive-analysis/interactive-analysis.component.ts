@@ -245,7 +245,10 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
     this.forLocalForex = JSON.parse(
       localStorage.getItem('forLocalForex') as any
     );
-
+    this.globalMatrixList = JSON.parse(
+      localStorage.getItem('globalMatrixList') as any
+    );
+    if (this.globalMatrixList == null) this.globalMatrixList = [];
     if (
       JSON.parse(localStorage.getItem('companyMetricesLocal') as any)?.length
     ) {
@@ -268,7 +271,6 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
       this.getMetricesData(this.selectedCompanyMetricsParam);
       this.companyTabData('init');
     }
-
     if (
       JSON.parse(localStorage.getItem('industryMetricesLocal') as any)?.length
     ) {
@@ -538,7 +540,7 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
             }
           }
 
-          this.metricesData.filter((el: any) => {
+          this.metricesData?.filter((el: any) => {
             if (el.fieldName == this.queryParamMetriceID) {
               if (this.forLocalCompanyMetrices == null) {
                 this.forLocalCompanyMetrices = [];
@@ -1032,6 +1034,15 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
               }
             }
           });
+        } else {
+          let ids = new Set(
+            this.selectedEconomyIndicatorData?.map(
+              (ele: any) => ele.category + ele.periodType
+            )
+          );
+          this.economyIndicatorData = res.filter(
+            (ele: any) => !ids.has(ele.category + ele.periodType)
+          );
         }
       });
   }
@@ -1047,7 +1058,12 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
     this.financialMarketData
       .getInteractiveAnalysisMetrices(industryParams.join())
       .subscribe((res: any) => {
-        this.metricesData = res;
+        // this.metricesData = res;
+        let ids = new Set(
+          this.selectedCompanyMetrices.map((ele: any) => ele.fieldName)
+        );
+        this.metricesData = res.filter((ele: any) => !ids.has(ele.fieldName));
+
         this.metricesData.push({
           id: 201,
           financialType: 'stock',
@@ -1117,7 +1133,13 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
     this.financialMarketData
       .getInteractiveAnalysisMetrices(industryParams.join())
       .subscribe((res: any) => {
-        this.metricesDataindustry = res;
+        // this.metricesDataindustry = res;
+        let ids = new Set(
+          this.selectedIndustryMetrices.map((ele: any) => ele.fieldName)
+        );
+        this.metricesDataindustry = res.filter(
+          (ele: any) => !ids.has(ele.fieldName)
+        );
         this.metricesDataindustry.forEach((el: any) => {
           el['customLableCheck'] = true;
         });
@@ -1224,6 +1246,8 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
 
   selectedCompanyMetricsParam: any = [];
   selectedIndustryMetricsParams: any = [];
+
+  globalMatrixList: any = [];
   listStyleClick(data: any, id: any, e: any) {
     if (id == 'company-div') {
       if (this.selectedCompany == null) {
@@ -1246,6 +1270,7 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
           'forLocalSelectedMetrics',
           JSON.stringify(this.selectedCompanyMetricsParam)
         );
+
         this.selectCompanyData = this.tempSelectCompanyData;
         this.selectedCompany.push(data);
         this.getMetricesData(this.selectedCompanyMetricsParam);
@@ -1254,6 +1279,10 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         localStorage.setItem(
           'companyLocal',
           JSON.stringify(this.selectedCompany)
+        );
+        localStorage.setItem(
+          'globalMatrixList',
+          JSON.stringify(this.globalMatrixList)
         );
       }
     } else if (id == 'company-metrices-div') {
@@ -1275,7 +1304,16 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
           element.style.display = 'block';
         });
         this.selectedCompanyMetrices.push(data);
+        this.globalMatrixList.push({
+          name: data.fieldName,
+          type: 'companyChartCustom',
+          company: true,
+        });
         this.companyTabData();
+        localStorage.setItem(
+          'globalMatrixList',
+          JSON.stringify(this.globalMatrixList)
+        );
 
         localStorage.setItem(
           'companyMetricesLocal',
@@ -1302,6 +1340,7 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
           industryId: data.industryId,
           industry: data.factsetIndustry,
         });
+        this.changeIndustryGlobalList('industryChartCustom', 'industry', false);
         localStorage.setItem(
           'forLocalIndustrySelectedMetrics',
           JSON.stringify(this.selectedIndustryMetricsParams)
@@ -1313,6 +1352,10 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         localStorage.setItem(
           'industryLocal',
           JSON.stringify(this.selectedIndustry)
+        );
+        localStorage.setItem(
+          'globalMatrixList',
+          JSON.stringify(this.globalMatrixList)
         );
       }
     } else if (id == 'industry-country-div') {
@@ -1333,10 +1376,18 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         });
         this.selectedIndustryCountry.push(data);
         this.industryTabData();
-
+        this.changeIndustryGlobalList(
+          'industryChartCustom',
+          'indCountry',
+          false
+        );
         localStorage.setItem(
           'industryCountryLocal',
           JSON.stringify(this.selectedIndustryCountry)
+        );
+        localStorage.setItem(
+          'globalMatrixList',
+          JSON.stringify(this.globalMatrixList)
         );
       }
     } else if (id == 'industry-metrices-div') {
@@ -1356,11 +1407,21 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
           element.style.display = 'block';
         });
         this.selectedIndustryMetrices.push(data);
+        this.globalMatrixList.push({
+          name: data.description.replace(/[^A-Z0-9]/gi, '_'),
+          type: 'industryChartCustom',
+          industry: true,
+          indCountry: true,
+        });
         this.industryTabData();
 
         localStorage.setItem(
           'industryMetricesLocal',
           JSON.stringify(this.selectedIndustryMetrices)
+        );
+        localStorage.setItem(
+          'globalMatrixList',
+          JSON.stringify(this.globalMatrixList)
         );
       }
     } else if (id == 'economy-country-div') {
@@ -1388,6 +1449,10 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
           'economyCountryLocal',
           JSON.stringify(this.selectedEconomyCountryData)
         );
+        localStorage.setItem(
+          'globalMatrixList',
+          JSON.stringify(this.globalMatrixList)
+        );
       }
     } else if (id == 'economy-indicator-div') {
       if (this.selectedEconomyIndicatorData == null) {
@@ -1406,11 +1471,23 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
           element.style.display = 'block';
         });
         this.selectedEconomyIndicatorData.push(data);
+        this.globalMatrixList.push({
+          name: `${data.category} (${data.periodType})`.replace(
+            /[^A-Z0-9]/gi,
+            '_'
+          ),
+          type: 'economyChartCustom',
+          countryEco: true,
+        });
         this.economyTabData();
 
         localStorage.setItem(
           'economyIndicatorLocal',
           JSON.stringify(this.selectedEconomyIndicatorData)
+        );
+        localStorage.setItem(
+          'globalMatrixList',
+          JSON.stringify(this.globalMatrixList)
         );
       }
     } else if (id == 'economy-forex-div') {
@@ -1433,11 +1510,20 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
           element.style.display = 'block';
         });
         this.selectedForex.push(data);
+        this.globalMatrixList.push({
+          name: data.text?.replace(/[^A-Z0-9]/gi, '_').toLowerCase(),
+          type: 'economyChartCustom',
+          countryEco: true,
+        });
         this.forexTabData();
 
         localStorage.setItem(
           'economyForexLocal',
           JSON.stringify(this.selectedForex)
+        );
+        localStorage.setItem(
+          'globalMatrixList',
+          JSON.stringify(this.globalMatrixList)
         );
       }
     } else if (id == 'commodity-div') {
@@ -1457,15 +1543,56 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
           element.style.display = 'block';
         });
         this.selectedCommodity.push(data);
+        let commodityChartData = this.globalMatrixList.filter(
+          (ele: any) => ele.type === 'commodityChartCustom'
+        );
+        if (commodityChartData.length > 0) {
+          this.globalMatrixList = this.globalMatrixList;
+        } else {
+          this.globalMatrixList.push({
+            name: data.description,
+            type: 'commodityChartCustom',
+            commodity: true,
+          });
+        }
+
         this.commodityTabData('3M');
 
         localStorage.setItem(
           'commodityLocal',
           JSON.stringify(this.selectedCommodity)
         );
+        localStorage.setItem(
+          'globalMatrixList',
+          JSON.stringify(this.globalMatrixList)
+        );
       }
     }
     this.childNodeToggle(id, e);
+  }
+  removeDataFromGloablList(type: any) {
+    const globalMatrixIndex = this.globalMatrixList.findIndex(
+      (ele: any) => ele.type == type
+    );
+    if (globalMatrixIndex > -1) {
+      this.globalMatrixList.splice(globalMatrixIndex, 1);
+      this.removeDataFromGloablList(type);
+    } else {
+      return;
+    }
+  }
+  changeIndustryGlobalList(type: any, field: any, check: boolean) {
+    const globalMatrixIndex = this.globalMatrixList.findIndex(
+      (ele: any) => ele.type == type && ele[field] == check
+    );
+    if (globalMatrixIndex > -1) {
+      let data = this.globalMatrixList[globalMatrixIndex];
+      data[field] = !check;
+      this.globalMatrixList[globalMatrixIndex] = data;
+      this.changeIndustryGlobalList(type, field, check);
+    } else {
+      return;
+    }
   }
 
   removeListStyleData(data: any, id: any) {
@@ -1479,10 +1606,15 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
           this.stockVolumeTableDatas = [];
           this.allCompanyStockDataTables = [];
           this.selectedCompanyMetricsParam = [];
-          let temp: any = document.getElementById('companyChartCustom');
-          let temp1: any = document.getElementById('companyStockChartCustom');
-          temp.innerHTML = '';
-          temp1.innerHTML = '';
+          this.removeDataFromGloablList('companyChartCustom');
+          localStorage.setItem(
+            'globalMatrixList',
+            JSON.stringify(this.globalMatrixList)
+          );
+          // let temp: any = document.getElementById('companyChartCustom');
+          // let temp1: any = document.getElementById('companyStockChartCustom');
+          // temp.innerHTML = '';
+          // temp1.innerHTML = '';
           this.chartDataCheck();
         } else {
           this.selectedCompanyMetricsParam =
@@ -1496,6 +1628,13 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         }
       }
     } else if (id == 'company-metrices-div') {
+      const globalMatrixIndex = this.globalMatrixList.findIndex(
+        (ele: any) =>
+          ele.name == data.fieldName && ele.type == 'companyChartCustom'
+      );
+      if (globalMatrixIndex > -1) {
+        this.globalMatrixList.splice(globalMatrixIndex, 1);
+      }
       const index = this.selectedCompanyMetrices.indexOf(data);
       this.stockVolumeTableDatas.map((el: any, index: any) => {
         if (el.tableTitle.includes(data.description)) {
@@ -1505,13 +1644,14 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
       });
       if (index > -1) {
         this.selectedCompanyMetrices.splice(index, 1);
+        this.getMetricesData(this.selectedCompanyMetricsParam);
         if (this.selectedCompanyMetrices.length == 0) {
           this.selectedCompanyMetrices = [];
           this.allCompanyDataTables = [];
-          let temp: any = document.getElementById('companyChartCustom');
-          let temp1: any = document.getElementById('companyStockChartCustom');
-          temp.innerHTML = '';
-          temp1.innerHTML = '';
+          // let temp: any = document.getElementById('companyChartCustom');
+          // let temp1: any = document.getElementById('companyStockChartCustom');
+          // temp.innerHTML = '';
+          // temp1.innerHTML = '';
           this.chartDataCheck();
         } else {
           this.stockVolumeTableDatas = [];
@@ -1526,8 +1666,13 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         if (this.selectedIndustry.length == 0) {
           this.allIndustryDataTables = [];
           this.selectedIndustryMetricsParams = [];
-          let temp: any = document.getElementById('industryChartCustom');
-          temp.innerHTML = '';
+          this.changeIndustryGlobalList(
+            'industryChartCustom',
+            'industry',
+            true
+          );
+          // let temp: any = document.getElementById('industryChartCustom');
+          // temp.innerHTML = '';
           this.chartDataCheck();
         } else {
           this.selectedIndustryMetricsParams =
@@ -1544,21 +1689,35 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         this.selectedIndustryCountry.splice(index, 1);
         if (this.selectedIndustryCountry.length == 0) {
           this.allIndustryDataTables = [];
-          let temp: any = document.getElementById('industryChartCustom');
-          temp.innerHTML = '';
+          this.changeIndustryGlobalList(
+            'industryChartCustom',
+            'indCountry',
+            true
+          );
+          // let temp: any = document.getElementById('industryChartCustom');
+          // temp.innerHTML = '';
           this.chartDataCheck();
         } else {
           this.industryTabData();
         }
       }
     } else if (id == 'industry-metrices-div') {
+      const globalMatrixIndex = this.globalMatrixList.findIndex(
+        (ele: any) =>
+          ele.name == data.description.replace(/[^A-Z0-9]/gi, '_') &&
+          ele.type == 'industryChartCustom'
+      );
+      if (globalMatrixIndex > -1) {
+        this.globalMatrixList.splice(globalMatrixIndex, 1);
+      }
       const index = this.selectedIndustryMetrices.indexOf(data);
       if (index > -1) {
         this.selectedIndustryMetrices.splice(index, 1);
+        this.getMetricesDataIndustry(this.selectedIndustryMetricsParams);
         if (this.selectedIndustryMetrices.length == 0) {
           this.allIndustryDataTables = [];
-          let temp: any = document.getElementById('industryChartCustom');
-          temp.innerHTML = '';
+          // let temp: any = document.getElementById('industryChartCustom');
+          // temp.innerHTML = '';
           this.chartDataCheck();
         } else {
           this.industryTabData();
@@ -1574,11 +1733,11 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
 
           this.allEconomyDataTables = [];
           this.allForexDataTables = [];
-
-          let temp: any = document.getElementById('economyChartCustom');
-          temp.innerHTML = '';
-          let temp1: any = document.getElementById('forexChartCustom');
-          temp1.innerHTML = '';
+          this.removeDataFromGloablList('economyChartCustom');
+          // let temp: any = document.getElementById('economyChartCustom');
+          // temp.innerHTML = '';
+          // let temp1: any = document.getElementById('forexChartCustom');
+          // temp1.innerHTML = '';
           this.chartDataCheck();
         } else {
           this.getEconomyIndicatorData(this.selectedEconomyCountryData);
@@ -1587,9 +1746,21 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         }
       }
     } else if (id == 'economy-indicator-div') {
+      const globalMatrixIndex = this.globalMatrixList.findIndex(
+        (ele: any) =>
+          ele.name ==
+            `${data.category} (${data.periodType})`.replace(
+              /[^A-Z0-9]/gi,
+              '_'
+            ) && ele.type == 'economyChartCustom'
+      );
+      if (globalMatrixIndex > -1) {
+        this.globalMatrixList.splice(globalMatrixIndex, 1);
+      }
       const index = this.selectedEconomyIndicatorData.indexOf(data);
       if (index > -1) {
         this.selectedEconomyIndicatorData.splice(index, 1);
+        this.getEconomyIndicatorData(this.selectedEconomyCountryData);
         if (this.selectedEconomyIndicatorData.length == 0) {
           this.allEconomyDataTables = [];
           let temp: any = document.getElementById('economyChartCustom');
@@ -1600,13 +1771,21 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         }
       }
     } else if (id == 'economy-forex-div') {
+      const globalMatrixIndex = this.globalMatrixList.findIndex(
+        (ele: any) =>
+          ele.name == data.text.replace(/[^A-Z0-9]/gi, '_').toLowerCase() &&
+          ele.type == 'economyChartCustom'
+      );
+      if (globalMatrixIndex > -1) {
+        this.globalMatrixList.splice(globalMatrixIndex, 1);
+      }
       const index = this.selectedForex.indexOf(data);
       if (index > -1) {
         this.selectedForex.splice(index, 1);
         if (this.selectedForex.length == 0) {
           this.allForexDataTables = [];
-          let temp: any = document.getElementById('forexChartCustom');
-          temp.innerHTML = '';
+          // let temp: any = document.getElementById('forexChartCustom');
+          // temp.innerHTML = '';
           this.chartDataCheck();
         } else {
           this.forexTabData();
@@ -1634,18 +1813,31 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
       this.util.loaderService.display(false);
     }, 500);
     if (!data.customLableCheck) {
+      // this.ifMatrixUnchecked("companyChartCustom", data.fieldName ,true , "company" )
       (
-        document.querySelector(`#${data.fieldName}analysisChart`) as any
+        document.querySelector(`#${data.fieldName}companyChartCustom`) as any
       ).style.display = 'none';
       (
-        document.querySelector(`#${data.fieldName}analysisChartImg`) as any
+        document.querySelector(`#${data.fieldName}companyChartCustom`) as any
+      ).style.display = 'none';
+      (
+        document.querySelector(
+          `#${data.fieldName}companyChartCustomtable`
+        ) as any
       ).style.display = 'none';
     } else {
+      // this.ifMatrixUnchecked("companyChartCustom", data.fieldName ,false , "company" )
+
       (
-        document.querySelector(`#${data.fieldName}analysisChart`) as any
+        document.querySelector(`#${data.fieldName}companyChartCustom`) as any
       ).style.display = 'block';
       (
-        document.querySelector(`#${data.fieldName}analysisChartImg`) as any
+        document.querySelector(`#${data.fieldName}companyChartCustom`) as any
+      ).style.display = 'block';
+      (
+        document.querySelector(
+          `#${data.fieldName}companyChartCustomtable`
+        ) as any
       ).style.display = 'block';
     }
   }
@@ -1667,7 +1859,6 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
 
   refreshPage() {
     window.location.search = '';
-
     localStorage.removeItem('companyLocal');
     localStorage.removeItem('companyMetricesLocal');
     localStorage.removeItem('forLocalSelectedMetrics');
@@ -1676,7 +1867,7 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
     localStorage.removeItem('industryCountryLocal');
     localStorage.removeItem('industryMetricesLocal');
     localStorage.removeItem('forLocalIndustrySelectedMetrics');
-
+    localStorage.removeItem('globalMatrixList');
     localStorage.removeItem('economyCountryLocal');
     localStorage.removeItem('economyIndicatorLocal');
     localStorage.removeItem('economyForexLocal');
@@ -1714,7 +1905,21 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
   companyGroupData: any = [];
   stockAndVolumeData: any = [];
 
-  companyTabData(type?: any) {
+  companyTabData(type?: any, checkBox?: any) {
+    if (checkBox == 'company') {
+      const isAllUnchecked = this.selectedCompany.filter(
+        (ele: any) => ele.customLableCheck == true
+      );
+      if (isAllUnchecked.length == 0) {
+        this.changeIndustryGlobalList(
+          'companyChartCustom',
+          'company',
+          !type.customLableCheck
+        );
+      } else if (isAllUnchecked.length == 1) {
+        this.changeIndustryGlobalList('companyChartCustom', 'company', false);
+      }
+    }
     let ticsIndustryCodes: any = [];
     let fieldNames: any = [];
     let lableCheck: boolean = true;
@@ -1810,17 +2015,98 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         this.allCompanyDataTables = [];
         this.allCompanyStockDataTables = [];
         // If selected company is empty Remove element
-        let d1: any = document.querySelector('#companyChartCustom');
-        let d2: any = document.querySelector('#companyStockChartCustom');
-        d1.innerHTML = '';
-        d2.innerHTML = '';
+
+        // let d1: any = document.querySelector('#companyChartCustom');
+        // let d2: any = document.querySelector('#companyStockChartCustom');
+        // d1.innerHTML = '';
+        // d2.innerHTML = '';
         this.chartDataCheck();
       }
     }
   }
 
   // ----------------- For Industry Tab Data -------------------
-  industryTabData(type?: any) {
+  industryTabData(type?: any, checkBox?: any) {
+    if (checkBox == 'country') {
+      const isAllUnchecked = this.selectedIndustryCountry.filter(
+        (ele: any) => ele.customLableCheck == true
+      );
+      if (isAllUnchecked.length == 0) {
+        this.changeIndustryGlobalList(
+          'industryChartCustom',
+          'indCountry',
+          !type.customLableCheck
+        );
+      } else if (isAllUnchecked.length == 1) {
+        this.changeIndustryGlobalList(
+          'industryChartCustom',
+          'indCountry',
+          false
+        );
+      }
+    } else if (checkBox == 'industry') {
+      const isAllUnchecked = this.selectedIndustry.filter(
+        (ele: any) => ele.customLableCheck == true
+      );
+      if (isAllUnchecked.length == 0) {
+        this.changeIndustryGlobalList(
+          'industryChartCustom',
+          'indCountry',
+          !type.customLableCheck
+        );
+      } else if (isAllUnchecked.length == 1) {
+        this.changeIndustryGlobalList(
+          'industryChartCustom',
+          'indCountry',
+          false
+        );
+      }
+    }
+    if (checkBox == 'checkbox') {
+      if (!type.customLableCheck) {
+        (
+          document.querySelector(
+            `#${type.description?.replace(
+              /[^A-Z0-9]/gi,
+              '_'
+            )}industryChartCustom`
+          ) as any
+        ).style.display = 'none';
+        setTimeout(() => {
+          let bothElements = document.querySelectorAll(
+            `[id=${type.description?.replace(
+              /[^A-Z0-9]/gi,
+              '_'
+            )}industryChartCustomtable]`
+          );
+          bothElements?.forEach((ele: any) => (ele.style.display = 'none'));
+        }, 900);
+      } else {
+        (
+          document.querySelector(
+            `#${type.description?.replace(
+              /[^A-Z0-9]/gi,
+              '_'
+            )}industryChartCustom`
+          ) as any
+        ).style.display = 'block';
+        (
+          document.querySelector(
+            `#${type.description?.replace(
+              /[^A-Z0-9]/gi,
+              '_'
+            )}industryChartCustom`
+          ) as any
+        ).style.display = 'block';
+        let bothElements = document.querySelectorAll(
+          `[id=${type.description?.replace(
+            /[^A-Z0-9]/gi,
+            '_'
+          )}industryChartCustomtable]`
+        );
+        bothElements?.forEach((ele: any) => (ele.style.display = 'block'));
+      }
+    }
     let countryId: any = [];
     let ticsIndustryCodes: any = [];
     let fieldNames: any = [];
@@ -1883,14 +2169,91 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
       this.allIndustryDataTables = [];
 
       // If selected industry is empty Remove element
-      let d1: any = document.querySelector('#industryChartCustom');
-      d1.innerHTML = '';
+      // let d1: any = document.querySelector('#industryChartCustom');
+      // d1.innerHTML = '';
       this.chartDataCheck();
     }
   }
 
   // ----------------- For Economy Tab Data -------------------
-  economyTabData(type?: any) {
+  economyTabData(type?: any, checkBox?: any) {
+    if (checkBox == 'country') {
+      const isAllUnchecked = this.selectedEconomyCountryData.filter(
+        (ele: any) => ele.customLableCheck == true
+      );
+      if (isAllUnchecked.length == 0) {
+        this.changeIndustryGlobalList(
+          'economyChartCustom',
+          'countryEco',
+          !type.customLableCheck
+        );
+      } else if (isAllUnchecked.length == 1) {
+        this.changeIndustryGlobalList(
+          'economyChartCustom',
+          'countryEco',
+          false
+        );
+      }
+    }
+    if (checkBox == 'checkbox') {
+      if (!type.customLableCheck) {
+        (
+          document.querySelector(
+            '#' +
+              `${type.category} (${type.periodType})`.replace(
+                /[^A-Z0-9]/gi,
+                '_'
+              ) +
+              'economyChartCustom'
+          ) as any
+        ).style.display = 'none';
+        setTimeout(() => {
+          (
+            document.querySelector(
+              '#' +
+                `${type.category} (${type.periodType})`.replace(
+                  /[^A-Z0-9]/gi,
+                  '_'
+                ) +
+                'economyChartCustomtable'
+            ) as any
+          ).style.display = 'none';
+        }, 900);
+      } else {
+        setTimeout(() => {
+          (
+            document.querySelector(
+              '#' +
+                `${type.category} (${type.periodType})`.replace(
+                  /[^A-Z0-9]/gi,
+                  '_'
+                ) +
+                'economyChartCustom'
+            ) as any
+          ).style.display = 'block';
+          (
+            document.querySelector(
+              '#' +
+                `${type.category} (${type.periodType})`.replace(
+                  /[^A-Z0-9]/gi,
+                  '_'
+                ) +
+                'economyChartCustom'
+            ) as any
+          ).style.display = 'block';
+          (
+            document.querySelector(
+              '#' +
+                `${type.category} (${type.periodType})`.replace(
+                  /[^A-Z0-9]/gi,
+                  '_'
+                ) +
+                'economyChartCustomtable'
+            ) as any
+          ).style.display = 'block';
+        }, 900);
+      }
+    }
     let countryId: any = [];
     let indicatorsList: any = [];
     let lableCheck: boolean = true;
@@ -1953,10 +2316,10 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
               temp.sort((a: any, b: any) => {
                 return (
                   selectedEconomyRef.indexOf(
-                    a[0].indicatorsDataList[0].category
+                    a[0]?.indicatorsDataList[0]?.category
                   ) -
                   selectedEconomyRef.indexOf(
-                    b[0].indicatorsDataList[0].category
+                    b[0]?.indicatorsDataList[0]?.category
                   )
                 );
               });
@@ -1970,14 +2333,66 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
       // If selected economy is empty Remove element
       this.allEconomyDataTables = [];
 
-      let d1: any = document.querySelector('#economyChartCustom');
-      d1.innerHTML = '';
+      // let d1: any = document.querySelector('#economyChartCustom');
+      // d1.innerHTML = '';
       this.chartDataCheck();
     }
   }
 
   // ----------------- For Economy Tab Data -------------------
-  forexTabData(type?: any) {
+  forexTabData(type?: any, checkBox?: any) {
+    if (checkBox == 'checkbox') {
+      if (!type.customLableCheck) {
+        setTimeout(() => {
+          (
+            document.querySelector(
+              '#' +
+                `${type.text}`.replace(/[^A-Z0-9]/gi, '_').toLowerCase() +
+                'economyChartCustom'
+            ) as any
+          ).style.display = 'none';
+          (
+            document.querySelector(
+              '#' +
+                `${type.text}`.replace(/[^A-Z0-9]/gi, '_').toLowerCase() +
+                'economyChartCustomtable'
+            ) as any
+          ).style.display = 'none';
+        }, 900);
+      } else {
+        setTimeout(() => {
+          (
+            document.querySelector(
+              '#' +
+                `${type.text}`.replace(/[^A-Z0-9]/gi, '_').toLowerCase() +
+                'economyChartCustom'
+            ) as any
+          ).style.display = 'block';
+          (
+            document.querySelector(
+              '#' +
+                `${type.text}`.replace(/[^A-Z0-9]/gi, '_').toLowerCase() +
+                'economyChartCustom'
+            ) as any
+          ).style.display = 'block';
+          if (
+            document.querySelector(
+              '#' +
+                `${type.text}`.replace(/[^A-Z0-9]/gi, '_').toLowerCase() +
+                'economyChartCustomtable'
+            )
+          ) {
+            (
+              document.querySelector(
+                '#' +
+                  `${type.text}`.replace(/[^A-Z0-9]/gi, '_').toLowerCase() +
+                  'economyChartCustomtable'
+              ) as any
+            ).style.display = 'block';
+          }
+        }, 900);
+      }
+    }
     let countryId: any = [];
     let forexList: any = [];
     let lableCheck: boolean = true;
@@ -2031,18 +2446,30 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         // If selected economy is empty Remove element
         this.allForexDataTables = [];
 
-        let d1: any = document.querySelector('#forexChartCustom');
-        d1.innerHTML = '';
+        // let d1: any = document.querySelector('#forexChartCustom');
+        // d1.innerHTML = '';
         this.chartDataCheck();
       }
     }
   }
 
   // ----------------- For Commodity Tab Data -------------------
-  commodityTabData(dateRangeGraph: any, type?: any) {
+  commodityTabData(dateRangeGraph: any, type?: any, checkBox?: any) {
     let symbol: any = [];
     let lableCheck: boolean = true;
 
+    if (checkBox == 'checkbox') {
+      const isAllUnchecked = this.selectedCommodity.filter(
+        (ele: any) => ele.customLableCheck == true
+      );
+      if (isAllUnchecked.length == 0) {
+        (document.getElementById('commodityChartCustom') as any).style.display =
+          'none';
+      } else if (isAllUnchecked.length == 1) {
+        (document.getElementById('commodityChartCustom') as any).style.display =
+          'block';
+      }
+    }
     if (this.selectedCommodity != null) {
       this.selectedCommodity.forEach((el: any) => {
         if (el.customLableCheck) {
@@ -2134,8 +2561,8 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         // If selected commodity is empty Remove element
         this.allCommodityDataTables = [];
 
-        let d1: any = document.querySelector('#commodityChartCustom');
-        d1.innerHTML = '';
+        // let d1: any = document.querySelector('#commodityChartCustom');
+        // d1.innerHTML = '';
         this.chartDataCheck();
       }
     }
@@ -2143,26 +2570,30 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
 
   // checking chart is rendered or not
   chartDataCheck() {
-    let temp1 = document.getElementById('companyChartCustom');
-    let temp2 = document.getElementById('industryChartCustom');
-    let temp3 = document.getElementById('economyChartCustom');
-    let temp4 = document.getElementById('commodityChartCustom');
-    let temp5 = document.getElementById('forexChartCustom');
-    let temp6 = document.getElementById('companyStockChartCustom');
+    // let temp1 = document.getElementById('companyChartCustom');
+    // let temp2 = document.getElementById('industryChartCustom');
+    // let temp3 = document.getElementById('economyChartCustom');
+    // let temp4 = document.getElementById('commodityChartCustom');
+    // let temp5 = document.getElementById('forexChartCustom');
+    // let temp6 = document.getElementById('companyStockChartCustom');
+    const name = this.globalMatrixList[0]?.name;
+    const type = this.globalMatrixList[0]?.type;
+    const index = this.globalMatrixList.findIndex(
+      (data: any) =>
+        (data.industry == true && data.indCountry == true) ||
+        data.company == true ||
+        data.countryEco == true ||
+        data.commodity == true
+    );
 
-    if (
-      (temp1 as any).childNodes.length ||
-      (temp2 as any).childNodes.length ||
-      (temp3 as any).childNodes.length ||
-      (temp4 as any).childNodes.length ||
-      (temp5 as any).childNodes.length ||
-      (temp6 as any).childNodes.length
-    ) {
+    let temp1 = document.getElementById(name ? `${name}${type}` : `${type}`);
+
+    if ((temp1 as any)?.childNodes?.length && index > -1) {
       (document.getElementById('chartdiv') as any).style.display = 'none';
+      // this.dateChange('3M');
     } else {
       (document.getElementById('chartdiv') as any).style.display = 'block';
     }
-    // this.dateChange("3M");
   }
 
   vRDailyMetrics: any = [
@@ -2243,22 +2674,34 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
     });
     if (finalResult.length == this.selectedCompanyMetrices.length) {
       let companyMatrixArray: any = [];
-      this.selectedCompanyMetrices.forEach((ele: any) => {
-        companyMatrixArray.push(ele.description);
-      });
-      finalResult.sort((a: any, b: any) => {
-        return (
-          companyMatrixArray.indexOf(a.metricName) -
-          companyMatrixArray.indexOf(b.metricName)
-        );
-      });
+      // this.selectedCompanyMetrices.forEach((ele: any) => {
+      //   companyMatrixArray.push(ele.description);
+      // });
+      // ***************************** done
+      // finalResult.sort((a: any, b: any) => {
+      //   return (
+      //     companyMatrixArray.indexOf(a.metricName) -
+      //     companyMatrixArray.indexOf(b.metricName)
+      //   );
+      // });
+      // ******************************
       // finalResult.forEach((ele: any) => {
       //   let index;
       //   if (ele.dataType == 'stock') {
       //     this.analysisCompanyChartForStock([ele]);
       //   }
       // });
+
+      // finalResult.forEach((result:any) => {
+      //     this.globalMatrixList.forEach((ele:any) => {
+      //         if(result.metricName == ele.name){
+
+      //         }
+      //     });
+      // });
+      // setTimeout(() => {
       this.analysisCompanyChart(finalResult);
+      // }, 5000);
     } else {
       return;
     }
@@ -2267,13 +2710,16 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
   analysisCompanyChart(data: any) {
     this.cd.markForCheck();
     this.allCompanyDataTables = [];
-    let mainElement: any = document.getElementById('companyChartCustom');
-    let mainElementStock: any = document.getElementById(
-      'companyStockChartCustom'
-    );
-    mainElement.innerHTML = '';
-    mainElementStock.innerHTML = '';
+
     data.forEach((e: any) => {
+      let mainElement: any = document.getElementById(
+        `${e.fieldName}companyChartCustom`
+      );
+      let mainElementStock: any = document.getElementById(
+        `${e.fieldName}companyChartCustom`
+      );
+      mainElement.innerHTML = '';
+      mainElementStock.innerHTML = '';
       if (e.dataType == 'stock') {
         var d1: any, d2: any, d3: any;
         let NoDataContent: any = '';
@@ -2299,9 +2745,9 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
           );
 
           mainElementStock.appendChild(d1);
-          $(`#companyStockChartCustom > div:last`).before(d2);
+          $(`#${e.fieldName}companyChartCustom > div:last`).before(d2);
         } else {
-          d1 = document.querySelector(`#${e?.fieldName}analysisChart`);
+          d1 = document.querySelector(`#analysisChart`);
           d1.innerHTML = '';
         }
 
@@ -2432,8 +2878,10 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
                 `Company - ` +
                 e?.metricName +
                 ` (${currency ? currency : ''}${unit ? unit : ''}) `;
+              forCheck['id'] = `${e.fieldName}companyChartCustom`;
             } else {
               forCheck['tableTitle'] = `Company - ` + e?.metricName;
+              forCheck['id'] = `${e.fieldName}companyChartCustom`;
             }
 
             if (this.selectedCompany.length == z + 1)
@@ -2558,9 +3006,9 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
           );
 
           mainElement.appendChild(d1);
-          $(`#companyChartCustom > div:last`).before(d2);
+          $(`#${e.fieldName}companyChartCustom > div:last`).before(d2);
         } else {
-          d1 = document.querySelector(`#${e?.fieldName}analysisChart`);
+          d1 = document.querySelector(`#analysisChart`);
           d1.innerHTML = '';
         }
 
@@ -2935,8 +3383,10 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
           this.allCompanyDataTables[this.allCompanyDataTables.length - 1][
             'tableTitle'
           ] = `Company - ` + e?.metricName + ' ' + curUnit;
+          this.allCompanyDataTables[this.allCompanyDataTables.length - 1][
+            'id'
+          ] = `${e.fieldName}companyChartCustom`;
         }
-
         // Add cursor
         chart.cursor = new am4charts.XYCursor();
         chart.cursor.xAxis = dateAxis;
@@ -2994,7 +3444,7 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         mainElement.appendChild(d1);
         $(`#companyStockChartCustom > div:last`).before(d2);
       } else {
-        d1 = document.querySelector(`#${e?.fieldName}analysisChart`);
+        d1 = document.querySelector(`#analysisChart`);
         d1.innerHTML = '';
       }
 
@@ -3125,8 +3575,10 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
               `Company - ` +
               e?.metricName +
               ` (${currency ? currency : ''}${unit ? unit : ''}) `;
+            forCheck['id'] = `${e.fieldName}companyChartCustom`;
           } else {
             forCheck['tableTitle'] = `Company - ` + e?.metricName;
+            forCheck['id'] = `${e.fieldName}companyChartCustom`;
           }
 
           if (this.selectedCompany.length == z + 1)
@@ -3290,6 +3742,9 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         this.allCompanyStockDataTables[
           this.allCompanyStockDataTables.length - 1
         ]['tableTitle'] = element['tableTitle'];
+        this.allCompanyStockDataTables[
+          this.allCompanyStockDataTables.length - 1
+        ]['id'] = `${element.id}`;
       }
     });
   }
@@ -3311,14 +3766,15 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
   }
 
   industryChart(data: any) {
-    var mainElement: any = document.getElementById('industryChartCustom');
-    mainElement.innerHTML = '';
-
     let countryWiseSplittedData: any = [];
     let industrySplittedData: any = [];
     let checkIndex = 1;
     this.allIndustryDataTables = [];
     data.forEach((e: any, index: any) => {
+      var mainElement: any = document.getElementById(
+        `${e.metriceName.replace(/[^A-Z0-9]/gi, '_')}industryChartCustom`
+      );
+      mainElement.innerHTML = '';
       if (this.industryChoice == 'country') {
         // For remving industry chart
         this.selectedIndustry.forEach((industryElement: any) => {
@@ -3364,9 +3820,13 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
                 'style',
                 'font-size: 12px;margin-left: 5rem;position: relative;top:6rem'
               );
-
               mainElement.appendChild(d1);
-              $(`#industryChartCustom > div:last`).before(d2);
+              $(
+                `#${e.metriceName.replace(
+                  /[^A-Z0-9]/gi,
+                  '_'
+                )}industryChartCustom > div:last`
+              ).before(d2);
             } else {
               d1 = document.querySelector(
                 `#countryChart${industryCountryElement.id + '' + checkIndex}`
@@ -3720,6 +4180,10 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
                       e[`metriceName`] +
                       ' ' +
                       curUnit;
+                    tableData['id'] = `${e.metriceName.replace(
+                      /[^A-Z0-9]/gi,
+                      '_'
+                    )}industryChartCustom`;
                     let isThere = true;
                     this.allIndustryDataTables.forEach(
                       (element: any, index: any) => {
@@ -3851,7 +4315,12 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
               );
 
               mainElement.appendChild(d1);
-              $(`#industryChartCustom > div:last`).before(d2);
+              $(
+                `#${e.metriceName.replace(
+                  /[^A-Z0-9]/gi,
+                  '_'
+                )}industryChartCustom > div:last`
+              ).before(d2);
             } else {
               d1 = document.querySelector(
                 `#industryChart${industryElement.id + '' + checkIndex}`
@@ -4204,6 +4673,10 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
                       e[`metriceName`] +
                       ' ' +
                       curUnit;
+                    tableData['id'] = `${e.metriceName.replace(
+                      /[^A-Z0-9]/gi,
+                      '_'
+                    )}industryChartCustom`;
                     let isThere = true;
                     this.allIndustryDataTables.forEach(
                       (element: any, index: any) => {
@@ -4294,43 +4767,48 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
   //For Economy Data Structure Formation and graph
   economyDataStructureFormation(data: any) {
     let forChartData: any = [];
-    data.forEach((z: any, ind: any) => {
-      if (z[0].indicatorsDataList.length) {
-        this.selectedEconomyIndicatorData.forEach((element: any) => {
-          if (z[0].indicatorsDataList[0].category == element.category)
-            if (element.customLableCheck) {
-              let temp: any = [];
-              z[0]?.indicatorsDataList.forEach((el: any) => {
-                if (element.category == el.category) temp.push(el);
-              });
-              temp['indicatorName'] =
-                element.category + ' ' + '(' + element.periodType + ')';
-              forChartData.push(temp);
-            }
-        });
-        if (data.length == ind + 1) this.economyChart(forChartData);
-      }
+    this.selectedEconomyIndicatorData.forEach((element: any) => {
+      let temp:any = [] 
+      data.filter((z: any, ind: any) => {
+        if (z[0]?.indicatorsDataList[0].category?.toLowerCase() == element.category?.toLowerCase())
+        if (element.customLableCheck) {
+          temp = z[0]?.indicatorsDataList.map((el: any) => {
+            if (element.category?.toLowerCase() == el.category?.toLowerCase()) return el
+          });
+        }
+        temp['indicatorName'] =
+        element.category + ' ' + '(' + element.periodType + ')';
+      });
+      forChartData.push(temp);
     });
+    if(forChartData?.length == data?.length)   this.economyChart(forChartData);
   }
 
   economyChart(data: any) {
     this.allEconomyDataTables = [];
-    var mainElement: any = document.getElementById('economyChartCustom');
-    mainElement.innerHTML = '';
-
     data.forEach((e: any, index: any) => {
+      var mainElement: any = document.getElementById(
+        `${e.indicatorName?.replace(/[^A-Z0-9]/gi, '_')}economyChartCustom`
+      );
+      mainElement.innerHTML = '';
       let d1: any, d2: any, d3: any;
       let NoDataContent: any = '';
 
       if (
-        document.querySelector(`${data[index][0]?.category}economyChart`) !=
-        null
+        document.querySelector(
+          `${e.indicatorName?.replace(/[^A-Z0-9]/gi, '_')}economyChart`
+        ) != null
       ) {
-        d1 = document.querySelector(`${data[index][0]?.category}economyChart`);
+        d1 = document.querySelector(
+          `${e.indicatorName?.replace(/[^A-Z0-9]/gi, '_')}economyChart`
+        );
         d1.innerHTML = '';
       } else {
         d1 = document.createElement('div');
-        d1.setAttribute('id', data[index][0]?.category + 'economyChart');
+        d1.setAttribute(
+          'id',
+          `${e.indicatorName?.replace(/[^A-Z0-9]/gi, '_')}economyChart`
+        );
         d1.setAttribute('style', 'min-height: 16rem;');
         d1.appendChild(document.createTextNode(''));
 
@@ -4348,14 +4826,19 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         );
 
         mainElement.appendChild(d1);
-        $(`#economyChartCustom > div:last`).before(d2);
+        $(
+          `#${e.indicatorName?.replace(
+            /[^A-Z0-9]/gi,
+            '_'
+          )}economyChartCustom > div:last`
+        ).before(d2);
       }
 
       // Create chart instance
       am4core.options.commercialLicense = true;
 
       let chart = am4core.create(
-        data[index][0]?.category + 'economyChart',
+        `${e.indicatorName?.replace(/[^A-Z0-9]/gi, '_')}economyChart`,
         am4charts.XYChart
       );
       // $(document).ready(function () {
@@ -4588,8 +5071,8 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
                       this.monthNames[new Date(el.date).getMonth()] +
                         '-' +
                         new Date(el.date).getFullYear() ||
-                    new Date(el.date).getFullYear() ||
-                    el.date
+                    e.Date == new Date(el.date).getFullYear() ||
+                    e.Date == el.date
                   ) {
                     tableData[ind][el.country] = el.value
                       ? this.util.standardFormat(el.value, 2, '')
@@ -4627,9 +5110,13 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         this.allEconomyDataTables.push(tableData);
         this.allEconomyDataTables[this.allEconomyDataTables.length - 1][
           'tableTitle'
-        ] = e.indicatorName + ` (${e[0].unit})`;
+        ] =
+          e.indicatorName +
+          `${e[0].unit?.trim() !== '' ? `   (${e[0].unit})` : ''}`;
+        this.allEconomyDataTables[this.allEconomyDataTables.length - 1][
+          'id'
+        ] = `${e.indicatorName.replace(/[^A-Z0-9]/gi, '_')}economyChartCustom`;
       }
-
       // Add cursor
       chart.cursor = new am4charts.XYCursor();
       chart.cursor.xAxis = dateAxis;
@@ -4669,19 +5156,38 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
 
   forexChart(data: any) {
     this.allForexDataTables = [];
-    var mainElement: any = document.getElementById('forexChartCustom');
-    mainElement.innerHTML = '';
 
     data.forEach((e: any, index: any) => {
+      var mainElement: any = document.getElementById(
+        `${e.forexName
+          ?.replace(/[^A-Z0-9]/gi, '_')
+          .toLowerCase()}economyChartCustom`
+      );
+      mainElement.innerHTML = '';
       let d1: any, d2: any, d3: any;
       let NoDataContent: any = '';
 
-      if (document.querySelector(`forexChart${index}`) != null) {
-        d1 = document.querySelector(`forexChart${index}`);
+      if (
+        document.querySelector(
+          `${e.forexName
+            ?.replace(/[^A-Z0-9]/gi, '_')
+            .toLowerCase()}economyChart`
+        ) != null
+      ) {
+        d1 = document.querySelector(
+          `${e.forexName
+            ?.replace(/[^A-Z0-9]/gi, '_')
+            .toLowerCase()}economyChart`
+        );
         d1.innerHTML = '';
       } else {
         d1 = document.createElement('div');
-        d1.setAttribute('id', 'forexChart' + index);
+        d1.setAttribute(
+          'id',
+          `${e.forexName
+            ?.replace(/[^A-Z0-9]/gi, '_')
+            .toLowerCase()}economyChart`
+        );
         d1.setAttribute('style', 'min-height: 16rem;');
         d1.appendChild(document.createTextNode(''));
 
@@ -4699,12 +5205,19 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         );
 
         mainElement.appendChild(d1);
-        $(`#forexChartCustom > div:last`).before(d2);
+        $(
+          `#${e.forexName
+            ?.replace(/[^A-Z0-9]/gi, '_')
+            ?.toLowerCase()}economyChartCustom > div:last`
+        ).before(d2);
       }
 
       am4core.options.commercialLicense = true;
       // Create chart instance
-      let chart = am4core.create('forexChart' + index, am4charts.XYChart);
+      let chart = am4core.create(
+        `${e.forexName?.replace(/[^A-Z0-9]/gi, '_').toLowerCase()}economyChart`,
+        am4charts.XYChart
+      );
       // $(document).ready(function () {
       //   $('g[aria-labelledby]').hide();
       // });
@@ -4900,6 +5413,11 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
         this.allForexDataTables[this.allForexDataTables.length - 1][
           'tableTitle'
         ] = e.forexName;
+        this.allForexDataTables[this.allForexDataTables.length - 1][
+          'id'
+        ] = `${e.forexName
+          ?.replace(/[^A-Z0-9]/gi, '_')
+          ?.toLowerCase()}economyChartCustom`;
       }
 
       // Add cursor
@@ -4911,282 +5429,296 @@ export class InteractiveAnalysisComponent implements OnInit, DoCheck {
 
   //For company Data Structure Formation and graph
   commodityChart() {
-    this.allCommodityDataTables = [];
-    var mainElement: any = document.getElementById('commodityChartCustom');
-    mainElement.innerHTML = '';
-    let d1: any, d2: any, d3: any;
-    let NoDataContent: any = '';
+    let commodityChartData = this.globalMatrixList.filter(
+      (ele: any) => ele.type === 'commodityChartCustom'
+    );
+    if (commodityChartData.length > 0) {
+      this.allCommodityDataTables = [];
+      var mainElement: any = document.getElementById('commodityChartCustom');
+      mainElement.innerHTML = '';
+      let d1: any, d2: any, d3: any;
+      let NoDataContent: any = '';
 
-    if (document.querySelector('#commodityChart') == null) {
-      d1 = document.createElement('div');
-      d1.setAttribute('id', 'commodityChart');
-      d1.setAttribute('style', 'min-height: 16rem;');
-      d1.appendChild(document.createTextNode(''));
+      if (document.querySelector('#commodityChart') == null) {
+        d1 = document.createElement('div');
+        d1.setAttribute('id', 'commodityChart');
+        d1.setAttribute('style', 'min-height: 16rem;');
+        d1.appendChild(document.createTextNode(''));
 
-      d2 = document.createElement('img');
-      d2.setAttribute('src', 'assets/img/resize-icon.png');
-      d2.setAttribute(
-        'style',
-        'position: relative; top: -1rem; left: 5rem;cursor:pointer;z-index:1'
-      );
+        d2 = document.createElement('img');
+        d2.setAttribute('src', 'assets/img/resize-icon.png');
+        d2.setAttribute(
+          'style',
+          'position: relative; top: -1rem; left: 5rem;cursor:pointer;z-index:1'
+        );
 
-      d3 = document.createElement('p');
-      d3.setAttribute(
-        'style',
-        'font-size: 12px;margin-left: 5rem;position: relative;top:6rem'
-      );
+        d3 = document.createElement('p');
+        d3.setAttribute(
+          'style',
+          'font-size: 12px;margin-left: 5rem;position: relative;top:6rem'
+        );
 
-      mainElement.appendChild(d1);
-      $(`#commodityChartCustom > div:last`).before(d2);
-    } else {
-      d1 = document.querySelector('#commodityChart');
-      d1.innerHTML = '';
-    }
+        mainElement.appendChild(d1);
+        $(`#commodityChartCustom > div:last`).before(d2);
+      } else {
+        d1 = document.querySelector('#commodityChart');
+        d1.innerHTML = '';
+      }
 
-    // Create chart instance
-    am4core.options.commercialLicense = true;
+      // Create chart instance
+      am4core.options.commercialLicense = true;
 
-    this.chart = am4core.create('commodityChart', am4charts.XYChart);
-    // $(document).ready(function () {
-    //   $('g[aria-labelledby]').hide();
-    // });
+      this.chart = am4core.create('commodityChart', am4charts.XYChart);
+      // $(document).ready(function () {
+      //   $('g[aria-labelledby]').hide();
+      // });
 
-    // Create axes
+      // Create axes
 
-    let dateAxis: any = this.chart.xAxes.push(new am4charts.DateAxis());
-    dateAxis.tooltipDateFormat = 'dd-MM-yy';
-    dateAxis.renderer.line.strokeOpacity = 1;
-    dateAxis.renderer.line.strokeWidth = 2;
-    dateAxis.renderer.line.stroke = am4core.color('#ffc000');
-    dateAxis.renderer.labels.template.fill = am4core.color('#ffc000');
-    dateAxis.renderer.minGridDistance = 70;
-    dateAxis.renderer.labels.template.fontSize = 12;
-    dateAxis.tooltip.background.cornerRadius = 3;
-    dateAxis.tooltip.label.fontSize = 12;
-    dateAxis.tooltip.label.padding(5, 5, 5, 5);
-    dateAxis.startLocation = 0.5;
-    dateAxis.endLocation = 0.6;
+      let dateAxis: any = this.chart.xAxes.push(new am4charts.DateAxis());
+      dateAxis.tooltipDateFormat = 'dd-MM-yy';
+      dateAxis.renderer.line.strokeOpacity = 1;
+      dateAxis.renderer.line.strokeWidth = 2;
+      dateAxis.renderer.line.stroke = am4core.color('#ffc000');
+      dateAxis.renderer.labels.template.fill = am4core.color('#ffc000');
+      dateAxis.renderer.minGridDistance = 70;
+      dateAxis.renderer.labels.template.fontSize = 12;
+      dateAxis.tooltip.background.cornerRadius = 3;
+      dateAxis.tooltip.label.fontSize = 12;
+      dateAxis.tooltip.label.padding(5, 5, 5, 5);
+      dateAxis.startLocation = 0.5;
+      dateAxis.endLocation = 0.6;
 
-    if (this.date_type == '1W') {
-      dateAxis.dateFormats.setKey('day', 'dd-MM-yy');
-      dateAxis.dateFormats.setKey('week', 'dd-MM-yy');
-      dateAxis.dateFormats.setKey('month', 'dd-MM-yy');
-      dateAxis.dateFormats.setKey('year', 'dd-MM-yy');
-    } else if (this.date_type == '3M') {
-      dateAxis.dateFormats.setKey('day', 'dd-MM-yy');
-      dateAxis.dateFormats.setKey('week', 'dd MMM');
-      dateAxis.dateFormats.setKey('month', 'dd MMM');
-      dateAxis.dateFormats.setKey('year', 'dd MMM');
-      dateAxis.periodChangeDateFormats.setKey('day', 'dd-MM-yy');
-      dateAxis.periodChangeDateFormats.setKey('week', 'dd MMM');
-      dateAxis.periodChangeDateFormats.setKey('month', 'dd MMM');
-      dateAxis.periodChangeDateFormats.setKey('year', 'dd MMM');
-    } else if (
-      this.date_type == '6M' ||
-      this.date_type == '1Y' ||
-      this.date_type == '5Y'
-    ) {
-      dateAxis.dateFormats.setKey('day', 'dd-MM-yy');
-      dateAxis.dateFormats.setKey('week', 'dd MMM');
-      dateAxis.dateFormats.setKey('month', 'MMM yyyy');
-      dateAxis.dateFormats.setKey('year', 'MMM yyyy');
-      dateAxis.periodChangeDateFormats.setKey('day', 'dd-MM-yy');
-      dateAxis.periodChangeDateFormats.setKey('week', 'dd MMM');
-      dateAxis.periodChangeDateFormats.setKey('month', 'MMM yyyy');
-      dateAxis.periodChangeDateFormats.setKey('year', 'MMM yyyy');
-    } else if (this.date_type == '10Y') {
-      dateAxis.renderer.minGridDistance = 80;
-      dateAxis.dateFormats.setKey('day', 'dd-MM-yy');
-      dateAxis.dateFormats.setKey('week', 'dd MMM');
-      dateAxis.dateFormats.setKey('month', 'MMM yyyy');
-      dateAxis.dateFormats.setKey('year', 'yyyy');
-      dateAxis.periodChangeDateFormats.setKey('day', 'dd-MM-yy');
-      dateAxis.periodChangeDateFormats.setKey('week', 'dd MMM');
-      dateAxis.periodChangeDateFormats.setKey('month', 'MMM yyyy');
-      dateAxis.periodChangeDateFormats.setKey('year', 'yyyy');
-    } else if (this.date_type == 'MAX') {
-      dateAxis.renderer.minGridDistance = 80;
-      dateAxis.dateFormats.setKey('day', 'dd-MM-yy');
-      dateAxis.dateFormats.setKey('week', 'dd MMM');
-      dateAxis.dateFormats.setKey('month', 'MMM yyyy');
-      dateAxis.dateFormats.setKey('year', 'yyyy');
-      dateAxis.periodChangeDateFormats.setKey('day', 'dd-MM-yy');
-      dateAxis.periodChangeDateFormats.setKey('week', 'dd MMM');
-      dateAxis.periodChangeDateFormats.setKey('month', 'MMM yyyy');
-      dateAxis.periodChangeDateFormats.setKey('year', 'yyyy');
-    } else {
-      dateAxis.dateFormats.setKey('day', 'dd-MM-yy');
-      dateAxis.dateFormats.setKey('week', 'dd MMM');
-      dateAxis.dateFormats.setKey('month', 'dd MMM');
-      dateAxis.dateFormats.setKey('year', 'dd MMM');
-      dateAxis.periodChangeDateFormats.setKey('day', 'dd-MM-yy');
-      dateAxis.periodChangeDateFormats.setKey('week', 'dd MMM');
-      dateAxis.periodChangeDateFormats.setKey('month', 'dd MMM');
-      dateAxis.periodChangeDateFormats.setKey('year', 'dd MMM');
-    }
+      if (this.date_type == '1W') {
+        dateAxis.dateFormats.setKey('day', 'dd-MM-yy');
+        dateAxis.dateFormats.setKey('week', 'dd-MM-yy');
+        dateAxis.dateFormats.setKey('month', 'dd-MM-yy');
+        dateAxis.dateFormats.setKey('year', 'dd-MM-yy');
+      } else if (this.date_type == '3M') {
+        dateAxis.dateFormats.setKey('day', 'dd-MM-yy');
+        dateAxis.dateFormats.setKey('week', 'dd MMM');
+        dateAxis.dateFormats.setKey('month', 'dd MMM');
+        dateAxis.dateFormats.setKey('year', 'dd MMM');
+        dateAxis.periodChangeDateFormats.setKey('day', 'dd-MM-yy');
+        dateAxis.periodChangeDateFormats.setKey('week', 'dd MMM');
+        dateAxis.periodChangeDateFormats.setKey('month', 'dd MMM');
+        dateAxis.periodChangeDateFormats.setKey('year', 'dd MMM');
+      } else if (
+        this.date_type == '6M' ||
+        this.date_type == '1Y' ||
+        this.date_type == '5Y'
+      ) {
+        dateAxis.dateFormats.setKey('day', 'dd-MM-yy');
+        dateAxis.dateFormats.setKey('week', 'dd MMM');
+        dateAxis.dateFormats.setKey('month', 'MMM yyyy');
+        dateAxis.dateFormats.setKey('year', 'MMM yyyy');
+        dateAxis.periodChangeDateFormats.setKey('day', 'dd-MM-yy');
+        dateAxis.periodChangeDateFormats.setKey('week', 'dd MMM');
+        dateAxis.periodChangeDateFormats.setKey('month', 'MMM yyyy');
+        dateAxis.periodChangeDateFormats.setKey('year', 'MMM yyyy');
+      } else if (this.date_type == '10Y') {
+        dateAxis.renderer.minGridDistance = 80;
+        dateAxis.dateFormats.setKey('day', 'dd-MM-yy');
+        dateAxis.dateFormats.setKey('week', 'dd MMM');
+        dateAxis.dateFormats.setKey('month', 'MMM yyyy');
+        dateAxis.dateFormats.setKey('year', 'yyyy');
+        dateAxis.periodChangeDateFormats.setKey('day', 'dd-MM-yy');
+        dateAxis.periodChangeDateFormats.setKey('week', 'dd MMM');
+        dateAxis.periodChangeDateFormats.setKey('month', 'MMM yyyy');
+        dateAxis.periodChangeDateFormats.setKey('year', 'yyyy');
+      } else if (this.date_type == 'MAX') {
+        dateAxis.renderer.minGridDistance = 80;
+        dateAxis.dateFormats.setKey('day', 'dd-MM-yy');
+        dateAxis.dateFormats.setKey('week', 'dd MMM');
+        dateAxis.dateFormats.setKey('month', 'MMM yyyy');
+        dateAxis.dateFormats.setKey('year', 'yyyy');
+        dateAxis.periodChangeDateFormats.setKey('day', 'dd-MM-yy');
+        dateAxis.periodChangeDateFormats.setKey('week', 'dd MMM');
+        dateAxis.periodChangeDateFormats.setKey('month', 'MMM yyyy');
+        dateAxis.periodChangeDateFormats.setKey('year', 'yyyy');
+      } else {
+        dateAxis.dateFormats.setKey('day', 'dd-MM-yy');
+        dateAxis.dateFormats.setKey('week', 'dd MMM');
+        dateAxis.dateFormats.setKey('month', 'dd MMM');
+        dateAxis.dateFormats.setKey('year', 'dd MMM');
+        dateAxis.periodChangeDateFormats.setKey('day', 'dd-MM-yy');
+        dateAxis.periodChangeDateFormats.setKey('week', 'dd MMM');
+        dateAxis.periodChangeDateFormats.setKey('month', 'dd MMM');
+        dateAxis.periodChangeDateFormats.setKey('year', 'dd MMM');
+      }
 
-    // dateAxis.renderer.minLabelPosition = 0.01;
-    // dateAxis.skipEmptyPeriods = true;
+      // dateAxis.renderer.minLabelPosition = 0.01;
+      // dateAxis.skipEmptyPeriods = true;
 
-    let valueAxis = this.chart.yAxes.push(new am4charts.ValueAxis());
-    (valueAxis.tooltip as any).disabled = true;
-    valueAxis.renderer.line.strokeOpacity = 1;
-    valueAxis.renderer.line.strokeWidth = 2;
-    valueAxis.renderer.line.stroke = am4core.color('#ffc000');
-    valueAxis.renderer.labels.template.fill = am4core.color('#ffc000');
-    valueAxis.renderer.labels.template.fontSize = 12;
-    // valueAxis.numberFormatter = new am4core.NumberFormatter();
-    // valueAxis.numberFormatter.numberFormat = '#.0a';
-    valueAxis.renderer.labels.template.adapter.add(
-      'text',
-      (label: any, target: any) => {
-        if (target.dataItem) {
-          let data;
-          if (Number(target.dataItem.value) > 1000) {
+      let valueAxis = this.chart.yAxes.push(new am4charts.ValueAxis());
+      (valueAxis.tooltip as any).disabled = true;
+      valueAxis.renderer.line.strokeOpacity = 1;
+      valueAxis.renderer.line.strokeWidth = 2;
+      valueAxis.renderer.line.stroke = am4core.color('#ffc000');
+      valueAxis.renderer.labels.template.fill = am4core.color('#ffc000');
+      valueAxis.renderer.labels.template.fontSize = 12;
+      // valueAxis.numberFormatter = new am4core.NumberFormatter();
+      // valueAxis.numberFormatter.numberFormat = '#.0a';
+      valueAxis.renderer.labels.template.adapter.add(
+        'text',
+        (label: any, target: any) => {
+          if (target.dataItem) {
+            let data;
+            if (Number(target.dataItem.value) > 1000) {
+              return this.util.standardFormat(
+                Number(target.dataItem.value),
+                1,
+                ''
+              );
+            }
             return this.util.standardFormat(
               Number(target.dataItem.value),
-              1,
+              2,
               ''
             );
           }
-          return this.util.standardFormat(Number(target.dataItem.value), 2, '');
         }
-      }
-    );
-
-    this.chart.data = [];
-    let forCheck: any = [];
-
-    this.selectedCommodity.forEach((element: any, index: any) => {
-      if (element.customLableCheck) {
-        this.chart.data = this.CommodityChartData.filter(
-          (elem: any) => elem.name === element.name
-        );
-        forCheck.push(this.chart.data);
-        // Create series
-        if (this.chart.data.length) {
-          let series = this.chart.series.push(new am4charts.LineSeries());
-          series.dataFields.valueY = 'value';
-          series.dataFields.dateX = 'date';
-          series.strokeWidth = 2;
-          series.stroke = am4core.color(this.colorList[index]);
-          series.fill = am4core.color(this.colorList[index]);
-          series.minBulletDistance = 10;
-          (series.tooltip as any).label.fontSize = 12;
-          // series.tooltipText = `[bold]{name} : {value}`;
-          (series?.tooltip as any).pointerOrientation = 'vertical';
-          series.data = this.chart.data;
-          let self = this;
-          series.adapter.add('tooltipHTML', function (html: any, target: any) {
-            let data, name;
-            if (target.tooltipDataItem.dataContext) {
-              data = target.tooltipDataItem.dataContext.value;
-              name = target.tooltipDataItem.dataContext.name;
-              let formattedPrice = self.util.standardFormat(data, 2, '');
-              let customHtml = '<p style="text-align: center' + data + '</p>';
-              customHtml = name + ' : ' + formattedPrice;
-
-              return customHtml;
-            }
-            return html;
-          });
-        } else {
-          NoDataContent += `** No data Available for commodity ` + element.name;
-        }
-      }
-    });
-
-    let chartDataCheck = true;
-    for (let x of forCheck) {
-      if (x.length != 0) {
-        chartDataCheck = false;
-        break;
-      }
-    }
-
-    if (chartDataCheck) {
-      let indicator = (this.chart.tooltipContainer as any).createChild(
-        am4core.Container
       );
-      let indicatorLabel = indicator.createChild(am4core.Label);
-      indicatorLabel.text = 'No Data Available';
-      indicatorLabel.isMeasured = false;
-      indicatorLabel.x = 520;
-      indicatorLabel.y = 120;
-      indicatorLabel.fontSize = 14;
-      indicatorLabel.fill = am4core.color('#fff');
-    } else {
-      let data = NoDataContent.replaceAll(
-        '** No data Available for country ',
-        ', '
-      ).replace(',', '** No data Available for country ');
-      d3.appendChild(document.createTextNode(data));
-      d1.appendChild(d3);
-    }
 
-    d2.onclick = () => {
-      this.chartDataGets(forCheck, 'Commodity (% Daily Change)', 'commodity');
-    };
+      this.chart.data = [];
+      let forCheck: any = [];
 
-    // Add chart's data into a table
-    let tableData: any = [];
-    forCheck
-      .sort()
-      .reverse()
-      .forEach((element: any, index: any) => {
-        if (element.length) {
-          element.forEach((el: any, i: any) => {
-            let temp: any = {};
-            if (index == 0) {
-              temp['Date'] = el.date;
-              temp[el.name] = this.util.standardFormat(el.value, 2, '');
-              if (tableData.indexOf(el) === -1) {
-                tableData.push(temp);
-              }
-            } else {
-              tableData.forEach((e: any, ind: any) => {
-                if (e.Date == el.date) {
-                  tableData[ind][el.name] = el.value
-                    ? this.util.standardFormat(el.value, 2, '')
-                    : '-';
+      this.selectedCommodity.forEach((element: any, index: any) => {
+        if (element.customLableCheck) {
+          this.chart.data = this.CommodityChartData.filter(
+            (elem: any) => elem.name === element.name
+          );
+          forCheck.push(this.chart.data);
+          // Create series
+          if (this.chart.data.length) {
+            let series = this.chart.series.push(new am4charts.LineSeries());
+            series.dataFields.valueY = 'value';
+            series.dataFields.dateX = 'date';
+            series.strokeWidth = 2;
+            series.stroke = am4core.color(this.colorList[index]);
+            series.fill = am4core.color(this.colorList[index]);
+            series.minBulletDistance = 10;
+            (series.tooltip as any).label.fontSize = 12;
+            // series.tooltipText = `[bold]{name} : {value}`;
+            (series?.tooltip as any).pointerOrientation = 'vertical';
+            series.data = this.chart.data;
+            let self = this;
+            series.adapter.add(
+              'tooltipHTML',
+              function (html: any, target: any) {
+                let data, name;
+                if (target.tooltipDataItem.dataContext) {
+                  data = target.tooltipDataItem.dataContext.value;
+                  name = target.tooltipDataItem.dataContext.name;
+                  let formattedPrice = self.util.standardFormat(data, 2, '');
+                  let customHtml =
+                    '<p style="text-align: center' + data + '</p>';
+                  customHtml = name + ' : ' + formattedPrice;
+
+                  return customHtml;
                 }
-              });
-            }
-          });
+                return html;
+              }
+            );
+          } else {
+            NoDataContent +=
+              `** No data Available for commodity ` + element.name;
+          }
         }
       });
 
-    tableData.sort((a: any, b: any) => a.Date - b.Date).reverse();
-
-    if (tableData.length) {
-      // Adding empty value if its not there
-      let maxlength: any = 0;
-      let maxlengthId: any = 0;
-
-      tableData.forEach((element: any, index: any) => {
-        if (Object.keys(element).length > maxlength) {
-          maxlength = Object.keys(element).length;
-          maxlengthId = index;
+      let chartDataCheck = true;
+      for (let x of forCheck) {
+        if (x.length != 0) {
+          chartDataCheck = false;
+          break;
         }
-      });
+      }
 
-      let tempKeys = Object.keys(tableData[maxlengthId]);
+      if (chartDataCheck) {
+        let indicator = (this.chart.tooltipContainer as any).createChild(
+          am4core.Container
+        );
+        let indicatorLabel = indicator.createChild(am4core.Label);
+        indicatorLabel.text = 'No Data Available';
+        indicatorLabel.isMeasured = false;
+        indicatorLabel.x = 520;
+        indicatorLabel.y = 120;
+        indicatorLabel.fontSize = 14;
+        indicatorLabel.fill = am4core.color('#fff');
+      } else {
+        let data = NoDataContent.replaceAll(
+          '** No data Available for country ',
+          ', '
+        ).replace(',', '** No data Available for country ');
+        d3.appendChild(document.createTextNode(data));
+        d1.appendChild(d3);
+      }
 
-      tableData.forEach((element: any) => {
-        tempKeys.forEach((el: any) => {
-          if (!Object.keys(element).includes(el)) {
-            element[el] = '-';
+      d2.onclick = () => {
+        this.chartDataGets(forCheck, 'Commodity (% Daily Change)', 'commodity');
+      };
+
+      // Add chart's data into a table
+      let tableData: any = [];
+      forCheck
+        .sort()
+        .reverse()
+        .forEach((element: any, index: any) => {
+          if (element.length) {
+            element.forEach((el: any, i: any) => {
+              let temp: any = {};
+              if (index == 0) {
+                temp['Date'] = el.date;
+                temp[el.name] = this.util.standardFormat(el.value, 2, '');
+                if (tableData.indexOf(el) === -1) {
+                  tableData.push(temp);
+                }
+              } else {
+                tableData.forEach((e: any, ind: any) => {
+                  if (e.Date == el.date) {
+                    tableData[ind][el.name] = el.value
+                      ? this.util.standardFormat(el.value, 2, '')
+                      : '-';
+                  }
+                });
+              }
+            });
           }
         });
-      });
-      this.allCommodityDataTables.push(tableData);
+
+      tableData.sort((a: any, b: any) => a.Date - b.Date).reverse();
+
+      if (tableData.length) {
+        // Adding empty value if its not there
+        let maxlength: any = 0;
+        let maxlengthId: any = 0;
+
+        tableData.forEach((element: any, index: any) => {
+          if (Object.keys(element).length > maxlength) {
+            maxlength = Object.keys(element).length;
+            maxlengthId = index;
+          }
+        });
+
+        let tempKeys = Object.keys(tableData[maxlengthId]);
+
+        tableData.forEach((element: any) => {
+          tempKeys.forEach((el: any) => {
+            if (!Object.keys(element).includes(el)) {
+              element[el] = '-';
+            }
+          });
+        });
+        this.allCommodityDataTables.push(tableData);
+      }
+
+      // Add cursor
+      this.chart.cursor = new am4charts.XYCursor();
+      this.chart.cursor.xAxis = dateAxis;
+
+      this.chartDataCheck();
     }
-
-    // Add cursor
-    this.chart.cursor = new am4charts.XYCursor();
-    this.chart.cursor.xAxis = dateAxis;
-
-    this.chartDataCheck();
   }
 
   dateChange(type: any) {
