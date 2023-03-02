@@ -43,7 +43,7 @@ export class NewsCardListComponent implements OnInit {
 
   onPageChange(event: any) {
     this.currentPageSelected = event;
-    var obj: any = {};
+    const obj: any = {};
 
     obj.page = event;
     obj.list = this.listTitle;

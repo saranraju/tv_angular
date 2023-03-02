@@ -1,7 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { UtilService } from 'src/app/services/util.service';
-import * as Stomp from 'stompjs';
-import * as SockJS from 'sockjs-client';
 import { environment } from 'src/environments/environment';
 @Component({
   selector: 'app-news-details',
@@ -30,7 +28,6 @@ export class NewsDetailsComponent implements OnInit {
   selectedCountryData: any;
   selectedNewsCategoryData: any;
   phase_two_news_base_url: any = environment.phase_two_news_base_url;
-  latestNewsArray: any;
   currentPageSelected: any = 1;
   selectedIndustry: any;
   selectedCommodity: any;
@@ -82,7 +79,7 @@ export class NewsDetailsComponent implements OnInit {
     this.onSelectedData();
   }
   onNewsClicked(event: any) {
-    this.onNewsClickedEmit.emit(event.id ?? event);
+    this.onNewsClickedEmit.emit(event.id ? event : '');
   }
   onLatestNewsPageChange(e: any) {
     // var latest: any = {};

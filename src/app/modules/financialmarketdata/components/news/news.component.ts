@@ -198,7 +198,7 @@ export class NewsComponent implements OnInit, DoCheck {
       this.showNewsItemDetails = params['showNewsItem'];
       this.newsId = params['id'];
       this.selectedCountryData = params['country'];
-      var type = params['type'];
+      const type = params['type'];
       if (this.hideNewsList == 'true') {
         this.hideNewsList = true;
         this.latestNewsLoading = true;
@@ -274,7 +274,7 @@ export class NewsComponent implements OnInit, DoCheck {
   onNewsCountryChange(event: any) {
     if (this.selectCountryData && this.selectedCountryData !== event) {
       this.selectedCountryData = event;
-      var category;
+      let category;
       this.companyNewsLoading = true;
       this.economyNewsLoading = true;
       this.industryNewsLoading = true;
@@ -303,9 +303,9 @@ export class NewsComponent implements OnInit, DoCheck {
         time: ele.newsDateTimeStory,
         id: ele.newsId,
       });
-      var arrayData: any = {};
-      var arry = ele.newsMetacode;
-      var result = this.joinObj(arry);
+      const arrayData: any = {};
+      const arry = ele.newsMetacode;
+      const result = this.joinObj(arry);
       (arrayData.newsArticle = ele.newsHeadline),
         (arrayData.time = ele.newsDateTimeStory),
         // (arrayData.source = 'MT Newswires'),
@@ -337,10 +337,10 @@ export class NewsComponent implements OnInit, DoCheck {
         time: ele.newsDateTimeStory,
         id: ele.newsId,
       });
-      var arrayData: any = {};
+      const arrayData: any = {};
 
-      var arry = ele.newsMetacode;
-      var result = this.joinObj(arry);
+      const arry = ele.newsMetacode;
+      const result = this.joinObj(arry);
 
       (arrayData.newsArticle = ele.newsHeadline),
         (arrayData.time = ele.newsDateTimeStory),
@@ -373,10 +373,10 @@ export class NewsComponent implements OnInit, DoCheck {
         time: ele.newsDateTimeStory,
         id: ele.newsId,
       });
-      var arrayData: any = {};
+      const arrayData: any = {};
 
-      var arry = ele.newsMetacode;
-      var result = this.joinObj(arry);
+      const arry = ele.newsMetacode;
+      const result = this.joinObj(arry);
 
       (arrayData.newsArticle = ele.newsHeadline),
         (arrayData.time = ele.newsDateTimeStory),
@@ -408,10 +408,10 @@ export class NewsComponent implements OnInit, DoCheck {
         time: ele.newsDateTimeStory,
         id: ele.newsId,
       });
-      var arrayData: any = {};
+      const arrayData: any = {};
 
-      var arry = ele.newsMetacode;
-      var result = this.joinObj(arry);
+      const arry = ele.newsMetacode;
+      const result = this.joinObj(arry);
       (arrayData.newsArticle = ele.newsHeadline),
         (arrayData.time = ele.newsDateTimeStory),
         // (arrayData.source = 'MT Newswires'),
@@ -430,8 +430,8 @@ export class NewsComponent implements OnInit, DoCheck {
     // );
   }
   joinObj(a: any) {
-    var out = [];
-    for (var i = 0; i < a.length; i++) {
+    const out = [];
+    for (let i = 0; i < a.length; i++) {
       if (a[i].newsWireMetaCode !== null) out.push(a[i].newsWireMetaCode);
     }
     return out.join(', ');
@@ -450,9 +450,9 @@ export class NewsComponent implements OnInit, DoCheck {
         time: ele.newsDateTimeStory,
         id: ele.newsId,
       });
-      var arrayData: any = {};
-      var arry = ele.newsMetacode;
-      var result = this.joinObj(arry);
+      const arrayData: any = {};
+      const arry = ele.newsMetacode;
+      const result = this.joinObj(arry);
 
       (arrayData.newsArticle = ele.newsHeadline),
         // (arrayData.source = 'MT Newswires'),
@@ -485,9 +485,9 @@ export class NewsComponent implements OnInit, DoCheck {
         time: ele.newsDateTimeStory,
         id: ele.newsId,
       });
-      var arrayData: any = {};
-      var arry = ele.newsMetacode;
-      var result = this.joinObj(arry);
+      const arrayData: any = {};
+      const arry = ele.newsMetacode;
+      const result = this.joinObj(arry);
 
       (arrayData.newsArticle = ele.newsHeadline),
         (arrayData.source = 'MT Newswires'),
@@ -628,8 +628,6 @@ export class NewsComponent implements OnInit, DoCheck {
   ws: any;
   name: any;
   disabled: any;
-  newWebSocketRes: any;
-  generaSubID: any;
 
   generalPageNumber: number = 1;
   forexPageNumber: number = 1;
@@ -790,8 +788,7 @@ export class NewsComponent implements OnInit, DoCheck {
   getGeneralNews(message: any) {
     this.showConversation = true;
     const DataRes = JSON.parse(message?.body);
-    const generalNewsID = message?.headers?.subscription;
-    this.generalNewsId = generalNewsID;
+    this.generalNewsId = message?.headers?.subscription;;
     this.getNewsUIGeneral(DataRes);
   }
 
@@ -799,53 +796,53 @@ export class NewsComponent implements OnInit, DoCheck {
     // this.tableDataMetal = [];
     this.showConversation = true;
     const DataRes = JSON.parse(message?.body);
-    const companyNewsId = message?.headers?.subscription;
-    this.companyNewsId = companyNewsId;
+   // const companyNewsId = message?.headers?.subscription;
+    this.companyNewsId = message?.headers?.subscription;
     this.getNewsUIcompany(DataRes);
   }
   getEconomyData(message: any) {
     this.showConversation = true;
     const DataRes = JSON.parse(message?.body);
-    const economyNewsId = message?.headers?.subscription;
-    this.economyNewsId = economyNewsId;
+    //const economyNewsId = message?.headers?.subscription;
+    this.economyNewsId = message?.headers?.subscription;
     this.getNewsUIEconomy(DataRes);
   }
   getIndustryData(message: any) {
     this.showConversation = true;
     const DataRes = JSON.parse(message?.body);
-    const industryNewsId = message?.headers?.subscription;
-    this.industryNewsId = industryNewsId;
+   // const industryNewsId = message?.headers?.subscription;
+    this.industryNewsId = message?.headers?.subscription;
     this.getNewsIndustry(DataRes);
   }
 
   getForexNews(message: any) {
     this.showConversation = true;
     const DataRes = JSON.parse(message?.body);
-    const forexNewsId = message?.headers?.subscription;
-    this.forexNewsId = forexNewsId;
+   // const forexNewsId = message?.headers?.subscription;
+    this.forexNewsId = message?.headers?.subscription;
     this.getNewsUIForex(DataRes);
   }
 
   getCommodityNews(message: any) {
     this.showConversation = true;
     const DataRes = JSON.parse(message?.body);
-    const commodityNewsId = message?.headers?.subscription;
-    this.commodityNewsId = commodityNewsId;
+   // const commodityNewsId = message?.headers?.subscription;
+    this.commodityNewsId = message?.headers?.subscription;
     this.getNewsCommodity(DataRes);
   }
 
   getLatestNewsData(message: any) {
     this.showConversation = true;
     const DataRes = JSON.parse(message?.body);
-    const generalNewsID = message?.headers?.subscription;
-    this.latestNewsId = generalNewsID;
+   // const generalNewsID = message?.headers?.subscription;
+    this.latestNewsId = message?.headers?.subscription;
     this.getLatesNewsData(DataRes);
   }
   getRelatedNewsData(message: any) {
     this.showConversation = true;
     const DataRes = JSON.parse(message?.body);
-    const generalNewsID = message?.headers?.subscription;
-    this.relatedNewsId = generalNewsID;
+   // const generalNewsID = message?.headers?.subscription;
+    this.relatedNewsId = message?.headers?.subscription;
     this.getRelatedNewsDataAppend(DataRes);
   }
 
@@ -856,8 +853,8 @@ export class NewsComponent implements OnInit, DoCheck {
   }
 
   onPageChanged(e: any) {
-    var type = e.list;
-    var pageNum = e.page;
+    const type = e.list;
+    const pageNum = e.page;
 
     switch (type) {
       case 'Company News':
@@ -986,7 +983,7 @@ export class NewsComponent implements OnInit, DoCheck {
   //<<------- News Expanding Functions ----->>
 
   onNewsDetailsCompanyChange(country: any, category: any) {
-    var page = this.companyPageNumber - 1;
+    const page = this.companyPageNumber - 1;
     if (this.companyNewsId != null) this.ws.unsubscribe(this.companyNewsId);
     const generalURL = `/news/company-news/${page}${
       country ? `/countryId/${country}` : ''
@@ -1004,7 +1001,7 @@ export class NewsComponent implements OnInit, DoCheck {
   }
 
   onNewsDetailsEconomyChange(country: any, category: any) {
-    var page = this.economyPageNumber - 1;
+    const page = this.economyPageNumber - 1;
     if (this.economyNewsId != null) this.ws.unsubscribe(this.economyNewsId);
     const generalURL = `/news/economy-news/${page}${
       country ? `/countryId/${country}` : ''
@@ -1022,7 +1019,7 @@ export class NewsComponent implements OnInit, DoCheck {
   }
 
   onNewsDetailsIndustryChange(country: any, category: any) {
-    var page = this.industryPageNumber - 1;
+    const page = this.industryPageNumber - 1;
     if (this.industryNewsId != null) this.ws.unsubscribe(this.industryNewsId);
     const generalURL = `/news/industry-news/${page}${
       country ? `/countryId/${country}` : ''
@@ -1040,7 +1037,7 @@ export class NewsComponent implements OnInit, DoCheck {
   }
 
   onNewsDetailsCommodityChange(country: any, category: any) {
-    var page = this.commodityPageNumber - 1;
+    const page = this.commodityPageNumber - 1;
     if (this.commodityNewsId != null) this.ws.unsubscribe(this.commodityNewsId);
     const generalURL = `/news/commodity-news/${page}${
       country ? `/countryId/${country}` : ''
@@ -1058,7 +1055,7 @@ export class NewsComponent implements OnInit, DoCheck {
   }
 
   onNewsDetailsForexChange(country: any, category: any) {
-    var page = this.forexPageNumber - 1;
+    const page = this.forexPageNumber - 1;
     if (this.forexNewsId != null) this.ws.unsubscribe(this.forexNewsId);
     const generalURL = `/news/forex-news/${page}${
       country ? `/countryId/${country}` : ''
@@ -1076,7 +1073,7 @@ export class NewsComponent implements OnInit, DoCheck {
   }
 
   onNewsDetailsGeneralChange(country: any, category: any) {
-    var page = this.generalPageNumber - 1;
+    const page = this.generalPageNumber - 1;
     if (this.generalNewsId != null) this.ws.unsubscribe(this.generalNewsId);
     const generalURL = `/news/general-news/${page}${
       country ? `/countryId/${country}` : ''
@@ -1094,7 +1091,7 @@ export class NewsComponent implements OnInit, DoCheck {
   }
 
   onLatestNewsPageChange(country: any, category: any) {
-    var page = this.latestNewsPage - 1;
+    const page = this.latestNewsPage - 1;
     if (this.latestNewsId != null) this.ws.unsubscribe(this.latestNewsId);
     const latestNewURL = `/news/latest-news/${page}`;
     // ${
@@ -1114,7 +1111,7 @@ export class NewsComponent implements OnInit, DoCheck {
   }
 
   onRelatedNewsPageChange(country: any, category: any) {
-    var page = this.relatedNewsPage - 1;
+    const page = this.relatedNewsPage - 1;
     if (this.relatedNewsId != null) this.ws.unsubscribe(this.relatedNewsId);
     const relatedNewsUrl = `/news/connect-related-news/${page}/newsId/${this.newsId}`;
     // ${
@@ -1138,10 +1135,10 @@ export class NewsComponent implements OnInit, DoCheck {
   }
 
   onChangeNewsDetails(e: any) {
-    var type = e.list;
-    var pageNum = e.page;
-    var country = e.country;
-    var category = e.category;
+    const type = e.list;
+    const pageNum = e.page;
+    const country = e.country;
+    const category = e.category;
     switch (type) {
       case 'Company News':
         if (!this.companyNewsId) {

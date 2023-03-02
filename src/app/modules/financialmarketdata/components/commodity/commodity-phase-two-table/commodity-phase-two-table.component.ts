@@ -1,4 +1,3 @@
-import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { UtilService } from 'src/app/services/util.service';
 
@@ -43,8 +42,8 @@ export class CommodityPhaseTwoTableComponent implements OnInit {
     this.iconIndex = i;
     this.shortDown = !this.shortDown;
     return this.tableData.data.sort((a: any, b: any) => {
-      var x = a[key];
-      var y = b[key];
+      const x = a[key];
+      const y = b[key];
       if (this.shortDown == true) {
         return x < y ? 1 : x > y ? -1 : 0;
       } else {

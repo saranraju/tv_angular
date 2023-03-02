@@ -29,12 +29,12 @@ export class CommodityTableComponent implements OnInit {
   listFormattedNext4Quarters() {
     let sDate = new Date();
     //Get the quarter of the current month
-    var sQuarter = Math.floor((sDate.getMonth() + 3) / 3);
+    let sQuarter = Math.floor((sDate.getMonth() + 3) / 3);
 
-    var sYear = sDate.getFullYear();
+    let sYear = sDate.getFullYear();
 
-    var quarterNames = ['Q1', 'Q2', 'Q3', 'Q4'];
-    var quarterList = [];
+    const quarterNames = ['Q1', 'Q2', 'Q3', 'Q4'];
+    const quarterList = [];
 
     for (let i = 0; i < 4; i++) {
       quarterList.push(quarterNames[sQuarter - 1] + '/' + sYear);
@@ -49,16 +49,16 @@ export class CommodityTableComponent implements OnInit {
 
     return quarterList;
   }
-  globalMatrixList: any =[]
+  globalMatrixList: any =[];
   redirectToInteractive(content: any) {
-    let prevGlobalMatrixList = []
-    prevGlobalMatrixList =  JSON.parse(localStorage.getItem('globalMatrixList') as any)
-    if(prevGlobalMatrixList == null) prevGlobalMatrixList = []
+    let prevGlobalMatrixList: any[];
+    prevGlobalMatrixList =  JSON.parse(localStorage.getItem('globalMatrixList') as any);
+    if(prevGlobalMatrixList == null) prevGlobalMatrixList = [];
     let commodityChartData = prevGlobalMatrixList.filter(
       (ele: any) => ele.type === 'commodityChartCustom'
     );
     if (commodityChartData.length > 0) {
-      this.globalMatrixList = this.globalMatrixList;
+     // this.globalMatrixList = this.globalMatrixList;
     } else {
       prevGlobalMatrixList.push({
         name:content?.fieldName,

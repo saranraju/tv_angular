@@ -1,14 +1,12 @@
 import {
   Component,
-  DoCheck,
   ElementRef,
-  OnDestroy,
   OnInit,
   ViewChild,
 } from '@angular/core';
 import { AuthService } from 'src/app/services/auth/auth.service';
 import { FinancialMarketDataService } from 'src/app/services/financialmarketdata.service';
-import { DatePipe, LocationStrategy } from '@angular/common';
+import { DatePipe} from '@angular/common';
 import { UtilService } from 'src/app/services/util.service';
 import * as am4core from '@amcharts/amcharts4/core';
 import * as am4charts from '@amcharts/amcharts4/charts';
@@ -18,7 +16,6 @@ import * as Stomp from 'stompjs';
 import * as SockJS from 'sockjs-client';
 import { environment } from 'src/environments/environment';
 import { ActivatedRoute, Params, Router } from '@angular/router';
-import { createChart } from 'lightweight-charts';
 
 /* Chart code */
 // Themes begin
@@ -201,10 +198,10 @@ export class CommodityComponent implements OnInit {
   }
 
   metalSocket(pageNo?: any) {
-    var page_number = pageNo ?? 0,
-      that = this;
-    var metalUrl = `/commodity/metals-energy/${page_number}`;
-    var metalSendUrl = `/app/connect-metals/${page_number}`;
+    const page_number = pageNo ? pageNo : 0;
+      let that = this;
+    const metalUrl = `/commodity/metals-energy/${page_number}`;
+    const metalSendUrl = `/app/connect-metals/${page_number}`;
     that.ws.subscribe(metalUrl, function (message: any) {
       that.showMetalData(message);
     });
@@ -216,8 +213,8 @@ export class CommodityComponent implements OnInit {
     this.tableDataMetal = [];
     this.showConversation = true;
     const metalDataRes = JSON.parse(message.body);
-    const metalID = message.headers.subscription;
-    this.metalSubID = metalID;
+  //  const metalID = message.headers.subscription;
+    this.metalSubID = message.headers.subscription;
     this.greetings.push(message);
     this.tableDataMetal = metalDataRes;
     this.tableDataMetal?.content.forEach((element: any) => {
@@ -306,7 +303,7 @@ export class CommodityComponent implements OnInit {
     this.count_res = 0;
     this.total_count_res = 4;
     this.util.loaderService.display(true);
-    this.selectedCommodity = sybmbol ?? 'CL1:COM';
+    this.selectedCommodity = sybmbol ? sybmbol : 'CL1:COM';
     // this.selectedCurrency = '';
     this.util.setDateHandler('1Y');
     this.newsList();
@@ -318,7 +315,7 @@ export class CommodityComponent implements OnInit {
     this.count_res = 0;
     this.total_count_res = 4;
     this.util.loaderService.display(true);
-    this.selectedCommodity = sybmbol ?? '';
+    this.selectedCommodity = sybmbol ? sybmbol :'';
     this.selectedCurrency = '';
     this.util.setDateHandler('1Y');
     this.newsList();
@@ -618,11 +615,11 @@ export class CommodityComponent implements OnInit {
     valueAxis.renderer.minGridDistance = 30;
     valueAxis.renderer.minWidth = 5;
 
-    var valueAxisTooltip = valueAxis.tooltip;
+    const valueAxisTooltip = valueAxis.tooltip;
     valueAxisTooltip.fontSize = 10;
     valueAxisTooltip.paddingLeft = 0;
 
-    var dateAxisTooltip = dateAxis.tooltip;
+    const dateAxisTooltip = dateAxis.tooltip;
     dateAxisTooltip.fontSize = 10;
     dateAxisTooltip.paddingLeft = 0;
     // Create series
@@ -699,11 +696,11 @@ export class CommodityComponent implements OnInit {
 
   listNext4Quarters(startDate: any, EndDate: any) {
     //Get the quarter of the current month
-    var sQuarter = Math.floor((startDate.getMonth() + 3) / 3);
-    var sYear = startDate.getFullYear();
+    let sQuarter = Math.floor((startDate.getMonth() + 3) / 3);
+    let sYear = startDate.getFullYear();
 
-    var quarterNames = ['03-31', '06-30', '09-30', '12-31'];
-    var quarterList = [];
+    const quarterNames = ['03-31', '06-30', '09-30', '12-31'];
+    const quarterList = [];
 
     for (let i = 0; i < 4; i++) {
       quarterList.push(sYear + '-' + quarterNames[sQuarter - 1]);
@@ -752,7 +749,7 @@ export class CommodityComponent implements OnInit {
         },
       ]);
     });
-    var forecastChartData = this.forecastCommodityDataMap.get(
+    const forecastChartData = this.forecastCommodityDataMap.get(
       this.price_list[0].symbol
     );
 
@@ -952,8 +949,8 @@ export class CommodityComponent implements OnInit {
       });
     });
     if (event.OTCorEnergy == 'Metals') {
-      var metalsDetailUrl = `/commodity/metalsid/${event.id}`;
-      var appSendUrl = `/app/connect-metalsid/${event.id}`;
+      const metalsDetailUrl = `/commodity/metalsid/${event.id}`;
+      let appSendUrl = `/app/connect-metalsid/${event.id}`;
       let that = this;
       that.ws.subscribe(metalsDetailUrl, function (message: any) {
         that.detailData = JSON.parse(message.body).content[0];
@@ -975,8 +972,8 @@ export class CommodityComponent implements OnInit {
       // calling graph of symbol API
       this.oneWeekMetalGraph(event.symbolDescription);
     } else if (event.OTCorEnergy == 'Energy') {
-      var energyDetailUrl = `/commodity/energy/${event.id}`;
-      var appSendUrl = `/app/connect-energy/${event.id}`;
+      const energyDetailUrl = `/commodity/energy/${event.id}`;
+      let appSendUrl = `/app/connect-energy/${event.id}`;
       let that = this;
       that.ws.subscribe(energyDetailUrl, function (message: any) {
         that.detailData = JSON.parse(message.body).content[0];
@@ -1033,8 +1030,8 @@ export class CommodityComponent implements OnInit {
           }
         });
 
-        var metalsDetailUrl = `/commodity/metalsid/${data}`;
-        var appSendUrl = `/app/connect-metalsid/${data}`;
+        let metalsDetailUrl = `/commodity/metalsid/${data}`;
+        let appSendUrl = `/app/connect-metalsid/${data}`;
         let that = this;
         that.ws.subscribe(metalsDetailUrl, function (message: any) {
           that.detailData = JSON.parse(message.body).content[0];
@@ -1085,8 +1082,8 @@ export class CommodityComponent implements OnInit {
           }
         });
 
-        var energyDetailUrl = `/commodity/energy/${data}`;
-        var appSendUrl = `/app/connect-energy/${data}`;
+        let energyDetailUrl = `/commodity/energy/${data}`;
+        let appSendUrl = `/app/connect-energy/${data}`;
         let that = this;
         that.ws.subscribe(energyDetailUrl, function (message: any) {
           that.detailData = JSON.parse(message.body).content[0];
@@ -1355,11 +1352,11 @@ export class CommodityComponent implements OnInit {
     valueAxis.renderer.minGridDistance = 30;
     valueAxis.renderer.minWidth = 5;
 
-    var valueAxisTooltip = valueAxis.tooltip;
+    let valueAxisTooltip = valueAxis.tooltip;
     valueAxisTooltip.fontSize = 10;
     valueAxisTooltip.paddingLeft = 0;
 
-    var dateAxisTooltip = dateAxis.tooltip;
+    const dateAxisTooltip = dateAxis.tooltip;
     dateAxisTooltip.fontSize = 10;
     dateAxisTooltip.paddingLeft = 0;
     // Create series
@@ -1392,10 +1389,10 @@ export class CommodityComponent implements OnInit {
   pagenumber: any = 0;
   onPageChange(event: any) {
     this.ws.unsubscribe(this.metalSubID);
-    let page: number = event - 1;
-    this.pagenumber = page;
+   // let page: number = event - 1;
+    this.pagenumber  = event - 1;
     const metalUrl = `/commodity/metals-energy/${this.pagenumber}`;
-    var metalSendUrl = `/app/connect-metals/${this.pagenumber}`;
+    const metalSendUrl = `/app/connect-metals/${this.pagenumber}`;
     let that = this;
     that.ws.subscribe(metalUrl, function (message: any) {
       that.showMetalData(message);
@@ -1417,11 +1414,7 @@ export class CommodityComponent implements OnInit {
   }
 
   isPositive(num: any) {
-    if (num > 0) {
-      return true;
-    } else {
-      return false;
-    }
+    return num > 0;
   }
 
   switchKey: boolean = false;
